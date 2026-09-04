@@ -1,0 +1,271 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    background: #f7f3ef;
+    color: #4b3b33;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+}
+
+
+/* =========================
+   ヘッダー
+========================= */
+
+.header {
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eee5df;
+}
+
+.header h1 {
+    margin: 0;
+
+    font-size: 18px;
+}
+
+
+/* =========================
+   戻る
+========================= */
+
+.back-button {
+    position: absolute;
+
+    left: 15px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 25px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   メイン
+========================= */
+
+.main-content {
+    width: 100%;
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    padding: 25px 16px 50px;
+}
+
+
+/* =========================
+   セクション
+========================= */
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    margin: 0 0 10px 5px;
+
+    font-size: 15px;
+}
+
+
+/* =========================
+   空状態
+========================= */
+
+.empty-card {
+    padding: 30px 20px;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.empty-icon {
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-size: 35px;
+}
+
+.empty-card p {
+    margin: 0;
+
+    color: #999;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   追加ボタン
+========================= */
+
+.add-button {
+    width: 100%;
+    height: 50px;
+
+    border: 1px dashed #e0bda9;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: #d8844c;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   フォーム
+========================= */
+
+.form-card {
+    padding: 22px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.form-card h2 {
+    margin: 0 0 22px;
+
+    font-size: 17px;
+}
+
+.hidden {
+    display: none;
+}
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 13px;
+
+    border: 1px solid #ddd5cf;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: #eb9a6d;
+}
+
+.form-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+}
+
+.security-note {
+    margin: 5px 0 18px;
+
+    color: #999;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+.save-button {
+    width: 100%;
+    height: 50px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #eb9a6d;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+@media (max-width: 480px) {
+
+    .main-content {
+        padding: 20px 12px 40px;
+    }
+
+    .form-card {
+        padding: 18px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}

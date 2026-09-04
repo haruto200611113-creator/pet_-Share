@@ -1,0 +1,400 @@
+/* =========================
+   全体
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans JP",
+        sans-serif;
+
+    background: #f8f5f1;
+
+    color: #333;
+
+    padding-bottom: 40px;
+}
+
+
+/* =========================
+   ヘッダー
+========================= */
+
+.header {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border-bottom: 1px solid #eee;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.05);
+
+    backdrop-filter: blur(10px);
+}
+
+.header h1 {
+    margin: 0;
+
+    font-size: 21px;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   戻るボタン
+========================= */
+
+.back-button {
+    position: absolute;
+
+    left: 15px;
+
+    width: 40px;
+
+    height: 40px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f5f1ec;
+
+    color: #555;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.back-button:hover {
+    background: #ebe5de;
+}
+
+
+/* =========================
+   メイン
+========================= */
+
+.main {
+    width: min(100% - 30px, 700px);
+
+    margin: 25px auto;
+}
+
+
+/* =========================
+   フォーム
+========================= */
+
+.contact-box {
+    padding: 28px;
+
+    background: #fff;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.contact-box > h2 {
+    margin: 0 0 10px;
+
+    color: #4b3b33;
+
+    font-size: 22px;
+}
+
+.intro {
+    margin: 0 0 30px;
+
+    color: #777;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================
+   入力項目
+========================= */
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #4b3b33;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.required {
+    display: inline-block;
+
+    margin-left: 7px;
+
+    padding: 2px 6px;
+
+    border-radius: 5px;
+
+    background: #f4ddd1;
+
+    color: #c46d48;
+
+    font-size: 10px;
+
+    font-weight: 600;
+}
+
+
+/* =========================
+   input
+========================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+
+    border: 1px solid #ddd3cc;
+
+    border-radius: 10px;
+
+    background: #fff;
+
+    color: #333;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+.form-group input,
+.form-group select {
+    height: 48px;
+
+    padding: 0 14px;
+}
+
+.form-group textarea {
+    padding: 13px 14px;
+
+    resize: vertical;
+
+    line-height: 1.7;
+}
+
+
+/* フォーカス */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    border-color: #eb9a6d;
+
+    box-shadow:
+        0 0 0 3px rgba(235, 154, 109, 0.15);
+}
+
+
+/* =========================
+   注意書き
+========================= */
+
+.notice {
+    margin: 5px 0 20px;
+
+    color: #999;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================
+   送信ボタン
+========================= */
+
+.submit-button {
+    width: 100%;
+
+    height: 55px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #eb9a6d;
+
+    color: #fff;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 15px rgba(121, 82, 58, 0.18);
+
+    transition: 0.2s;
+}
+
+.submit-button:hover {
+    background: #e58d5d;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   完了メッセージ
+========================= */
+
+.complete-message {
+    display: none;
+
+    text-align: center;
+
+    padding: 30px 10px 10px;
+}
+
+.complete-icon {
+    width: 70px;
+
+    height: 70px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f4e4d4;
+
+    color: #d8844c;
+
+    font-size: 35px;
+
+    font-weight: bold;
+}
+
+.complete-message h2 {
+    margin: 0 0 15px;
+
+    color: #4b3b33;
+
+    font-size: 20px;
+}
+
+.complete-message p {
+    margin: 0 0 25px;
+
+    color: #777;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================
+   マイページに戻る
+========================= */
+
+.home-button {
+    width: 100%;
+
+    height: 50px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #f2eee9;
+
+    color: #555;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.home-button:hover {
+    background: #ebe5de;
+}
+
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 480px) {
+
+    .main {
+        width: calc(100% - 20px);
+
+        margin-top: 15px;
+    }
+
+    .contact-box {
+        padding: 20px;
+    }
+
+    .contact-box > h2 {
+        font-size: 20px;
+    }
+
+    .intro {
+        font-size: 13px;
+    }
+
+}

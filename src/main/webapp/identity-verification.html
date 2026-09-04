@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>本人確認 - ペットシェアアプリ</title>
+
+    <link
+        rel="stylesheet"
+        href="identity-verification.css"
+    >
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <button
+        type="button"
+        id="backButton"
+        class="back-button"
+        aria-label="戻る"
+    >
+        ←
+    </button>
+
+    <h1>
+        本人確認
+    </h1>
+
+</header>
+
+
+<main class="main-content">
+
+    <section class="verification-card">
+
+        <div class="verification-icon">
+            🪪
+        </div>
+
+
+        <h2>
+            本人確認について
+        </h2>
+
+
+        <p class="description">
+            安心してペットのシェアを利用していただくため、本人確認をお願いしています。
+        </p>
+
+
+        <div class="info-box">
+
+            <h3>
+                本人確認に必要なもの
+            </h3>
+
+            <ul>
+
+                <li>
+                    顔写真付きの本人確認書類
+                </li>
+
+                <li>
+                    登録した氏名・生年月日
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="notice">
+
+            <span>
+                🔒
+            </span>
+
+            <p>
+                本人確認情報は安全に管理されます。
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="startButton"
+            class="start-button"
+        >
+            本人確認を開始する
+        </button>
+
+
+        <p class="screen-note">
+            ※ 現在は画面確認用です。
+        </p>
+
+    </section>
+
+
+    <!-- 確認済み画面 -->
+
+    <section
+        id="completedCard"
+        class="completed-card hidden"
+    >
+
+        <div class="completed-icon">
+            ✓
+        </div>
+
+        <h2>
+            本人確認済み
+        </h2>
+
+        <p>
+            本人確認が完了しています。
+        </p>
+
+    </section>
+
+</main>
+
+
+<script src="identity-verification.js"></script>
+
+</body>
+
+</html>

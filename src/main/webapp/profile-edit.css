@@ -1,0 +1,907 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f7f3ef;
+    color: #4b3b33;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+}
+
+
+/* =========================
+   ヘッダー
+========================= */
+
+.header {
+    height: 60px;
+    background: #ffffff;
+    border-bottom: 1px solid #eee5df;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.back-button {
+    position: absolute;
+    left: 15px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 25px;
+    color: #555;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   メイン
+========================= */
+
+.main-content {
+    width: 100%;
+    max-width: 650px;
+
+    margin: 0 auto;
+    padding: 25px 16px 50px;
+}
+
+
+/* =========================
+   セクション
+========================= */
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    margin: 0 0 10px 5px;
+
+    font-size: 15px;
+    font-weight: 700;
+    color: #4b3b33;
+}
+
+.section-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+}
+
+
+/* =========================
+   フォームカード
+========================= */
+
+.form-card {
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================
+   プロフィール画像
+========================= */
+
+.profile-image-card {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.profile-image-current {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    min-width: 0;
+}
+
+
+.profile-image-preview {
+    width: 82px;
+    height: 82px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #f3e4d5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    font-size: 38px;
+}
+
+
+.profile-image-preview img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: none;
+}
+
+
+.profile-image-fallback {
+    display: block;
+}
+
+
+.profile-image-text {
+    min-width: 0;
+}
+
+
+.profile-image-text strong {
+    display: block;
+
+    font-size: 14px;
+    color: #4b3b33;
+}
+
+
+.profile-image-text p {
+    margin: 6px 0 0;
+
+    font-size: 11px;
+    color: #999;
+}
+
+
+.profile-image-change {
+    flex-shrink: 0;
+}
+
+
+.image-change-button {
+    padding: 10px 16px;
+
+    border: 1px solid #ddd3cc;
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #555;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.image-change-button:hover {
+    background: #f8f5f1;
+}
+
+
+/* =========================
+   フォーム
+========================= */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #4b3b33;
+}
+
+
+.required {
+    color: #e78b54;
+
+    font-size: 10px;
+
+    margin-left: 3px;
+}
+
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="date"],
+.form-group input[type="password"] {
+    width: 100%;
+
+    height: 44px;
+
+    padding: 0 12px;
+
+    border: 1px solid #ddd5cf;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #333;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+}
+
+
+.form-group input:focus {
+    border-color: #e6a16f;
+
+    box-shadow:
+        0 0 0 2px rgba(230, 161, 111, 0.12);
+}
+
+
+.input-note {
+    margin: 6px 0 0;
+
+    font-size: 11px;
+    color: #999;
+}
+
+
+/* =========================
+   性別
+========================= */
+
+.gender-group {
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+
+.gender-option {
+    margin: 0 !important;
+
+    display: flex !important;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 9px 14px;
+
+    border: 1px solid #ddd5cf;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    cursor: pointer;
+}
+
+
+.gender-option input {
+    accent-color: #e6a16f;
+}
+
+
+/* =========================
+   パスワード
+========================= */
+
+.password-button {
+    padding: 7px 14px;
+
+    border: 1px solid #ddd3cc;
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #666;
+
+    font-family: inherit;
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+.password-area {
+    display: none;
+}
+
+
+.password-area.active {
+    display: block;
+}
+
+
+/* =========================
+   ボタン
+========================= */
+
+.button-area {
+    margin-top: 30px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.save-button {
+    width: 100%;
+    height: 48px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #e89b68;
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.save-button:hover {
+    opacity: 0.9;
+}
+
+
+.cancel-button {
+    width: 100%;
+    height: 45px;
+
+    border: 1px solid #ddd3cc;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #666;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 480px) {
+
+    .main-content {
+        padding: 20px 12px 40px;
+    }
+
+    .form-card {
+        padding: 16px;
+    }
+
+    .profile-image-card {
+        gap: 10px;
+    }
+
+    .profile-image-preview {
+        width: 70px;
+        height: 70px;
+
+        font-size: 30px;
+    }
+
+    .profile-image-text {
+        display: none;
+    }
+
+    .image-change-button {
+        padding: 9px 12px;
+    }
+
+    .gender-group {
+        gap: 7px;
+    }
+
+    .gender-option {
+        padding: 8px 11px;
+    }
+}
+* {
+  box-sizing: border-box;
+  }
+
+body {
+margin: 0;
+background: #f7f3ef;
+color: #4b3b33;
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+"Hiragino Kaku Gothic ProN",
+"Yu Gothic",
+Meiryo,
+sans-serif;
+}
+
+/* =========================
+ヘッダー
+========================= */
+
+.header {
+height: 60px;
+background: #ffffff;
+border-bottom: 1px solid #eee5df;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+position: relative;
+
+
+}
+
+.header h1 {
+margin: 0;
+font-size: 18px;
+font-weight: 700;
+}
+
+.back-button {
+position: absolute;
+left: 15px;
+
+
+width: 40px;
+height: 40px;
+
+border: none;
+background: transparent;
+
+font-size: 25px;
+color: #555;
+
+cursor: pointer;
+
+
+}
+
+/* =========================
+メイン
+========================= */
+
+.main-content {
+width: 100%;
+max-width: 650px;
+
+
+margin: 0 auto;
+padding: 25px 16px 50px;
+
+
+}
+
+/* =========================
+セクション
+========================= */
+
+.section {
+margin-bottom: 25px;
+}
+
+.section-title {
+margin: 0 0 10px 5px;
+
+
+font-size: 15px;
+font-weight: 700;
+color: #4b3b33;
+
+
+}
+
+/* =========================
+フォームカード
+========================= */
+
+.form-card {
+background: #ffffff;
+
+
+border-radius: 12px;
+
+padding: 20px;
+
+box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.04);
+
+
+}
+
+/* =========================
+プロフィール画像
+========================= */
+
+.profile-image-card {
+display: flex;
+
+
+align-items: center;
+justify-content: space-between;
+
+gap: 20px;
+
+
+}
+
+.profile-image-current {
+display: flex;
+
+
+align-items: center;
+
+gap: 15px;
+
+min-width: 0;
+
+
+}
+
+.profile-image-preview {
+width: 82px;
+height: 82px;
+
+
+flex-shrink: 0;
+
+border-radius: 50%;
+
+background: #f3e4d5;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+overflow: hidden;
+
+font-size: 38px;
+
+
+}
+
+.profile-image-preview img {
+width: 100%;
+height: 100%;
+
+
+object-fit: cover;
+
+display: none;
+
+
+}
+
+.profile-image-fallback {
+display: block;
+}
+
+.profile-image-text {
+min-width: 0;
+}
+
+.profile-image-text strong {
+display: block;
+
+
+font-size: 14px;
+color: #4b3b33;
+
+
+}
+
+.profile-image-text p {
+margin: 6px 0 0;
+
+
+font-size: 11px;
+color: #999;
+
+
+}
+
+.profile-image-change {
+flex-shrink: 0;
+}
+
+.image-change-button {
+padding: 10px 16px;
+
+
+border: 1px solid #ddd3cc;
+border-radius: 9px;
+
+background: #ffffff;
+
+color: #555;
+
+font-family: inherit;
+font-size: 12px;
+font-weight: 600;
+
+cursor: pointer;
+
+transition: 0.2s;
+
+
+}
+
+.image-change-button:hover {
+background: #f8f5f1;
+}
+
+/* =========================
+フォーム
+========================= */
+
+.form-group {
+margin-bottom: 20px;
+}
+
+.form-group:last-child {
+margin-bottom: 0;
+}
+
+.form-group label {
+display: block;
+
+
+margin-bottom: 7px;
+
+font-size: 13px;
+font-weight: 600;
+
+color: #4b3b33;
+
+
+}
+
+.required {
+color: #e78b54;
+
+font-size: 10px;
+
+margin-left: 3px;
+
+
+}
+
+.form-group input[type="text"] {
+width: 100%;
+
+
+height: 44px;
+
+padding: 0 12px;
+
+border: 1px solid #ddd5cf;
+border-radius: 8px;
+
+background: #ffffff;
+
+color: #333;
+
+font-family: inherit;
+font-size: 14px;
+
+outline: none;
+
+
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+border-color: #e6a16f;
+
+
+box-shadow:
+    0 0 0 2px rgba(230, 161, 111, 0.12);
+
+
+}
+
+/* =========================
+自己紹介
+========================= */
+
+.form-group textarea {
+width: 100%;
+
+
+min-height: 130px;
+
+padding: 12px;
+
+border: 1px solid #ddd5cf;
+border-radius: 8px;
+
+background: #ffffff;
+
+color: #333;
+
+font-family: inherit;
+font-size: 14px;
+
+line-height: 1.6;
+
+resize: vertical;
+
+outline: none;
+
+
+}
+
+.input-note {
+margin: 6px 0 0;
+
+
+font-size: 11px;
+color: #999;
+
+
+}
+
+/* =========================
+ボタン
+========================= */
+
+.button-area {
+margin-top: 30px;
+
+
+display: flex;
+
+flex-direction: column;
+
+gap: 10px;
+
+
+}
+
+.save-button {
+width: 100%;
+height: 48px;
+
+
+border: none;
+border-radius: 10px;
+
+background: #e89b68;
+
+color: #ffffff;
+
+font-family: inherit;
+font-size: 14px;
+font-weight: 700;
+
+cursor: pointer;
+
+
+}
+
+.save-button:hover {
+opacity: 0.9;
+}
+
+.cancel-button {
+width: 100%;
+height: 45px;
+
+
+border: 1px solid #ddd3cc;
+border-radius: 10px;
+
+background: #ffffff;
+
+color: #666;
+
+font-family: inherit;
+font-size: 13px;
+
+cursor: pointer;
+
+}
+
+/* =========================
+スマホ
+========================= */
+
+@media (max-width: 480px) {
+
+
+.main-content {
+    padding: 20px 12px 40px;
+}
+
+.form-card {
+    padding: 16px;
+}
+
+.profile-image-card {
+    gap: 10px;
+}
+
+.profile-image-preview {
+    width: 70px;
+    height: 70px;
+
+    font-size: 30px;
+}
+
+.profile-image-text {
+    display: none;
+}
+
+.image-change-button {
+    padding: 9px 12px;
+}
+
+
+}

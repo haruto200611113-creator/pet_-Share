@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>設定 - ペットシェアアプリ</title>
+
+    <link
+        rel="stylesheet"
+        href="settings.css"
+    >
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <button
+        type="button"
+        id="backButton"
+        class="back-button"
+        aria-label="戻る"
+    >
+        ←
+    </button>
+
+    <h1>
+        設定
+    </h1>
+
+</header>
+
+
+<main class="main-content">
+
+
+    <!-- =========================
+         アカウント設定
+    ========================== -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            アカウント設定
+        </h2>
+
+        <div class="setting-card">
+
+
+            <!-- 住所 -->
+
+            <a
+                href="account-address.html"
+                class="setting-row"
+            >
+
+                <div class="setting-left">
+
+                    <span class="setting-icon">
+                        📍
+                    </span>
+
+                    <span>
+                        住所
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- 支払い方法 -->
+
+            <a
+                href="payment.html"
+                class="setting-row"
+            >
+
+                <div class="setting-left">
+
+                    <span class="setting-icon">
+                        💳
+                    </span>
+
+                    <span>
+                        支払い方法
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- メールアドレス -->
+
+            <a
+                href="account-email.html"
+                class="setting-row"
+            >
+
+                <div class="setting-left">
+
+                    <span class="setting-icon">
+                        ✉️
+                    </span>
+
+                    <span>
+                        メールアドレス
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- パスワード -->
+
+            <a
+                href="account-password.html"
+                class="setting-row"
+            >
+
+                <div class="setting-left">
+
+                    <span class="setting-icon">
+                        🔐
+                    </span>
+
+                    <span>
+                        パスワード
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- 氏名 -->
+
+            <a
+                href="account-name.html"
+                class="setting-row"
+            >
+
+                <div class="setting-left">
+
+                    <span class="setting-icon">
+                        👤
+                    </span>
+
+                    <span>
+                        氏名
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- 生年月日 -->
+
+            <a
+                href="account-birthdate.html"
+                class="setting-row"
+            >
+
+                <div class="setting-left">
+
+                    <span class="setting-icon">
+                        🎂
+                    </span>
+
+                    <span>
+                        生年月日
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- 性別 -->
+
+            <a
+                href="account-gender.html"
+                class="setting-row"
+            >
+
+                <div class="setting-left">
+
+                    <span class="setting-icon">
+                        ⚧️
+                    </span>
+
+                    <span>
+                        性別
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- 本人確認 -->
+
+            <a
+                href="identity-verification.html"
+                class="setting-row"
+            >
+
+                <div class="setting-left">
+
+                    <span class="setting-icon">
+                        🪪
+                    </span>
+
+                    <div>
+
+                        <span class="setting-name">
+                            本人確認
+                        </span>
+
+                        <span
+                            id="verificationStatus"
+                            class="setting-description"
+                        >
+                            未確認
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         通知設定
+    ========================== -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            通知設定
+        </h2>
+
+        <div class="setting-card">
+
+
+            <!-- 通知 -->
+
+            <div class="setting-row">
+
+                <div class="setting-left">
+
+                    <span class="setting-icon">
+                        🔔
+                    </span>
+
+                    <div>
+
+                        <span class="setting-name">
+                            通知
+                        </span>
+
+                        <span class="setting-description">
+                            お知らせを受け取る
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        id="notificationToggle"
+                        checked
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- チャット通知 -->
+
+            <div class="setting-row">
+
+                <div class="setting-left">
+
+                    <span class="setting-icon">
+                        💬
+                    </span>
+
+                    <div>
+
+                        <span class="setting-name">
+                            チャット通知
+                        </span>
+
+                        <span class="setting-description">
+                            メッセージを受け取ったときに通知
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        id="chatNotificationToggle"
+                        checked
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         ログアウト
+    ========================== -->
+
+    <section class="logout-section">
+
+        <button
+            type="button"
+            id="logoutButton"
+            class="logout-button"
+        >
+            ログアウト
+        </button>
+
+    </section>
+
+
+
+    <!-- =========================
+         バージョン
+    ========================== -->
+
+    <p class="version">
+
+        ペットシェアアプリ<br>
+
+        Version 1.0.0
+
+    </p>
+
+
+</main>
+
+
+<script src="settings.js"></script>
+
+</body>
+
+</html>

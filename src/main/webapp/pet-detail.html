@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>ペット詳細｜ペットシェアアプリ</title>
+
+<link rel="stylesheet" href="pet-detail.css">
+
+
+</head>
+
+<body>
+
+<!-- =========================
+     ヘッダー
+========================== -->
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <a href="home.html" class="back-button">
+            ←
+        </a>
+
+        <h1>
+            ペット詳細
+        </h1>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     メイン
+========================== -->
+
+<main class="main">
+
+    <!-- =========================
+         ペット画像
+    ========================== -->
+
+    <section class="pet-image-section">
+
+        <img
+            id="petImage"
+            class="pet-image"
+            src="https://placehold.co/800x600?text=Pet+Image"
+            alt="ペット画像"
+        >
+
+    </section>
+
+
+    <!-- =========================
+         ペット基本情報
+    ========================== -->
+
+    <section class="pet-info">
+
+        <div class="pet-title-area">
+
+            <div>
+
+                <h2 id="petName">
+                    ポチ
+                </h2>
+
+                <p id="petArea">
+                    📍 山口県
+                </p>
+
+            </div>
+
+
+            <!-- いいね -->
+
+            <button
+                type="button"
+                id="likeButton"
+                class="like-button"
+            >
+                ♡
+                <span id="likeCount">
+                    124
+                </span>
+            </button>
+
+        </div>
+
+
+        <!-- 料金 -->
+
+        <div class="price-area">
+
+            <span id="petPrice">
+                3,000
+            </span>
+
+            <span>
+                円 / 1日
+            </span>
+
+        </div>
+
+
+        <!-- 詳細 -->
+
+        <div class="detail-list">
+
+            <div class="detail-item">
+
+                <span class="label">
+                    種類
+                </span>
+
+                <span id="petType">
+                    犬
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="label">
+                    年齢
+                </span>
+
+                <span id="petAge">
+                    3歳
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="label">
+                    シェア可能期間
+                </span>
+
+                <span id="sharePeriod">
+                    9月10日 ～ 9月15日
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         飼い主
+    ========================== -->
+
+    <section class="owner-section">
+
+        <h3>
+            シェアする人
+        </h3>
+
+
+        <div class="owner-card">
+
+            <img
+                id="ownerImage"
+                class="owner-image"
+                src="https://placehold.co/100x100?text=User"
+                alt="プロフィール画像"
+            >
+
+
+            <div class="owner-info">
+
+                <h4 id="ownerName">
+                    山田さん
+                </h4>
+
+
+                <!-- 星評価 -->
+
+                <div class="rating">
+
+                    <span class="stars">
+                        ★★★★★
+                    </span>
+
+                    <span id="reviewAverage">
+                        4.8
+                    </span>
+
+                </div>
+
+
+                <p>
+                    レビュー
+                    <span id="reviewCount">
+                        32
+                    </span>
+                    件
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- 自己紹介 -->
+
+        <div class="owner-description">
+
+            <p id="ownerDescription">
+                ペットが大好きで、安心してペットを
+                シェアしていただけるように大切に
+                お世話しています。
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         ペットについて
+    ========================== -->
+
+    <section class="description-section">
+
+        <h3>
+            ペットについて
+        </h3>
+
+
+        <p id="petDescription">
+            人懐っこくて元気なトイプードルです。
+            散歩が大好きで、初めて会う人とも
+            仲良くできます。
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         シェア条件
+    ========================== -->
+
+    <section class="condition-section">
+
+        <h3>
+            シェアについて
+        </h3>
+
+
+        <div class="condition-box">
+
+            <p>
+                ✓ ペットを大切に扱える方
+            </p>
+
+            <p>
+                ✓ 散歩などのお世話ができる方
+            </p>
+
+            <p>
+                ✓ 飼い主とのルールを守れる方
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         シェア申し込み
+    ========================== -->
+
+    <section class="application-section">
+
+        <button
+            type="button"
+            id="shareButton"
+            class="share-button"
+        >
+            このペットをシェアする
+        </button>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     JavaScript
+========================== -->
+
+<script src="pet-detail.js"></script>
+
+
+</body>
+
+</html>

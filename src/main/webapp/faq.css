@@ -1,0 +1,382 @@
+/* =========================
+   全体
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans JP",
+        sans-serif;
+
+    background: #f8f5f1;
+
+    color: #333;
+
+    padding-bottom: 40px;
+}
+
+
+/* =========================
+   ヘッダー
+========================= */
+
+.header {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border-bottom: 1px solid #eee;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.05);
+
+    backdrop-filter: blur(10px);
+}
+
+.header h1 {
+    margin: 0;
+
+    font-size: 21px;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   戻るボタン
+========================= */
+
+.back-button {
+    position: absolute;
+
+    left: 15px;
+
+    width: 40px;
+
+    height: 40px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f5f1ec;
+
+    color: #555;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.back-button:hover {
+    background: #ebe5de;
+}
+
+
+/* =========================
+   メイン
+========================= */
+
+.main {
+    width: min(100% - 30px, 700px);
+
+    margin: 25px auto;
+}
+
+
+/* =========================
+   FAQボックス
+========================= */
+
+.faq-box {
+    padding: 28px;
+
+    background: #fff;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.faq-box > h2 {
+    margin: 0 0 10px;
+
+    color: #4b3b33;
+
+    font-size: 22px;
+}
+
+.intro {
+    margin: 0 0 30px;
+
+    color: #777;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================
+   カテゴリー
+========================= */
+
+.category-title {
+    margin: 30px 0 12px;
+
+    padding-left: 10px;
+
+    border-left: 4px solid #eb9a6d;
+
+    color: #4b3b33;
+
+    font-size: 17px;
+}
+
+
+/* =========================
+   FAQ
+========================= */
+
+.faq-list {
+    overflow: hidden;
+
+    border: 1px solid #eee4de;
+
+    border-radius: 14px;
+
+    background: #fff;
+}
+
+.faq-item {
+    border-bottom: 1px solid #eee4de;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+
+/* 質問 */
+
+.faq-question {
+    width: 100%;
+
+    min-height: 62px;
+
+    padding: 15px 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    border: none;
+
+    background: #fff;
+
+    color: #4b3b33;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.faq-question:hover {
+    background: #fffaf7;
+}
+
+
+/* ＋ */
+
+.faq-arrow {
+    flex-shrink: 0;
+
+    color: #d8844c;
+
+    font-size: 22px;
+
+    font-weight: 400;
+
+    transition: transform 0.2s;
+}
+
+
+/* =========================
+   回答
+========================= */
+
+.faq-answer {
+    display: none;
+
+    padding: 0 18px 18px;
+
+    background: #fff;
+
+    color: #777;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+.faq-answer p {
+    margin: 0;
+}
+
+
+/* 開いた状態 */
+
+.faq-item.active .faq-answer {
+    display: block;
+}
+
+.faq-item.active .faq-arrow {
+    transform: rotate(45deg);
+}
+
+
+/* =========================
+   お問い合わせ
+========================= */
+
+.contact-area {
+    margin-top: 35px;
+
+    padding: 25px 20px;
+
+    border-radius: 15px;
+
+    background: #fdf8f4;
+
+    text-align: center;
+}
+
+.contact-area h2 {
+    margin: 0 0 10px;
+
+    color: #4b3b33;
+
+    font-size: 18px;
+}
+
+.contact-area p {
+    margin: 0 0 20px;
+
+    color: #777;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+.contact-button {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    height: 50px;
+
+    border-radius: 10px;
+
+    background: #eb9a6d;
+
+    color: #fff;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.contact-button:hover {
+    background: #e58d5d;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 480px) {
+
+    .main {
+        width: calc(100% - 20px);
+
+        margin-top: 15px;
+    }
+
+    .faq-box {
+        padding: 20px;
+    }
+
+    .faq-box > h2 {
+        font-size: 20px;
+    }
+
+    .intro {
+        font-size: 13px;
+    }
+
+    .category-title {
+        font-size: 16px;
+    }
+
+    .faq-question {
+        min-height: 60px;
+
+        padding: 14px;
+
+        font-size: 13px;
+    }
+
+    .faq-answer {
+        padding: 0 14px 16px;
+
+        font-size: 12px;
+    }
+
+}

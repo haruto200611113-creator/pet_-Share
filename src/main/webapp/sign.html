@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ペットシェアアプリ｜新規登録</title>
+    <link rel="stylesheet" href="sign.css">
+</head>
+<body>
+
+<main class="sign-page">
+    <div class="sign-box">
+
+        <h1>ペットシェアアプリ</h1>
+
+        <form id="registerForm">
+
+            <div class="form-group">
+                <label for="accountName">アカウント名</label>
+                <input type="text" id="accountName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">メールアドレス</label>
+                <input type="email" id="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">パスワード</label>
+                <input type="password" id="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="passwordConfirm">パスワード再入力</label>
+                <input type="password" id="passwordConfirm" required>
+            </div>
+
+            <div class="form-group">
+                <label for="name">氏名</label>
+                <input type="text" id="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="birthDate">生年月日</label>
+                <input type="date" id="birthDate" required>
+            </div>
+
+            <div class="form-group">
+                <label>性別</label>
+
+                <div class="radio-area">
+                    <label>
+                        <input type="radio" name="gender" value="男性">
+                        男性
+                    </label>
+
+                    <label>
+                        <input type="radio" name="gender" value="女性">
+                        女性
+                    </label>
+
+                    <label>
+                        <input type="radio" name="gender" value="その他">
+                        その他
+                    </label>
+
+                    <label>
+                        <input type="radio" name="gender" value="回答しない">
+                        回答しない
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">電話番号</label>
+                <input type="tel" id="phone" required>
+            </div>
+
+            <div class="address-title">
+                住所
+            </div>
+
+            <div class="form-group">
+                <label for="postalCode">郵便番号</label>
+                <input
+                    type="text"
+                    id="postalCode"
+                    placeholder="例：100-0001"
+                    maxlength="8"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="prefecture">都道府県</label>
+
+                <select id="prefecture" required>
+                    <option value="">選択してください</option>
+
+                    <option>北海道</option>
+                    <option>青森県</option>
+                    <option>岩手県</option>
+                    <option>宮城県</option>
+                    <option>秋田県</option>
+                    <option>山形県</option>
+                    <option>福島県</option>
+                    <option>茨城県</option>
+                    <option>栃木県</option>
+                    <option>群馬県</option>
+                    <option>埼玉県</option>
+                    <option>千葉県</option>
+                    <option>東京都</option>
+                    <option>神奈川県</option>
+                    <option>新潟県</option>
+                    <option>富山県</option>
+                    <option>石川県</option>
+                    <option>福井県</option>
+                    <option>山梨県</option>
+                    <option>長野県</option>
+                    <option>岐阜県</option>
+                    <option>静岡県</option>
+                    <option>愛知県</option>
+                    <option>三重県</option>
+                    <option>滋賀県</option>
+                    <option>京都府</option>
+                    <option>大阪府</option>
+                    <option>兵庫県</option>
+                    <option>奈良県</option>
+                    <option>和歌山県</option>
+                    <option>鳥取県</option>
+                    <option>島根県</option>
+                    <option>岡山県</option>
+                    <option>広島県</option>
+                    <option>山口県</option>
+                    <option>徳島県</option>
+                    <option>香川県</option>
+                    <option>愛媛県</option>
+                    <option>高知県</option>
+                    <option>福岡県</option>
+                    <option>佐賀県</option>
+                    <option>長崎県</option>
+                    <option>熊本県</option>
+                    <option>大分県</option>
+                    <option>宮崎県</option>
+                    <option>鹿児島県</option>
+                    <option>沖縄県</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="city">市区町村</label>
+                <input type="text" id="city" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">丁目・番地</label>
+                <input type="text" id="address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="building">建物名</label>
+                <input type="text" id="building">
+            </div>
+
+            <!-- 利用規約確認 -->
+
+            <div class="terms-area">
+
+                <a
+                    href="terms.html"
+                    id="termsLink"
+                    class="terms-link"
+                >
+                    利用規約を確認する
+                </a>
+
+                <p
+                    id="termsStatus"
+                    class="terms-status"
+                >
+                    利用規約を確認してから同意してください。
+                </p>
+
+                <label
+                    class="agreement"
+                    id="agreementLabel"
+                >
+                    <input
+                        type="checkbox"
+                        id="agreement"
+                        disabled
+                    >
+
+                    <span>
+                        利用規約に同意する
+                    </span>
+                </label>
+
+            </div>
+
+            <button
+                type="submit"
+                class="register-button"
+            >
+                新規登録
+            </button>
+
+        </form>
+
+        <button
+            class="login-button"
+            onclick="location.href='login.html'"
+        >
+            ログイン画面へ戻る
+        </button>
+
+    </div>
+</main>
+
+<script src="sign.js"></script>
+
+</body>
+</html>

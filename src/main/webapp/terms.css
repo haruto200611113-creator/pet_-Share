@@ -1,0 +1,272 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+
+    min-height: 100%;
+}
+
+body {
+    font-family:
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        Meiryo,
+        sans-serif;
+
+    background: #f7f4ef;
+
+    color: #4f4038;
+
+    padding-bottom: 40px;
+}
+
+
+/* =========================
+   ヘッダー
+========================= */
+
+.header {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 10;
+
+    background: #ffffff;
+
+    border-bottom:
+        1px solid #eadfd8;
+}
+
+.header-inner {
+    width: min(700px, 100%);
+
+    height: 65px;
+
+    margin: 0 auto;
+
+    padding: 0 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+}
+
+.header h1 {
+    margin: 0;
+
+    color: #4b3b33;
+
+    font-size: 21px;
+
+    font-weight: 600;
+}
+
+.back-button {
+    position: absolute;
+
+    left: 20px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #5b4b43;
+
+    text-decoration: none;
+
+    font-size: 25px;
+}
+
+.back-button:hover {
+    background: #fff4ee;
+}
+
+
+/* =========================
+   メイン
+========================= */
+
+.terms-page {
+    width: min(700px, 100%);
+
+    margin: 0 auto;
+
+    padding: 20px;
+}
+
+.terms-box {
+    padding: 25px;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 3px 12px rgba(121, 82, 58, 0.08);
+}
+
+.terms-box h2 {
+    margin: 0 0 20px;
+
+    color: #4b3b33;
+
+    font-size: 24px;
+}
+
+.intro {
+    margin: 0 0 30px;
+
+    color: #75655d;
+
+    font-size: 14px;
+
+    line-height: 1.9;
+}
+
+
+/* =========================
+   利用規約本文
+========================= */
+
+.terms-section {
+    margin-top: 25px;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid #eee4de;
+}
+
+.terms-section h3 {
+    margin: 0 0 12px;
+
+    color: #4b3b33;
+
+    font-size: 17px;
+}
+
+.terms-section p {
+    margin: 8px 0;
+
+    color: #75655d;
+
+    font-size: 14px;
+
+    line-height: 1.9;
+}
+
+.terms-section ul {
+    margin: 10px 0 0;
+
+    padding-left: 22px;
+
+    color: #75655d;
+
+    font-size: 14px;
+
+    line-height: 2;
+}
+
+
+/* =========================
+   確認ボタン
+========================= */
+
+.confirm-area {
+    margin-top: 35px;
+
+    padding-top: 25px;
+
+    border-top:
+        1px solid #eadfd8;
+
+    text-align: center;
+}
+
+.confirm-area p {
+    margin: 0 0 15px;
+
+    color: #9b8980;
+
+    font-size: 13px;
+}
+
+.confirm-button {
+    width: 100%;
+
+    height: 55px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #eb9a6d;
+
+    color: #ffffff;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 15px rgba(121, 82, 58, 0.18);
+
+    transition: 0.2s;
+}
+
+.confirm-button:hover {
+    background: #e58d5d;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 600px) {
+
+    .terms-page {
+        padding: 15px;
+    }
+
+    .terms-box {
+        padding: 18px;
+    }
+
+    .terms-box h2 {
+        font-size: 21px;
+    }
+
+    .terms-section h3 {
+        font-size: 16px;
+    }
+
+    .terms-section p,
+    .terms-section ul {
+        font-size: 13px;
+    }
+}

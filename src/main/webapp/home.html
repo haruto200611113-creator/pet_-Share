@@ -1,0 +1,839 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ペットシェアアプリ｜ホーム</title>
+
+    <link rel="stylesheet" href="home.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         ヘッダー
+    ========================== -->
+
+    <header class="header">
+
+        <div class="header-inner">
+
+            <div class="header-title-area">
+
+                <h1>
+                    ペットシェアアプリ
+                </h1>
+
+                <button
+                    type="button"
+                    id="menuButton"
+                    class="menu-button"
+                    aria-label="メニューを開く"
+                >
+                    ☰
+                </button>
+
+            </div>
+
+
+            <!-- 検索 -->
+
+            <div class="search-area">
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="ペットの名前・種類・地域で検索"
+                >
+
+                <button
+                    type="button"
+                    id="searchButton"
+                >
+                    検索
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         ハンバーガーメニュー
+    ========================== -->
+
+    <div
+        id="menuOverlay"
+        class="menu-overlay"
+    ></div>
+
+
+    <aside
+        id="sideMenu"
+        class="side-menu"
+    >
+
+        <div class="side-menu-header">
+
+            <h2>
+                メニュー
+            </h2>
+
+            <button
+                type="button"
+                id="closeMenuButton"
+                class="close-menu-button"
+                aria-label="メニューを閉じる"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="menu-content">
+
+            <!-- =========================
+                 アカウント
+            ========================== -->
+
+            <div class="menu-section">
+
+                <h3>
+                    アカウント
+                </h3>
+
+
+                <a
+                    href="mypage.html"
+                    class="menu-item"
+                >
+                    <span class="menu-icon">
+                        👤
+                    </span>
+
+                    <span>
+                        マイページ
+                    </span>
+                </a>
+
+
+                <a
+                    href="profile-edit.html"
+                    class="menu-item"
+                >
+                    <span class="menu-icon">
+                        ✏️
+                    </span>
+
+                    <span>
+                        プロフィール編集
+                    </span>
+                </a>
+
+
+                <a
+                    href="my-posts.html"
+                    class="menu-item"
+                >
+                    <span class="menu-icon">
+                        📋
+                    </span>
+
+                    <span>
+                        自分の投稿
+                    </span>
+                </a>
+
+
+                <a
+                    href="likes.html"
+                    class="menu-item"
+                >
+                    <span class="menu-icon">
+                        ❤️
+                    </span>
+
+                    <span>
+                        いいねしたペット
+                    </span>
+                </a>
+
+            </div>
+
+
+            <!-- =========================
+                 ペットシェア
+            ========================== -->
+
+            <div class="menu-section">
+
+                <h3>
+                    ペットシェア
+                </h3>
+
+
+                <a
+                    href="share-history.html"
+                    class="menu-item"
+                >
+                    <span class="menu-icon">
+                        🐾
+                    </span>
+
+                    <span>
+                        シェア履歴
+                    </span>
+                </a>
+
+
+                <a
+                    href="application-status.html"
+                    class="menu-item"
+                >
+                    <span class="menu-icon">
+                        📅
+                    </span>
+
+                    <span>
+                        申し込み状況
+                    </span>
+                </a>
+
+
+                <a
+                    href="chat.html"
+                    class="menu-item"
+                >
+                    <span class="menu-icon">
+                        💬
+                    </span>
+
+                    <span>
+                        チャット
+                    </span>
+                </a>
+
+            </div>
+
+
+            <!-- =========================
+                 サポート
+            ========================== -->
+
+            <div class="menu-section">
+
+                <h3>
+                    サポート
+                </h3>
+
+
+                <a
+                    href="faq.html"
+                    class="menu-item"
+                >
+                    <span class="menu-icon">
+                        ❓
+                    </span>
+
+                    <span>
+                        よくある質問
+                    </span>
+                </a>
+
+
+                <!-- 利用規約 -->
+
+                <a
+                    href="terms.html"
+                    class="menu-item"
+                    id="termsLink"
+                >
+                    <span class="menu-icon">
+                        📖
+                    </span>
+
+                    <span>
+                        利用規約
+                    </span>
+                </a>
+
+
+                <a
+                    href="privacy.html"
+                    class="menu-item"
+                >
+                    <span class="menu-icon">
+                        🔒
+                    </span>
+
+                    <span>
+                        プライバシーポリシー
+                    </span>
+                </a>
+
+
+                <a
+                    href="contact.html"
+                    class="menu-item"
+                >
+                    <span class="menu-icon">
+                        📩
+                    </span>
+
+                    <span>
+                        お問い合わせ
+                    </span>
+                </a>
+
+            </div>
+
+
+            <!-- =========================
+                 その他
+            ========================== -->
+
+            <div class="menu-section">
+
+                <h3>
+                    その他
+                </h3>
+
+
+                <a
+                    href="settings.html"
+                    class="menu-item"
+                >
+                    <span class="menu-icon">
+                        ⚙️
+                    </span>
+
+                    <span>
+                        設定
+                    </span>
+                </a>
+
+
+                <button
+                    type="button"
+                    id="logoutButton"
+                    class="menu-item menu-button-item"
+                >
+                    <span class="menu-icon">
+                        🚪
+                    </span>
+
+                    <span>
+                        ログアウト
+                    </span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         メイン
+    ========================== -->
+
+    <main class="main">
+
+        <!-- 条件検索 -->
+
+        <section class="search-condition">
+
+            <div class="condition-buttons">
+
+                <button
+                    type="button"
+                    id="conditionButton"
+                >
+                    条件検索
+                </button>
+
+
+                <button
+                    type="button"
+                    id="filterButton"
+                >
+                    絞り込み
+                </button>
+
+
+                <button
+                    type="button"
+                    id="sortButton"
+                >
+                    並び替え
+                </button>
+
+            </div>
+
+
+            <!-- 条件設定 -->
+
+            <div
+                id="conditionArea"
+                class="condition-area"
+            >
+
+                <div class="condition-item">
+
+                    <label for="typeFilter">
+                        種類
+                    </label>
+
+                    <select id="typeFilter">
+
+                        <option value="">
+                            すべて
+                        </option>
+
+                        <option value="犬">
+                            犬
+                        </option>
+
+                        <option value="猫">
+                            猫
+                        </option>
+
+                        <option value="その他">
+                            その他
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="condition-item">
+
+                    <label for="areaFilter">
+                        地域
+                    </label>
+
+                    <select id="areaFilter">
+
+                        <option value="">
+                            すべて
+                        </option>
+
+                        <option value="北海道">
+                            北海道
+                        </option>
+
+                        <option value="東京都">
+                            東京都
+                        </option>
+
+                        <option value="大阪府">
+                            大阪府
+                        </option>
+
+                        <option value="福岡県">
+                            福岡県
+                        </option>
+
+                        <option value="山口県">
+                            山口県
+                        </option>
+
+                        <option value="広島県">
+                            広島県
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="condition-item">
+
+                    <label for="sortSelect">
+                        並び順
+                    </label>
+
+                    <select id="sortSelect">
+
+                        <option value="new">
+                            新しい順
+                        </option>
+
+                        <option value="old">
+                            古い順
+                        </option>
+
+                        <option value="name">
+                            名前順
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="applyButton"
+                    class="apply-button"
+                >
+                    条件を適用
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ペット一覧
+        ========================== -->
+
+        <section class="pet-section">
+
+            <div class="section-header">
+
+                <h2>
+                    ペットを探す
+                </h2>
+
+                <span id="resultCount">
+                    0件
+                </span>
+
+            </div>
+
+
+            <div
+                id="petList"
+                class="pet-list"
+            >
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         ペット投稿ボタン
+    ========================== -->
+
+    <button
+        type="button"
+        id="postButton"
+        class="post-button"
+    >
+        ＋ ペットを投稿
+    </button>
+
+
+    <!-- =========================
+         投稿モーダル
+    ========================== -->
+
+    <div
+        id="postModal"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+            <button
+                type="button"
+                id="closeModal"
+                class="close-button"
+            >
+                ×
+            </button>
+
+
+            <h2>
+                ペットを投稿
+            </h2>
+
+
+            <form id="postForm">
+
+                <div class="form-group">
+
+                    <label for="petImage">
+                        ペット画像
+                    </label>
+
+                    <input
+                        type="file"
+                        id="petImage"
+                        accept="image/*"
+                        required
+                    >
+
+
+                    <img
+                        id="imagePreview"
+                        class="image-preview"
+                        alt="画像プレビュー"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="petName">
+                        ペットの名前
+                    </label>
+
+                    <input
+                        type="text"
+                        id="petName"
+                        placeholder="例：ポチ"
+                        maxlength="50"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="petType">
+                        種類
+                    </label>
+
+                    <select
+                        id="petType"
+                        required
+                    >
+
+                        <option value="">
+                            選択してください
+                        </option>
+
+                        <option value="犬">
+                            犬
+                        </option>
+
+                        <option value="猫">
+                            猫
+                        </option>
+
+                        <option value="その他">
+                            その他
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="petAge">
+                        年齢
+                    </label>
+
+                    <input
+                        type="number"
+                        id="petAge"
+                        min="0"
+                        max="100"
+                        placeholder="例：3"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="petArea">
+                        地域
+                    </label>
+
+                    <select
+                        id="petArea"
+                        required
+                    >
+
+                        <option value="">
+                            選択してください
+                        </option>
+
+                        <option value="北海道">
+                            北海道
+                        </option>
+
+                        <option value="東京都">
+                            東京都
+                        </option>
+
+                        <option value="大阪府">
+                            大阪府
+                        </option>
+
+                        <option value="福岡県">
+                            福岡県
+                        </option>
+
+                        <option value="山口県">
+                            山口県
+                        </option>
+
+                        <option value="広島県">
+                            広島県
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+                    投稿する
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         下部ナビゲーション
+    ========================== -->
+
+    <nav class="bottom-nav">
+
+        <button
+            type="button"
+            class="nav-item active"
+            data-page="home"
+        >
+
+            <span class="nav-icon">
+                🏠
+            </span>
+
+            <small>
+                ホーム
+            </small>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="nav-item"
+            data-page="like"
+        >
+
+            <span class="nav-icon">
+                ♡
+            </span>
+
+            <small>
+                いいね
+            </small>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="nav-item"
+            data-page="chat"
+        >
+
+            <span class="nav-icon">
+                💬
+            </span>
+
+            <small>
+                チャット
+            </small>
+
+        </button>
+
+
+        <!-- =========================
+             アカウント → マイページ
+        ========================== -->
+
+        <a
+            href="mypage.html"
+            class="nav-item"
+            data-page="account"
+        >
+
+            <span class="nav-icon">
+                👤
+            </span>
+
+            <small>
+                アカウント
+            </small>
+
+        </a>
+
+    </nav>
+
+
+    <!-- =========================
+         ホーム用JavaScript
+    ========================== -->
+
+    <script src="home.js"></script>
+
+
+    <!-- =========================
+         利用規約の移動設定
+    ========================== -->
+
+    <script>
+
+        const termsLink =
+            document.getElementById("termsLink");
+
+
+        if (termsLink) {
+
+            termsLink.addEventListener(
+                "click",
+                function () {
+
+                    /*
+                     * ホームのハンバーガーメニューから
+                     * 利用規約を開いた場合は、
+                     * ホームから開いた扱いにする
+                     */
+
+                    sessionStorage.setItem(
+                        "termsFrom",
+                        "home"
+                    );
+
+                }
+            );
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
+
