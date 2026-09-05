@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>お問い合わせ - ペットシェアアプリ</title>
+
+    <link
+        rel="stylesheet"
+        href="contact.css"
+    >
+</head>
+
+<body>
+
+<header class="header">
+
+    <button
+        type="button"
+        id="backButton"
+        class="back-button"
+        aria-label="戻る"
+    >
+        ←
+    </button>
+
+    <h1>
+        お問い合わせ
+    </h1>
+
+</header>
+
+
+<main class="main">
+
+    <section class="contact-box">
+
+        <h2>
+            お問い合わせフォーム
+        </h2>
+
+        <p class="intro">
+            ペットシェアアプリに関するご質問や
+            ご意見などがございましたら、
+            以下のフォームからお問い合わせください。
+        </p>
+
+
+        <form id="contactForm">
+
+
+            <!-- 名前 -->
+
+            <div class="form-group">
+
+                <label for="name">
+                    お名前
+                    <span class="required">
+                        必須
+                    </span>
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="山田 太郎"
+                    required
+                >
+
+            </div>
+
+
+            <!-- メールアドレス -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    メールアドレス
+                    <span class="required">
+                        必須
+                    </span>
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="example@example.com"
+                    required
+                >
+
+            </div>
+
+
+            <!-- お問い合わせ種類 -->
+
+            <div class="form-group">
+
+                <label for="category">
+                    お問い合わせ種類
+                    <span class="required">
+                        必須
+                    </span>
+                </label>
+
+                <select
+                    id="category"
+                    name="category"
+                    required
+                >
+
+                    <option
+                        value=""
+                    >
+                        選択してください
+                    </option>
+
+                    <option
+                        value="service"
+                    >
+                        サービスについて
+                    </option>
+
+                    <option
+                        value="account"
+                    >
+                        アカウントについて
+                    </option>
+
+                    <option
+                        value="pet"
+                    >
+                        ペットシェアについて
+                    </option>
+
+                    <option
+                        value="trouble"
+                    >
+                        トラブルについて
+                    </option>
+
+                    <option
+                        value="bug"
+                    >
+                        不具合・エラーについて
+                    </option>
+
+                    <option
+                        value="other"
+                    >
+                        その他
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- 件名 -->
+
+            <div class="form-group">
+
+                <label for="subject">
+                    件名
+                    <span class="required">
+                        必須
+                    </span>
+                </label>
+
+                <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    placeholder="お問い合わせ内容を入力してください"
+                    required
+                >
+
+            </div>
+
+
+            <!-- 内容 -->
+
+            <div class="form-group">
+
+                <label for="message">
+                    お問い合わせ内容
+                    <span class="required">
+                        必須
+                    </span>
+                </label>
+
+                <textarea
+                    id="message"
+                    name="message"
+                    rows="8"
+                    placeholder="お問い合わせ内容を入力してください"
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 注意書き -->
+
+            <p class="notice">
+                ※お問い合わせいただいた内容によっては、
+                回答までに時間がかかる場合があります。
+            </p>
+
+
+            <!-- 送信 -->
+
+            <button
+                type="submit"
+                class="submit-button"
+            >
+                お問い合わせを送信
+            </button>
+
+
+        </form>
+
+
+        <!-- 送信完了 -->
+
+        <div
+            id="completeMessage"
+            class="complete-message"
+        >
+
+            <div class="complete-icon">
+                ✓
+            </div>
+
+            <h2>
+                お問い合わせを送信しました
+            </h2>
+
+            <p>
+                お問い合わせありがとうございます。<br>
+                内容を確認のうえ、必要に応じてご連絡いたします。
+            </p>
+
+            <button
+                type="button"
+                id="homeButton"
+                class="home-button"
+            >
+                マイページに戻る
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script src="contact.js"></script>
+
+</body>
+
+</html>

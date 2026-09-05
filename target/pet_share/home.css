@@ -1,0 +1,1347 @@
+/* =====================================================
+   ペットシェアアプリ
+   home.css
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+
+body {
+    font-family:
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        Meiryo,
+        sans-serif;
+
+    background: #f8f5f1;
+
+    color: #4f4038;
+
+    padding-bottom: 90px;
+}
+
+
+/* =====================================================
+   ヘッダー
+===================================================== */
+
+.header {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 10;
+
+    background:
+        rgba(255, 255, 255, .96);
+
+    backdrop-filter: blur(10px);
+
+    border-bottom:
+        1px solid #eadfd8;
+}
+
+
+.header-inner {
+    width: min(1000px, 100%);
+
+    margin: 0 auto;
+
+    padding: 17px 20px;
+}
+
+
+/* =====================================================
+   タイトル
+===================================================== */
+
+.header-title-area {
+    position: relative;
+
+    min-height: 45px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+
+.header h1 {
+    margin: 0;
+
+    color: #4b3b33;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+/* =====================================================
+   ハンバーガーボタン
+===================================================== */
+
+.menu-button {
+    position: absolute;
+
+    right: 0;
+
+    top: 50%;
+
+    width: 44px;
+
+    height: 44px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    transform: translateY(-50%);
+
+    border: 1px solid #eadfd8;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #5b4b43;
+
+    font-size: 25px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 10px rgba(121, 82, 58, .10);
+
+    transition:
+        transform .2s,
+        background .2s,
+        box-shadow .2s;
+}
+
+
+.menu-button:hover {
+    background: #fff8f4;
+
+    transform:
+        translateY(-50%)
+        scale(1.05);
+
+    box-shadow:
+        0 5px 14px rgba(121, 82, 58, .15);
+}
+
+
+.menu-button:active {
+    transform:
+        translateY(-50%)
+        scale(.95);
+}
+
+
+/* =====================================================
+   検索
+===================================================== */
+
+.search-area {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 15px;
+}
+
+
+.search-area input {
+    flex: 1;
+
+    width: 100%;
+
+    height: 45px;
+
+    padding: 0 15px;
+
+    border:
+        1.5px solid #e6a17d;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #5b4b43;
+
+    font-size: 14px;
+
+    transition: .2s;
+}
+
+
+.search-area input::placeholder {
+    color: #b8aaa3;
+}
+
+
+.search-area input:focus {
+    border-color: #e99868;
+
+    box-shadow:
+        0 0 0 4px rgba(233, 152, 104, .12);
+}
+
+
+.search-area button {
+    width: 70px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #eb9a6d;
+
+    color: #ffffff;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.search-area button:hover {
+    background: #e58d5d;
+
+    transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   メイン
+===================================================== */
+
+.main {
+    width: min(1000px, 100%);
+
+    margin: 0 auto;
+
+    padding: 25px 20px;
+}
+
+
+/* =====================================================
+   条件ボタン
+===================================================== */
+
+.condition-buttons {
+    display: flex;
+
+    gap: 9px;
+}
+
+
+.condition-buttons button {
+    flex: 1;
+
+    height: 44px;
+
+    border:
+        1px solid #eb9a6d;
+
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    color: #d8895d;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.condition-buttons button:hover {
+    background: #fff8f4;
+
+    transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   条件エリア
+===================================================== */
+
+.condition-area {
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 18px;
+
+    border:
+        1px solid #eadfd8;
+
+    border-radius: 15px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 4px 15px rgba(121, 82, 58, .06);
+}
+
+
+.condition-area.show {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr auto;
+
+    gap: 12px;
+
+    align-items: end;
+}
+
+
+.condition-item label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #5b4b43;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.condition-item select {
+    width: 100%;
+
+    height: 42px;
+
+    padding: 0 10px;
+
+    border:
+        1px solid #e6a17d;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #5b4b43;
+
+    outline: none;
+}
+
+
+.apply-button {
+    height: 42px;
+
+    padding: 0 17px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #eb9a6d;
+
+    color: #ffffff;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.apply-button:hover {
+    background: #e58d5d;
+}
+
+
+/* =====================================================
+   ペット一覧
+===================================================== */
+
+.pet-section {
+    margin-top: 32px;
+}
+
+
+.section-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 15px;
+}
+
+
+.section-header h2 {
+    margin: 0;
+
+    color: #5b4b43;
+
+    font-size: 21px;
+
+    font-weight: 700;
+}
+
+
+#resultCount {
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    background: #fff0e8;
+
+    color: #d8895d;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   ペット一覧
+===================================================== */
+
+.pet-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+
+/* =====================================================
+   ペットカード
+===================================================== */
+
+.pet-card {
+    overflow: hidden;
+
+    border:
+        1px solid #eee3dc;
+
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 4px 15px rgba(121, 82, 58, .08);
+
+    transition:
+        transform .2s,
+        box-shadow .2s;
+}
+
+
+.pet-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 8px 22px rgba(121, 82, 58, .13);
+}
+
+
+/* =====================================================
+   ペット画像
+===================================================== */
+
+.pet-image-area {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    overflow: hidden;
+
+    background: #eee;
+}
+
+
+.pet-image-link {
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+}
+
+
+.pet-image {
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform .35s;
+}
+
+
+.pet-card:hover .pet-image {
+    transform: scale(1.03);
+}
+
+
+/* =====================================================
+   いいね
+===================================================== */
+
+.like-button {
+    position: absolute;
+
+    right: 12px;
+
+    bottom: 12px;
+
+    width: 44px;
+
+    height: 44px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, .94);
+
+    color: #d8895d;
+
+    font-size: 25px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 10px rgba(0, 0, 0, .14);
+
+    transition: .2s;
+}
+
+
+.like-button:hover {
+    transform: scale(1.08);
+}
+
+
+.like-button.liked {
+    color: #e45c5c;
+}
+
+
+/* =====================================================
+   ペット情報
+===================================================== */
+
+.pet-info {
+    padding: 15px;
+}
+
+
+.pet-name {
+    margin: 0 0 8px;
+
+    color: #4b3b33;
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
+
+.pet-detail {
+    margin: 5px 0;
+
+    color: #75655d;
+
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   投稿ボタン
+===================================================== */
+
+.post-button {
+    position: fixed;
+
+    right: 25px;
+
+    bottom: 90px;
+
+    z-index: 20;
+
+    height: 52px;
+
+    padding: 0 21px;
+
+    border: none;
+
+    border-radius: 27px;
+
+    background: #eb9a6d;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 18px rgba(121, 82, 58, .22);
+
+    transition: .2s;
+}
+
+
+.post-button:hover {
+    background: #e58d5d;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 22px rgba(121, 82, 58, .26);
+}
+
+
+/* =====================================================
+   モーダル
+===================================================== */
+
+.modal {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 200;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background:
+        rgba(79, 64, 56, .45);
+
+    backdrop-filter: blur(3px);
+}
+
+
+.modal.show {
+    display: flex;
+}
+
+
+.modal-content {
+    position: relative;
+
+    width: min(430px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px 25px;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 15px 40px rgba(79, 64, 56, .18);
+}
+
+
+.modal-content h2 {
+    margin: 0 0 25px;
+
+    text-align: center;
+
+    color: #4b3b33;
+
+    font-size: 22px;
+}
+
+
+.close-button {
+    position: absolute;
+
+    top: 10px;
+
+    right: 14px;
+
+    width: 40px;
+
+    height: 40px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #75655d;
+
+    font-size: 29px;
+
+    cursor: pointer;
+}
+
+
+.close-button:hover {
+    background: #fff8f4;
+}
+
+
+/* =====================================================
+   投稿フォーム
+===================================================== */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #5b4b43;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group select {
+    width: 100%;
+
+    height: 45px;
+
+    padding: 0 12px;
+
+    border:
+        1.5px solid #e6a17d;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #5b4b43;
+
+    outline: none;
+}
+
+
+.image-preview {
+    display: none;
+
+    width: 100%;
+
+    max-height: 250px;
+
+    margin-top: 10px;
+
+    border-radius: 12px;
+
+    object-fit: cover;
+}
+
+
+.image-preview.show {
+    display: block;
+}
+
+
+.submit-button {
+    width: 100%;
+
+    height: 52px;
+
+    margin-top: 8px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #eb9a6d;
+
+    color: #ffffff;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.submit-button:hover {
+    background: #e58d5d;
+}
+
+
+/* =====================================================
+   下部ナビゲーション
+===================================================== */
+
+.bottom-nav {
+    position: fixed;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: 0;
+
+    z-index: 50;
+
+    height: 72px;
+
+    display: flex;
+
+    justify-content: center;
+
+    background:
+        rgba(255, 255, 255, .97);
+
+    backdrop-filter: blur(10px);
+
+    border-top:
+        1px solid #eadfd8;
+
+    box-shadow:
+        0 -3px 15px rgba(121, 82, 58, .05);
+}
+
+
+.nav-item {
+    width: min(150px, 25%);
+
+    border: none;
+
+    background: transparent;
+
+    color: #a8958b;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.nav-item:hover {
+    background: #fffaf7;
+}
+
+
+.nav-icon {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 22px;
+}
+
+
+.nav-item small {
+    font-size: 11px;
+}
+
+
+.nav-item.active {
+    color: #e18b5e;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   ハンバーガーメニュー背景
+===================================================== */
+
+.menu-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 90;
+
+    background:
+        rgba(45, 35, 30, .42);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s ease;
+
+    backdrop-filter: blur(2px);
+}
+
+
+.menu-overlay.show {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+/* =====================================================
+   サイドメニュー
+===================================================== */
+
+.side-menu {
+    position: fixed;
+
+    top: 0;
+
+    right: 0;
+
+    z-index: 100;
+
+    width: min(370px, 88%);
+
+    height: 100vh;
+
+    overflow-y: auto;
+
+    background: #ffffff;
+
+    box-shadow:
+        -10px 0 35px rgba(45, 35, 30, .18);
+
+    transform: translateX(100%);
+
+    transition:
+        transform .32s cubic-bezier(.4, 0, .2, 1);
+}
+
+
+.side-menu.show {
+    transform: translateX(0);
+}
+
+
+/* =====================================================
+   メニューヘッダー
+===================================================== */
+
+.side-menu-header {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 2;
+
+    height: 78px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 0 20px;
+
+    background:
+        rgba(255, 255, 255, .96);
+
+    backdrop-filter: blur(10px);
+
+    border-bottom:
+        1px solid #eee3dc;
+}
+
+
+.side-menu-header h2 {
+    margin: 0;
+
+    color: #4b3b33;
+
+    font-size: 21px;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   メニュー閉じるボタン
+===================================================== */
+
+.close-menu-button {
+    width: 43px;
+
+    height: 43px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border:
+        1px solid #eadfd8;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #75655d;
+
+    font-size: 29px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.close-menu-button:hover {
+    background: #fff8f4;
+
+    transform: rotate(90deg);
+}
+
+
+/* =====================================================
+   メニュー内容
+===================================================== */
+
+.menu-content {
+    padding: 8px 0 35px;
+}
+
+
+.menu-section {
+    padding: 15px 16px 17px;
+}
+
+
+.menu-section + .menu-section {
+    border-top:
+        1px solid #eee3dc;
+}
+
+
+.menu-section h3 {
+    margin: 3px 10px 9px;
+
+    color: #b09d93;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+/* =====================================================
+   メニュー項目
+===================================================== */
+
+.menu-item {
+    width: 100%;
+
+    min-height: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 3px;
+
+    padding: 10px 13px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: transparent;
+
+    color: #5b4b43;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background .2s,
+        color .2s,
+        transform .2s;
+}
+
+
+.menu-item:hover {
+    background: #fff5ef;
+
+    color: #d8895d;
+
+    transform: translateX(3px);
+}
+
+
+.menu-item:active {
+    transform: translateX(1px);
+}
+
+
+/* =====================================================
+   メニューアイコン
+===================================================== */
+
+.menu-icon {
+    width: 38px;
+
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 10px;
+
+    background: #fff5ef;
+
+    font-size: 18px;
+}
+
+
+.menu-item:hover .menu-icon {
+    background: #ffe8da;
+}
+
+
+.menu-button-item {
+    font-family: inherit;
+}
+
+
+/* =====================================================
+   ログアウト
+===================================================== */
+
+#logoutButton {
+    color: #c76a6a;
+
+    margin-top: 5px;
+}
+
+
+#logoutButton .menu-icon {
+    background: #fff0f0;
+}
+
+
+#logoutButton:hover {
+    background: #fff2f2;
+
+    color: #c65353;
+}
+
+
+/* =====================================================
+   スマホ
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .header-inner {
+        padding: 14px 15px;
+    }
+
+
+    .header-title-area {
+        min-height: 43px;
+
+        padding-right: 48px;
+    }
+
+
+    .header h1 {
+        font-size: 20px;
+
+        letter-spacing: .5px;
+    }
+
+
+    .menu-button {
+        right: 0;
+
+        width: 42px;
+
+        height: 42px;
+
+        font-size: 24px;
+    }
+
+
+    .main {
+        padding: 20px 15px;
+    }
+
+
+    .condition-buttons {
+        gap: 6px;
+    }
+
+
+    .condition-buttons button {
+        font-size: 13px;
+    }
+
+
+    .condition-area.show {
+        grid-template-columns: 1fr;
+    }
+
+
+    .pet-list {
+        gap: 10px;
+    }
+
+
+    .pet-card {
+        border-radius: 13px;
+    }
+
+
+    .pet-info {
+        padding: 11px;
+    }
+
+
+    .pet-name {
+        font-size: 15px;
+    }
+
+
+    .pet-detail {
+        font-size: 12px;
+    }
+
+
+    .like-button {
+        width: 40px;
+
+        height: 40px;
+
+        right: 8px;
+
+        bottom: 8px;
+
+        font-size: 22px;
+    }
+
+
+    .post-button {
+        right: 15px;
+
+        bottom: 82px;
+
+        height: 48px;
+
+        padding: 0 16px;
+
+        font-size: 14px;
+    }
+
+
+    .side-menu {
+        width: 90%;
+    }
+
+
+    .side-menu-header {
+        height: 70px;
+
+        padding: 0 17px;
+    }
+
+
+    .menu-section {
+        padding-left: 13px;
+
+        padding-right: 13px;
+    }
+
+
+    .menu-item {
+        min-height: 53px;
+
+        font-size: 14px;
+    }
+
+
+    .menu-icon {
+        width: 37px;
+
+        height: 37px;
+    }
+}

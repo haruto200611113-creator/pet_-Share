@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>マイページ - ペットシェアアプリ</title>
+
+    <link
+        rel="stylesheet"
+        href="mypage.css"
+    >
+</head>
+
+<body>
+
+
+<!-- ========================================
+     ヘッダー
+========================================= -->
+
+<header class="header">
+
+    <button
+        type="button"
+        id="backButton"
+        class="back-button"
+        aria-label="ホームに戻る"
+    >
+        ←
+    </button>
+
+    <h1>
+        マイページ
+    </h1>
+
+</header>
+
+
+
+<!-- ========================================
+     メイン
+========================================= -->
+
+<main class="main">
+
+
+    <!-- ====================================
+         プロフィール
+    ===================================== -->
+
+    <section class="profile-card">
+
+        <!-- プロフィール画像 -->
+
+        <div class="profile-icon">
+
+            <img
+                id="profileImage"
+                src=""
+                alt="プロフィール画像"
+            >
+
+            <span id="profileDefaultIcon">
+                🐾
+            </span>
+
+        </div>
+
+
+        <!-- プロフィール情報 -->
+
+        <div class="profile-info">
+
+            <h2 id="userName">
+                ユーザー名
+            </h2>
+
+            <p id="userArea">
+                📍 山口県
+            </p>
+
+        </div>
+
+
+        <!-- プロフィール編集 -->
+
+        <a
+            href="profile-edit.html"
+            class="edit-button"
+        >
+            編集
+        </a>
+
+    </section>
+
+
+
+    <!-- ====================================
+         利用状況
+    ===================================== -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            利用状況
+        </h2>
+
+
+        <div class="status-grid">
+
+
+            <!-- ====================================
+                 自分の投稿
+            ===================================== -->
+
+            <a
+                href="my-posts.html"
+                class="status-card"
+            >
+
+                <span class="status-icon">
+                    🐶
+                </span>
+
+
+                <div>
+
+                    <span class="status-label">
+                        自分の投稿
+                    </span>
+
+                    <strong id="postCount">
+                        0
+                    </strong>
+
+                    <span class="unit">
+                        件
+                    </span>
+
+                </div>
+
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+
+            <!-- ====================================
+                 いいね
+            ===================================== -->
+
+            <a
+                href="likes.html"
+                class="status-card"
+            >
+
+                <span class="status-icon">
+                    ❤️
+                </span>
+
+
+                <div>
+
+                    <span class="status-label">
+                        いいねしたペット
+                    </span>
+
+                    <strong id="likeCount">
+                        0
+                    </strong>
+
+                    <span class="unit">
+                        件
+                    </span>
+
+                </div>
+
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+
+            <!-- ====================================
+                 シェア履歴
+            ===================================== -->
+
+            <a
+                href="share-history.html"
+                class="status-card"
+            >
+
+                <span class="status-icon">
+                    📅
+                </span>
+
+
+                <div>
+
+                    <span class="status-label">
+                        シェア履歴
+                    </span>
+
+                    <strong id="shareCount">
+                        0
+                    </strong>
+
+                    <span class="unit">
+                        件
+                    </span>
+
+                </div>
+
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+
+            <!-- ====================================
+                 申し込み状況
+            ===================================== -->
+
+            <a
+                href="application-status.html"
+                class="status-card"
+            >
+
+                <span class="status-icon">
+                    📝
+                </span>
+
+
+                <div>
+
+                    <span class="status-label">
+                        申し込み状況
+                    </span>
+
+                    <strong id="applicationCount">
+                        0
+                    </strong>
+
+                    <span class="unit">
+                        件
+                    </span>
+
+                </div>
+
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ====================================
+         その他
+    ===================================== -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            その他
+        </h2>
+
+
+        <div class="menu-card">
+
+
+            <!-- ====================================
+                 設定
+            ===================================== -->
+
+            <a
+                href="settings.html"
+                class="menu-row"
+            >
+
+                <span class="menu-icon">
+                    ⚙️
+                </span>
+
+                <span class="menu-text">
+                    設定
+                </span>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+
+            <!-- ====================================
+                 利用規約
+            ===================================== -->
+
+            <a
+                href="terms.html"
+                class="menu-row"
+                id="termsLink"
+            >
+
+                <span class="menu-icon">
+                    📄
+                </span>
+
+                <span class="menu-text">
+                    利用規約
+                </span>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+
+            <!-- ====================================
+                 プライバシーポリシー
+            ===================================== -->
+
+            <a
+                href="privacy.html"
+                class="menu-row"
+                id="privacyLink"
+            >
+
+                <span class="menu-icon">
+                    🔒
+                </span>
+
+                <span class="menu-text">
+                    プライバシーポリシー
+                </span>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ========================================
+     下部ナビ
+========================================= -->
+
+<nav class="bottom-nav">
+
+
+    <!-- ホーム -->
+
+    <a
+        href="home.html"
+        class="nav-item"
+        data-page="home"
+    >
+
+        <span class="nav-icon">
+            🏠
+        </span>
+
+        <span>
+            ホーム
+        </span>
+
+    </a>
+
+
+
+    <!-- いいね -->
+
+    <a
+        href="likes.html"
+        class="nav-item"
+        data-page="like"
+    >
+
+        <span class="nav-icon">
+            ❤️
+        </span>
+
+        <span>
+            いいね
+        </span>
+
+    </a>
+
+
+
+    <!-- チャット -->
+
+    <a
+        href="chat.html"
+        class="nav-item"
+        data-page="chat"
+    >
+
+        <span class="nav-icon">
+            💬
+        </span>
+
+        <span>
+            チャット
+        </span>
+
+    </a>
+
+
+
+    <!-- アカウント -->
+
+    <a
+        href="mypage.html"
+        class="nav-item active"
+        data-page="account"
+    >
+
+        <span class="nav-icon">
+            👤
+        </span>
+
+        <span>
+            アカウント
+        </span>
+
+    </a>
+
+
+</nav>
+
+
+
+<script src="mypage.js"></script>
+
+</body>
+
+</html>

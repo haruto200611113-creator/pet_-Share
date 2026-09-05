@@ -1,0 +1,614 @@
+/* =========================
+   全体
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+
+    padding-bottom: 90px;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans JP",
+        sans-serif;
+
+    background: #f8f5f1;
+
+    color: #333;
+}
+
+
+
+/* =========================
+   ヘッダー
+========================= */
+
+.header {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(255, 255, 255, 0.95);
+
+    border-bottom:
+        1px solid #eee;
+
+    box-shadow:
+        0 2px 10px
+        rgba(0, 0, 0, 0.05);
+}
+
+
+.header h1 {
+    margin: 0;
+
+    font-size: 21px;
+
+    font-weight: 700;
+}
+
+
+
+/* =========================
+   戻るボタン
+========================= */
+
+.back-button {
+    position: absolute;
+
+    left: 15px;
+
+    width: 40px;
+
+    height: 40px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f5f1ec;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.back-button:hover {
+    background: #ebe5de;
+}
+
+
+.back-button:active {
+    transform: scale(0.95);
+}
+
+
+
+/* =========================
+   メイン
+========================= */
+
+.main {
+    width:
+        min(
+            calc(100% - 30px),
+            700px
+        );
+
+    margin: 25px auto;
+}
+
+
+
+/* =========================
+   プロフィール
+========================= */
+
+.profile-card {
+    display: flex;
+
+    align-items: center;
+
+    padding: 24px;
+
+    background: #fff;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 5px 20px
+        rgba(0, 0, 0, 0.06);
+}
+
+
+
+/* =========================
+   プロフィール画像
+========================= */
+
+.profile-icon {
+    position: relative;
+
+    width: 65px;
+
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-right: 16px;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: #f4e4d4;
+
+    flex-shrink: 0;
+}
+
+
+.profile-icon img {
+    width: 100%;
+
+    height: 100%;
+
+    display: none;
+
+    object-fit: cover;
+}
+
+
+.profile-icon span {
+    font-size: 32px;
+}
+
+
+
+/* =========================
+   プロフィール情報
+========================= */
+
+.profile-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.profile-info h2 {
+    margin:
+        0 0 7px;
+
+    font-size: 20px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.profile-info p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+
+/* =========================
+   編集ボタン
+========================= */
+
+.edit-button {
+    padding:
+        9px 15px;
+
+    border-radius: 20px;
+
+    background: #f2eee9;
+
+    color: #555;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    flex-shrink: 0;
+
+    transition: 0.2s;
+}
+
+
+.edit-button:hover {
+    background: #e9e2db;
+}
+
+
+
+/* =========================
+   セクション
+========================= */
+
+.section {
+    margin-top: 30px;
+}
+
+
+.section-title {
+    margin:
+        0 0 12px 5px;
+
+    font-size: 17px;
+
+    font-weight: 700;
+}
+
+
+
+/* =========================
+   利用状況
+========================= */
+
+.status-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 12px;
+}
+
+
+.status-card {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    min-height: 90px;
+
+    padding: 17px;
+
+    background: #fff;
+
+    border-radius: 16px;
+
+    text-decoration: none;
+
+    color: #333;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0, 0, 0, 0.05);
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.status-card:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 7px 20px
+        rgba(0, 0, 0, 0.08);
+}
+
+
+.status-card:active {
+    transform:
+        translateY(0);
+}
+
+
+
+/* =========================
+   利用状況アイコン
+========================= */
+
+.status-icon {
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-right: 12px;
+
+    border-radius: 13px;
+
+    background: #f7f1eb;
+
+    font-size: 20px;
+
+    flex-shrink: 0;
+}
+
+
+
+/* =========================
+   利用状況文字
+========================= */
+
+.status-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+.status-card strong {
+    font-size: 22px;
+}
+
+
+.unit {
+    margin-left: 2px;
+
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+
+/* =========================
+   矢印
+========================= */
+
+.arrow {
+    margin-left: auto;
+
+    color: #aaa;
+
+    font-size: 25px;
+}
+
+
+
+/* =========================
+   その他
+========================= */
+
+.menu-card {
+    overflow: hidden;
+
+    background: #fff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0, 0, 0, 0.05);
+}
+
+
+.menu-row {
+    display: flex;
+
+    align-items: center;
+
+    min-height: 58px;
+
+    padding:
+        0 18px;
+
+    border-bottom:
+        1px solid #f0ede9;
+
+    color: #333;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    transition: background 0.2s;
+}
+
+
+.menu-row:last-child {
+    border-bottom: none;
+}
+
+
+.menu-row:hover {
+    background: #fcfaf8;
+}
+
+
+.menu-icon {
+    width: 32px;
+
+    font-size: 18px;
+
+    flex-shrink: 0;
+}
+
+
+.menu-text {
+    flex: 1;
+}
+
+
+
+/* =========================
+   下部ナビ
+========================= */
+
+.bottom-nav {
+    position: fixed;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: 0;
+
+    z-index: 100;
+
+    height: 70px;
+
+    display: flex;
+
+    justify-content:
+        space-around;
+
+    background:
+        rgba(255, 255, 255, 0.96);
+
+    border-top:
+        1px solid #eee;
+
+    box-shadow:
+        0 -3px 15px
+        rgba(0, 0, 0, 0.05);
+
+    backdrop-filter:
+        blur(10px);
+}
+
+
+.nav-item {
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 3px;
+
+    color: #999;
+
+    text-decoration: none;
+
+    font-size: 11px;
+}
+
+
+.nav-icon {
+    font-size: 21px;
+}
+
+
+.nav-item.active {
+    color: #d8844c;
+
+    font-weight: 700;
+}
+
+
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 480px) {
+
+    .main {
+        width:
+            calc(100% - 20px);
+
+        margin-top: 15px;
+    }
+
+
+    .profile-card {
+        padding: 20px;
+    }
+
+
+    .profile-icon {
+        width: 58px;
+
+        height: 58px;
+    }
+
+
+    .profile-icon span {
+        font-size: 27px;
+    }
+
+
+    .profile-info h2 {
+        font-size: 18px;
+    }
+
+
+    .status-grid {
+        gap: 9px;
+    }
+
+
+    .status-card {
+        min-height: 85px;
+
+        padding: 13px;
+    }
+
+
+    .status-icon {
+        width: 37px;
+
+        height: 37px;
+
+        margin-right: 8px;
+    }
+
+
+    .status-label {
+        font-size: 11px;
+    }
+
+
+    .status-card strong {
+        font-size: 20px;
+    }
+
+}

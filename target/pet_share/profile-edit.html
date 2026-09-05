@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>プロフィール編集 - ペットシェアアプリ</title>
+
+<link
+    rel="stylesheet"
+    href="profile-edit.css"
+>
+
+
+</head>
+
+<body>
+
+<header class="header">
+
+
+<button
+    type="button"
+    id="backButton"
+    class="back-button"
+    aria-label="戻る"
+>
+    ←
+</button>
+
+
+<h1>
+    プロフィール編集
+</h1>
+
+
+</header>
+
+<main class="main-content">
+
+
+<!-- =========================
+     プロフィール画像
+========================== -->
+
+<section class="section">
+
+    <h2 class="section-title">
+        プロフィール画像
+    </h2>
+
+
+    <div class="form-card profile-image-card">
+
+
+        <div class="profile-image-current">
+
+
+            <div class="profile-image-preview">
+
+                <img
+                    id="profileImagePreview"
+                    alt="プロフィール画像"
+                >
+
+                <span
+                    id="profileImageDefault"
+                    class="profile-image-fallback"
+                >
+                    👤
+                </span>
+
+            </div>
+
+
+            <div class="profile-image-text">
+
+                <strong>
+                    プロフィール画像
+                </strong>
+
+                <p>
+                    自分のプロフィールに表示されます
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile-image-change">
+
+            <label
+                for="profileImageInput"
+                class="image-change-button"
+            >
+                画像を変更
+            </label>
+
+
+            <input
+                type="file"
+                id="profileImageInput"
+                accept="image/*"
+                hidden
+            >
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     アカウント名
+========================== -->
+
+<section class="section">
+
+    <h2 class="section-title">
+        アカウント名
+    </h2>
+
+
+    <div class="form-card">
+
+
+        <div class="form-group">
+
+            <label for="accountName">
+                アカウント名
+                <span class="required">
+                    必須
+                </span>
+            </label>
+
+
+            <input
+                type="text"
+                id="accountName"
+                maxlength="30"
+                placeholder="アカウント名を入力"
+            >
+
+
+            <p class="input-note">
+                他のユーザーに表示される名前です。
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     自己紹介
+========================== -->
+
+<section class="section">
+
+    <h2 class="section-title">
+        自己紹介
+    </h2>
+
+
+    <div class="form-card">
+
+
+        <div class="form-group">
+
+            <label for="selfIntroduction">
+                自己紹介
+            </label>
+
+
+            <textarea
+                id="selfIntroduction"
+                maxlength="300"
+                placeholder="自己紹介を入力してください"
+                rows="6"
+            ></textarea>
+
+
+            <p class="input-note">
+                300文字以内で入力してください。
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     ボタン
+========================== -->
+
+<div class="button-area">
+
+
+    <button
+        type="button"
+        id="saveProfileButton"
+        class="save-button"
+    >
+        保存する
+    </button>
+
+
+    <button
+        type="button"
+        id="cancelButton"
+        class="cancel-button"
+    >
+        キャンセル
+    </button>
+
+
+</div>
+
+
+</main>
+
+<script src="profile-edit.js"></script>
+
+</body>
+
+</html>
