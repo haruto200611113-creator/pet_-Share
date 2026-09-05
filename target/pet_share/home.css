@@ -845,11 +845,15 @@ body {
 
     z-index: 50;
 
+    width: 100%;
+
     height: 72px;
 
     display: flex;
 
     justify-content: center;
+
+    align-items: stretch;
 
     background:
         rgba(255, 255, 255, .97);
@@ -864,39 +868,121 @@ body {
 }
 
 
+/* =====================================================
+   下部ナビ共通
+===================================================== */
+
 .nav-item {
-    width: min(150px, 25%);
+    width: 25%;
+
+    height: 72px;
+
+    flex: 0 0 25%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 0;
+
+    margin: 0;
 
     border: none;
+
+    outline: none;
 
     background: transparent;
 
     color: #a8958b;
 
+    text-decoration: none;
+
+    font-family: inherit;
+
+    font-size: inherit;
+
+    font-weight: 400;
+
+    line-height: normal;
+
+    text-align: center;
+
     cursor: pointer;
 
-    transition: .2s;
+    transition:
+        background .2s,
+        color .2s;
 }
 
+
+/* =====================================================
+   下部ナビ ホバー
+===================================================== */
 
 .nav-item:hover {
     background: #fffaf7;
 }
 
 
-.nav-icon {
-    display: block;
+/* =====================================================
+   下部ナビ アイコン
+===================================================== */
 
-    margin-bottom: 3px;
+.nav-icon {
+    width: 30px;
+
+    height: 28px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin: 0 0 3px;
+
+    padding: 0;
+
+    line-height: 1;
 
     font-size: 22px;
+
+    text-align: center;
 }
 
+
+/* =====================================================
+   下部ナビ 文字
+===================================================== */
 
 .nav-item small {
+    display: block;
+
+    width: 100%;
+
+    height: 14px;
+
+    margin: 0;
+
+    padding: 0;
+
     font-size: 11px;
+
+    font-weight: inherit;
+
+    line-height: 14px;
+
+    text-align: center;
 }
 
+
+/* =====================================================
+   下部ナビ アクティブ
+===================================================== */
 
 .nav-item.active {
     color: #e18b5e;
@@ -1343,5 +1429,43 @@ body {
         width: 37px;
 
         height: 37px;
+    }
+
+
+    /* =============================================
+       スマホ下部ナビ
+    ============================================= */
+
+    .bottom-nav {
+        height: 72px;
+    }
+
+
+    .nav-item {
+        width: 25%;
+
+        height: 72px;
+
+        flex: 0 0 25%;
+    }
+
+
+    .nav-icon {
+        width: 30px;
+
+        height: 28px;
+
+        font-size: 22px;
+
+        margin-bottom: 3px;
+    }
+
+
+    .nav-item small {
+        height: 14px;
+
+        font-size: 11px;
+
+        line-height: 14px;
     }
 }
