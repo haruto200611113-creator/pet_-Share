@@ -28,6 +28,39 @@ const status = document.getElementById("quizStatus");
 const returnLink = document.getElementById("quizReturn");
 const scoreButton = document.getElementById("scoreButton");
 
+function clearReviewStyles() {
+    document.querySelectorAll('.quiz-option').forEach((label) => {
+        label.classList.remove('wrong-choice', 'correct-choice');
+    });
+}
+
+function showReviewResults() {
+    clearReviewStyles();
+    questions.forEach((question, index) => {
+        const selectedAnswer = answers[index];
+        if (selectedAnswer === null) {
+            return;
+        }
+
+        const optionInputs = document.querySelectorAll(`input[name="quiz-${index}"]`);
+        optionInputs.forEach((input) => {
+            const optionIndex = Number(input.value);
+            const optionLabel = input.closest('.quiz-option');
+            if (!optionLabel) {
+                return;
+            }
+
+            if (optionIndex === question[2]) {
+                optionLabel.classList.add('correct-choice');
+            }
+
+            if (optionIndex === selectedAnswer && optionIndex !== question[2]) {
+                optionLabel.classList.add('wrong-choice');
+            }
+        });
+    });
+}
+
 function resetQuiz(message) {
     answers.fill(null);
     sessionStorage.removeItem("quizAnswersV2");
@@ -36,9 +69,7 @@ function resetQuiz(message) {
     document.querySelectorAll('input[type="radio"]').forEach((input) => {
         input.checked = false;
     });
-    document.querySelectorAll('.quiz-option').forEach((label) => {
-        label.classList.remove('wrong-choice');
-    });
+    clearReviewStyles();
 
     if (returnLink) {
         returnLink.textContent = "登録画面へ戻る";
@@ -93,7 +124,8 @@ function submitQuiz() {
         return;
     }
 
-    status.textContent = `採点結果: ${correct} / ${questions.length} です。全問正解でないため、もう一度最初からやり直してください。`;
+    showReviewResults();
+    status.textContent = `採点結果: ${correct} / ${questions.length} です。赤色の選択が間違い、緑色の選択が正解です。全問正解でないため、もう一度最初からやり直してください。`;
     status.classList.remove("complete");
     if (scoreButton) {
         scoreButton.textContent = "もう一度最初からやり直す";

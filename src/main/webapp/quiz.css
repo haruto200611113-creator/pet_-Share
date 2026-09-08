@@ -88,6 +88,13 @@
 .quiz-option.wrong-choice {
     border-color: #d56565;
     background: #fff1f1;
+    box-shadow: inset 0 0 0 1px rgba(213, 101, 101, 0.25);
+}
+
+.quiz-option.correct-choice {
+    border-color: #4e9b62;
+    background: #edf9f0;
+    box-shadow: inset 0 0 0 1px rgba(78, 155, 98, 0.2);
 }
 
 .quiz-option input {
