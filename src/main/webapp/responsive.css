@@ -1,0 +1,219 @@
+/* Shared responsive foundation for every screen. */
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    min-width: 320px;
+    overflow-x: hidden;
+    background-color: #f7f4ef !important;
+    background-image: none !important;
+}
+
+img,
+video,
+svg {
+    max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+    max-width: 100%;
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 78px;
+    }
+
+    main,
+    .main,
+    .main-content,
+    .page-content,
+    .content {
+        width: 100%;
+        max-width: 100%;
+        margin-inline: auto;
+    }
+
+    .header-inner,
+    .main,
+    .main-content,
+    .page-container,
+    .container {
+        padding-inline: 16px;
+    }
+
+    .header h1 {
+        max-width: calc(100% - 96px);
+        overflow: hidden;
+        font-size: clamp(18px, 5vw, 24px);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        min-height: 48px;
+    }
+
+    textarea {
+        min-height: 120px;
+    }
+
+    .button-area,
+    .form-actions,
+    .action-buttons {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .button-area button,
+    .form-actions button,
+    .action-buttons button,
+    .submit-button,
+    .save-button,
+    .cancel-button {
+        width: 100%;
+        min-height: 50px;
+    }
+
+    .bottom-nav {
+        height: 70px;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .nav-item {
+        min-width: 0;
+        padding-inline: 4px;
+    }
+
+    .nav-item small {
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
+    .modal {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .modal-content {
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 24px 24px 0 0;
+        padding: 24px 18px calc(24px + env(safe-area-inset-bottom));
+    }
+
+    .side-menu {
+        width: min(86vw, 360px);
+    }
+}
+
+@media (max-width: 480px) {
+    .header-inner,
+    .main,
+    .main-content,
+    .page-container,
+    .container {
+        padding-inline: 12px;
+    }
+
+    .search-area {
+        gap: 6px;
+    }
+
+    .search-area button {
+        width: 64px;
+        flex: 0 0 64px;
+    }
+
+    .condition-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+
+    .condition-buttons button {
+        min-height: 42px;
+        padding-inline: 4px;
+        font-size: 12px;
+    }
+
+    .pet-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .pet-card .pet-info {
+        padding: 12px;
+    }
+
+    .pet-card .pet-name {
+        font-size: 16px;
+    }
+
+    .pet-detail {
+        font-size: 12px;
+    }
+
+    .profile-card {
+        gap: 10px;
+        padding: 16px;
+    }
+
+    .profile-icon {
+        width: 58px;
+        height: 58px;
+        margin-right: 8px;
+    }
+
+    .edit-button {
+        padding-inline: 10px;
+        font-size: 12px;
+    }
+
+    .status-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .status-card {
+        min-height: 112px;
+        padding: 14px;
+    }
+
+    .pet-title-area {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .detail-item {
+        gap: 12px;
+    }
+
+    .detail-item span:last-child {
+        text-align: right;
+    }
+
+    .owner-card {
+        align-items: flex-start;
+    }
+}
