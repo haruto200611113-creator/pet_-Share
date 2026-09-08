@@ -164,13 +164,6 @@ questions.forEach((question, index) => {
                 }
             }
             updateProgress();
-
-            if (window.matchMedia("(max-width: 600px)").matches) {
-                const nextFieldset = fieldset.nextElementSibling;
-                if (nextFieldset) {
-                    nextFieldset.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-            }
         });
 
         label.appendChild(input);
