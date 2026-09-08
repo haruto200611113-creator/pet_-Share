@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ペットシェア｜安全クイズ</title>
+    <link rel="stylesheet" href="sign.css">
+    <link rel="stylesheet" href="quiz.css">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<main class="sign-page">
+    <div class="sign-box quiz-page-card">
+        <p class="quiz-kicker">SAFETY CHECK</p>
+        <h1>ペットの安全クイズ</h1>
+        <p class="quiz-intro">
+            預かり中の事故を防ぐための状況判断クイズです。全20問に正解してください。
+        </p>
+        <div class="quiz-heading">
+            <strong>合格には全問正解が必要です</strong>
+            <span id="quizProgress">0 / 20 正解</span>
+        </div>
+        <div id="quizQuestions"></div>
+        <p id="quizStatus" class="quiz-status" role="status" aria-live="polite">
+            すべての問題に回答してください。
+        </p>
+        <button id="scoreButton" class="score-button" type="button" disabled>
+            すべて回答して採点する
+        </button>
+        <a id="quizReturn" class="quiz-link" href="sign.html">登録画面へ戻る</a>
+    </div>
+</main>
+<script src="pet-safety-quiz.js"></script>
+</body>
+</html>
