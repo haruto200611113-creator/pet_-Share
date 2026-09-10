@@ -91,11 +91,32 @@ body {
 .logo-area p {
     margin: 0;
 
-    color: #8a7770;
+    color: #6f5d54;
 
-    font-size: 13px;
+    font-size: 15px;
+    line-height: 1.6;
+}
 
-    line-height: 1.7;
+.login-tagline span {
+    display: block;
+}
+
+.login-tagline-main {
+    color: #51423b;
+
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: .04em;
+}
+
+.login-tagline-sub {
+    margin-top: 2px;
+
+    color: #806b60;
+
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .06em;
 }
 
 
@@ -407,7 +428,15 @@ input[type="password"]:focus {
 
 
     .logo-area p {
-        font-size: 12px;
+        font-size: 14px;
+    }
+
+    .login-tagline-main {
+        font-size: 17px;
+    }
+
+    .login-tagline-sub {
+        font-size: 14px;
     }
 
 
