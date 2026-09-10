@@ -7,17 +7,11 @@
     box-sizing: border-box;
 }
 
-
-/* =====================================================
-   基本
-===================================================== */
-
 html,
 body {
     margin: 0;
     min-height: 100%;
 }
-
 
 body {
     font-family:
@@ -49,7 +43,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    padding: 50px 20px;
+    padding: 45px 20px;
 }
 
 
@@ -69,51 +63,33 @@ body {
 ===================================================== */
 
 .logo-area {
-    margin-bottom: 28px;
+    margin-bottom: 25px;
 }
 
 
-/* 肉球 */
+/* ロゴ画像 */
 
-.paw {
-    width: 64px;
-    height: 64px;
+.logo-image {
+    display: block;
 
-    margin: 0 auto 14px;
+    width: 170px;
+    height: 170px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 0 auto 15px;
 
-    background: #fff;
+    object-fit: cover;
 
-    border-radius: 50%;
-
-    font-size: 32px;
+    border-radius: 30px;
 
     box-shadow:
-        0 5px 18px rgba(121, 82, 58, .10);
-}
-
-
-/* タイトル */
-
-.logo-area h1 {
-    margin: 0;
-
-    color: #4b3b33;
-
-    font-size: 31px;
-    font-weight: 700;
-
-    letter-spacing: 1.5px;
+        0 8px 25px rgba(121, 82, 58, .12);
 }
 
 
 /* キャッチコピー */
 
 .logo-area p {
-    margin: 10px 0 0;
+    margin: 0;
 
     color: #8a7770;
 
@@ -130,7 +106,7 @@ body {
 .login-card {
     padding: 30px 32px 32px;
 
-    background: rgba(255, 255, 255, .95);
+    background: rgba(255, 255, 255, .96);
 
     border: 1px solid #eee2da;
 
@@ -162,7 +138,6 @@ body {
 
     text-align: left;
 }
-
 
 .form-group label {
     display: block;
@@ -205,8 +180,6 @@ input::placeholder {
 }
 
 
-/* 入力欄フォーカス */
-
 input[type="email"]:focus,
 input[type="password"]:focus {
     border-color: #e99868;
@@ -234,8 +207,6 @@ input[type="password"]:focus {
 }
 
 
-/* ログイン状態 */
-
 .remember {
     display: flex;
 
@@ -260,8 +231,6 @@ input[type="password"]:focus {
     accent-color: #ea9a6d;
 }
 
-
-/* パスワードを忘れた方 */
 
 .forgot-password {
     color: #d8895d;
@@ -368,7 +337,7 @@ input[type="password"]:focus {
 
 
 /* =====================================================
-   新規登録ボタン
+   新規登録
 ===================================================== */
 
 .register-button {
@@ -406,7 +375,7 @@ input[type="password"]:focus {
 ===================================================== */
 
 .login-footer {
-    margin: 24px 0 0;
+    margin: 22px 0 0;
 
     color: #aa9a92;
 
@@ -417,7 +386,7 @@ input[type="password"]:focus {
 
 
 /* =====================================================
-   スマホ対応
+   スマホ
 ===================================================== */
 
 @media (max-width: 600px) {
@@ -425,26 +394,15 @@ input[type="password"]:focus {
     .login-page {
         align-items: flex-start;
 
-        padding:
-            35px 18px 40px;
+        padding: 30px 18px 40px;
     }
 
 
-    .login-box {
-        width: 100%;
-    }
+    .logo-image {
+        width: 145px;
+        height: 145px;
 
-
-    .paw {
-        width: 56px;
-        height: 56px;
-
-        font-size: 28px;
-    }
-
-
-    .logo-area h1 {
-        font-size: 27px;
+        border-radius: 25px;
     }
 
 
