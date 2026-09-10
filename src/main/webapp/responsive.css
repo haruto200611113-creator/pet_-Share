@@ -2,6 +2,7 @@
 
 html {
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -30,9 +31,49 @@ a {
     -webkit-tap-highlight-color: transparent;
 }
 
+button,
+a,
+input,
+select,
+textarea {
+    touch-action: manipulation;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid #4b83c4;
+    outline-offset: 3px;
+}
+
+button,
+[role="button"] {
+    min-height: 44px;
+}
+
+input,
+select,
+textarea {
+    font-size: max(16px, 1rem);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 @media (max-width: 768px) {
     body {
-        padding-bottom: 78px;
+        padding-bottom: calc(78px + env(safe-area-inset-bottom));
     }
 
     main,
@@ -72,6 +113,15 @@ a {
         min-height: 48px;
     }
 
+    .radio-area input[type="radio"] {
+        width: 16px;
+        min-width: 16px;
+        max-width: 16px;
+        height: 16px;
+        min-height: 16px;
+        margin: 0;
+    }
+
     textarea {
         min-height: 120px;
     }
@@ -109,6 +159,23 @@ a {
         white-space: nowrap;
     }
 
+    .sign-page {
+        align-items: flex-start;
+        padding: 28px 16px calc(40px + env(safe-area-inset-bottom));
+    }
+
+    .sign-box {
+        padding-top: 12px;
+    }
+
+    .radio-area label {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+    }
+
     .modal {
         align-items: flex-end;
         padding: 0;
@@ -124,6 +191,20 @@ a {
 
     .side-menu {
         width: min(86vw, 360px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
 

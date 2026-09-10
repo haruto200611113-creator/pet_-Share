@@ -22,6 +22,7 @@
     type="text"
     id="accountName"
     name="accountName"
+    autocomplete="username"
     required
 >
             </div>
@@ -32,6 +33,7 @@
     type="email"
     id="email"
     name="email"
+    autocomplete="email"
     required
 >
             </div>
@@ -42,6 +44,7 @@
     type="password"
     id="password"
     name="password"
+    autocomplete="new-password"
     required
 >
             </div>
@@ -52,6 +55,7 @@
     type="password"
     id="confirmPassword"
     name="confirmPassword"
+    autocomplete="new-password"
     required
 >
             </div>
@@ -62,6 +66,7 @@
     type="text"
     id="name"
     name="name"
+    autocomplete="name"
     required
 >
             </div>
@@ -108,6 +113,7 @@
     type="tel"
     id="phone"
     name="phone"
+    autocomplete="tel"
     required
 >
             </div>
@@ -122,6 +128,7 @@
                     type="text"
                     id="postalCode"
                     name="postalCode"
+                    autocomplete="postal-code"
                     placeholder="例：100-0001"
                     maxlength="8"
                     required
@@ -131,7 +138,7 @@
             <div class="form-group">
                 <label for="prefecture">都道府県</label>
 
-                <select id="prefecture" required>
+                <select id="prefecture" name="prefecture" autocomplete="address-level1" required>
                     <option value="">選択してください</option>
 
                     <option>北海道</option>
@@ -186,17 +193,17 @@
 
             <div class="form-group">
                 <label for="city">市区町村</label>
-                <input type="text" id="city" required>
+                <input type="text" id="city" name="city" autocomplete="address-level2" required>
             </div>
 
             <div class="form-group">
                 <label for="address">丁目・番地</label>
-                <input type="text" id="address" required>
+                <input type="text" id="address" name="address" autocomplete="street-address" required>
             </div>
 
             <div class="form-group">
                 <label for="building">建物名</label>
-                <input type="text" id="building">
+                <input type="text" id="building" name="building" autocomplete="address-line2">
             </div>
 
             <!-- 利用規約確認 -->
