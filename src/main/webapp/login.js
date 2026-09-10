@@ -14,6 +14,7 @@ loginForm.addEventListener("submit", function (event) {
 
     // 現在は仮ログイン
     // 将来的にはここをJava APIに変更する
+
     /*
     fetch("/api/login", {
         method: "POST",

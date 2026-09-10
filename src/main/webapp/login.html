@@ -1,64 +1,123 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ペットシェア｜ログイン</title>
+
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="responsive.css">
 </head>
+
 <body>
 
 <main class="login-page">
+
     <div class="login-box">
 
-        <h1>ペットシェア</h1>
+        <!-- ロゴ -->
+        <div class="logo-area">
+            <div class="paw">🐾</div>
 
-        <form id="loginForm">
+            <h1>ペットシェア</h1>
 
-            <div class="form-group">
-                <label for="email">メールアドレス</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="メールアドレスを入力"
-                    required
+            <p>
+                ペットと人をつなぐ、<br>
+                やさしいシェアサービス
+            </p>
+        </div>
+
+
+        <!-- ログインカード -->
+        <div class="login-card">
+
+            <h2>ログイン</h2>
+
+            <form id="loginForm">
+
+                <!-- メールアドレス -->
+                <div class="form-group">
+
+                    <label for="email">
+                        メールアドレス
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="メールアドレスを入力"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- パスワード -->
+                <div class="form-group">
+
+                    <label for="password">
+                        パスワード
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="パスワードを入力"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- パスワード関連 -->
+                <div class="password-area">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                        >
+
+                        <span>ログイン状態を保持する</span>
+
+                    </label>
+
+
+                    <a
+                        href="forgot-password.html"
+                        class="forgot-password"
+                    >
+                        パスワードを忘れた方
+                    </a>
+
+                </div>
+
+
+                <!-- ログイン -->
+                <button
+                    type="submit"
+                    class="login-button"
                 >
-            </div>
+                    ログイン
+                </button>
 
-            <div class="form-group">
-                <label for="password">パスワード</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="パスワードを入力"
-                    required
-                >
-            </div>
+            </form>
 
-            <div class="password-area">
-                <label class="remember">
-                    <input type="checkbox" id="remember">
-                    ログイン状態を保持する
-                </label>
+        </div>
 
-                <a href="forgot-password.html" class="forgot-password">
-                    パスワードを忘れた方
-                </a>
-            </div>
 
-            <button type="submit" class="login-button">
-                ログイン
-            </button>
-
-        </form>
-
+        <!-- 区切り -->
         <div class="divider">
             <span>または</span>
         </div>
 
+
+        <!-- 新規登録 -->
         <button
             type="button"
             class="register-button"
@@ -67,8 +126,16 @@
             新規登録
         </button>
 
+
+        <!-- フッター -->
+        <p class="login-footer">
+            ペットと人の新しいつながりを
+        </p>
+
     </div>
+
 </main>
+
 
 <script src="login.js"></script>
 

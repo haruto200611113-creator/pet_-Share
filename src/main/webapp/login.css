@@ -1,6 +1,16 @@
+/* =====================================================
+   ペットシェア
+   login.css
+===================================================== */
+
 * {
     box-sizing: border-box;
 }
+
+
+/* =====================================================
+   基本
+===================================================== */
 
 html,
 body {
@@ -8,189 +18,460 @@ body {
     min-height: 100%;
 }
 
+
 body {
-    font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-    background: #f7f4ef;
+    font-family:
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        Meiryo,
+        sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f7f4ef 0%,
+            #fffaf6 50%,
+            #f7f1eb 100%
+        );
+
     color: #4f4038;
 }
 
-/* ログイン画面全体 */
+
+/* =====================================================
+   ログイン画面
+===================================================== */
+
 .login-page {
     min-height: 100vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 60px 20px;
+
+    padding: 50px 20px;
 }
 
-/* ログインボックス */
+
+/* =====================================================
+   全体
+===================================================== */
+
 .login-box {
-    width: min(420px, 100%);
-    padding: 20px 0 40px;
+    width: min(430px, 100%);
+
+    text-align: center;
 }
+
+
+/* =====================================================
+   ロゴエリア
+===================================================== */
+
+.logo-area {
+    margin-bottom: 28px;
+}
+
+
+/* 肉球 */
+
+.paw {
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 14px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #fff;
+
+    border-radius: 50%;
+
+    font-size: 32px;
+
+    box-shadow:
+        0 5px 18px rgba(121, 82, 58, .10);
+}
+
 
 /* タイトル */
-.login-box h1 {
-    margin: 0 0 48px;
-    text-align: center;
+
+.logo-area h1 {
+    margin: 0;
+
     color: #4b3b33;
+
     font-size: 31px;
-    font-weight: 600;
-    letter-spacing: 1px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
 }
 
-/* 入力欄 */
+
+/* キャッチコピー */
+
+.logo-area p {
+    margin: 10px 0 0;
+
+    color: #8a7770;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   ログインカード
+===================================================== */
+
+.login-card {
+    padding: 30px 32px 32px;
+
+    background: rgba(255, 255, 255, .95);
+
+    border: 1px solid #eee2da;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 12px 35px rgba(121, 82, 58, .10);
+}
+
+
+/* ログイン見出し */
+
+.login-card h2 {
+    margin: 0 0 25px;
+
+    color: #51423b;
+
+    font-size: 21px;
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   入力欄
+===================================================== */
+
 .form-group {
     margin-bottom: 20px;
+
+    text-align: left;
 }
+
 
 .form-group label {
     display: block;
+
     margin-bottom: 7px;
+
     color: #5b4b43;
-    font-size: 15px;
+
+    font-size: 14px;
     font-weight: 600;
 }
+
 
 input[type="email"],
 input[type="password"] {
     width: 100%;
-    height: 48px;
-    padding: 0 13px;
-    border: 1.5px solid #e6a17d;
+    height: 50px;
+
+    padding: 0 14px;
+
+    border: 1.5px solid #e5d5cc;
+
     border-radius: 10px;
+
     outline: none;
+
     background: #fff;
+
     color: #5b4b43;
+
+    font-family: inherit;
     font-size: 15px;
+
     transition: .2s;
 }
+
 
 input::placeholder {
     color: #b8aaa3;
 }
 
+
+/* 入力欄フォーカス */
+
 input[type="email"]:focus,
 input[type="password"]:focus {
     border-color: #e99868;
-    box-shadow: 0 0 0 3px rgba(233, 152, 104, .15);
+
+    box-shadow:
+        0 0 0 3px rgba(233, 152, 104, .14);
 }
 
-/* パスワード関連 */
+
+/* =====================================================
+   パスワード関連
+===================================================== */
+
 .password-area {
     display: flex;
+
     justify-content: space-between;
     align-items: center;
-    margin: 8px 0 24px;
+
+    margin: 5px 0 24px;
+
     gap: 10px;
+
+    text-align: left;
 }
+
+
+/* ログイン状態 */
 
 .remember {
     display: flex;
+
     align-items: center;
-    gap: 7px;
+
+    gap: 6px;
+
     color: #75655d;
-    font-size: 13px;
+
+    font-size: 12px;
+
+    white-space: nowrap;
 }
 
+
 .remember input {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
+
+    margin: 0;
+
     accent-color: #ea9a6d;
 }
 
+
 /* パスワードを忘れた方 */
+
 .forgot-password {
     color: #d8895d;
-    font-size: 13px;
+
+    font-size: 12px;
+
     text-decoration: none;
-}
 
-.forgot-password:hover {
-    color: #c8754b;
-    text-decoration: underline;
-}
+    white-space: nowrap;
 
-/* ボタン共通 */
-.login-button,
-.register-button {
-    width: 100%;
-    height: 58px;
-    border-radius: 12px;
-    font-size: 17px;
-    font-weight: 600;
-    cursor: pointer;
     transition: .2s;
 }
 
-/* ログインボタン */
-.login-button {
-    border: 1px solid #ea9a6d;
-    background: #eb9a6d;
-    color: #fff;
-    box-shadow: 0 5px 12px rgba(121, 82, 58, .15);
+
+.forgot-password:hover {
+    color: #c8754b;
+
+    text-decoration: underline;
 }
+
+
+/* =====================================================
+   ログインボタン
+===================================================== */
+
+.login-button {
+    width: 100%;
+    height: 54px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eba06f,
+            #e58d5d
+        );
+
+    color: #fff;
+
+    font-family: inherit;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 15px rgba(121, 82, 58, .16);
+
+    transition: .2s;
+}
+
 
 .login-button:hover {
-    background: #e58d5d;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 18px rgba(121, 82, 58, .20);
 }
 
-/* 区切り */
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+
+/* =====================================================
+   区切り
+===================================================== */
+
 .divider {
     display: flex;
+
     align-items: center;
-    gap: 15px;
-    margin: 28px 0;
+
+    gap: 14px;
+
+    margin: 25px 0;
+
     color: #a8958b;
-    font-size: 13px;
+
+    font-size: 12px;
 }
+
 
 .divider::before,
 .divider::after {
     content: "";
+
     flex: 1;
+
     height: 1px;
-    background: #eadfd8;
+
+    background: #e5d9d2;
 }
+
 
 .divider span {
     white-space: nowrap;
 }
 
-/* 新規登録ボタン */
+
+/* =====================================================
+   新規登録ボタン
+===================================================== */
+
 .register-button {
-    border: 2px solid #eb9a6d;
+    width: 100%;
+    height: 52px;
+
+    border: 1.5px solid #e59a6c;
+
+    border-radius: 11px;
+
     background: #fff;
-    color: #e18b5e;
+
+    color: #d98355;
+
+    font-family: inherit;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .2s;
 }
+
 
 .register-button:hover {
-    background: #fff8f4;
+    background: #fff7f2;
+
+    transform: translateY(-1px);
 }
 
-/* スマホ対応 */
+
+/* =====================================================
+   フッター
+===================================================== */
+
+.login-footer {
+    margin: 24px 0 0;
+
+    color: #aa9a92;
+
+    font-size: 11px;
+
+    letter-spacing: .5px;
+}
+
+
+/* =====================================================
+   スマホ対応
+===================================================== */
+
 @media (max-width: 600px) {
 
     .login-page {
         align-items: flex-start;
-        padding: 35px 20px 50px;
+
+        padding:
+            35px 18px 40px;
     }
 
-    .login-box h1 {
-        margin-bottom: 35px;
+
+    .login-box {
+        width: 100%;
+    }
+
+
+    .paw {
+        width: 56px;
+        height: 56px;
+
+        font-size: 28px;
+    }
+
+
+    .logo-area h1 {
         font-size: 27px;
     }
+
+
+    .logo-area p {
+        font-size: 12px;
+    }
+
+
+    .login-card {
+        padding:
+            25px 20px 27px;
+
+        border-radius: 16px;
+    }
+
 
     .password-area {
         align-items: flex-start;
     }
 
+
     .remember {
-        font-size: 12px;
+        font-size: 11px;
     }
 
+
     .forgot-password {
-        font-size: 12px;
+        font-size: 11px;
     }
 }
