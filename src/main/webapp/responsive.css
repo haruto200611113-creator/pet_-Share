@@ -111,6 +111,14 @@ textarea {
     textarea {
         width: 100%;
         min-height: 48px;
+        min-width: 0;
+    }
+
+    input[type="date"] {
+        width: 100%;
+        min-width: 0;
+        padding-inline: 10px;
+        appearance: none;
     }
 
     .radio-area input[type="radio"] {
