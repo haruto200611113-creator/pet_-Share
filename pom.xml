@@ -27,11 +27,18 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- MariaDB -->
+        <!-- MySQL JDBC Driver -->
         <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            <version>3.5.3</version>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>9.5.0</version>
+        </dependency>
+
+        <!-- BCrypt：パスワードのハッシュ化 -->
+        <dependency>
+             <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
         </dependency>
 
     </dependencies>
