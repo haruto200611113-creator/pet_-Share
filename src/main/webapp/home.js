@@ -856,9 +856,8 @@ document
 
                     if (page === "account") {
 
-                        alert(
-                            "アカウント画面はこれから実装できます。"
-                        );
+                        window.location.href =
+                            "mypage.html";
 
                     }
 

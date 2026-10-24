@@ -31,6 +31,18 @@ body {
 
 
 /* =====================================================
+   フォーム・ボタンのフォント統一
+===================================================== */
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+
+/* =====================================================
    ヘッダー
 ===================================================== */
 
@@ -782,6 +794,17 @@ body {
 }
 
 
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group input[type="file"]:focus,
+.form-group select:focus {
+    border-color: #e99868;
+
+    box-shadow:
+        0 0 0 4px rgba(233, 152, 104, .12);
+}
+
+
 .image-preview {
     display: none;
 
@@ -864,14 +887,32 @@ body {
 }
 
 
+/* =====================================================
+   下部ナビ項目
+===================================================== */
+
 .nav-item {
     width: min(150px, 25%);
+
+    height: 72px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 0;
 
     border: none;
 
     background: transparent;
 
     color: #a8958b;
+
+    text-decoration: none;
 
     cursor: pointer;
 
@@ -890,11 +931,15 @@ body {
     margin-bottom: 3px;
 
     font-size: 22px;
+
+    line-height: 1;
 }
 
 
 .nav-item small {
     font-size: 11px;
+
+    line-height: 1.2;
 }
 
 
@@ -953,7 +998,7 @@ body {
 
     width: min(370px, 88%);
 
-    height: 100vh;
+    height: 100dvh;
 
     overflow-y: auto;
 
@@ -1207,6 +1252,35 @@ body {
 
 
 /* =====================================================
+   キーボード操作時のフォーカス
+===================================================== */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(235, 154, 109, .35);
+
+    outline-offset: 2px;
+}
+
+
+/* =====================================================
+   タブレット
+===================================================== */
+
+@media (max-width: 800px) {
+
+    .condition-area.show {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+}
+
+
+/* =====================================================
    スマホ
 ===================================================== */
 
@@ -1344,4 +1418,37 @@ body {
 
         height: 37px;
     }
+
+}
+
+
+/* =====================================================
+   小さいスマホ
+===================================================== */
+
+@media (max-width: 380px) {
+
+    .condition-buttons button {
+        font-size: 12px;
+    }
+
+
+    .pet-name {
+        font-size: 14px;
+    }
+
+
+    .pet-detail {
+        font-size: 11px;
+    }
+
+
+    .post-button {
+        right: 12px;
+
+        padding: 0 14px;
+
+        font-size: 13px;
+    }
+
 }

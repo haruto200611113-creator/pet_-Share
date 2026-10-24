@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -246,8 +245,6 @@
                     </span>
                 </a>
 
-
-                <!-- 利用規約 -->
 
                 <a
                     href="terms.html"
@@ -772,8 +769,8 @@
              アカウント → マイページ
         ========================== -->
 
-        <a
-            href="mypage.html"
+        <button
+            type="button"
             class="nav-item"
             data-page="account"
         >
@@ -786,7 +783,7 @@
                 アカウント
             </small>
 
-        </a>
+        </button>
 
     </nav>
 
@@ -814,12 +811,6 @@
                 "click",
                 function () {
 
-                    /*
-                     * ホームのハンバーガーメニューから
-                     * 利用規約を開いた場合は、
-                     * ホームから開いた扱いにする
-                     */
-
                     sessionStorage.setItem(
                         "termsFrom",
                         "home"
@@ -836,4 +827,3 @@
 </body>
 
 </html>
-
