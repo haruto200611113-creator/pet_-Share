@@ -1,0 +1,5 @@
+# 証明書関連
+certs/
+
+# Mavenのビルド成果物
+target/

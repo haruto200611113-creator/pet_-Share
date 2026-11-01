@@ -46,7 +46,7 @@
             </div>
 
             <div class="form-group">
-                <label for="passwordConfirm">パスワード再入力</label>
+                <label for="confirmPassword">パスワード再入力</label>
                 <input
     type="password"
     id="confirmPassword"
@@ -97,7 +97,7 @@
                     <label>
                         <input type="radio" name="gender" value="回答しない">
                         回答しない
-                    </label                el>
+                    </label>
                 </div>
             </div>
 
@@ -130,7 +130,7 @@
             <div class="form-group">
                 <label for="prefecture">都道府県</label>
 
-                <select id="prefecture" required>
+                <select id="prefecture" name="prefecture" required>
                     <option value="">選択してください</option>
 
                     <option>北海道</option>
@@ -185,17 +185,17 @@
 
             <div class="form-group">
                 <label for="city">市区町村</label>
-                <input type="text" id="city" required>
+                <input type="text" id="city" name="city" required>
             </div>
 
             <div class="form-group">
                 <label for="address">丁目・番地</label>
-                <input type="text" id="address" required>
+                <input type="text" id="address" name="address" required>
             </div>
 
             <div class="form-group">
                 <label for="building">建物名</label>
-                <input type="text" id="building">
+                <input type="text" id="building" name="building">
             </div>
 
             <!-- 利用規約確認 -->
@@ -224,7 +224,9 @@
                     <input
                         type="checkbox"
                         id="agreement"
+                        name="agreement"
                         disabled
+                        required
                     >
 
                     <span>

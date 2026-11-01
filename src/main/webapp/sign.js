@@ -1,25 +1,52 @@
+"use strict";
+
+// =====================================================
+// HTML要素の取得
+// =====================================================
 
 const form = document.getElementById("registerForm");
-
 const agreement = document.getElementById("agreement");
 const termsStatus = document.getElementById("termsStatus");
+const termsLink = document.getElementById("termsLink");
+
+
+// =====================================================
+// HTML要素の存在確認
+// =====================================================
+
+if (!form || !agreement || !termsStatus) {
+    console.error("登録画面のHTML要素を取得できません。");
+    throw new Error("HTML要素が見つかりません。");
+}
 
 
 // =====================================================
 // 利用規約確認状態
 // =====================================================
 
-const termsConfirmed =
-    sessionStorage.getItem("termsConfirmed");
+function updateTermsStatus() {
 
-if (termsConfirmed === "true") {
+    const confirmed =
+        sessionStorage.getItem("termsConfirmed");
 
-    agreement.disabled = false;
+    if (confirmed === "true") {
 
-    termsStatus.textContent =
-        "利用規約を確認済みです。";
+        agreement.disabled = false;
 
+        termsStatus.textContent =
+            "利用規約を確認済みです。";
+
+    } else {
+
+        agreement.checked = false;
+        agreement.disabled = true;
+
+        termsStatus.textContent =
+            "利用規約を確認してから同意してください。";
+    }
 }
+
+updateTermsStatus();
 
 
 // =====================================================
@@ -35,12 +62,6 @@ function saveFormData() {
 
         email:
             document.getElementById("email").value,
-
-        password:
-            document.getElementById("password").value,
-
-        passwordConfirm:
-            document.getElementById("passwordConfirm").value,
 
         name:
             document.getElementById("name").value,
@@ -72,7 +93,6 @@ function saveFormData() {
             document.getElementById("building").value
     };
 
-
     sessionStorage.setItem(
         "registerFormData",
         JSON.stringify(formData)
@@ -93,58 +113,66 @@ function restoreFormData() {
         return;
     }
 
+    try {
 
-    const formData =
-        JSON.parse(savedData);
+        const formData =
+            JSON.parse(savedData);
 
+        document.getElementById("accountName").value =
+            formData.accountName || "";
 
-    document.getElementById("accountName").value =
-        formData.accountName || "";
+        document.getElementById("email").value =
+            formData.email || "";
 
-    document.getElementById("email").value =
-        formData.email || "";
+        document.getElementById("name").value =
+            formData.name || "";
 
-    document.getElementById("password").value =
-        formData.password || "";
+        document.getElementById("birthDate").value =
+            formData.birthDate || "";
 
-    document.getElementById("passwordConfirm").value =
-        formData.passwordConfirm || "";
+        document.getElementById("phone").value =
+            formData.phone || "";
 
-    document.getElementById("name").value =
-        formData.name || "";
+        document.getElementById("postalCode").value =
+            formData.postalCode || "";
 
-    document.getElementById("birthDate").value =
-        formData.birthDate || "";
+        document.getElementById("prefecture").value =
+            formData.prefecture || "";
 
-    document.getElementById("phone").value =
-        formData.phone || "";
+        document.getElementById("city").value =
+            formData.city || "";
 
-    document.getElementById("postalCode").value =
-        formData.postalCode || "";
+        document.getElementById("address").value =
+            formData.address || "";
 
-    document.getElementById("prefecture").value =
-        formData.prefecture || "";
-
-    document.getElementById("city").value =
-        formData.city || "";
-
-    document.getElementById("address").value =
-        formData.address || "";
-
-    document.getElementById("building").value =
-        formData.building || "";
+        document.getElementById("building").value =
+            formData.building || "";
 
 
-    if (formData.gender) {
+        // 性別の復元
 
-        const gender =
-            document.querySelector(
-                `input[name="gender"][value="${formData.gender}"]`
-            );
+        if (formData.gender) {
 
-        if (gender) {
-            gender.checked = true;
+            const gender =
+                document.querySelector(
+                    `input[name="gender"][value="${formData.gender}"]`
+                );
+
+            if (gender) {
+                gender.checked = true;
+            }
         }
+
+    } catch (error) {
+
+        console.error(
+            "保存した入力内容の復元に失敗しました。",
+            error
+        );
+
+        sessionStorage.removeItem(
+            "registerFormData"
+        );
     }
 }
 
@@ -153,10 +181,6 @@ function restoreFormData() {
 // 利用規約を開く
 // =====================================================
 
-const termsLink =
-    document.getElementById("termsLink");
-
-
 if (termsLink) {
 
     termsLink.addEventListener(
@@ -164,18 +188,17 @@ if (termsLink) {
         function () {
 
             // 新規登録から利用規約を開いたことを保存
+
             sessionStorage.setItem(
                 "termsFrom",
                 "signup"
             );
 
-
             // 入力内容を保存
-            saveFormData();
 
+            saveFormData();
         }
     );
-
 }
 
 
@@ -187,23 +210,28 @@ restoreFormData();
 
 
 // =====================================================
-// 新規登録
+// 新規登録処理
 // =====================================================
 
 form.addEventListener(
     "submit",
     function (event) {
 
+        // JavaScriptで入力チェックを行う
+
         event.preventDefault();
+
+        console.log(
+            "新規登録フォームの入力チェックを開始します。"
+        );
 
 
         // ---------------------------------------------
-        // 利用規約確認チェック
+        // 利用規約の確認
         // ---------------------------------------------
 
         const confirmed =
             sessionStorage.getItem("termsConfirmed");
-
 
         if (confirmed !== "true") {
 
@@ -216,7 +244,7 @@ form.addEventListener(
 
 
         // ---------------------------------------------
-        // 利用規約同意チェック
+        // 利用規約への同意
         // ---------------------------------------------
 
         if (!agreement.checked) {
@@ -230,15 +258,19 @@ form.addEventListener(
 
 
         // ---------------------------------------------
-        // パスワード確認
+        // パスワード取得
         // ---------------------------------------------
 
         const password =
             document.getElementById("password").value;
 
         const passwordConfirm =
-            document.getElementById("passwordConfirm").value;
+            document.getElementById("confirmPassword").value;
 
+
+        // ---------------------------------------------
+        // パスワード一致確認
+        // ---------------------------------------------
 
         if (password !== passwordConfirm) {
 
@@ -251,7 +283,7 @@ form.addEventListener(
 
 
         // ---------------------------------------------
-        // パスワード文字数
+        // パスワード文字数確認
         // ---------------------------------------------
 
         if (password.length < 8) {
@@ -265,14 +297,15 @@ form.addEventListener(
 
 
         // ---------------------------------------------
-        // 性別
+        // 性別確認
         // ---------------------------------------------
 
-        if (
-            !document.querySelector(
+        const selectedGender =
+            document.querySelector(
                 'input[name="gender"]:checked'
-            )
-        ) {
+            );
+
+        if (!selectedGender) {
 
             alert(
                 "性別を選択してください。"
@@ -283,30 +316,23 @@ form.addEventListener(
 
 
         // ---------------------------------------------
-        // 登録完了
+        // 入力内容を保存
         // ---------------------------------------------
 
-        alert(
-            "新規登録が完了しました。"
-        );
+        saveFormData();
 
 
         // ---------------------------------------------
-        // 保存データ削除
+        // JavaのRegisterServletへ送信
         // ---------------------------------------------
 
-        sessionStorage.removeItem(
-            "registerFormData"
+        console.log(
+            "入力チェック成功。フォームを送信します。"
         );
 
-        sessionStorage.removeItem(
-            "termsConfirmed"
-        );
+        // submitイベントを再発生させずに送信
 
-        sessionStorage.removeItem(
-            "termsFrom"
-        );
+        HTMLFormElement.prototype.submit.call(form);
 
     }
 );
-

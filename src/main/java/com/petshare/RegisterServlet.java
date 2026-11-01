@@ -11,174 +11,152 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 
-/**
- * 新規登録処理
- */
-@Override
-protected void doPost(
-        HttpServletRequest request,
-        HttpServletResponse response)
-        throws ServletException, IOException {
+    @Override
+    protected void doPost(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
 
-    // =====================================
-    // 文字コードの設定
-    // =====================================
-    request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
 
+        System.out.println("===== 新規登録処理開始 =====");
 
-    // =====================================
-    // sign.htmlから入力データを取得
-    // =====================================
+        try {
 
-    String accountName =
-            request.getParameter("accountName");
+            // 入力データ取得
+            String accountName = request.getParameter("accountName");
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String confirmPassword = request.getParameter("confirmPassword");
 
-    String email =
-            request.getParameter("email");
+            String name = request.getParameter("name");
+            String birthDate = request.getParameter("birthDate");
+            String gender = request.getParameter("gender");
 
-    String password =
-            request.getParameter("password");
+            String phone = request.getParameter("phone");
+            String postalCode = request.getParameter("postalCode");
+            String prefecture = request.getParameter("prefecture");
+            String city = request.getParameter("city");
+            String address = request.getParameter("address");
+            String building = request.getParameter("building");
 
-    String confirmPassword =
-            request.getParameter("confirmPassword");
+            // 入力確認ログ
+            System.out.println("アカウント名：" + accountName);
+            System.out.println("メールアドレス：" + email);
+            System.out.println("氏名：" + name);
+            System.out.println("生年月日：" + birthDate);
+            System.out.println("性別：" + gender);
 
-    String name =
-            request.getParameter("name");
+            // 必須項目チェック
+            if (isEmpty(accountName)
+                    || isEmpty(email)
+                    || isEmpty(password)
+                    || isEmpty(confirmPassword)
+                    || isEmpty(name)
+                    || isEmpty(birthDate)
+                    || isEmpty(gender)
+                    || isEmpty(phone)
+                    || isEmpty(postalCode)
+                    || isEmpty(prefecture)
+                    || isEmpty(city)
+                    || isEmpty(address)) {
 
-    String birthDate =
-            request.getParameter("birthDate");
+                System.out.println("必須項目が未入力です。");
 
-    String gender =
-            request.getParameter("gender");
+                response.sendRedirect(
+                        request.getContextPath() + "/sign.html?error=empty"
+                );
+                return;
+            }
 
-    String phone =
-            request.getParameter("phone");
+            // パスワード一致確認
+            if (!password.equals(confirmPassword)) {
 
-    String postalCode =
-            request.getParameter("postalCode");
+                System.out.println("パスワードが一致しません。");
 
-    String prefecture =
-            request.getParameter("prefecture");
+                response.sendRedirect(
+                        request.getContextPath() + "/sign.html?error=password"
+                );
+                return;
+            }
 
-    String city =
-            request.getParameter("city");
+            // パスワード文字数確認
+            if (password.length() < 8) {
 
-    String address =
-            request.getParameter("address");
+                System.out.println("パスワードが8文字未満です。");
 
-    String building =
-            request.getParameter("building");
+                response.sendRedirect(
+                        request.getContextPath() + "/sign.html?error=passwordLength"
+                );
+                return;
+            }
 
+            // Userオブジェクト作成
+            User user = new User();
 
-    // =====================================
-    // 必須項目チェック
-    // =====================================
+            user.setAccountName(accountName);
+            user.setEmail(email);
+            user.setPassword(password);
 
-    if (isEmpty(accountName)
-            || isEmpty(email)
-            || isEmpty(password)
-            || isEmpty(confirmPassword)
-            || isEmpty(name)
-            || isEmpty(birthDate)
-            || isEmpty(gender)
-            || isEmpty(phone)
-            || isEmpty(postalCode)
-            || isEmpty(prefecture)
-            || isEmpty(city)
-            || isEmpty(address)) {
+            user.setName(name);
+            user.setBirthDate(birthDate);
+            user.setGender(gender);
 
-        response.sendRedirect(
-                "sign.html?error=empty"
-        );
+            user.setPhone(phone);
+            user.setPostalCode(postalCode);
+            user.setPrefecture(prefecture);
+            user.setCity(city);
+            user.setAddress(address);
+            user.setBuilding(building);
 
-        return;
+            // データベース登録
+            System.out.println("UserDAO登録処理開始");
+
+            UserDAO dao = new UserDAO();
+
+            boolean result = dao.insert(user);
+
+            System.out.println("データベース登録結果：" + result);
+
+            // 登録結果判定
+            if (result) {
+
+                System.out.println("新規登録成功");
+
+                response.sendRedirect(
+                        request.getContextPath() + "/login.html?register=success"
+                );
+
+            } else {
+
+                System.out.println("新規登録失敗");
+
+                response.sendRedirect(
+                        request.getContextPath() + "/sign.html?error=database"
+                );
+            }
+
+        } catch (Exception e) {
+
+            System.err.println("新規登録処理でエラーが発生しました。");
+            e.printStackTrace();
+
+            if (!response.isCommitted()) {
+                response.sendRedirect(
+                        request.getContextPath() + "/sign.html?error=system"
+                );
+            }
+
+        } finally {
+
+            System.out.println("===== 新規登録処理終了 =====");
+        }
     }
 
+    // 空文字チェック
+    private boolean isEmpty(String value) {
 
-    // =====================================
-    // パスワード一致チェック
-    // =====================================
-
-    if (!password.equals(confirmPassword)) {
-
-        response.sendRedirect(
-                "sign.html?error=password"
-        );
-
-        return;
+        return value == null || value.trim().isEmpty();
     }
-
-
-    // =====================================
-    // Userオブジェクトを作成
-    // =====================================
-
-    User user = new User();
-
-    user.setAccountName(accountName);
-
-    user.setEmail(email);
-
-    user.setPassword(password);
-
-    user.setName(name);
-
-    user.setBirthDate(birthDate);
-
-    user.setGender(gender);
-
-    user.setPhone(phone);
-
-    user.setPostalCode(postalCode);
-
-    user.setPrefecture(prefecture);
-
-    user.setCity(city);
-
-    user.setAddress(address);
-
-    user.setBuilding(building);
-
-
-    // =====================================
-    // UserDAOを使ってデータベースへ登録
-    // =====================================
-
-    UserDAO dao =
-            new UserDAO();
-
-    boolean result =
-            dao.insert(user);
-
-
-    // =====================================
-    // 登録結果
-    // =====================================
-
-    if (result) {
-
-        // 登録成功
-        response.sendRedirect(
-                "login.html?register=success"
-        );
-
-    } else {
-
-        // 登録失敗
-        response.sendRedirect(
-                "sign.html?error=database"
-        );
-    }
-}
-
-
-// =====================================
-// 空文字チェック
-// =====================================
-
-private boolean isEmpty(String value) {
-
-    return value == null
-            || value.trim().isEmpty();
-}
 }
