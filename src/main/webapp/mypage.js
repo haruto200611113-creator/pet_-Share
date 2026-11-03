@@ -112,13 +112,13 @@ function displayUserData() {
         );
 
 
-    if (userName) {
+   if (userName && userName.dataset.serverRendered !== "true") {
 
-        userName.textContent =
-            userData.accountName ||
-            "ユーザー名";
+    userName.textContent =
+        userData.accountName ||
+        "ユーザー名";
 
-    }
+}
 
 
 
@@ -132,17 +132,16 @@ function displayUserData() {
         );
 
 
-    if (userArea) {
+    if (userArea && userArea.dataset.serverRendered !== "true") {
 
-        const prefecture =
-            userData.prefecture ||
-            "未登録";
+    const prefecture =
+        userData.prefecture ||
+        "未登録";
 
+    userArea.textContent =
+        "📍 " + prefecture;
 
-        userArea.textContent =
-            "📍 " + prefecture;
-
-    }
+}
 
 
 

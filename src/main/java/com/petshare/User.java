@@ -2,207 +2,224 @@ package com.petshare;
 
 public class User {
 
-// ==============================
-// ユーザー情報
-// ==============================
+    // ==============================
+    // ユーザー情報
+    // ==============================
 
-// アカウント名
-private String accountName;
+    // アカウントID
+    private int accountId;
 
-// メールアドレス
-private String email;
+    // アカウント名
+    private String accountName;
 
-// パスワード
-private String password;
+    // メールアドレス
+    private String email;
 
-// 氏名
-private String name;
+    // パスワード
+    private String password;
 
-// 生年月日
-private String birthDate;
+    // 氏名
+    private String name;
 
-// 性別
-private String gender;
+    // 生年月日
+    private String birthDate;
 
-// 電話番号
-private String phone;
+    // 性別
+    private String gender;
 
-// 郵便番号
-private String postalCode;
+    // 電話番号
+    private String phone;
 
-// 都道府県
-private String prefecture;
+    // 郵便番号
+    private String postalCode;
 
-// 市区町村
-private String city;
+    // 都道府県
+    private String prefecture;
 
-// 丁目・番地
-private String address;
+    // 市区町村
+    private String city;
 
-// 建物名
-private String building;
+    // 丁目・番地
+    private String address;
 
-
-// ==============================
-// コンストラクタ
-// ==============================
-
-public User() {
-}
+    // 建物名
+    private String building;
 
 
-// ==============================
-// アカウント名
-// ==============================
+    // ==============================
+    // コンストラクタ
+    // ==============================
 
-public String getAccountName() {
-    return accountName;
-}
-
-public void setAccountName(String accountName) {
-    this.accountName = accountName;
-}
+    public User() {
+    }
 
 
-// ==============================
-// メールアドレス
-// ==============================
+    // ==============================
+    // アカウントID
+    // ==============================
 
-public String getEmail() {
-    return email;
-}
+    public int getAccountId() {
+        return accountId;
+    }
 
-public void setEmail(String email) {
-    this.email = email;
-}
-
-
-// ==============================
-// パスワード
-// ==============================
-
-public String getPassword() {
-    return password;
-}
-
-public void setPassword(String password) {
-    this.password = password;
-}
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
 
 
-// ==============================
-// 氏名
-// ==============================
+    // ==============================
+    // アカウント名
+    // ==============================
 
-public String getName() {
-    return name;
-}
+    public String getAccountName() {
+        return accountName;
+    }
 
-public void setName(String name) {
-    this.name = name;
-}
-
-
-// ==============================
-// 生年月日
-// ==============================
-
-public String getBirthDate() {
-    return birthDate;
-}
-
-public void setBirthDate(String birthDate) {
-    this.birthDate = birthDate;
-}
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
 
 
-// ==============================
-// 性別
-// ==============================
+    // ==============================
+    // メールアドレス
+    // ==============================
 
-public String getGender() {
-    return gender;
-}
+    public String getEmail() {
+        return email;
+    }
 
-public void setGender(String gender) {
-    this.gender = gender;
-}
-
-
-// ==============================
-// 電話番号
-// ==============================
-
-public String getPhone() {
-    return phone;
-}
-
-public void setPhone(String phone) {
-    this.phone = phone;
-}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
 
-// ==============================
-// 郵便番号
-// ==============================
+    // ==============================
+    // パスワード
+    // ==============================
 
-public String getPostalCode() {
-    return postalCode;
-}
+    public String getPassword() {
+        return password;
+    }
 
-public void setPostalCode(String postalCode) {
-    this.postalCode = postalCode;
-}
-
-
-// ==============================
-// 都道府県
-// ==============================
-
-public String getPrefecture() {
-    return prefecture;
-}
-
-public void setPrefecture(String prefecture) {
-    this.prefecture = prefecture;
-}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
 
-// ==============================
-// 市区町村
-// ==============================
+    // ==============================
+    // 氏名
+    // ==============================
 
-public String getCity() {
-    return city;
-}
+    public String getName() {
+        return name;
+    }
 
-public void setCity(String city) {
-    this.city = city;
-}
-
-
-// ==============================
-// 丁目・番地
-// ==============================
-
-public String getAddress() {
-    return address;
-}
-
-public void setAddress(String address) {
-    this.address = address;
-}
+    public void setName(String name) {
+        this.name = name;
+    }
 
 
-// ==============================
-// 建物名
-// ==============================
+    // ==============================
+    // 生年月日
+    // ==============================
 
-public String getBuilding() {
-    return building;
-}
+    public String getBirthDate() {
+        return birthDate;
+    }
 
-public void setBuilding(String building) {
-    this.building = building;
-}
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+
+    // ==============================
+    // 性別
+    // ==============================
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+
+    // ==============================
+    // 電話番号
+    // ==============================
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+
+    // ==============================
+    // 郵便番号
+    // ==============================
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+
+    // ==============================
+    // 都道府県
+    // ==============================
+
+    public String getPrefecture() {
+        return prefecture;
+    }
+
+    public void setPrefecture(String prefecture) {
+        this.prefecture = prefecture;
+    }
+
+
+    // ==============================
+    // 市区町村
+    // ==============================
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+
+    // ==============================
+    // 丁目・番地
+    // ==============================
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+
+    // ==============================
+    // 建物名
+    // ==============================
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
 }

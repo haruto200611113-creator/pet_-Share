@@ -16,7 +16,7 @@ backButton.addEventListener(
     function () {
 
         window.location.href =
-            "mypage.html";
+            "mypage.jsp";
 
     }
 );
@@ -120,7 +120,7 @@ homeButton.addEventListener(
     function () {
 
         window.location.href =
-            "mypage.html";
+            "mypage.jsp";
 
     }
 );

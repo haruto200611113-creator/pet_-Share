@@ -857,7 +857,7 @@ document
                     if (page === "account") {
 
                         window.location.href =
-                            "mypage.html";
+                            "mypage.jsp";
 
                     }
 

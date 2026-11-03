@@ -18,7 +18,7 @@ if (backButton) {
         function () {
 
             window.location.href =
-                "mypage.html";
+                "mypage.jsp";
 
         }
     );

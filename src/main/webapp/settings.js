@@ -19,7 +19,7 @@ if (backButton) {
 
             // アカウント設定からマイページへ戻る
             window.location.href =
-                "mypage.html";
+                "mypage.jsp";
 
         }
     );

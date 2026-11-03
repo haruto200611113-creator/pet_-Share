@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         alert("プロフィールを更新しました。");
 
-        window.location.href = "mypage.html";
+        window.location.href = "mypage.jsp";
     });
 
 
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     backButton.addEventListener("click", function () {
 
-        window.location.href = "mypage.html";
+        window.location.href = "mypage.jsp";
 
     });
 
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (result) {
 
-            window.location.href = "mypage.html";
+            window.location.href = "mypage.jsp";
 
         }
 

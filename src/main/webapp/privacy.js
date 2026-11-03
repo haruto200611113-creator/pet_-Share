@@ -32,7 +32,7 @@ if (backButton) {
                 );
 
                 window.location.href =
-                    "mypage.html";
+                    "mypage.jsp";
 
                 return;
             }

@@ -1,5 +1,19 @@
-# 証明書関連
+# 証明書・接続情報
 certs/
+ca.pem
 
-# Mavenのビルド成果物
+# Maven生成ファイル
 target/
+
+# 環境変数
+.env
+.env.*
+
+# 古いGitリポジトリ
+/pet_-Share/
+
+# ルート直下の重複ファイル
+/home.html
+
+# 開発ツールの作業ログ
+/.github/modernize/

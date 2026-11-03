@@ -1,3 +1,32 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" %>
+<%@ page import="com.petshare.User" %>
+
+<%
+    // セッションからログインユーザー情報を取得
+    User loginUser = (User) session.getAttribute("loginUser");
+
+    // ログインしていない場合はログイン画面へ戻す
+    if (loginUser == null) {
+        response.sendRedirect(request.getContextPath() + "/login.html");
+        return;
+    }
+%>
+
+<%!
+    // HTML特殊文字をエスケープする処理
+    private String escapeHtml(String value) {
+        if (value == null) {
+            return "";
+        }
+
+        return value.replace("&", "&amp;")
+                    .replace("<", "&lt;")
+                    .replace(">", "&gt;")
+                    .replace("\"", "&quot;")
+                    .replace("'", "&#39;");
+    }
+%>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -77,13 +106,14 @@
 
         <div class="profile-info">
 
-            <h2 id="userName">
-                ユーザー名
-            </h2>
+           <h2 id="userName" data-server-rendered="true">
+    <%= escapeHtml(loginUser.getAccountName()) %>
+</h2>
 
-            <p id="userArea">
-                📍 山口県
-            </p>
+<p id="userArea" data-server-rendered="true">
+    📍 <%= escapeHtml(loginUser.getPrefecture()) %>
+    <%= escapeHtml(loginUser.getCity()) %>
+</p>
 
         </div>
 
@@ -445,10 +475,10 @@
     <!-- アカウント -->
 
     <a
-        href="mypage.html"
-        class="nav-item active"
-        data-page="account"
-    >
+    href="mypage.jsp"
+    class="nav-item active"
+    data-page="account"
+>
 
         <span class="nav-icon">
             👤
