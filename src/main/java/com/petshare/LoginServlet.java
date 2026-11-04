@@ -79,6 +79,11 @@ protected void doPost(HttpServletRequest request,
 
         // ⑤ ユーザー情報を保存
         session.setAttribute("loginUser", fullUser);
+        System.out.println("===== セッション保存確認 =====");
+System.out.println("アカウントID：" + fullUser.getAccountId());
+System.out.println("氏名：" + fullUser.getName());
+System.out.println("メールアドレス：" + fullUser.getEmail());
+System.out.println("============================");
 
         // セッション有効期限30分
         session.setMaxInactiveInterval(30 * 60);

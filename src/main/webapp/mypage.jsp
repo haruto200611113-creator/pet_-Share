@@ -26,6 +26,25 @@
                     .replace("\"", "&quot;")
                     .replace("'", "&#39;");
     }
+
+    // 性別のDB値を画面表示用に変換
+    private String displayGender(String gender) {
+        if (gender == null || gender.trim().isEmpty()) {
+            return "未登録";
+        }
+        switch (gender.trim().toLowerCase()) {
+            case "male": return "男性";
+            case "female": return "女性";
+            case "other": return "その他";
+            case "undisclosed": return "回答しない";
+            default: return gender;
+        }
+    }
+
+    // 空欄を「未登録」として表示
+    private String displayValue(String value) {
+        return (value == null || value.trim().isEmpty()) ? "未登録" : value;
+    }
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -126,6 +145,77 @@
         >
             編集
         </a>
+
+    </section>
+
+
+
+    <!-- ====================================
+         登録情報
+    ===================================== -->
+
+    <section class="section">
+
+        <h2 class="section-title">登録情報</h2>
+
+        <div class="registration-card">
+
+            <div class="registration-row">
+                <span class="registration-label">アカウント名</span>
+                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getAccountName())) %></span>
+            </div>
+
+            <div class="registration-row">
+                <span class="registration-label">メールアドレス</span>
+                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getEmail())) %></span>
+            </div>
+
+            <div class="registration-row">
+                <span class="registration-label">氏名</span>
+                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getName())) %></span>
+            </div>
+
+            <div class="registration-row">
+                <span class="registration-label">生年月日</span>
+                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getBirthDate())) %></span>
+            </div>
+
+            <div class="registration-row">
+                <span class="registration-label">性別</span>
+                <span class="registration-value"><%= escapeHtml(displayGender(loginUser.getGender())) %></span>
+            </div>
+
+            <div class="registration-row">
+                <span class="registration-label">電話番号</span>
+                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getPhone())) %></span>
+            </div>
+
+            <div class="registration-row">
+                <span class="registration-label">郵便番号</span>
+                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getPostalCode())) %></span>
+            </div>
+
+            <div class="registration-row">
+                <span class="registration-label">都道府県</span>
+                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getPrefecture())) %></span>
+            </div>
+
+            <div class="registration-row">
+                <span class="registration-label">市区町村</span>
+                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getCity())) %></span>
+            </div>
+
+            <div class="registration-row">
+                <span class="registration-label">番地</span>
+                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getAddress())) %></span>
+            </div>
+
+            <div class="registration-row">
+                <span class="registration-label">建物名</span>
+                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getBuilding())) %></span>
+            </div>
+
+        </div>
 
     </section>
 

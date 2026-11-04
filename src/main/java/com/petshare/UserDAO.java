@@ -719,6 +719,51 @@ public class UserDAO {
     }
 
 
+// =====================================
+// 氏名変更
+// =====================================
+
+public boolean updateName(int accountId, String name) {
+
+    if (accountId <= 0 || isEmpty(name)) {
+        return false;
+    }
+
+    String sql =
+        "UPDATE personal_information "
+        + "SET last_name = ?, first_name = ? "
+        + "WHERE account_id = ?";
+
+    try (Connection con = getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        // 氏名を姓・名に分割
+        String[] names = splitName(name);
+
+        ps.setString(1, names[0]);
+        ps.setString(2, names[1]);
+        ps.setInt(3, accountId);
+
+       int result = ps.executeUpdate();
+
+System.out.println("===== 氏名変更DB確認 =====");
+System.out.println("account_id：" + accountId);
+System.out.println("変更後の姓：" + names[0]);
+System.out.println("変更後の名：" + names[1]);
+System.out.println("更新件数：" + result);
+System.out.println("==========================");
+
+return result > 0;
+
+    } catch (SQLException e) {
+
+        System.err.println("氏名変更に失敗しました。");
+        e.printStackTrace();
+
+        return false;
+    }
+}
+
     // =====================================
     // 氏名を姓・名に分割
     // =====================================
