@@ -17,19 +17,28 @@ public class UserDAO {
 // =====================================
 
 // データベース接続URL
+// =====================================
+// Aiven MySQL接続設定
+// =====================================
+
+private static final String TRUSTSTORE_PATH =
+    "/etc/secrets/aiven-truststore-render.p12";
+
+private static final String TRUSTSTORE_PASSWORD =
+    System.getenv("AIVEN_TRUSTSTORE_PASSWORD");
+
 private static final String URL =
-        "jdbc:mysql://mysql-1589c60e-petshare-project.f.aivencloud.com:21440/defaultdb"
-        + "?sslMode=VERIFY_CA"
-        + "&sslCa=/etc/secrets/ca.pem";
+    "jdbc:mysql://mysql-1589c60e-petshare-project.f.aivencloud.com:21440/defaultdb"
+    + "?sslMode=VERIFY_CA"
+    + "&trustCertificateKeyStoreUrl=file:" + TRUSTSTORE_PATH
+    + "&trustCertificateKeyStoreType=PKCS12"
+    + "&trustCertificateKeyStorePassword=" + TRUSTSTORE_PASSWORD;
 
-// データベースユーザー
 private static final String USER =
-        System.getenv("AIVEN_DB_USER");
+    System.getenv("AIVEN_DB_USER");
 
-// データベースパスワード
 private static final String PASSWORD =
-        System.getenv("AIVEN_DB_PASSWORD");
-
+    System.getenv("AIVEN_DB_PASSWORD");
 
     // =====================================
     // DB接続設定確認
