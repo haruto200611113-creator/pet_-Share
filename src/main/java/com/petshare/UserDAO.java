@@ -18,7 +18,7 @@ public class UserDAO {
 
     // TrustStoreの保存場所
     private static final String TRUSTSTORE_PATH =
-        "C:/Users/kaker/OneDrive/Desktop/pet_share/certs/aiven-truststore.p12";
+        "/etc/secrets/aiven-truststore.p12";
 
     // TrustStoreのパスワード
     private static final String TRUSTSTORE_PASSWORD =
