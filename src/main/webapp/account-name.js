@@ -1,74 +1,133 @@
 console.log("account-name.js 読み込み成功");
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    const nameInput = document.getElementById("name");
+    const lastNameInput = document.getElementById("lastName");
+    const firstNameInput = document.getElementById("firstName");
     const saveButton = document.getElementById("saveButton");
     const backButton = document.getElementById("backButton");
 
     // 設定画面に戻る
     backButton.addEventListener("click", () => {
-        location.href = "settings.html";
+        window.location.href = "settings.html";
     });
 
     // 氏名を保存する
     saveButton.addEventListener("click", async () => {
 
-        const name = nameInput.value.trim();
+        const lastName = lastNameInput.value.trim();
+        const firstName = firstNameInput.value.trim();
 
-        // 未入力チェック
-        if (name === "") {
-            alert("氏名を入力してください。");
-            nameInput.focus();
+        // 姓の未入力チェック
+        if (lastName === "") {
+            alert("姓を入力してください。");
+            lastNameInput.focus();
             return;
         }
 
-        // 保存中はボタンを無効化
+        // 名の未入力チェック
+        if (firstName === "") {
+            alert("名を入力してください。");
+            firstNameInput.focus();
+            return;
+        }
+
+        // 保存中
         saveButton.disabled = true;
         saveButton.textContent = "保存中...";
 
         try {
 
-           const response = await fetch(
-    `${window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/"))}/UpdateNameServlet`,
-    {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        body: new URLSearchParams({
-            name: name
-        })
-    }
-);
-console.log("氏名変更Servletの応答:", response.status);
-console.log("送信した氏名:", name);
+            // コンテキストパスを取得
+            const contextPath =
+                window.location.pathname.substring(
+                    0,
+                    window.location.pathname.lastIndexOf("/")
+                );
 
+            // Servletへ送信
+            const response = await fetch(
+                `${contextPath}/UpdateNameServlet`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/x-www-form-urlencoded; charset=UTF-8"
+                    },
+                    body: new URLSearchParams({
+                        lastName: lastName,
+                        firstName: firstName
+                    })
+                }
+            );
+
+            console.log(
+                "氏名変更Servletの応答:",
+                response.status
+            );
+
+            console.log(
+                "送信した姓:",
+                lastName
+            );
+
+            console.log(
+                "送信した名:",
+                firstName
+            );
+
+            // 保存成功
             if (response.ok) {
 
-                alert("氏名を変更しました。");
+                console.log("氏名の保存に成功しました");
 
-                // 設定画面に戻る
-                location.href = "settings.html";
+                // 変更完了メッセージを作成
+                const message =
+                    document.createElement("div");
 
-            } else {
+                message.className =
+                    "change-complete-message";
 
-                const message = await response.text();
-                alert("氏名の変更に失敗しました。\n" + message);
+                message.textContent =
+                    "変更完了しました";
 
+                // 画面に表示
+                document.body.appendChild(message);
+
+                // 1.5秒後に設定画面へ戻る
+                setTimeout(() => {
+                    window.location.href =
+                        "settings.html";
+                }, 1500);
+
+                return;
             }
 
-        } catch (error) {
+            // 保存失敗
+            const errorMessage =
+                await response.text();
 
-            console.error("氏名変更エラー:", error);
-            alert("通信エラーが発生しました。");
-
-        } finally {
+            alert(
+                "氏名の変更に失敗しました。\n" +
+                errorMessage
+            );
 
             saveButton.disabled = false;
             saveButton.textContent = "保存する";
 
+        } catch (error) {
+
+            console.error(
+                "氏名変更エラー:",
+                error
+            );
+
+            alert(
+                "通信エラーが発生しました。"
+            );
+
+            saveButton.disabled = false;
+            saveButton.textContent = "保存する";
         }
-
     });
-
 });

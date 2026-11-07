@@ -141,3 +141,148 @@ input:focus {
 
     cursor: pointer;
 }
+/* =====================================
+   変更完了メッセージ
+===================================== */
+
+.change-complete-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    padding: 28px 50px;
+
+    background: #ffffff;
+    border-radius: 16px;
+
+    font-size: 24px;
+    font-weight: 600;
+
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.18);
+
+    z-index: 9999;
+
+    animation: messageFadeIn 0.2s ease;
+}
+
+@keyframes messageFadeIn {
+
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+}
+/* =====================================
+   生年月日入力欄
+===================================== */
+
+/* =====================================
+   生年月日入力欄
+===================================== */
+
+.birthdate-inputs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.birthdate-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.birthdate-field input {
+    width: 90px;
+    height: 42px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.birthdate-field input:focus {
+    outline: none;
+    border-color: #666;
+}
+
+.birthdate-field span {
+    font-size: 16px;
+}
+
+.birthdate-field {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.birthdate-field input {
+    width: 90px;
+    padding: 10px 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.birthdate-field input:focus {
+    outline: none;
+    border-color: #666;
+}
+
+.birthdate-field span {
+    font-size: 16px;
+}
+
+
+/* =====================================
+   変更完了メッセージ
+===================================== */
+
+.change-complete-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    padding: 28px 50px;
+
+    background: #ffffff;
+    border-radius: 16px;
+
+    font-size: 24px;
+    font-weight: 600;
+
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.18);
+
+    z-index: 9999;
+
+    animation: messageFadeIn 0.2s ease;
+}
+
+@keyframes messageFadeIn {
+
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+}

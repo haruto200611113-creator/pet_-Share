@@ -1,3 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ page import="com.petshare.User" %>
+
+<%
+    User loginUser = (User) session.getAttribute("loginUser");
+
+    if (loginUser == null) {
+        response.sendRedirect("login.html");
+        return;
+    }
+
+    String gender = loginUser.getGender();
+
+if (gender == null) {
+    gender = "";
+}
+
+// DBの値を画面表示用の日本語に変換
+switch (gender) {
+    case "male":
+        gender = "男性";
+        break;
+
+    case "female":
+        gender = "女性";
+        break;
+
+    case "other":
+        gender = "その他";
+        break;
+
+    case "undisclosed":
+        gender = "回答しない";
+        break;
+}
+
+%>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -59,6 +98,7 @@
                     type="radio"
                     name="gender"
                     value="男性"
+                    <%= "男性".equals(gender) ? "checked" : "" %>
                 >
 
                 <span>
@@ -74,6 +114,7 @@
                     type="radio"
                     name="gender"
                     value="女性"
+                    <%= "女性".equals(gender) ? "checked" : "" %>
                 >
 
                 <span>
@@ -89,6 +130,7 @@
                     type="radio"
                     name="gender"
                     value="その他"
+                    <%= "その他".equals(gender) ? "checked" : "" %>
                 >
 
                 <span>
@@ -104,6 +146,7 @@
                     type="radio"
                     name="gender"
                     value="回答しない"
+                    <%= "回答しない".equals(gender) ? "checked" : "" %>
                 >
 
                 <span>

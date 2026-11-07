@@ -88,12 +88,12 @@ public class UserDAO {
 
 
         // 必須項目確認
-        if (isEmpty(user.getAccountName())
-                || isEmpty(user.getEmail())
-                || isEmpty(user.getPassword())
-                || isEmpty(user.getName())
-                || isEmpty(user.getBirthDate())) {
-
+       if (isEmpty(user.getAccountName())
+        || isEmpty(user.getEmail())
+        || isEmpty(user.getPassword())
+        || isEmpty(user.getLastName())
+        || isEmpty(user.getFirstName())
+        || isEmpty(user.getBirthDate())) {
             System.err.println("必須情報が不足しています。");
 
             return false;
@@ -290,16 +290,12 @@ public class UserDAO {
                         con.prepareStatement(personalSql)
                 ) {
 
-                    String[] names = splitName(
-                        user.getName()
-                    );
+                   ps.setInt(1, accountId);
+ps.setString(2, user.getLastName());
+ps.setString(3, user.getFirstName());
 
 
-                    ps.setInt(1, accountId);
-
-                    ps.setString(2, names[0]);
-
-                    ps.setString(3, names[1]);
+                   
 
                     ps.setInt(4, birthDate.getYear());
 
@@ -584,18 +580,11 @@ public class UserDAO {
                     // 氏名
                     // ==============================
 
-                    String lastName =
-                        rs.getString("last_name");
+                    String lastName = rs.getString("last_name");
+String firstName = rs.getString("first_name");
 
-                    String firstName =
-                        rs.getString("first_name");
-
-                    String fullName =
-                        (lastName == null ? "" : lastName)
-                        + " "
-                        + (firstName == null ? "" : firstName);
-
-                    user.setName(fullName.trim());
+user.setLastName(lastName);
+user.setFirstName(firstName);
 
 
                     // ==============================
@@ -720,40 +709,120 @@ public class UserDAO {
 
 
 // =====================================
-// 氏名変更
+// 住所変更
 // =====================================
 
-public boolean updateName(int accountId, String name) {
+public boolean updateAddress(
+        int accountId,
+        String postalCode,
+        String prefecture,
+        String city,
+        String address,
+        String building) {
 
-    if (accountId <= 0 || isEmpty(name)) {
+    if (accountId <= 0
+            || isEmpty(postalCode)
+            || isEmpty(prefecture)
+            || isEmpty(city)
+            || isEmpty(address)) {
+
         return false;
     }
 
+    String sql =
+        "UPDATE personal_information "
+        + "SET postal_code = ?, "
+        + "prefecture = ?, "
+        + "city = ?, "
+        + "street_address = ?, "
+        + "building = ? "
+        + "WHERE account_id = ?";
+
+    try (Connection con = getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setString(1, postalCode);
+        ps.setString(2, prefecture);
+        ps.setString(3, city);
+        ps.setString(4, address);
+        ps.setString(5, building);
+        ps.setInt(6, accountId);
+
+        int result = ps.executeUpdate();
+
+        System.out.println("===== 住所変更DB確認 =====");
+        System.out.println("account_id：" + accountId);
+        System.out.println("郵便番号：" + postalCode);
+        System.out.println("都道府県：" + prefecture);
+        System.out.println("市区町村：" + city);
+        System.out.println("番地：" + address);
+        System.out.println("建物名：" + building);
+        System.out.println("更新件数：" + result);
+        System.out.println("==========================");
+
+        return result > 0;
+
+    } catch (SQLException e) {
+
+        System.err.println("住所変更に失敗しました。");
+        e.printStackTrace();
+
+        return false;
+    }
+}
+
+// =====================================
+// 氏名変更
+// =====================================
+
+// =====================================
+// 氏名変更
+// =====================================
+
+public boolean updateName(
+        int accountId,
+        String lastName,
+        String firstName) {
+
+    // 入力チェック
+    if (accountId <= 0
+            || isEmpty(lastName)
+            || isEmpty(firstName)) {
+
+        return false;
+    }
+
+    // 氏名変更SQL
     String sql =
         "UPDATE personal_information "
         + "SET last_name = ?, first_name = ? "
         + "WHERE account_id = ?";
 
     try (Connection con = getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+         PreparedStatement ps =
+             con.prepareStatement(sql)) {
 
-        // 氏名を姓・名に分割
-        String[] names = splitName(name);
+        // 姓をそのまま登録
+        ps.setString(1, lastName.trim());
 
-        ps.setString(1, names[0]);
-        ps.setString(2, names[1]);
+        // 名をそのまま登録
+        ps.setString(2, firstName.trim());
+
+        // アカウントID
         ps.setInt(3, accountId);
 
-       int result = ps.executeUpdate();
+        // DB更新
+        int result = ps.executeUpdate();
 
-System.out.println("===== 氏名変更DB確認 =====");
-System.out.println("account_id：" + accountId);
-System.out.println("変更後の姓：" + names[0]);
-System.out.println("変更後の名：" + names[1]);
-System.out.println("更新件数：" + result);
-System.out.println("==========================");
+        // 確認ログ
+        System.out.println("===== 氏名変更DB確認 =====");
+        System.out.println("account_id：" + accountId);
+        System.out.println("変更後の姓：" + lastName);
+        System.out.println("変更後の名：" + firstName);
+        System.out.println("更新件数：" + result);
+        System.out.println("==========================");
 
-return result > 0;
+        return result > 0;
 
     } catch (SQLException e) {
 
@@ -763,6 +832,48 @@ return result > 0;
         return false;
     }
 }
+
+
+// =====================================
+// メールアドレス変更
+// =====================================
+
+public boolean updateEmail(int accountId, String email) {
+
+    if (accountId <= 0 || isEmpty(email)) {
+        return false;
+    }
+
+    String sql =
+        "UPDATE accounts "
+        + "SET email = ? "
+        + "WHERE account_id = ?";
+
+    try (Connection con = getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setString(1, email.trim());
+        ps.setInt(2, accountId);
+
+        int result = ps.executeUpdate();
+
+        System.out.println("===== メールアドレス変更DB確認 =====");
+        System.out.println("account_id：" + accountId);
+        System.out.println("変更後メールアドレス：" + email);
+        System.out.println("更新件数：" + result);
+        System.out.println("===============================");
+
+        return result > 0;
+
+    } catch (SQLException e) {
+
+        System.err.println("メールアドレス変更に失敗しました。");
+        e.printStackTrace();
+
+        return false;
+    }
+}
+
 
     // =====================================
     // 氏名を姓・名に分割
@@ -847,5 +958,316 @@ return result > 0;
 
         return value == null || value.trim().isEmpty();
     }
+    // =====================================
+// 生年月日変更
+// =====================================
+
+public boolean updateBirthDate(
+        int accountId,
+        String birthDate) {
+
+    if (accountId <= 0 || isEmpty(birthDate)) {
+        System.out.println("生年月日変更：入力値エラー");
+        return false;
+    }
+
+    // yyyy-MM-dd → 年・月・日に分解
+    LocalDate date;
+
+    try {
+        date = LocalDate.parse(birthDate);
+    } catch (Exception e) {
+        System.err.println("生年月日の形式が正しくありません。");
+        e.printStackTrace();
+        return false;
+    }
+
+    String sql =
+        "UPDATE personal_information "
+        + "SET birth_year = ?, "
+        + "birth_month = ?, "
+        + "birth_day = ? "
+        + "WHERE account_id = ?";
+
+    try (
+        Connection con = getConnection();
+        PreparedStatement ps = con.prepareStatement(sql)
+    ) {
+
+        // 年
+        ps.setInt(1, date.getYear());
+
+        // 月
+        ps.setInt(2, date.getMonthValue());
+
+        // 日
+        ps.setInt(3, date.getDayOfMonth());
+
+        // アカウントID
+        ps.setInt(4, accountId);
+
+        int result = ps.executeUpdate();
+
+        System.out.println("===== 生年月日変更DB確認 =====");
+        System.out.println("account_id：" + accountId);
+        System.out.println("変更後の生年月日：" + birthDate);
+        System.out.println("更新件数：" + result);
+        System.out.println("==============================");
+
+        return result > 0;
+
+    } catch (SQLException e) {
+
+        System.err.println("生年月日の変更に失敗しました。");
+        e.printStackTrace();
+
+        return false;
+    }
+}
+// =====================================
+// 性別変更
+// =====================================
+
+public boolean updateGender(
+        int accountId,
+        String gender) {
+
+    if (accountId <= 0 || isEmpty(gender)) {
+
+        System.out.println("性別変更：入力値エラー");
+
+        return false;
+    }
+
+    // 画面の日本語をDB用の値に変換
+    String dbGender;
+
+    switch (gender) {
+
+        case "男性":
+            dbGender = "male";
+            break;
+
+        case "女性":
+            dbGender = "female";
+            break;
+
+        case "その他":
+            dbGender = "other";
+            break;
+
+        case "回答しない":
+            dbGender = "undisclosed";
+            break;
+
+        default:
+            System.out.println(
+                    "性別変更：不正な値：" + gender);
+
+            return false;
+    }
+
+    String sql =
+            "UPDATE personal_information "
+            + "SET gender = ? "
+            + "WHERE account_id = ?";
+
+    try (
+        Connection con = getConnection();
+        PreparedStatement ps =
+                con.prepareStatement(sql)
+    ) {
+
+        ps.setString(1, dbGender);
+        ps.setInt(2, accountId);
+
+        int result =
+                ps.executeUpdate();
+
+        System.out.println("===== 性別変更DB確認 =====");
+        System.out.println("account_id：" + accountId);
+        System.out.println("画面から受信：" + gender);
+        System.out.println("DB保存値：" + dbGender);
+        System.out.println("更新件数：" + result);
+        System.out.println("==========================");
+
+        return result > 0;
+
+    } catch (SQLException e) {
+
+        System.err.println(
+                "性別の変更に失敗しました。"
+        );
+
+        e.printStackTrace();
+
+        return false;
+    }
+}
+// =====================================
+// パスワード変更
+// =====================================
+
+// =====================================
+// パスワード変更
+// =====================================
+
+public boolean updatePassword(
+        int accountId,
+        String currentPassword,
+        String newPassword) {
+
+    if (accountId <= 0
+            || isEmpty(currentPassword)
+            || isEmpty(newPassword)) {
+
+        System.out.println("パスワード変更：入力値エラー");
+        return false;
+    }
+
+    String selectSql =
+        "SELECT password_hash "
+        + "FROM accounts "
+        + "WHERE account_id = ?";
+
+    String updateSql =
+        "UPDATE accounts "
+        + "SET password_hash = ? "
+        + "WHERE account_id = ?";
+
+    try (Connection con = getConnection()) {
+
+        // =====================================
+        // 現在のパスワードハッシュを取得
+        // =====================================
+
+        String currentHash = null;
+
+        try (PreparedStatement ps =
+                con.prepareStatement(selectSql)) {
+
+            ps.setInt(1, accountId);
+
+            try (ResultSet rs =
+                    ps.executeQuery()) {
+
+                if (rs.next()) {
+
+                    currentHash =
+                        rs.getString("password_hash");
+                }
+            }
+        }
+
+        // =====================================
+        // DBにパスワードが存在するか確認
+        // =====================================
+
+        if (currentHash == null
+                || currentHash.isEmpty()) {
+
+            System.err.println(
+                "パスワード変更：DBにパスワードハッシュがありません。"
+            );
+
+            System.err.println(
+                "account_id：" + accountId
+            );
+
+            return false;
+        }
+
+        // =====================================
+        // 現在のパスワード確認
+        // =====================================
+
+        boolean passwordCorrect =
+            BCrypt.checkpw(
+                currentPassword,
+                currentHash
+            );
+
+        System.out.println(
+            "===== パスワード確認 ====="
+        );
+
+        System.out.println(
+            "account_id：" + accountId
+        );
+
+        System.out.println(
+            "現在のパスワード：" +
+            (passwordCorrect ? "一致" : "不一致")
+        );
+
+        System.out.println(
+            "=========================="
+        );
+
+        if (!passwordCorrect) {
+
+            return false;
+        }
+
+        // =====================================
+        // 新しいパスワードをハッシュ化
+        // =====================================
+
+        String newPasswordHash =
+            BCrypt.hashpw(
+                newPassword,
+                BCrypt.gensalt()
+            );
+
+        // =====================================
+        // DB更新
+        // =====================================
+
+        try (PreparedStatement ps =
+                con.prepareStatement(updateSql)) {
+
+            ps.setString(1, newPasswordHash);
+            ps.setInt(2, accountId);
+
+            int result =
+                ps.executeUpdate();
+
+            System.out.println(
+                "===== パスワード変更DB確認 ====="
+            );
+
+            System.out.println(
+                "account_id：" +
+                accountId
+            );
+
+            System.out.println(
+                "パスワード変更：" +
+                (result > 0 ? "成功" : "失敗")
+            );
+
+            System.out.println(
+                "更新件数：" +
+                result
+            );
+
+            System.out.println(
+                "================================="
+            );
+
+            return result > 0;
+        }
+
+    } catch (SQLException e) {
+
+        System.err.println(
+            "パスワード変更時にSQLエラーが発生しました。"
+        );
+
+        e.printStackTrace();
+
+        return false;
+    }
+}
 
 }

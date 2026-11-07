@@ -8,6 +8,7 @@
     <title>ペットシェアアプリ｜ホーム</title>
 
     <link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="logout-confirm.css">
 </head>
 
 <body>
@@ -792,7 +793,7 @@
          ホーム用JavaScript
     ========================== -->
 
-    <script src="home.js"></script>
+   
 
 
     <!-- =========================
@@ -824,6 +825,57 @@
     </script>
 
 
+<!-- ========================================
+     ログアウト確認画面
+======================================== -->
+
+<div
+    id="logoutModal"
+    class="logout-modal-overlay"
+    style="display: none;"
+>
+
+    <div class="logout-modal">
+
+        <p class="logout-modal-message">
+            ログアウトしますか？
+        </p>
+
+
+        <div class="logout-modal-buttons">
+
+            <!-- 左：はい -->
+
+            <button
+                type="button"
+                id="logoutYesButton"
+                class="logout-modal-button logout-yes"
+            >
+                はい
+            </button>
+
+
+            <!-- 右：いいえ -->
+
+            <button
+                type="button"
+                id="logoutNoButton"
+                class="logout-modal-button logout-no"
+            >
+                いいえ
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ========================================
+     JavaScript
+======================================== -->
+
+<script src="logout-confirm.js"></script>
+<script src="home.js"></script>
 </body>
 
 </html>

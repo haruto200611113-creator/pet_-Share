@@ -1017,40 +1017,50 @@ const logoutButton =
     document.getElementById("logoutButton");
 
 
-logoutButton.addEventListener(
-    "click",
-    function () {
+if (logoutButton) {
 
-        const result =
-            confirm(
-                "ログアウトしますか？"
-            );
+    logoutButton.addEventListener(
+        "click",
+        function () {
+
+            // 自作のログアウト確認画面を表示
+            if (
+                typeof window.showLogoutConfirm ===
+                "function"
+            ) {
+
+                window.showLogoutConfirm();
+
+            } else {
+
+                // 確認画面が読み込まれていない場合の予備処理
+                const result =
+                    confirm(
+                        "ログアウトしますか？"
+                    );
 
 
-        if (!result) {
+                if (!result) {
 
-            return;
+                    return;
+
+                }
+
+
+                // セッション情報を削除
+                sessionStorage.clear();
+
+
+                // ログイン画面へ移動
+                window.location.href =
+                    "login.html";
+
+            }
 
         }
+    );
 
-
-        /*
-         * Javaと接続した後は、
-         * セッションを破棄して
-         * ログイン画面へ移動します。
-         */
-
-
-        alert(
-            "ログアウトしました。"
-        );
-
-
-        window.location.href =
-            "login.html";
-
-    }
-);
+}
 
 
 /* =====================================================

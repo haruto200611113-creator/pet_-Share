@@ -1,48 +1,129 @@
-const backButton =
-    document.getElementById("backButton");
+document.addEventListener("DOMContentLoaded", () => {
 
-const saveButton =
-    document.getElementById("saveButton");
+    const genderInputs =
+        document.querySelectorAll('input[name="gender"]');
 
+    const saveButton =
+        document.getElementById("saveButton");
 
-backButton.addEventListener(
-    "click",
-    function () {
-
-        window.location.href =
-            "settings.html";
-
-    }
-);
+    const backButton =
+        document.getElementById("backButton");
 
 
-saveButton.addEventListener(
-    "click",
-    function () {
-
-        const selected =
-            document.querySelector(
-                'input[name="gender"]:checked'
-            );
+    // 戻るボタン
+    backButton.addEventListener("click", () => {
+        window.location.href = "settings.html";
+    });
 
 
-        if (!selected) {
+    // 保存ボタン
+    saveButton.addEventListener("click", async () => {
 
-            alert(
-                "性別を選択してください。"
-            );
+        let selectedGender = "";
+
+        // 選択されている性別を取得
+        genderInputs.forEach(input => {
+
+            if (input.checked) {
+                selectedGender = input.value;
+            }
+
+        });
+
+
+        // 未選択チェック
+        if (!selectedGender) {
+
+            alert("性別を選択してください。");
 
             return;
         }
 
 
-        alert(
-            "性別を変更しました。"
-        );
+        // 保存中表示
+        saveButton.disabled = true;
+        saveButton.textContent = "保存中...";
 
 
-        window.location.href =
-            "settings.html";
+        try {
 
-    }
-);
+            const contextPath =
+                window.location.pathname.split("/")[1];
+
+
+            const response = await fetch(
+                `/${contextPath}/UpdateGenderServlet`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/x-www-form-urlencoded; charset=UTF-8"
+                    },
+
+                    body: new URLSearchParams({
+                        gender: selectedGender
+                    })
+                }
+            );
+
+
+            const result =
+                await response.json();
+
+
+            if (
+                response.ok &&
+                result.success
+            ) {
+
+                // 変更完了メッセージ
+                const message =
+                    document.createElement("div");
+
+                message.className =
+                    "change-complete-message";
+
+                message.textContent =
+                    "変更完了しました";
+
+                document.body.appendChild(message);
+
+
+                // 約1.5秒後に設定画面へ
+                setTimeout(() => {
+
+                    window.location.href =
+                        "settings.html";
+
+                }, 1500);
+
+            } else {
+
+                alert(
+                    result.message ||
+                    "性別の変更に失敗しました。"
+                );
+
+                saveButton.disabled = false;
+                saveButton.textContent = "保存する";
+            }
+
+        } catch (error) {
+
+            console.error(
+                "性別変更エラー：",
+                error
+            );
+
+            alert(
+                "性別の変更中にエラーが発生しました。"
+            );
+
+            saveButton.disabled = false;
+            saveButton.textContent = "保存する";
+        }
+
+    });
+
+});

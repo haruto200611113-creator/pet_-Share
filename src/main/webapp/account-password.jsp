@@ -1,3 +1,16 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.petshare.User" %>
+
+<%
+    User loginUser =
+        (User) session.getAttribute("loginUser");
+
+    if (loginUser == null) {
+        response.sendRedirect("login.html");
+        return;
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="ja">
 

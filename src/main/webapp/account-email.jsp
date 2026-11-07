@@ -1,3 +1,24 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.petshare.User" %>
+
+<%
+    // ログイン中のユーザーを取得
+    User loginUser = (User) session.getAttribute("loginUser");
+
+    // ログインしていない場合はログイン画面へ
+    if (loginUser == null) {
+        response.sendRedirect("login.html");
+        return;
+    }
+
+    // 現在のメールアドレスを取得
+    String currentEmail = loginUser.getEmail();
+
+    if (currentEmail == null) {
+        currentEmail = "";
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -50,11 +71,26 @@
             登録するメールアドレスを入力してください。
         </p>
 
+        <div class="form-group">
+
+            <label for="currentEmail">
+                現在のメールアドレス
+            </label>
+
+            <input
+                type="email"
+                id="currentEmail"
+                value="<%= currentEmail %>"
+                readonly
+            >
+
+        </div>
+
 
         <div class="form-group">
 
             <label for="email">
-                メールアドレス
+                新しいメールアドレス
             </label>
 
             <input

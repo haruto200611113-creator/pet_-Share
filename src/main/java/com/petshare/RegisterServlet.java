@@ -30,7 +30,8 @@ public class RegisterServlet extends HttpServlet {
             String password = request.getParameter("password");
             String confirmPassword = request.getParameter("confirmPassword");
 
-            String name = request.getParameter("name");
+            String lastName = request.getParameter("lastName");
+String firstName = request.getParameter("firstName");
             String birthDate = request.getParameter("birthDate");
             String gender = request.getParameter("gender");
 
@@ -44,7 +45,8 @@ public class RegisterServlet extends HttpServlet {
             // 入力確認ログ
             System.out.println("アカウント名：" + accountName);
             System.out.println("メールアドレス：" + email);
-            System.out.println("氏名：" + name);
+            System.out.println("姓：" + lastName);
+System.out.println("名：" + firstName);
             System.out.println("生年月日：" + birthDate);
             System.out.println("性別：" + gender);
 
@@ -53,7 +55,8 @@ public class RegisterServlet extends HttpServlet {
                     || isEmpty(email)
                     || isEmpty(password)
                     || isEmpty(confirmPassword)
-                    || isEmpty(name)
+                    || isEmpty(lastName)
+                    || isEmpty(firstName)
                     || isEmpty(birthDate)
                     || isEmpty(gender)
                     || isEmpty(phone)
@@ -99,7 +102,8 @@ public class RegisterServlet extends HttpServlet {
             user.setEmail(email);
             user.setPassword(password);
 
-            user.setName(name);
+            user.setLastName(lastName);
+            user.setFirstName(firstName);
             user.setBirthDate(birthDate);
             user.setGender(gender);
 

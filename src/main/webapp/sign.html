@@ -55,15 +55,35 @@
 >
             </div>
 
-            <div class="form-group">
-                <label for="name">氏名</label>
-                <input
-    type="text"
-    id="name"
-    name="name"
-    required
->
-            </div>
+           <div class="form-group">
+    <label>氏名</label>
+
+    <div class="name-area">
+
+        <div class="name-field">
+            <label for="lastName">姓</label>
+            <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                placeholder="姓"
+                required
+            >
+        </div>
+
+        <div class="name-field">
+            <label for="firstName">名</label>
+            <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                placeholder="名"
+                required
+            >
+        </div>
+
+    </div>
+</div>
 
             <div class="form-group">
                 <label for="birthDate">生年月日</label>

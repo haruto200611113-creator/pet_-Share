@@ -18,9 +18,11 @@ public class User {
     // パスワード
     private String password;
 
-    // 氏名
-    private String name;
+    // 姓
+private String lastName;
 
+// 名
+private String firstName;
     // 生年月日
     private String birthDate;
 
@@ -110,14 +112,22 @@ public class User {
     // 氏名
     // ==============================
 
-    public String getName() {
-        return name;
-    }
+   public String getLastName() {
+    return lastName;
+}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+public void setLastName(String lastName) {
+    this.lastName = lastName;
+}
 
+
+public String getFirstName() {
+    return firstName;
+}
+
+public void setFirstName(String firstName) {
+    this.firstName = firstName;
+}
 
     // ==============================
     // 生年月日

@@ -171,9 +171,12 @@
             </div>
 
             <div class="registration-row">
-                <span class="registration-label">氏名</span>
-                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getName())) %></span>
-            </div>
+    <span class="registration-label">氏名</span>
+    <span class="registration-value">
+        <%= escapeHtml(displayValue(loginUser.getLastName())) %>
+        <%= escapeHtml(displayValue(loginUser.getFirstName())) %>
+    </span>
+</div>
 
             <div class="registration-row">
                 <span class="registration-label">生年月日</span>

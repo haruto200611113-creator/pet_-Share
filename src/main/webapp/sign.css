@@ -317,4 +317,23 @@ input::placeholder {
     .radio-area {
         grid-template-columns: 1fr 1fr;
     }
+    /* 氏名（姓・名） */
+.name-area {
+    display: flex;
+    gap: 12px;
+}
+
+.name-field {
+    flex: 1;
+}
+
+.name-field > label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.name-field input {
+    width: 100%;
+}
 }
