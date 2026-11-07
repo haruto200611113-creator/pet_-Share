@@ -12,30 +12,22 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class UserDAO {
 
-    // =====================================
-    // Aiven MySQL接続設定
-    // =====================================
+  // =====================================
+// Aiven MySQL接続設定
+// =====================================
 
-    // TrustStoreの保存場所
-    private static final String TRUSTSTORE_PATH =
-        "/etc/secrets/aiven-truststore.p12";
-
-    // TrustStoreのパスワード
-    private static final String TRUSTSTORE_PASSWORD =
-        System.getenv("AIVEN_TRUSTSTORE_PASSWORD");
-
-    // データベース接続URL
-   private static final String URL =
+// データベース接続URL
+private static final String URL =
         "jdbc:mysql://mysql-1589c60e-petshare-project.f.aivencloud.com:21440/defaultdb"
         + "?sslMode=VERIFY_CA"
         + "&sslCa=/etc/secrets/ca.pem";
 
-    // データベースユーザー
-    private static final String USER =
+// データベースユーザー
+private static final String USER =
         System.getenv("AIVEN_DB_USER");
 
-    // データベースパスワード
-    private static final String PASSWORD =
+// データベースパスワード
+private static final String PASSWORD =
         System.getenv("AIVEN_DB_PASSWORD");
 
 
@@ -43,13 +35,10 @@ public class UserDAO {
     // DB接続設定確認
     // =====================================
 
-    private boolean isDbConfigAvailable() {
-
-        return USER != null && !USER.isBlank()
-            && PASSWORD != null && !PASSWORD.isBlank()
-            && TRUSTSTORE_PASSWORD != null
-            && !TRUSTSTORE_PASSWORD.isBlank();
-    }
+   private boolean isDbConfigAvailable() {
+    return USER != null && !USER.isBlank()
+        && PASSWORD != null && !PASSWORD.isBlank();
+}
 
 
     // =====================================
