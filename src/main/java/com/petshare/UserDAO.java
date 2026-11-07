@@ -25,12 +25,10 @@ public class UserDAO {
         System.getenv("AIVEN_TRUSTSTORE_PASSWORD");
 
     // データベース接続URL
-    private static final String URL =
+   private static final String URL =
         "jdbc:mysql://mysql-1589c60e-petshare-project.f.aivencloud.com:21440/defaultdb"
         + "?sslMode=VERIFY_CA"
-        + "&trustCertificateKeyStoreUrl=file:" + TRUSTSTORE_PATH
-        + "&trustCertificateKeyStoreType=PKCS12"
-        + "&trustCertificateKeyStorePassword=" + TRUSTSTORE_PASSWORD;
+        + "&sslCa=/etc/secrets/ca.pem";
 
     // データベースユーザー
     private static final String USER =
