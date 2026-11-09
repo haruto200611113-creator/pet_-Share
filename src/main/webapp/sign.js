@@ -63,8 +63,11 @@ function saveFormData() {
         email:
             document.getElementById("email").value,
 
-        name:
-            document.getElementById("name").value,
+       lastName:
+    document.getElementById("lastName").value,
+
+firstName:
+    document.getElementById("firstName").value,
 
         birthDate:
             document.getElementById("birthDate").value,
@@ -124,8 +127,11 @@ function restoreFormData() {
         document.getElementById("email").value =
             formData.email || "";
 
-        document.getElementById("name").value =
-            formData.name || "";
+        document.getElementById("lastName").value =
+    formData.lastName || "";
+
+document.getElementById("firstName").value =
+    formData.firstName || "";
 
         document.getElementById("birthDate").value =
             formData.birthDate || "";
