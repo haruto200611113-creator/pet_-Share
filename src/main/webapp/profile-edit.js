@@ -124,18 +124,19 @@ const selfIntroductionInput =
 const saveProfileButton =
     document.getElementById("saveProfileButton");
 
-const cancelProfileButton =
-    document.getElementById("cancelProfileButton");
+
+const cancelButton =
+    document.getElementById("cancelButton");
 
 
-    /* =========================================================
+/* =========================================================
  * キャンセルボタン
  * マイページへ戻る
  * ========================================================= */
 
-if (cancelProfileButton) {
+if (cancelButton) {
 
-    cancelProfileButton.addEventListener(
+    cancelButton.addEventListener(
         "click",
         function () {
 
