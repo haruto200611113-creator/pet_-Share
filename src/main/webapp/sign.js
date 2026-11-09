@@ -1,8 +1,21 @@
 "use strict";
 
-// =====================================================
-// HTML要素の取得
-// =====================================================
+/*
+ * 新規登録画面 sign.html 用 JavaScript
+ *
+ * ・利用規約確認状態を sessionStorage で管理
+ * ・利用規約確認後に「利用規約に同意する」を有効化
+ * ・利用規約ページへ移動する前に入力内容を保存
+ * ・sign.html に戻ってきたときに入力内容を復元
+ * ・パスワードは保存しない
+ * ・入力チェック
+ * ・登録成功時に「登録が完了しました」を表示
+ */
+
+
+/* =========================================================
+ * HTML要素の取得
+ * ========================================================= */
 
 const form = document.getElementById("registerForm");
 const agreement = document.getElementById("agreement");
@@ -10,19 +23,25 @@ const termsStatus = document.getElementById("termsStatus");
 const termsLink = document.getElementById("termsLink");
 
 
-// =====================================================
-// HTML要素の存在確認
-// =====================================================
+/* =========================================================
+ * HTML要素の存在確認
+ * ========================================================= */
 
 if (!form || !agreement || !termsStatus) {
-    console.error("登録画面のHTML要素を取得できません。");
-    throw new Error("HTML要素が見つかりません。");
+
+    console.error(
+        "登録画面のHTML要素を取得できません。"
+    );
+
+    throw new Error(
+        "HTML要素が見つかりません。"
+    );
 }
 
 
-// =====================================================
-// 利用規約確認状態
-// =====================================================
+/* =========================================================
+ * 利用規約の確認状態を更新
+ * ========================================================= */
 
 function updateTermsStatus() {
 
@@ -31,6 +50,7 @@ function updateTermsStatus() {
 
     if (confirmed === "true") {
 
+        // 利用規約を確認済み
         agreement.disabled = false;
 
         termsStatus.textContent =
@@ -38,6 +58,7 @@ function updateTermsStatus() {
 
     } else {
 
+        // 利用規約をまだ確認していない
         agreement.checked = false;
         agreement.disabled = true;
 
@@ -46,12 +67,12 @@ function updateTermsStatus() {
     }
 }
 
-updateTermsStatus();
 
-
-// =====================================================
-// 入力内容を保存
-// =====================================================
+/* =========================================================
+ * 登録フォームの入力内容を保存
+ *
+ * パスワード・確認用パスワードは保存しない
+ * ========================================================= */
 
 function saveFormData() {
 
@@ -63,11 +84,11 @@ function saveFormData() {
         email:
             document.getElementById("email").value,
 
-       lastName:
-    document.getElementById("lastName").value,
+        lastName:
+            document.getElementById("lastName").value,
 
-firstName:
-    document.getElementById("firstName").value,
+        firstName:
+            document.getElementById("firstName").value,
 
         birthDate:
             document.getElementById("birthDate").value,
@@ -96,6 +117,7 @@ firstName:
             document.getElementById("building").value
     };
 
+
     sessionStorage.setItem(
         "registerFormData",
         JSON.stringify(formData)
@@ -103,59 +125,100 @@ firstName:
 }
 
 
-// =====================================================
-// 保存した入力内容を復元
-// =====================================================
+/* =========================================================
+ * 保存していた入力内容を復元
+ * ========================================================= */
 
 function restoreFormData() {
 
     const savedData =
         sessionStorage.getItem("registerFormData");
 
+    // 保存データがなければ何もしない
     if (!savedData) {
         return;
     }
+
 
     try {
 
         const formData =
             JSON.parse(savedData);
 
-        document.getElementById("accountName").value =
+
+        /* -------------------------
+         * 各入力項目を復元
+         * ------------------------- */
+
+        document.getElementById(
+            "accountName"
+        ).value =
             formData.accountName || "";
 
-        document.getElementById("email").value =
+
+        document.getElementById(
+            "email"
+        ).value =
             formData.email || "";
 
-        document.getElementById("lastName").value =
-    formData.lastName || "";
 
-document.getElementById("firstName").value =
-    formData.firstName || "";
+        document.getElementById(
+            "lastName"
+        ).value =
+            formData.lastName || "";
 
-        document.getElementById("birthDate").value =
+
+        document.getElementById(
+            "firstName"
+        ).value =
+            formData.firstName || "";
+
+
+        document.getElementById(
+            "birthDate"
+        ).value =
             formData.birthDate || "";
 
-        document.getElementById("phone").value =
+
+        document.getElementById(
+            "phone"
+        ).value =
             formData.phone || "";
 
-        document.getElementById("postalCode").value =
+
+        document.getElementById(
+            "postalCode"
+        ).value =
             formData.postalCode || "";
 
-        document.getElementById("prefecture").value =
+
+        document.getElementById(
+            "prefecture"
+        ).value =
             formData.prefecture || "";
 
-        document.getElementById("city").value =
+
+        document.getElementById(
+            "city"
+        ).value =
             formData.city || "";
 
-        document.getElementById("address").value =
+
+        document.getElementById(
+            "address"
+        ).value =
             formData.address || "";
 
-        document.getElementById("building").value =
+
+        document.getElementById(
+            "building"
+        ).value =
             formData.building || "";
 
 
-        // 性別の復元
+        /* -------------------------
+         * 性別を復元
+         * ------------------------- */
 
         if (formData.gender) {
 
@@ -168,6 +231,7 @@ document.getElementById("firstName").value =
                 gender.checked = true;
             }
         }
+
 
     } catch (error) {
 
@@ -183,9 +247,15 @@ document.getElementById("firstName").value =
 }
 
 
-// =====================================================
-// 利用規約を開く
-// =====================================================
+/* =========================================================
+ * 利用規約ページへのリンク
+ *
+ * sign.html
+ * ↓
+ * terms.html
+ *
+ * 移動する前に入力内容を保存する
+ * ========================================================= */
 
 if (termsLink) {
 
@@ -193,51 +263,60 @@ if (termsLink) {
         "click",
         function () {
 
-            // 新規登録から利用規約を開いたことを保存
-
+            // 利用規約ページから戻ってくる場所を記録
             sessionStorage.setItem(
                 "termsFrom",
                 "signup"
             );
 
-            // 入力内容を保存
 
+            // 入力内容を保存
             saveFormData();
         }
     );
 }
 
 
-// =====================================================
-// ページ読み込み時に入力内容を復元
-// =====================================================
+/* =========================================================
+ * 初期処理
+ * ========================================================= */
 
+// 利用規約の確認状態を確認
+updateTermsStatus();
+
+// 保存されている入力内容を復元
 restoreFormData();
 
 
-// =====================================================
-// 新規登録処理
-// =====================================================
+/* =========================================================
+ * 登録フォーム送信処理
+ * ========================================================= */
 
 form.addEventListener(
     "submit",
     function (event) {
 
-        // JavaScriptで入力チェックを行う
-
+        /*
+         * HTMLの通常送信を一旦止める
+         *
+         * 入力チェックが終わるまで
+         * RegisterServletへ送信しない
+         */
         event.preventDefault();
+
 
         console.log(
             "新規登録フォームの入力チェックを開始します。"
         );
 
 
-        // ---------------------------------------------
-        // 利用規約の確認
-        // ---------------------------------------------
+        /* =================================================
+         * 利用規約の確認チェック
+         * ================================================= */
 
         const confirmed =
             sessionStorage.getItem("termsConfirmed");
+
 
         if (confirmed !== "true") {
 
@@ -249,9 +328,9 @@ form.addEventListener(
         }
 
 
-        // ---------------------------------------------
-        // 利用規約への同意
-        // ---------------------------------------------
+        /* =================================================
+         * 利用規約への同意チェック
+         * ================================================= */
 
         if (!agreement.checked) {
 
@@ -263,21 +342,23 @@ form.addEventListener(
         }
 
 
-        // ---------------------------------------------
-        // パスワード取得
-        // ---------------------------------------------
+        /* =================================================
+         * パスワードチェック
+         * ================================================= */
 
         const password =
-            document.getElementById("password").value;
+            document.getElementById(
+                "password"
+            ).value;
+
 
         const passwordConfirm =
-            document.getElementById("confirmPassword").value;
+            document.getElementById(
+                "confirmPassword"
+            ).value;
 
 
-        // ---------------------------------------------
         // パスワード一致確認
-        // ---------------------------------------------
-
         if (password !== passwordConfirm) {
 
             alert(
@@ -288,10 +369,7 @@ form.addEventListener(
         }
 
 
-        // ---------------------------------------------
-        // パスワード文字数確認
-        // ---------------------------------------------
-
+        // パスワード8文字以上確認
         if (password.length < 8) {
 
             alert(
@@ -302,14 +380,15 @@ form.addEventListener(
         }
 
 
-        // ---------------------------------------------
-        // 性別確認
-        // ---------------------------------------------
+        /* =================================================
+         * 性別チェック
+         * ================================================= */
 
         const selectedGender =
             document.querySelector(
                 'input[name="gender"]:checked'
             );
+
 
         if (!selectedGender) {
 
@@ -321,47 +400,102 @@ form.addEventListener(
         }
 
 
-        // ---------------------------------------------
-        // 入力内容を保存
-        // ---------------------------------------------
+        /* =================================================
+         * 入力内容を保存
+         * ================================================= */
 
         saveFormData();
 
-
-        // ---------------------------------------------
-        // JavaのRegisterServletへ送信
-        // ---------------------------------------------
 
         console.log(
             "入力チェック成功。フォームを送信します。"
         );
 
-        // submitイベントを再発生させずに送信
 
+        /*
+         * 通常のフォーム送信を実行
+         *
+         * RegisterServlet
+         * ↓
+         * データベース登録
+         * ↓
+         * sign.html?register=success
+         */
         HTMLFormElement.prototype.submit.call(form);
 
     }
-    // 新規登録完了メッセージを表示
-const params = new URLSearchParams(window.location.search);
-
-if (params.get("register") === "success") {
-
-    const message = document.createElement("div");
-    message.className = "change-complete-message";
-    message.textContent = "登録が完了しました";
-
-    document.body.appendChild(message);
-
-    // 登録完了後は保存していた入力内容を削除
-    sessionStorage.removeItem("registerFormData");
-    sessionStorage.removeItem("termsConfirmed");
-    sessionStorage.removeItem("termsFrom");
-
-    // 1.5秒後にログイン画面へ移動
-    setTimeout(function () {
-
-        window.location.href = "login.html";
-
-    }, 1500);
-}
 );
+
+
+/* =========================================================
+ * 登録完了メッセージ
+ *
+ * RegisterServletから
+ *
+ * sign.html?register=success
+ *
+ * で戻ってきた場合に実行する
+ * ========================================================= */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+if (
+    params.get("register") === "success"
+) {
+
+    /* =====================================================
+     * 登録完了メッセージを表示
+     * ===================================================== */
+
+    const message =
+        document.createElement("div");
+
+
+    message.className =
+        "change-complete-message";
+
+
+    message.textContent =
+        "登録が完了しました";
+
+
+    document.body.appendChild(
+        message
+    );
+
+
+    /* =====================================================
+     * 登録完了後に保存データを削除
+     * ===================================================== */
+
+    sessionStorage.removeItem(
+        "registerFormData"
+    );
+
+    sessionStorage.removeItem(
+        "termsConfirmed"
+    );
+
+    sessionStorage.removeItem(
+        "termsFrom"
+    );
+
+
+    /* =====================================================
+     * 1.5秒後にログイン画面へ移動
+     * ===================================================== */
+
+    setTimeout(
+        function () {
+
+            window.location.href =
+                "login.html";
+
+        },
+        1500
+    );
+}

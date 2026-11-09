@@ -128,9 +128,7 @@ System.out.println("名：" + firstName);
 
                 System.out.println("新規登録成功");
 
-                response.sendRedirect(
-                        request.getContextPath() + "/login.html?register=success"
-                );
+              response.sendRedirect("sign.html?register=success");
 
             } else {
 
