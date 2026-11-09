@@ -138,6 +138,26 @@ const saveProfileButton =
 const cancelButton =
     document.getElementById("cancelButton");
 
+const backButton =
+    document.getElementById("backButton");
+
+
+/* =========================================================
+ * 左上の戻るボタン
+ * マイページへ戻る
+ * ========================================================= */
+
+if (backButton) {
+
+    backButton.addEventListener(
+        "click",
+        function () {
+
+            window.location.href = "mypage.jsp";
+
+        }
+    );
+}
 
 /* =========================================================
  * キャンセルボタン
