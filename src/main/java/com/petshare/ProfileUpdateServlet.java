@@ -10,6 +10,12 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.Part;
+
+import java.io.InputStream;
+import java.util.Base64;
+
 /**
  * プロフィール更新Servlet
  *
@@ -21,6 +27,7 @@ import java.nio.charset.StandardCharsets;
  * ↓
  * Aiven MySQL
  */
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 6 * 1024 * 1024)
 @WebServlet("/profile-update")
 public class ProfileUpdateServlet extends HttpServlet {
 
@@ -98,12 +105,30 @@ public class ProfileUpdateServlet extends HttpServlet {
          * =========================================
          */
 
-        String accountName = request.getParameter(
-                "accountName");
+        String accountName = request.getParameter("accountName");
 
-        String selfIntroduction = request.getParameter(
-                "selfIntroduction");
+        String selfIntroduction = request.getParameter("selfIntroduction");
 
+        Part profileImagePart = request.getPart("profileImage");
+
+        String profileImage = null;
+
+        if (profileImagePart != null
+                && profileImagePart.getSize() > 0) {
+
+            String contentType = profileImagePart.getContentType();
+
+            try (InputStream inputStream = profileImagePart.getInputStream()) {
+
+                byte[] imageBytes = inputStream.readAllBytes();
+
+                String base64 = Base64.getEncoder()
+                        .encodeToString(imageBytes);
+
+                profileImage = "data:" + contentType
+                        + ";base64," + base64;
+            }
+        }
         /*
          * =========================================
          * 入力値チェック
@@ -146,7 +171,8 @@ public class ProfileUpdateServlet extends HttpServlet {
         boolean result = dao.updateProfile(
                 accountId,
                 accountName,
-                selfIntroduction);
+                selfIntroduction,
+                profileImage);
 
         /*
          * =========================================

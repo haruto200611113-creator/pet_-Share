@@ -322,18 +322,30 @@ if (saveProfileButton) {
              * URLSearchParamsを使用する。
              * ============================================= */
 
-            const params =
-                new URLSearchParams();
+            const formData =
+    new FormData();
 
-            params.append(
-                "accountName",
-                accountName
-            );
+formData.append(
+    "accountName",
+    accountName
+);
 
-            params.append(
-                "selfIntroduction",
-                selfIntroduction
-            );
+formData.append(
+    "selfIntroduction",
+    selfIntroduction
+);
+
+/* プロフィール画像 */
+if (
+    profileImageInput &&
+    profileImageInput.files.length > 0
+) {
+
+    formData.append(
+        "profileImage",
+        profileImageInput.files[0]
+    );
+}
 
 
             /* =============================================
@@ -358,20 +370,13 @@ if (saveProfileButton) {
                  * ----------------------------------------- */
 
                 const response =
-                    await fetch(
-                        "profile-update",
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/x-www-form-urlencoded; charset=UTF-8"
-                            },
-
-                            body:
-                                params.toString()
-                        }
-                    );
+    await fetch(
+        "profile-update",
+        {
+            method: "POST",
+            body: formData
+        }
+    );
 
 
                 /* =========================================

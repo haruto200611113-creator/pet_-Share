@@ -1137,7 +1137,8 @@ public class UserDAO {
     public boolean updateProfile(
             int accountId,
             String accountName,
-            String selfIntroduction) {
+            String selfIntroduction,
+            String profileImage) {
 
         // 入力チェック
         if (accountId <= 0 || isEmpty(accountName)) {
@@ -1163,12 +1164,12 @@ public class UserDAO {
 
         String profileInsertSql = "INSERT INTO user_profile "
                 + "(account_id, self_introduction, profile_image) "
-                + "VALUES (?, ?, NULL)";
+                + "VALUES (?, ?, ?)";
 
         String profileUpdateSql = "UPDATE user_profile "
-                + "SET self_introduction = ? "
+                + "SET self_introduction = ?, "
+                + "profile_image = ? "
                 + "WHERE account_id = ?";
-
         try (Connection con = getConnection()) {
 
             // トランザクション開始
@@ -1217,25 +1218,57 @@ public class UserDAO {
 
                 if (profileExists) {
 
-                    // 既に存在する場合は更新
+                    /*
+                     * 画像が選択されている場合
+                     */
+                    if (profileImage != null) {
 
-                    try (PreparedStatement ps = con.prepareStatement(profileUpdateSql)) {
+                        try (PreparedStatement ps = con.prepareStatement(profileUpdateSql)) {
 
-                        ps.setString(
-                                1,
-                                selfIntroduction);
+                            ps.setString(
+                                    1,
+                                    selfIntroduction);
 
-                        ps.setInt(
-                                2,
-                                accountId);
+                            ps.setString(
+                                    2,
+                                    profileImage);
 
-                        ps.executeUpdate();
+                            ps.setInt(
+                                    3,
+                                    accountId);
+
+                            ps.executeUpdate();
+                        }
+
+                    } else {
+
+                        /*
+                         * 画像を変更していない場合
+                         * 既存画像をそのまま残す
+                         */
+                        String sql = "UPDATE user_profile "
+                                + "SET self_introduction = ? "
+                                + "WHERE account_id = ?";
+
+                        try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+                            ps.setString(
+                                    1,
+                                    selfIntroduction);
+
+                            ps.setInt(
+                                    2,
+                                    accountId);
+
+                            ps.executeUpdate();
+                        }
                     }
 
                 } else {
 
-                    // 存在しない場合は新規登録
-
+                    /*
+                     * 初めてプロフィールを作る場合
+                     */
                     try (PreparedStatement ps = con.prepareStatement(profileInsertSql)) {
 
                         ps.setInt(
@@ -1245,6 +1278,10 @@ public class UserDAO {
                         ps.setString(
                                 2,
                                 selfIntroduction);
+
+                        ps.setString(
+                                3,
+                                profileImage);
 
                         ps.executeUpdate();
                     }
