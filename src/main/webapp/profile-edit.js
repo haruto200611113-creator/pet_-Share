@@ -47,6 +47,9 @@ async function loadProfile() {
 
         const profile =
             await response.json();
+            console.log("取得したプロフィール:", profile);
+console.log("プロフィール画像:", profile.profileImage);
+console.log("画像データ長:", profile.profileImage?.length);
 
 
         /* -----------------------------------------
@@ -78,14 +81,21 @@ async function loadProfile() {
          * ----------------------------------------- */
 
         if (
-            profileImagePreview
-            && profile.profileImage
-        ) {
+    profileImagePreview
+    && profile.profileImage
+) {
+    profileImagePreview.src =
+        profile.profileImage;
 
-            profileImagePreview.src =
-                profile.profileImage;
+    profileImagePreview.style.display = "block";
 
-        }
+    const profileImageDefault =
+        document.getElementById("profileImageDefault");
+
+    if (profileImageDefault) {
+        profileImageDefault.style.display = "none";
+    }
+}
 
 
         console.log(
