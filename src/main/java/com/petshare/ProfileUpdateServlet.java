@@ -156,21 +156,15 @@ public class ProfileUpdateServlet extends HttpServlet {
 
         if (result) {
 
-            /*
-             * 保存成功
-             *
-             * プロフィール画面へ戻る
-             */
-            response.sendRedirect(
-                    "mypage.jsp?profile=updated");
+            // 保存成功
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write("success");
 
         } else {
 
-            /*
-             * 保存失敗
-             */
-            response.sendRedirect(
-                    "profile-edit.html?error=save");
+            // 保存失敗
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("error");
         }
     }
 }
