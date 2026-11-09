@@ -7,26 +7,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Base64;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 public class UserDAO {
 
-  // =====================================
-// Aiven MySQL接続設定
-// =====================================
-
-// データベース接続URL
 // =====================================
 // Aiven MySQL接続設定
 // =====================================
 
-private static final String TRUSTSTORE_PATH =
-    "/etc/secrets/aiven-truststore-render.p12";
-
+// TrustStoreのパスワード
 private static final String TRUSTSTORE_PASSWORD =
     System.getenv("AIVEN_TRUSTSTORE_PASSWORD");
 
+// Renderの環境変数から取得するBase64化されたTrustStore
+private static final String TRUSTSTORE_BASE64 =
+    System.getenv("AIVEN_TRUSTSTORE_BASE64");
+
+// Render上で復元するTrustStoreの保存先
+private static final String TRUSTSTORE_PATH =
+    createTrustStoreFile();
+
+// Aiven MySQL接続URL
 private static final String URL =
     "jdbc:mysql://mysql-1589c60e-petshare-project.f.aivencloud.com:21440/defaultdb"
     + "?sslMode=VERIFY_CA"
@@ -34,11 +39,44 @@ private static final String URL =
     + "&trustCertificateKeyStoreType=PKCS12"
     + "&trustCertificateKeyStorePassword=" + TRUSTSTORE_PASSWORD;
 
+// データベースユーザー
 private static final String USER =
     System.getenv("AIVEN_DB_USER");
 
+// データベースパスワード
 private static final String PASSWORD =
     System.getenv("AIVEN_DB_PASSWORD");
+
+// =====================================
+// Base64 → TrustStore復元
+// =====================================
+
+private static String createTrustStoreFile() {
+
+    if (TRUSTSTORE_BASE64 == null || TRUSTSTORE_BASE64.isBlank()) {
+        throw new ExceptionInInitializerError(
+            "AIVEN_TRUSTSTORE_BASE64 が設定されていません"
+        );
+    }
+
+    try {
+
+        byte[] trustStoreBytes =
+            Base64.getMimeDecoder().decode(TRUSTSTORE_BASE64);
+
+        Path path = Path.of("/tmp/aiven-truststore-render.p12");
+
+        Files.write(path, trustStoreBytes);
+
+        return path.toAbsolutePath().toString();
+
+    } catch (Exception e) {
+
+        throw new ExceptionInInitializerError(
+            "TrustStoreの復元に失敗しました: " + e.getMessage()
+        );
+    }
+}
 
     // =====================================
     // DB接続設定確認
