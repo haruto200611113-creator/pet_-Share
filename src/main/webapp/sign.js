@@ -341,4 +341,27 @@ form.addEventListener(
         HTMLFormElement.prototype.submit.call(form);
 
     }
+    // 新規登録完了メッセージを表示
+const params = new URLSearchParams(window.location.search);
+
+if (params.get("register") === "success") {
+
+    const message = document.createElement("div");
+    message.className = "change-complete-message";
+    message.textContent = "登録が完了しました";
+
+    document.body.appendChild(message);
+
+    // 登録完了後は保存していた入力内容を削除
+    sessionStorage.removeItem("registerFormData");
+    sessionStorage.removeItem("termsConfirmed");
+    sessionStorage.removeItem("termsFrom");
+
+    // 1.5秒後にログイン画面へ移動
+    setTimeout(function () {
+
+        window.location.href = "login.html";
+
+    }, 1500);
+}
 );
