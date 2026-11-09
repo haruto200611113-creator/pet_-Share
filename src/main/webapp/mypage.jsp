@@ -587,7 +587,73 @@
 </nav>
 
 
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
 
+    try {
+
+        const response = await fetch("profile-get", {
+            method: "GET"
+        });
+
+        if (!response.ok) {
+            console.error("プロフィール情報の取得に失敗しました");
+            return;
+        }
+
+        const profile = await response.json();
+
+        const profileImage =
+            document.getElementById("profileImage");
+
+        const profileDefaultIcon =
+            document.getElementById("profileDefaultIcon");
+
+
+        /*
+         * DBにプロフィール画像が登録されている場合
+         */
+        if (
+            profile.profileImage &&
+            profile.profileImage.trim() !== ""
+        ) {
+
+            profileImage.src =
+                profile.profileImage;
+
+            profileImage.style.display =
+                "block";
+
+            profileDefaultIcon.style.display =
+                "none";
+
+        }
+
+        /*
+         * プロフィール画像がない場合
+         * 今まで通り🐾を表示
+         */
+        else {
+
+            profileImage.style.display =
+                "none";
+
+            profileDefaultIcon.style.display =
+                "block";
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "プロフィール画像取得エラー：",
+            error
+        );
+
+    }
+
+});
+</script>
 <script src="mypage.js"></script>
 
 </body>

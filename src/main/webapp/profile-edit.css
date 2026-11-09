@@ -1,136 +1,158 @@
-/* =========================================================
-   profile-edit.css
-   プロフィール編集画面
-   ========================================================= */
-
-
-/* =========================================================
-   全体
-   ========================================================= */
-
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    padding: 0;
-    background-color: #f8f6f3;
+    background: #f7f3ef;
     color: #4b3b33;
     font-family:
         -apple-system,
         BlinkMacSystemFont,
-        "Helvetica Neue",
-        "Yu Gothic",
+        "Segoe UI",
         "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
         Meiryo,
         sans-serif;
 }
 
 
-/* =========================================================
-   メインコンテナ
-   ========================================================= */
+/* =========================
+   ヘッダー
+========================= */
 
-.profile-edit-container {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 40px 30px 60px;
-}
-
-
-/* =========================================================
-   タイトル
-   ========================================================= */
-
-.profile-edit-title {
-    margin: 0 0 35px;
-    text-align: center;
-    color: #4b3b33;
-    font-size: 30px;
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   プロフィール編集フォーム
-   ========================================================= */
-
-.profile-edit-form {
-    width: 100%;
-    background-color: #ffffff;
-    border-radius: 18px;
-    padding: 35px 40px 40px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-}
-
-
-/* =========================================================
-   各項目
-   ========================================================= */
-
-.profile-form-group {
-    margin-bottom: 28px;
-}
-
-.profile-form-group:last-child {
-    margin-bottom: 0;
-}
-
-
-/* =========================================================
-   ラベル
-   ========================================================= */
-
-.profile-form-group label {
-    display: block;
-    margin-bottom: 10px;
-    color: #4b3b33;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   プロフィール画像
-   ========================================================= */
-
-.profile-image-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-
-/* 画像表示エリア */
-
-.profile-image-preview {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    margin-bottom: 18px;
-
-    overflow: hidden;
-
-    border-radius: 50%;
-    background-color: #eee8e3;
-
-    border: 2px solid #d8cec6;
+.header {
+    height: 60px;
+    background: #ffffff;
+    border-bottom: 1px solid #eee5df;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    position: relative;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.back-button {
+    position: absolute;
+    left: 15px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 25px;
+    color: #555;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   メイン
+========================= */
+
+.main-content {
+    width: 100%;
+    max-width: 650px;
+
+    margin: 0 auto;
+    padding: 25px 16px 50px;
+}
+
+
+/* =========================
+   セクション
+========================= */
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    margin: 0 0 10px 5px;
+
+    font-size: 15px;
+    font-weight: 700;
+    color: #4b3b33;
+}
+
+
+/* =========================
+   フォームカード
+========================= */
+
+.form-card {
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================
+   プロフィール画像
+========================= */
+
+.profile-image-card {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.profile-image-current {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    min-width: 0;
+}
+
+
+.profile-image-preview {
+    width: 82px;
+    height: 82px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #f3e4d5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    font-size: 38px;
 }
 
 
 /*
- * プロフィール画像本体
+ * プロフィール画像
  *
- * ここが重要。
- * display: none; にするとDBから画像を読み込んでも
- * 画面に表示されないため、display: block; にする。
+ * 元のレイアウトはそのまま。
+ * DBから画像を読み込んだ場合に表示できるよう
+ * display を block に変更。
  */
 .profile-image-preview img {
     width: 100%;
@@ -142,264 +164,231 @@ body {
 }
 
 
-/* デフォルトの👤アイコン */
-
 .profile-image-fallback {
     display: block;
-
-    font-size: 58px;
-    line-height: 1;
-
-    color: #9d9189;
 }
 
 
-/*
- * JavaScript側で画像が存在するときは
- * profileImageDefault.style.display = "none"
- * にする。
- */
-.profile-image-preview img[src=""] {
-    display: none;
+.profile-image-text {
+    min-width: 0;
 }
 
 
-/* =========================================================
-   プロフィール画像変更ボタン
-   ========================================================= */
-
-.profile-image-input-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-/* 本物のfile inputは隠す */
-
-#profileImageInput {
-    display: none;
-}
-
-
-/* 「画像を変更」ボタン */
-
-.profile-image-select-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    min-width: 150px;
-    min-height: 42px;
-
-    padding: 10px 20px;
-
-    border: 1px solid #cfc3ba;
-    border-radius: 22px;
-
-    background-color: #ffffff;
-    color: #4b3b33;
+.profile-image-text strong {
+    display: block;
 
     font-size: 14px;
+    color: #4b3b33;
+}
+
+
+.profile-image-text p {
+    margin: 6px 0 0;
+
+    font-size: 11px;
+    color: #999;
+}
+
+
+.profile-image-change {
+    flex-shrink: 0;
+}
+
+
+.image-change-button {
+    padding: 10px 16px;
+
+    border: 1px solid #ddd3cc;
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #555;
+
+    font-family: inherit;
+    font-size: 12px;
     font-weight: 600;
 
     cursor: pointer;
 
-    transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.1s ease;
-}
-
-.profile-image-select-button:hover {
-    background-color: #f3eee9;
-    border-color: #b9aaa0;
-}
-
-.profile-image-select-button:active {
-    transform: scale(0.98);
+    transition: 0.2s;
 }
 
 
-/* =========================================================
-   アカウント名
-   ========================================================= */
+.image-change-button:hover {
+    background: #f8f5f1;
+}
 
-#accountName {
-    width: 100%;
-    min-height: 48px;
 
-    padding: 12px 15px;
+/* =========================
+   フォーム
+========================= */
 
-    border: 1px solid #d8cec6;
-    border-radius: 10px;
+.form-group {
+    margin-bottom: 20px;
+}
 
-    background-color: #ffffff;
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+
     color: #4b3b33;
+}
 
-    font-size: 16px;
+
+.required {
+    color: #e78b54;
+
+    font-size: 10px;
+
+    margin-left: 3px;
+}
+
+
+/* =========================
+   アカウント名
+========================= */
+
+.form-group input[type="text"] {
+    width: 100%;
+
+    height: 44px;
+
+    padding: 0 12px;
+
+    border: 1px solid #ddd5cf;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #333;
+
+    font-family: inherit;
+    font-size: 14px;
 
     outline: none;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-#accountName:focus {
-    border-color: #a99283;
-    box-shadow: 0 0 0 3px rgba(169, 146, 131, 0.15);
-}
-
-#accountName::placeholder {
-    color: #b5aaa3;
 }
 
 
-/* =========================================================
+/* =========================
+   入力欄フォーカス
+========================= */
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #e6a16f;
+
+    box-shadow:
+        0 0 0 2px rgba(230, 161, 111, 0.12);
+}
+
+
+/* =========================
    自己紹介
-   ========================================================= */
+========================= */
 
-#selfIntroduction {
+.form-group textarea {
     width: 100%;
-    min-height: 180px;
 
-    padding: 14px 15px;
+    min-height: 130px;
 
-    border: 1px solid #d8cec6;
-    border-radius: 10px;
+    padding: 12px;
 
-    background-color: #ffffff;
-    color: #4b3b33;
+    border: 1px solid #ddd5cf;
+    border-radius: 8px;
 
-    font-size: 15px;
-    line-height: 1.7;
+    background: #ffffff;
+
+    color: #333;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    line-height: 1.6;
 
     resize: vertical;
 
     outline: none;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-#selfIntroduction:focus {
-    border-color: #a99283;
-    box-shadow: 0 0 0 3px rgba(169, 146, 131, 0.15);
-}
-
-#selfIntroduction::placeholder {
-    color: #b5aaa3;
 }
 
 
-/* =========================================================
-   文字数表示
-   ========================================================= */
+.input-note {
+    margin: 6px 0 0;
 
-.char-count {
-    margin-top: 7px;
-
-    text-align: right;
-
-    color: #9d9189;
-
-    font-size: 12px;
+    font-size: 11px;
+    color: #999;
 }
 
 
-/* =========================================================
-   ボタンエリア
-   ========================================================= */
+/* =========================
+   ボタン
+========================= */
 
-.profile-edit-buttons {
+.button-area {
+    margin-top: 30px;
+
     display: flex;
-    justify-content: center;
-    gap: 15px;
 
-    margin-top: 35px;
+    flex-direction: column;
+
+    gap: 10px;
 }
 
 
-/* 共通ボタン */
+.save-button {
+    width: 100%;
+    height: 48px;
 
-.profile-edit-buttons button {
-    min-width: 140px;
-    min-height: 48px;
+    border: none;
+    border-radius: 10px;
 
-    padding: 12px 25px;
+    background: #e89b68;
 
-    border-radius: 25px;
+    color: #ffffff;
 
-    font-size: 15px;
-    font-weight: 600;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
 
     cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.1s ease,
-        box-shadow 0.2s ease;
-}
-
-.profile-edit-buttons button:active {
-    transform: scale(0.98);
 }
 
 
-/* =========================================================
-   保存ボタン
-   ========================================================= */
-
-#saveProfileButton {
-    border: 1px solid #8f7b6d;
-
-    background-color: #8f7b6d;
-    color: #ffffff;
-}
-
-#saveProfileButton:hover {
-    background-color: #7d6a5e;
-    box-shadow: 0 3px 10px rgba(75, 59, 51, 0.18);
+.save-button:hover {
+    opacity: 0.9;
 }
 
 
-/* =========================================================
-   キャンセルボタン
-   ========================================================= */
+.cancel-button {
+    width: 100%;
+    height: 45px;
 
-#cancelButton {
-    border: 1px solid #cfc3ba;
+    border: 1px solid #ddd3cc;
+    border-radius: 10px;
 
-    background-color: #ffffff;
-    color: #6f625b;
-}
+    background: #ffffff;
 
-#cancelButton:hover {
-    background-color: #f3eee9;
-    border-color: #b9aaa0;
-}
+    color: #666;
 
-
-/* =========================================================
-   エラーメッセージ
-   ========================================================= */
-
-.profile-error-message {
-    margin-top: 8px;
-
-    color: #c94c4c;
-
+    font-family: inherit;
     font-size: 13px;
-    line-height: 1.5;
+
+    cursor: pointer;
 }
 
 
-/* =========================================================
-   保存完了メッセージ
-   ========================================================= */
+/* =========================
+   変更完了メッセージ
+========================= */
 
 .change-complete-message {
     position: fixed;
@@ -420,15 +409,14 @@ body {
     font-size: 24px;
     font-weight: 600;
 
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.18);
+    box-shadow:
+        0 6px 25px rgba(0, 0, 0, 0.18);
 
     z-index: 9999;
 
     animation: messageFadeIn 0.2s ease;
 }
 
-
-/* 完了メッセージのアニメーション */
 
 @keyframes messageFadeIn {
 
@@ -445,140 +433,37 @@ body {
 }
 
 
-/* =========================================================
-   読み込み中
-   ========================================================= */
+/* =========================
+   スマホ
+========================= */
 
-.profile-loading {
-    text-align: center;
+@media (max-width: 480px) {
 
-    padding: 40px 20px;
-
-    color: #8f837b;
-
-    font-size: 14px;
-}
-
-
-/* =========================================================
-   スマートフォン対応
-   ========================================================= */
-
-@media screen and (max-width: 600px) {
-
-    .profile-edit-container {
-        padding: 25px 15px 45px;
+    .main-content {
+        padding: 20px 12px 40px;
     }
 
-
-    .profile-edit-title {
-        font-size: 25px;
-        margin-bottom: 25px;
+    .form-card {
+        padding: 16px;
     }
 
-
-    .profile-edit-form {
-        padding: 25px 20px 30px;
-
-        border-radius: 14px;
-    }
-
-
-    .profile-image-preview {
-        width: 130px;
-        height: 130px;
-    }
-
-
-    .profile-image-fallback {
-        font-size: 50px;
-    }
-
-
-    .profile-form-group {
-        margin-bottom: 23px;
-    }
-
-
-    .profile-form-group label {
-        font-size: 15px;
-    }
-
-
-    #accountName {
-        min-height: 45px;
-
-        font-size: 15px;
-    }
-
-
-    #selfIntroduction {
-        min-height: 160px;
-
-        font-size: 14px;
-    }
-
-
-    .profile-edit-buttons {
-        flex-direction: column;
-
+    .profile-image-card {
         gap: 10px;
-
-        margin-top: 28px;
     }
-
-
-    .profile-edit-buttons button {
-        width: 100%;
-
-        min-height: 46px;
-    }
-
-
-    .change-complete-message {
-        width: calc(100% - 40px);
-
-        padding: 22px 20px;
-
-        text-align: center;
-
-        font-size: 20px;
-    }
-
-}
-
-
-/* =========================================================
-   スマートフォン小画面対応
-   ========================================================= */
-
-@media screen and (max-width: 400px) {
-
-    .profile-edit-container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-
-    .profile-edit-form {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-
 
     .profile-image-preview {
-        width: 115px;
-        height: 115px;
+        width: 70px;
+        height: 70px;
+
+        font-size: 30px;
     }
 
-
-    .profile-image-fallback {
-        font-size: 44px;
+    .profile-image-text {
+        display: none;
     }
 
-
-    .profile-edit-title {
-        font-size: 23px;
+    .image-change-button {
+        padding: 9px 12px;
     }
 
 }
