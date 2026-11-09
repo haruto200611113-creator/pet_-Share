@@ -39,7 +39,10 @@ if (profileImageInput && profileImagePreview) {
             }
 
 
-            // 画像ファイルか確認
+            /* ---------------------------------------------
+             * 画像ファイルか確認
+             * --------------------------------------------- */
+
             if (!file.type.startsWith("image/")) {
 
                 alert(
@@ -52,8 +55,11 @@ if (profileImageInput && profileImagePreview) {
             }
 
 
-            // ファイルサイズ確認
-            // 5MBまで
+            /* ---------------------------------------------
+             * ファイルサイズ確認
+             * 5MBまで
+             * --------------------------------------------- */
+
             if (file.size > 5 * 1024 * 1024) {
 
                 alert(
@@ -66,7 +72,10 @@ if (profileImageInput && profileImagePreview) {
             }
 
 
-            // プレビュー表示
+            /* ---------------------------------------------
+             * プレビュー表示
+             * --------------------------------------------- */
+
             const reader =
                 new FileReader();
 
@@ -75,6 +84,7 @@ if (profileImageInput && profileImagePreview) {
 
                     profileImagePreview.src =
                         event.target.result;
+
                 };
 
             reader.readAsDataURL(file);
@@ -181,42 +191,41 @@ if (saveProfileButton) {
 
 
             /* =============================================
-             * フォームデータ作成
+             * 送信データ作成
+             *
+             * ProfileUpdateServlet.java 側では
+             *
+             * request.getParameter("accountName")
+             * request.getParameter("selfIntroduction")
+             *
+             * を使用しているため、
+             * FormDataではなく
+             * application/x-www-form-urlencoded
+             * で送信する。
              * ============================================= */
 
-            const formData =
-                new FormData();
+            const params =
+                new URLSearchParams();
 
-            formData.append(
+            params.append(
                 "accountName",
                 accountName
             );
 
-            formData.append(
+            params.append(
                 "selfIntroduction",
                 selfIntroduction
             );
 
 
             /* =============================================
-             * プロフィール画像
+             * プロフィール画像について
              *
-             * 今回は画像ファイル自体のDB保存は
-             * まだ行わない。
+             * 現在は画像を画面上でプレビューする
+             * ところまで実装済み。
              *
-             * 画像処理は次の工程で実装する。
+             * DBへの画像保存はまだ行わない。
              * ============================================= */
-
-            if (
-                profileImageInput
-                && profileImageInput.files.length > 0
-            ) {
-
-                formData.append(
-                    "profileImage",
-                    profileImageInput.files[0]
-                );
-            }
 
 
             /* =============================================
@@ -225,6 +234,10 @@ if (saveProfileButton) {
 
             try {
 
+                /* -----------------------------------------
+                 * 保存ボタンを無効化
+                 * ----------------------------------------- */
+
                 saveProfileButton.disabled =
                     true;
 
@@ -232,12 +245,23 @@ if (saveProfileButton) {
                     "保存中...";
 
 
+                /* -----------------------------------------
+                 * サーバーへ送信
+                 * ----------------------------------------- */
+
                 const response =
                     await fetch(
                         "profile-update",
                         {
                             method: "POST",
-                            body: formData
+
+                            headers: {
+                                "Content-Type":
+                                    "application/x-www-form-urlencoded; charset=UTF-8"
+                            },
+
+                            body:
+                                params.toString()
                         }
                     );
 
@@ -293,7 +317,7 @@ if (saveProfileButton) {
 
 
                 /* =========================================
-                 * 1.5秒後にマイページへ
+                 * 1.5秒後にマイページへ移動
                  * ========================================= */
 
                 setTimeout(
@@ -309,6 +333,10 @@ if (saveProfileButton) {
 
             } catch (error) {
 
+                /* =========================================
+                 * 保存失敗
+                 * ========================================= */
+
                 console.error(
                     "プロフィール保存エラー：",
                     error
@@ -318,6 +346,10 @@ if (saveProfileButton) {
                     "プロフィールの保存に失敗しました。"
                 );
 
+
+                /* -----------------------------------------
+                 * 保存ボタンを元に戻す
+                 * ----------------------------------------- */
 
                 saveProfileButton.disabled =
                     false;
