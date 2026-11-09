@@ -23,8 +23,7 @@ public class UpdatePasswordServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        HttpSession session =
-            request.getSession(false);
+        HttpSession session = request.getSession(false);
 
         // =====================================
         // ログイン確認
@@ -34,33 +33,25 @@ public class UpdatePasswordServlet extends HttpServlet {
                 || session.getAttribute("loginUser") == null) {
 
             response.setStatus(
-                HttpServletResponse.SC_UNAUTHORIZED
-            );
+                    HttpServletResponse.SC_UNAUTHORIZED);
 
             response.getWriter().write(
-                "ログインしてください。"
-            );
+                    "ログインしてください。");
 
             return;
         }
 
-        User loginUser =
-            (User) session.getAttribute("loginUser");
-
+        User loginUser = (User) session.getAttribute("loginUser");
 
         // =====================================
         // 入力値取得
         // =====================================
 
-        String currentPassword =
-            request.getParameter("currentPassword");
+        String currentPassword = request.getParameter("currentPassword");
 
-        String newPassword =
-            request.getParameter("newPassword");
+        String newPassword = request.getParameter("newPassword");
 
-        String confirmPassword =
-            request.getParameter("confirmPassword");
-
+        String confirmPassword = request.getParameter("confirmPassword");
 
         // =====================================
         // 入力チェック
@@ -70,12 +61,10 @@ public class UpdatePasswordServlet extends HttpServlet {
                 || currentPassword.trim().isEmpty()) {
 
             response.setStatus(
-                HttpServletResponse.SC_BAD_REQUEST
-            );
+                    HttpServletResponse.SC_BAD_REQUEST);
 
             response.getWriter().write(
-                "現在のパスワードを入力してください。"
-            );
+                    "現在のパスワードを入力してください。");
 
             return;
         }
@@ -84,12 +73,10 @@ public class UpdatePasswordServlet extends HttpServlet {
                 || newPassword.trim().isEmpty()) {
 
             response.setStatus(
-                HttpServletResponse.SC_BAD_REQUEST
-            );
+                    HttpServletResponse.SC_BAD_REQUEST);
 
             response.getWriter().write(
-                "新しいパスワードを入力してください。"
-            );
+                    "新しいパスワードを入力してください。");
 
             return;
         }
@@ -98,16 +85,13 @@ public class UpdatePasswordServlet extends HttpServlet {
                 || confirmPassword.trim().isEmpty()) {
 
             response.setStatus(
-                HttpServletResponse.SC_BAD_REQUEST
-            );
+                    HttpServletResponse.SC_BAD_REQUEST);
 
             response.getWriter().write(
-                "新しいパスワード（確認）を入力してください。"
-            );
+                    "新しいパスワード（確認）を入力してください。");
 
             return;
         }
-
 
         // =====================================
         // 8文字以上チェック
@@ -116,16 +100,13 @@ public class UpdatePasswordServlet extends HttpServlet {
         if (newPassword.length() < 8) {
 
             response.setStatus(
-                HttpServletResponse.SC_BAD_REQUEST
-            );
+                    HttpServletResponse.SC_BAD_REQUEST);
 
             response.getWriter().write(
-                "新しいパスワードは8文字以上で設定してください。"
-            );
+                    "新しいパスワードは8文字以上で設定してください。");
 
             return;
         }
-
 
         // =====================================
         // パスワード一致確認
@@ -134,31 +115,24 @@ public class UpdatePasswordServlet extends HttpServlet {
         if (!newPassword.equals(confirmPassword)) {
 
             response.setStatus(
-                HttpServletResponse.SC_BAD_REQUEST
-            );
+                    HttpServletResponse.SC_BAD_REQUEST);
 
             response.getWriter().write(
-                "新しいパスワードが一致していません。"
-            );
+                    "新しいパスワードが一致していません。");
 
             return;
         }
-
 
         // =====================================
         // DB更新
         // =====================================
 
-        UserDAO dao =
-            new UserDAO();
+        UserDAO dao = new UserDAO();
 
-        boolean result =
-            dao.updatePassword(
+        boolean result = dao.updatePassword(
                 loginUser.getAccountId(),
                 currentPassword,
-                newPassword
-            );
-
+                newPassword);
 
         // =====================================
         // 成功
@@ -167,29 +141,23 @@ public class UpdatePasswordServlet extends HttpServlet {
         if (result) {
 
             System.out.println(
-                "================================="
-            );
+                    "=================================");
 
             System.out.println(
-                "パスワード変更成功"
-            );
+                    "パスワード変更成功");
 
             System.out.println(
-                "account_id：" +
-                loginUser.getAccountId()
-            );
+                    "account_id：" +
+                            loginUser.getAccountId());
 
             System.out.println(
-                "================================="
-            );
+                    "=================================");
 
             response.setStatus(
-                HttpServletResponse.SC_OK
-            );
+                    HttpServletResponse.SC_OK);
 
             response.getWriter().write(
-                "パスワードを変更しました。"
-            );
+                    "パスワードを変更しました。");
 
         }
 
@@ -200,12 +168,10 @@ public class UpdatePasswordServlet extends HttpServlet {
         else {
 
             response.setStatus(
-                HttpServletResponse.SC_BAD_REQUEST
-            );
+                    HttpServletResponse.SC_BAD_REQUEST);
 
             response.getWriter().write(
-                "現在のパスワードが正しくないか、パスワードの変更に失敗しました。"
-            );
+                    "現在のパスワードが正しくないか、パスワードの変更に失敗しました。");
         }
     }
 }

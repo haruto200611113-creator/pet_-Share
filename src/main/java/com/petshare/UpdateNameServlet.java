@@ -39,25 +39,21 @@ public class UpdateNameServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
                 response.getWriter().write(
-                        "{\"success\":false,\"message\":\"ログインしてください。\"}"
-                );
+                        "{\"success\":false,\"message\":\"ログインしてください。\"}");
 
                 return;
             }
 
             // ログイン中のUserを取得
-            User loginUser =
-                    (User) session.getAttribute("loginUser");
+            User loginUser = (User) session.getAttribute("loginUser");
 
             // アカウントID取得
             int accountId = loginUser.getAccountId();
 
             // 姓・名を取得
-            String lastName =
-                    request.getParameter("lastName");
+            String lastName = request.getParameter("lastName");
 
-            String firstName =
-                    request.getParameter("firstName");
+            String firstName = request.getParameter("firstName");
 
             // 前後の空白を削除
             if (lastName != null) {
@@ -80,12 +76,10 @@ public class UpdateNameServlet extends HttpServlet {
                 System.out.println("姓または名が未入力です。");
 
                 response.setStatus(
-                        HttpServletResponse.SC_BAD_REQUEST
-                );
+                        HttpServletResponse.SC_BAD_REQUEST);
 
                 response.getWriter().write(
-                        "{\"success\":false,\"message\":\"姓と名を入力してください。\"}"
-                );
+                        "{\"success\":false,\"message\":\"姓と名を入力してください。\"}");
 
                 return;
             }
@@ -94,16 +88,13 @@ public class UpdateNameServlet extends HttpServlet {
             UserDAO dao = new UserDAO();
 
             // データベース更新
-            boolean result =
-                    dao.updateName(
-                            accountId,
-                            lastName,
-                            firstName
-                    );
+            boolean result = dao.updateName(
+                    accountId,
+                    lastName,
+                    firstName);
 
             System.out.println(
-                    "データベース更新結果：" + result
-            );
+                    "データベース更新結果：" + result);
 
             // 更新成功
             if (result) {
@@ -114,45 +105,38 @@ public class UpdateNameServlet extends HttpServlet {
 
                 session.setAttribute(
                         "loginUser",
-                        loginUser
-                );
+                        loginUser);
 
                 System.out.println("名前変更成功");
 
                 response.getWriter().write(
-                        "{\"success\":true,\"message\":\"名前を変更しました。\"}"
-                );
+                        "{\"success\":true,\"message\":\"名前を変更しました。\"}");
 
             } else {
 
                 System.out.println("名前変更失敗");
 
                 response.setStatus(
-                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR
-                );
+                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
                 response.getWriter().write(
-                        "{\"success\":false,\"message\":\"名前の変更に失敗しました。\"}"
-                );
+                        "{\"success\":false,\"message\":\"名前の変更に失敗しました。\"}");
             }
 
         } catch (Exception e) {
 
             System.err.println(
-                    "名前変更処理でエラーが発生しました。"
-            );
+                    "名前変更処理でエラーが発生しました。");
 
             e.printStackTrace();
 
             if (!response.isCommitted()) {
 
                 response.setStatus(
-                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR
-                );
+                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
                 response.getWriter().write(
-                        "{\"success\":false,\"message\":\"システムエラーが発生しました。\"}"
-                );
+                        "{\"success\":false,\"message\":\"システムエラーが発生しました。\"}");
             }
 
         } finally {

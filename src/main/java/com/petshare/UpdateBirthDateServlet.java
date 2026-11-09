@@ -28,8 +28,7 @@ public class UpdateBirthDateServlet extends HttpServlet {
             // ログイン確認
             // ==============================
 
-            HttpSession session =
-                    request.getSession(false);
+            HttpSession session = request.getSession(false);
 
             if (session == null
                     || session.getAttribute("loginUser") == null) {
@@ -38,35 +37,28 @@ public class UpdateBirthDateServlet extends HttpServlet {
                         HttpServletResponse.SC_UNAUTHORIZED);
 
                 response.getWriter().write(
-                        "{\"success\":false,\"message\":\"ログインしてください。\"}"
-                );
+                        "{\"success\":false,\"message\":\"ログインしてください。\"}");
 
                 return;
             }
-
 
             // ==============================
             // ログインユーザー取得
             // ==============================
 
-            User loginUser =
-                    (User) session.getAttribute("loginUser");
+            User loginUser = (User) session.getAttribute("loginUser");
 
-            int accountId =
-                    loginUser.getAccountId();
-
+            int accountId = loginUser.getAccountId();
 
             // ==============================
             // 生年月日取得
             // ==============================
 
-            String birthDate =
-                    request.getParameter("birthDate");
+            String birthDate = request.getParameter("birthDate");
 
             if (birthDate != null) {
                 birthDate = birthDate.trim();
             }
-
 
             // ==============================
             // 入力チェック
@@ -79,25 +71,20 @@ public class UpdateBirthDateServlet extends HttpServlet {
                         HttpServletResponse.SC_BAD_REQUEST);
 
                 response.getWriter().write(
-                        "{\"success\":false,\"message\":\"生年月日を入力してください。\"}"
-                );
+                        "{\"success\":false,\"message\":\"生年月日を入力してください。\"}");
 
                 return;
             }
-
 
             // ==============================
             // DB更新
             // ==============================
 
-            UserDAO dao =
-                    new UserDAO();
+            UserDAO dao = new UserDAO();
 
-            boolean result =
-                    dao.updateBirthDate(
-                            accountId,
-                            birthDate);
-
+            boolean result = dao.updateBirthDate(
+                    accountId,
+                    birthDate);
 
             // ==============================
             // 更新結果
@@ -113,8 +100,7 @@ public class UpdateBirthDateServlet extends HttpServlet {
                         loginUser);
 
                 response.getWriter().write(
-                        "{\"success\":true,\"message\":\"生年月日を変更しました。\"}"
-                );
+                        "{\"success\":true,\"message\":\"生年月日を変更しました。\"}");
 
             } else {
 
@@ -122,8 +108,7 @@ public class UpdateBirthDateServlet extends HttpServlet {
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
                 response.getWriter().write(
-                        "{\"success\":false,\"message\":\"生年月日の変更に失敗しました。\"}"
-                );
+                        "{\"success\":false,\"message\":\"生年月日の変更に失敗しました。\"}");
             }
 
         } catch (Exception e) {
@@ -136,8 +121,7 @@ public class UpdateBirthDateServlet extends HttpServlet {
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
                 response.getWriter().write(
-                        "{\"success\":false,\"message\":\"システムエラーが発生しました。\"}"
-                );
+                        "{\"success\":false,\"message\":\"システムエラーが発生しました。\"}");
             }
         }
     }

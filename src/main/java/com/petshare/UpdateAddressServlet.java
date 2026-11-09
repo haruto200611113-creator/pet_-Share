@@ -16,7 +16,7 @@ public class UpdateAddressServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
+            HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
@@ -28,29 +28,22 @@ public class UpdateAddressServlet extends HttpServlet {
         if (session == null || session.getAttribute("loginUser") == null) {
             response.sendError(
                     HttpServletResponse.SC_UNAUTHORIZED,
-                    "ログインしてください。"
-            );
+                    "ログインしてください。");
             return;
         }
 
-        User loginUser =
-                (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute("loginUser");
 
         // 入力された住所情報を取得
-        String postalCode =
-                request.getParameter("postalCode");
+        String postalCode = request.getParameter("postalCode");
 
-        String prefecture =
-                request.getParameter("prefecture");
+        String prefecture = request.getParameter("prefecture");
 
-        String city =
-                request.getParameter("city");
+        String city = request.getParameter("city");
 
-        String address =
-                request.getParameter("address");
+        String address = request.getParameter("address");
 
-        String building =
-                request.getParameter("building");
+        String building = request.getParameter("building");
 
         // 必須項目チェック
         if (postalCode == null || postalCode.trim().isEmpty()
@@ -60,8 +53,7 @@ public class UpdateAddressServlet extends HttpServlet {
 
             response.sendError(
                     HttpServletResponse.SC_BAD_REQUEST,
-                    "必須項目を入力してください。"
-            );
+                    "必須項目を入力してください。");
             return;
         }
 
@@ -84,8 +76,7 @@ public class UpdateAddressServlet extends HttpServlet {
                 prefecture,
                 city,
                 address,
-                building
-        );
+                building);
 
         if (result) {
 
@@ -97,8 +88,7 @@ public class UpdateAddressServlet extends HttpServlet {
             loginUser.setBuilding(building);
 
             response.setStatus(
-                    HttpServletResponse.SC_OK
-            );
+                    HttpServletResponse.SC_OK);
 
             response.getWriter().write("success");
 
@@ -106,8 +96,7 @@ public class UpdateAddressServlet extends HttpServlet {
 
             response.sendError(
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "住所の更新に失敗しました。"
-            );
+                    "住所の更新に失敗しました。");
         }
     }
 }

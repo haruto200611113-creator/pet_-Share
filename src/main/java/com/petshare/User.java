@@ -19,10 +19,10 @@ public class User {
     private String password;
 
     // 姓
-private String lastName;
+    private String lastName;
 
-// 名
-private String firstName;
+    // 名
+    private String firstName;
     // 生年月日
     private String birthDate;
 
@@ -47,14 +47,12 @@ private String firstName;
     // 建物名
     private String building;
 
-
     // ==============================
     // コンストラクタ
     // ==============================
 
     public User() {
     }
-
 
     // ==============================
     // アカウントID
@@ -68,7 +66,6 @@ private String firstName;
         this.accountId = accountId;
     }
 
-
     // ==============================
     // アカウント名
     // ==============================
@@ -80,7 +77,6 @@ private String firstName;
     public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
-
 
     // ==============================
     // メールアドレス
@@ -94,7 +90,6 @@ private String firstName;
         this.email = email;
     }
 
-
     // ==============================
     // パスワード
     // ==============================
@@ -107,27 +102,25 @@ private String firstName;
         this.password = password;
     }
 
-
     // ==============================
     // 氏名
     // ==============================
 
-   public String getLastName() {
-    return lastName;
-}
+    public String getLastName() {
+        return lastName;
+    }
 
-public void setLastName(String lastName) {
-    this.lastName = lastName;
-}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
+    public String getFirstName() {
+        return firstName;
+    }
 
-public String getFirstName() {
-    return firstName;
-}
-
-public void setFirstName(String firstName) {
-    this.firstName = firstName;
-}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
     // ==============================
     // 生年月日
@@ -141,7 +134,6 @@ public void setFirstName(String firstName) {
         this.birthDate = birthDate;
     }
 
-
     // ==============================
     // 性別
     // ==============================
@@ -153,7 +145,6 @@ public void setFirstName(String firstName) {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
 
     // ==============================
     // 電話番号
@@ -167,7 +158,6 @@ public void setFirstName(String firstName) {
         this.phone = phone;
     }
 
-
     // ==============================
     // 郵便番号
     // ==============================
@@ -179,7 +169,6 @@ public void setFirstName(String firstName) {
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
-
 
     // ==============================
     // 都道府県
@@ -193,7 +182,6 @@ public void setFirstName(String firstName) {
         this.prefecture = prefecture;
     }
 
-
     // ==============================
     // 市区町村
     // ==============================
@@ -206,7 +194,6 @@ public void setFirstName(String firstName) {
         this.city = city;
     }
 
-
     // ==============================
     // 丁目・番地
     // ==============================
@@ -218,7 +205,6 @@ public void setFirstName(String firstName) {
     public void setAddress(String address) {
         this.address = address;
     }
-
 
     // ==============================
     // 建物名

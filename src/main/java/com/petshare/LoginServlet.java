@@ -16,7 +16,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
+            HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
@@ -29,8 +29,7 @@ public class LoginServlet extends HttpServlet {
                 || password == null || password.isEmpty()) {
 
             response.sendRedirect(
-                request.getContextPath() + "/login.html?error=empty"
-            );
+                    request.getContextPath() + "/login.html?error=empty");
             return;
         }
 
@@ -45,8 +44,7 @@ public class LoginServlet extends HttpServlet {
             if (loginUser == null) {
 
                 response.sendRedirect(
-                    request.getContextPath() + "/login.html?error=invalid"
-                );
+                        request.getContextPath() + "/login.html?error=invalid");
                 return;
             }
 
@@ -57,8 +55,7 @@ public class LoginServlet extends HttpServlet {
             if (fullUser == null) {
 
                 response.sendRedirect(
-                    request.getContextPath() + "/login.html?error=system"
-                );
+                        request.getContextPath() + "/login.html?error=system");
                 return;
             }
 
@@ -92,26 +89,23 @@ public class LoginServlet extends HttpServlet {
 
             // ⑥ マイページへ移動
             response.sendRedirect(
-                request.getContextPath() + "/home.html"
-            );
+                    request.getContextPath() + "/home.html");
 
         } catch (Exception e) {
 
             e.printStackTrace();
 
             response.sendRedirect(
-                request.getContextPath() + "/login.html?error=system"
-            );
+                    request.getContextPath() + "/login.html?error=system");
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
+            HttpServletResponse response)
             throws ServletException, IOException {
 
         response.sendRedirect(
-            request.getContextPath() + "/login.html"
-        );
+                request.getContextPath() + "/login.html");
     }
 }

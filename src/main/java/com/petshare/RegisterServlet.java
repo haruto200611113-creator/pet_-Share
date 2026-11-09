@@ -31,7 +31,7 @@ public class RegisterServlet extends HttpServlet {
             String confirmPassword = request.getParameter("confirmPassword");
 
             String lastName = request.getParameter("lastName");
-String firstName = request.getParameter("firstName");
+            String firstName = request.getParameter("firstName");
             String birthDate = request.getParameter("birthDate");
             String gender = request.getParameter("gender");
 
@@ -46,7 +46,7 @@ String firstName = request.getParameter("firstName");
             System.out.println("アカウント名：" + accountName);
             System.out.println("メールアドレス：" + email);
             System.out.println("姓：" + lastName);
-System.out.println("名：" + firstName);
+            System.out.println("名：" + firstName);
             System.out.println("生年月日：" + birthDate);
             System.out.println("性別：" + gender);
 
@@ -68,8 +68,7 @@ System.out.println("名：" + firstName);
                 System.out.println("必須項目が未入力です。");
 
                 response.sendRedirect(
-                        request.getContextPath() + "/sign.html?error=empty"
-                );
+                        request.getContextPath() + "/sign.html?error=empty");
                 return;
             }
 
@@ -79,8 +78,7 @@ System.out.println("名：" + firstName);
                 System.out.println("パスワードが一致しません。");
 
                 response.sendRedirect(
-                        request.getContextPath() + "/sign.html?error=password"
-                );
+                        request.getContextPath() + "/sign.html?error=password");
                 return;
             }
 
@@ -90,8 +88,7 @@ System.out.println("名：" + firstName);
                 System.out.println("パスワードが8文字未満です。");
 
                 response.sendRedirect(
-                        request.getContextPath() + "/sign.html?error=passwordLength"
-                );
+                        request.getContextPath() + "/sign.html?error=passwordLength");
                 return;
             }
 
@@ -128,15 +125,14 @@ System.out.println("名：" + firstName);
 
                 System.out.println("新規登録成功");
 
-              response.sendRedirect("sign.html?register=success");
+                response.sendRedirect("sign.html?register=success");
 
             } else {
 
                 System.out.println("新規登録失敗");
 
                 response.sendRedirect(
-                        request.getContextPath() + "/sign.html?error=database"
-                );
+                        request.getContextPath() + "/sign.html?error=database");
             }
 
         } catch (Exception e) {
@@ -146,8 +142,7 @@ System.out.println("名：" + firstName);
 
             if (!response.isCommitted()) {
                 response.sendRedirect(
-                        request.getContextPath() + "/sign.html?error=system"
-                );
+                        request.getContextPath() + "/sign.html?error=system");
             }
 
         } finally {

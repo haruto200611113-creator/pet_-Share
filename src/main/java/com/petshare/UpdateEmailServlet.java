@@ -27,14 +27,11 @@ public class UpdateEmailServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-
         // =====================================
         // セッション取得
         // =====================================
 
-        HttpSession session =
-            request.getSession(false);
-
+        HttpSession session = request.getSession(false);
 
         // =====================================
         // ログイン確認
@@ -44,32 +41,25 @@ public class UpdateEmailServlet extends HttpServlet {
                 || session.getAttribute("loginUser") == null) {
 
             response.setStatus(
-                HttpServletResponse.SC_UNAUTHORIZED
-            );
+                    HttpServletResponse.SC_UNAUTHORIZED);
 
             response.getWriter().write(
-                "ログインしてください。"
-            );
+                    "ログインしてください。");
 
             return;
         }
-
 
         // =====================================
         // ログインユーザー取得
         // =====================================
 
-        User loginUser =
-            (User) session.getAttribute("loginUser");
-
+        User loginUser = (User) session.getAttribute("loginUser");
 
         // =====================================
         // メールアドレス取得
         // =====================================
 
-        String email =
-            request.getParameter("email");
-
+        String email = request.getParameter("email");
 
         // =====================================
         // 入力チェック
@@ -79,40 +69,32 @@ public class UpdateEmailServlet extends HttpServlet {
                 || email.trim().isEmpty()) {
 
             response.setStatus(
-                HttpServletResponse.SC_BAD_REQUEST
-            );
+                    HttpServletResponse.SC_BAD_REQUEST);
 
             response.getWriter().write(
-                "メールアドレスを入力してください。"
-            );
+                    "メールアドレスを入力してください。");
 
             return;
         }
 
-
         email = email.trim();
-
 
         // =====================================
         // メールアドレス形式チェック
         // =====================================
 
-        String emailPattern =
-            "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+        String emailPattern = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
 
         if (!email.matches(emailPattern)) {
 
             response.setStatus(
-                HttpServletResponse.SC_BAD_REQUEST
-            );
+                    HttpServletResponse.SC_BAD_REQUEST);
 
             response.getWriter().write(
-                "正しいメールアドレスを入力してください。"
-            );
+                    "正しいメールアドレスを入力してください。");
 
             return;
         }
-
 
         // =====================================
         // 現在のメールアドレスと同じか確認
@@ -122,30 +104,23 @@ public class UpdateEmailServlet extends HttpServlet {
                 loginUser.getEmail())) {
 
             response.setStatus(
-                HttpServletResponse.SC_BAD_REQUEST
-            );
+                    HttpServletResponse.SC_BAD_REQUEST);
 
             response.getWriter().write(
-                "現在と同じメールアドレスです。"
-            );
+                    "現在と同じメールアドレスです。");
 
             return;
         }
-
 
         // =====================================
         // UserDAOでDB更新
         // =====================================
 
-        UserDAO dao =
-            new UserDAO();
+        UserDAO dao = new UserDAO();
 
-        boolean result =
-            dao.updateEmail(
+        boolean result = dao.updateEmail(
                 loginUser.getAccountId(),
-                email
-            );
-
+                email);
 
         // =====================================
         // 更新結果
@@ -157,55 +132,42 @@ public class UpdateEmailServlet extends HttpServlet {
             loginUser.setEmail(email);
 
             session.setAttribute(
-                "loginUser",
-                loginUser
-            );
-
+                    "loginUser",
+                    loginUser);
 
             System.out.println(
-                "================================="
-            );
+                    "=================================");
 
             System.out.println(
-                "メールアドレス変更成功"
-            );
+                    "メールアドレス変更成功");
 
             System.out.println(
-                "account_id：" +
-                loginUser.getAccountId()
-            );
+                    "account_id：" +
+                            loginUser.getAccountId());
 
             System.out.println(
-                "変更後メールアドレス：" +
-                email
-            );
+                    "変更後メールアドレス：" +
+                            email);
 
             System.out.println(
-                "================================="
-            );
-
+                    "=================================");
 
             response.setStatus(
-                HttpServletResponse.SC_OK
-            );
+                    HttpServletResponse.SC_OK);
 
             response.getWriter().write(
-                "メールアドレスを更新しました。"
-            );
+                    "メールアドレスを更新しました。");
 
         } else {
 
             System.err.println(
-                "メールアドレス変更に失敗しました。"
-            );
+                    "メールアドレス変更に失敗しました。");
 
             response.setStatus(
-                HttpServletResponse.SC_INTERNAL_SERVER_ERROR
-            );
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
             response.getWriter().write(
-                "メールアドレスの更新に失敗しました。"
-            );
+                    "メールアドレスの更新に失敗しました。");
         }
     }
 }
