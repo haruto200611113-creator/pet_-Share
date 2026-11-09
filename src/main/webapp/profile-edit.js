@@ -124,7 +124,26 @@ const selfIntroductionInput =
 const saveProfileButton =
     document.getElementById("saveProfileButton");
 
+const cancelProfileButton =
+    document.getElementById("cancelProfileButton");
 
+
+    /* =========================================================
+ * キャンセルボタン
+ * マイページへ戻る
+ * ========================================================= */
+
+if (cancelProfileButton) {
+
+    cancelProfileButton.addEventListener(
+        "click",
+        function () {
+
+            window.location.href = "mypage.jsp";
+
+        }
+    );
+}
 /* =========================================================
  * プロフィール画像のプレビュー
  * ========================================================= */
