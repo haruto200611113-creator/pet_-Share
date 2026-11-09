@@ -1,6 +1,110 @@
 "use strict";
 
+/* =========================================================
+ * DBからプロフィール情報を取得
+ * ========================================================= */
 
+async function loadProfile() {
+
+    try {
+
+        const response =
+            await fetch("profile-get", {
+                method: "GET"
+            });
+
+
+        /* -----------------------------------------
+         * ログインしていない場合
+         * ----------------------------------------- */
+
+        if (response.status === 401) {
+
+            alert("ログインしてください。");
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+
+        /* -----------------------------------------
+         * その他のエラー
+         * ----------------------------------------- */
+
+        if (!response.ok) {
+
+            throw new Error(
+                "プロフィール情報の取得に失敗しました。"
+            );
+        }
+
+
+        /* -----------------------------------------
+         * JSON取得
+         * ----------------------------------------- */
+
+        const profile =
+            await response.json();
+
+
+        /* -----------------------------------------
+         * アカウント名を表示
+         * ----------------------------------------- */
+
+        if (accountNameInput) {
+
+            accountNameInput.value =
+                profile.accountName || "";
+
+        }
+
+
+        /* -----------------------------------------
+         * 自己紹介を表示
+         * ----------------------------------------- */
+
+        if (selfIntroductionInput) {
+
+            selfIntroductionInput.value =
+                profile.selfIntroduction || "";
+
+        }
+
+
+        /* -----------------------------------------
+         * プロフィール画像
+         * ----------------------------------------- */
+
+        if (
+            profileImagePreview
+            && profile.profileImage
+        ) {
+
+            profileImagePreview.src =
+                profile.profileImage;
+
+        }
+
+
+        console.log(
+            "プロフィール情報の読み込み成功"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "プロフィール取得エラー：",
+            error
+        );
+
+        alert(
+            "プロフィール情報の取得に失敗しました。"
+        );
+    }
+}
 /* =========================================================
  * HTML要素の取得
  * ========================================================= */
@@ -38,7 +142,11 @@ if (profileImageInput && profileImagePreview) {
                 return;
             }
 
-            // 画像ファイルか確認
+
+            /* ---------------------------------------------
+             * 画像ファイルか確認
+             * --------------------------------------------- */
+
             if (!file.type.startsWith("image/")) {
 
                 alert(
@@ -50,8 +158,12 @@ if (profileImageInput && profileImagePreview) {
                 return;
             }
 
-            // ファイルサイズ確認
-            // 5MBまで
+
+            /* ---------------------------------------------
+             * ファイルサイズ確認
+             * 5MBまで
+             * --------------------------------------------- */
+
             if (file.size > 5 * 1024 * 1024) {
 
                 alert(
@@ -63,7 +175,11 @@ if (profileImageInput && profileImagePreview) {
                 return;
             }
 
-            // プレビュー表示
+
+            /* ---------------------------------------------
+             * プレビュー表示
+             * --------------------------------------------- */
+
             const reader =
                 new FileReader();
 
@@ -100,6 +216,7 @@ if (selfIntroductionInput) {
                         0,
                         300
                     );
+
             }
         }
     );
@@ -179,6 +296,10 @@ if (saveProfileButton) {
 
             /* =============================================
              * 送信データ作成
+             *
+             * ProfileUpdateServlet.javaの
+             * request.getParameter()で受け取れるように
+             * URLSearchParamsを使用する。
              * ============================================= */
 
             const params =
@@ -213,7 +334,7 @@ if (saveProfileButton) {
 
 
                 /* -----------------------------------------
-                 * サーバーへ送信
+                 * Servletへ送信
                  * ----------------------------------------- */
 
                 const response =
@@ -254,67 +375,105 @@ if (saveProfileButton) {
 
 
                 /* =========================================
-                 * HTTPエラー確認
+                 * 保存成功
                  * ========================================= */
 
-                if (!response.ok) {
+                if (response.ok) {
 
-                    throw new Error(
-                        "プロフィールの保存に失敗しました。"
+                    console.log(
+                        "プロフィールの保存に成功しました"
                     );
+
+
+                    /* -------------------------------------
+                     * 変更完了メッセージ
+                     *
+                     * 他の変更画面と同じ
+                     * change-complete-message
+                     * を使用する。
+                     * ------------------------------------- */
+
+                    const message =
+                        document.createElement("div");
+
+                    message.className =
+                        "change-complete-message";
+
+                    message.textContent =
+                        "変更完了しました";
+
+                    document.body.appendChild(
+                        message
+                    );
+
+
+                    /* -------------------------------------
+                     * 1.5秒後にマイページへ移動
+                     * ------------------------------------- */
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "mypage.jsp";
+
+                        },
+                        1500
+                    );
+
                 }
 
-
                 /* =========================================
-                 * 保存完了メッセージ
+                 * 保存失敗
                  * ========================================= */
 
-                const message =
-                    document.createElement("div");
+                else {
 
-                message.className =
-                    "change-complete-message";
+                    const errorMessage =
+                        await response.text();
 
-                message.textContent =
-                    "プロフィールの保存が完了しました";
+                    console.error(
+                        "プロフィールの保存に失敗しました"
+                    );
 
-                document.body.appendChild(
-                    message
-                );
-
-
-                /* =========================================
-                 * ボタンを元に戻す
-                 * ========================================= */
-
-                saveProfileButton.textContent =
-                    "保存しました";
+                    console.error(
+                        "エラーメッセージ：" +
+                        errorMessage
+                    );
 
 
-                /* =========================================
-                 * 1.5秒後にマイページへ移動
-                 * ========================================= */
-
-                setTimeout(
-                    function () {
-
-                        window.location.href =
-                            "mypage.jsp";
-
-                    },
-                    1500
-                );
+                    alert(
+                        "プロフィールの保存に失敗しました。\n" +
+                        errorMessage
+                    );
 
 
-            } catch (error) {
+                    /* -------------------------------------
+                     * 保存ボタンを元に戻す
+                     * ------------------------------------- */
+
+                    saveProfileButton.disabled =
+                        false;
+
+                    saveProfileButton.textContent =
+                        "保存する";
+                }
+
+            }
+
+            /* =============================================
+             * 通信エラー
+             * ============================================= */
+
+            catch (error) {
 
                 console.error(
-                    "プロフィール保存エラー：",
+                    "プロフィール更新エラー：",
                     error
                 );
 
                 alert(
-                    "プロフィールの保存に失敗しました。"
+                    "プロフィールの保存中にエラーが発生しました。"
                 );
 
 
@@ -330,4 +489,10 @@ if (saveProfileButton) {
             }
         }
     );
+
 }
+/* =========================================================
+ * ページ読み込み時にプロフィールを取得
+ * ========================================================= */
+
+loadProfile();
