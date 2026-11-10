@@ -376,7 +376,7 @@ public class UserDAO {
         }
 
         // SQL
-        String sql = "SELECT account_id, account_name, email, password_hash "
+        String sql = "SELECT account_id, account_name, email, password_hash, user_rank "
                 + "FROM accounts "
                 + "WHERE email = ?";
 
@@ -425,6 +425,9 @@ public class UserDAO {
                         user.setEmail(
                                 rs.getString("email"));
 
+                        user.setUserRank(
+                                rs.getInt("user_rank"));
+
                         System.out.println(
                                 "ログイン認証成功");
 
@@ -471,6 +474,7 @@ public class UserDAO {
                 + "a.account_id, "
                 + "a.account_name, "
                 + "a.email, "
+                + "a.user_rank, "
                 + "p.last_name, "
                 + "p.first_name, "
                 + "p.birth_year, "
@@ -513,6 +517,8 @@ public class UserDAO {
 
                     user.setEmail(
                             rs.getString("email"));
+                    user.setUserRank(
+                            rs.getInt("user_rank"));
 
                     // ==============================
                     // 氏名

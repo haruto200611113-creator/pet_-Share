@@ -12,6 +12,11 @@ public class User {
     // アカウント名
     private String accountName;
 
+    // ユーザーランク
+    // 1 = 下級ユーザー
+    // 2 = 上級ユーザー
+    private int userRank;
+
     // メールアドレス
     private String email;
 
@@ -78,6 +83,17 @@ public class User {
         this.accountName = accountName;
     }
 
+    // ==============================
+    // ユーザーランク
+    // ==============================
+
+    public int getUserRank() {
+        return userRank;
+    }
+
+    public void setUserRank(int userRank) {
+        this.userRank = userRank;
+    }
     // ==============================
     // メールアドレス
     // ==============================
