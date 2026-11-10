@@ -175,77 +175,107 @@ document.addEventListener("DOMContentLoaded", function () {
     // 問題表示
     // ==============================
 
-    function showQuestion() {
+    // ==============================
+// 問題表示
+// ==============================
+function showQuestion() {
 
-        stopTimer();
+    stopTimer();
 
-        answerLocked = false;
+    answerLocked = false;
 
-        const question =
-            questions[
-                currentQuestionIndex
-            ];
+    const question =
+        questions[currentQuestionIndex];
 
+    // 問題データ確認
+    console.log("現在の問題:", question);
 
-        // 問題番号
-        questionNumber.textContent =
-            currentQuestionIndex + 1;
+    // 問題が存在しない場合
+    if (!question) {
 
-        // 全問題数
-        questionCount.textContent =
-            questions.length;
+        console.error(
+            "問題データが見つかりません。",
+            currentQuestionIndex,
+            questions
+        );
 
+        return;
+    }
 
-        // 問題文
-        questionText.textContent =
-            question.questionText;
+    // ==============================
+    // 問題番号
+    // ==============================
 
+    questionNumber.textContent =
+        "第" + (currentQuestionIndex + 1) + "問";
 
-        // 選択肢をクリア
-        choices.innerHTML = "";
+    // ==============================
+    // 全問題数
+    // ==============================
 
+    questionCount.textContent =
+        (currentQuestionIndex + 1)
+        + " / "
+        + questions.length;
 
-        // 4択を作成
-        question.choices.forEach(
-            function (choice, index) {
+    // ==============================
+    // 問題文
+    // ==============================
 
-                const button =
-                    document.createElement(
-                        "button"
-                    );
+    questionText.textContent =
+        question.questionText || "問題文を取得できませんでした。";
 
-                button.type =
-                    "button";
+    // ==============================
+    // 選択肢をクリア
+    // ==============================
 
-                button.className =
-                    "choice-button";
+    choices.innerHTML = "";
 
-                button.textContent =
-                    choice;
+    // ==============================
+    // 選択肢
+    // ==============================
 
-                button.dataset.answer =
-                    index + 1;
+    const choiceList = [
+        question.choices[0],
+        question.choices[1],
+        question.choices[2],
+        question.choices[3]
+    ];
 
-                button.addEventListener(
-                    "click",
-                    function () {
+    choiceList.forEach(function (choice, index) {
 
-                        submitAnswer(
-                            index + 1
-                        );
+        const button =
+            document.createElement("button");
 
-                    }
-                );
+        button.type = "button";
 
-                choices.appendChild(
-                    button
-                );
+        button.className = "choice-button";
+
+        button.textContent =
+            choice;
+
+        button.dataset.answer =
+            index + 1;
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                submitAnswer(index + 1);
+
             }
         );
 
+        choices.appendChild(button);
 
-        // 10秒スタート
-        startTimer();
+    });
+
+    // ==============================
+    // 10秒スタート
+    // ==============================
+
+    startTimer();
+}
     }
 
 
