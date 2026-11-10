@@ -183,7 +183,7 @@ public class PetKnowledgeTestServlet
         List<PetKnowledgeQuestion> questions = (List<PetKnowledgeQuestion>) session.getAttribute(QUESTIONS);
 
         if (questions == null
-                || questions.size() != 5) {
+                || questions.size() != 30) {
 
             response.sendError(
                     HttpServletResponse.SC_BAD_REQUEST,
@@ -230,7 +230,7 @@ public class PetKnowledgeTestServlet
         // 範囲確認
         if (questionIndex < 0
                 || questionIndex >= questions.size()
-                || answer < 1
+                || answer < 0
                 || answer > 4) {
 
             response.sendError(

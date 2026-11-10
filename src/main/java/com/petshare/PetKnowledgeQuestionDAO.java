@@ -24,8 +24,9 @@ public class PetKnowledgeQuestionDAO {
     private static final String PASSWORD =
             System.getenv("AIVEN_DB_PASSWORD");
 
+
     /**
-     * DBからランダムに5問取得する
+     * DBからランダムに30問取得する
      */
     public List<PetKnowledgeQuestion> getRandomQuestions() {
 
@@ -39,15 +40,18 @@ public class PetKnowledgeQuestionDAO {
                 + "FROM pet_knowledge_questions "
                 + "WHERE is_active = TRUE "
                 + "ORDER BY RAND() "
-                + "LIMIT 5";
+                + "LIMIT 30";
 
         try {
+
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             try (
                 Connection con =
                         DriverManager.getConnection(
-                                URL, USER, PASSWORD);
+                                URL,
+                                USER,
+                                PASSWORD);
 
                 PreparedStatement ps =
                         con.prepareStatement(sql);
@@ -107,6 +111,7 @@ public class PetKnowledgeQuestionDAO {
         return questions;
     }
 
+
     /**
      * 問題IDから1問取得する
      */
@@ -122,12 +127,15 @@ public class PetKnowledgeQuestionDAO {
                 + "AND is_active = TRUE";
 
         try {
+
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             try (
                 Connection con =
                         DriverManager.getConnection(
-                                URL, USER, PASSWORD);
+                                URL,
+                                USER,
+                                PASSWORD);
 
                 PreparedStatement ps =
                         con.prepareStatement(sql)
@@ -135,8 +143,10 @@ public class PetKnowledgeQuestionDAO {
 
                 ps.setInt(1, questionId);
 
-                try (ResultSet rs =
-                        ps.executeQuery()) {
+                try (
+                    ResultSet rs =
+                            ps.executeQuery()
+                ) {
 
                     if (rs.next()) {
 

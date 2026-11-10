@@ -1,151 +1,167 @@
-/* =========================================
+/* =========================================================
    Pet Share
-   本会員への昇格
-========================================= */
+   membership-upgrade.css
+   本会員への昇格画面
+========================================================= */
+
+
+/* =========================================================
+   共通
+========================================================= */
 
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
+    margin: 0;
+    background: #f7f3ef;
+    color: #4b3b33;
+
     font-family:
         -apple-system,
         BlinkMacSystemFont,
-        "Noto Sans JP",
+        "Segoe UI",
+        "Hiragino Kaku Gothic ProN",
         "Yu Gothic",
-        "Meiryo",
+        Meiryo,
         sans-serif;
-
-    background: #f7f7f7;
-    color: #333;
-
-    min-height: 100vh;
-
-    padding-bottom: 90px;
 }
 
 
-/* =========================================
+/* =========================================================
    ヘッダー
-========================================= */
+========================================================= */
 
 .header {
-    position: relative;
+    height: 60px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    height: 64px;
+    position: relative;
 
     background: #ffffff;
 
-    border-bottom: 1px solid #eeeeee;
-
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    border-bottom: 1px solid #eee5df;
 }
 
 .header h1 {
-    font-size: 20px;
-    font-weight: 600;
+    margin: 0;
 
-    color: #333;
+    color: #4b3b33;
+
+    font-size: 18px;
+    font-weight: 700;
 }
 
 
-/* 戻るボタン */
+/* =========================================================
+   戻るボタン
+========================================================= */
 
 .back-button {
     position: absolute;
-    left: 16px;
+
+    left: 15px;
 
     width: 40px;
     height: 40px;
 
     border: none;
+
     background: transparent;
 
-    font-size: 28px;
-    line-height: 1;
+    color: #555;
 
-    color: #333;
+    font-size: 25px;
+    line-height: 1;
 
     cursor: pointer;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    transition: color 0.15s ease;
 }
 
 .back-button:hover {
-    background: #f3f3f3;
-    border-radius: 50%;
+    color: #4b3b33;
 }
 
 
-/* =========================================
+/* =========================================================
    メイン
-========================================= */
+========================================================= */
 
 .main {
     width: 100%;
-    max-width: 700px;
+    max-width: 650px;
 
     margin: 0 auto;
 
-    padding: 28px 20px 40px;
+    padding: 25px 16px 100px;
 }
 
 
-/* =========================================
+/* =========================================================
    セクション
-========================================= */
+========================================================= */
 
 .section {
-    margin-bottom: 24px;
+    margin-bottom: 18px;
 }
+
+
+/* =========================================================
+   セクションタイトル
+========================================================= */
 
 .section-title {
+    margin: 0 0 10px;
+    padding-left: 3px;
+
+    color: #4b3b33;
+
     font-size: 17px;
-    font-weight: 600;
-
-    margin-bottom: 12px;
-
-    color: #333;
+    font-weight: 700;
 }
 
 
-/* =========================================
+/* =========================================================
    説明カード
-========================================= */
+========================================================= */
 
 .info-card {
+    padding: 20px 22px;
+
     background: #ffffff;
 
-    border: 1px solid #eeeeee;
+    border-radius: 16px;
 
-    border-radius: 12px;
-
-    padding: 20px;
-
-    line-height: 1.8;
-
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .info-card p {
-    font-size: 14px;
-    color: #555;
+    margin: 0;
+
+    color: #777;
+
+    font-size: 13px;
+    line-height: 1.8;
 }
 
 
-/* =========================================
-   ステップカード
-========================================= */
+/* =========================================================
+   手続きカード
+========================================================= */
 
 .step-card {
     display: flex;
@@ -153,166 +169,168 @@ body {
 
     gap: 16px;
 
+    padding: 22px;
+
     background: #ffffff;
 
-    border: 1px solid #eeeeee;
+    border-radius: 16px;
 
-    border-radius: 12px;
-
-    padding: 22px 20px;
-
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 
-/* =========================================
-   番号
-========================================= */
+/* =========================================================
+   ステップ番号
+========================================================= */
 
 .step-number {
-    flex-shrink: 0;
+    flex: 0 0 38px;
 
     width: 38px;
     height: 38px;
 
     border-radius: 50%;
 
-    background: #f0f0f0;
+    background: #eb9a6d;
+
+    color: #ffffff;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-size: 17px;
-    font-weight: 600;
-
-    color: #333;
+    font-size: 15px;
+    font-weight: 700;
 }
 
 
-/* =========================================
+/* =========================================================
    ステップ内容
-========================================= */
+========================================================= */
 
 .step-content {
     flex: 1;
+
+    min-width: 0;
 }
 
 .step-content h2 {
+    margin: 1px 0 8px;
+
+    color: #4b3b33;
+
     font-size: 17px;
-
-    font-weight: 600;
-
-    margin-bottom: 10px;
-
-    color: #333;
+    font-weight: 700;
 }
 
 .step-content p {
-    font-size: 14px;
+    margin: 0 0 14px;
 
-    line-height: 1.8;
+    color: #777;
 
-    color: #666;
-
-    margin-bottom: 12px;
+    font-size: 12px;
+    line-height: 1.7;
 }
 
 
-/* =========================================
+/* =========================================================
    注意書き
-========================================= */
+========================================================= */
 
 .notice {
-    font-size: 13px !important;
+    margin-top: -5px !important;
 
-    color: #777 !important;
+    padding: 10px 12px;
 
-    margin-top: -4px;
+    border-radius: 8px;
+
+    background: #faf7f4;
+
+    color: #999 !important;
+
+    font-size: 11px !important;
+    line-height: 1.6 !important;
 }
 
 
-/* =========================================
-   ボタン
-========================================= */
+/* =========================================================
+   アクションボタン
+========================================================= */
 
 .action-button {
-    display: block;
-
     width: 100%;
 
     min-height: 46px;
 
-    margin-top: 16px;
-
-    padding: 12px 18px;
+    padding: 10px 16px;
 
     border: none;
 
-    border-radius: 8px;
+    border-radius: 10px;
 
-    background: #333;
+    background: #eb9a6d;
 
     color: #ffffff;
 
-    font-size: 14px;
+    font-family: inherit;
 
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
 
     cursor: pointer;
 
     transition:
-        opacity 0.2s,
-        transform 0.1s;
+        opacity 0.15s ease,
+        transform 0.1s ease;
 }
 
 .action-button:hover {
-    opacity: 0.85;
+    opacity: 0.9;
 }
 
 .action-button:active {
-    transform: scale(0.98);
+    transform: translateY(1px);
 }
 
 
-/* =========================================
+/* =========================================================
    注意事項カード
-========================================= */
+========================================================= */
 
 .notice-card {
+    padding: 20px 22px;
+
     background: #ffffff;
 
-    border: 1px solid #eeeeee;
+    border-radius: 16px;
 
-    border-radius: 12px;
-
-    padding: 20px;
-
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .notice-card h2 {
+    margin: 0 0 12px;
+
+    color: #4b3b33;
+
     font-size: 16px;
-
-    font-weight: 600;
-
-    margin-bottom: 14px;
-
-    color: #333;
+    font-weight: 700;
 }
 
 .notice-card ul {
+    margin: 0;
+
     padding-left: 20px;
 }
 
 .notice-card li {
-    font-size: 13px;
+    margin-bottom: 9px;
 
-    line-height: 1.8;
+    color: #777;
 
-    color: #666;
-
-    margin-bottom: 6px;
+    font-size: 12px;
+    line-height: 1.7;
 }
 
 .notice-card li:last-child {
@@ -320,9 +338,9 @@ body {
 }
 
 
-/* =========================================
-   下部ナビ
-========================================= */
+/* =========================================================
+   下部ナビゲーション
+========================================================= */
 
 .bottom-nav {
     position: fixed;
@@ -331,104 +349,139 @@ body {
     right: 0;
     bottom: 0;
 
-    height: 68px;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+
+    height: 64px;
 
     background: #ffffff;
 
-    border-top: 1px solid #eeeeee;
-
-    display: flex;
-
-    justify-content: space-around;
-
-    align-items: stretch;
-
-    z-index: 1000;
+    border-top: 1px solid #eee5df;
 }
+
+
+/* =========================================================
+   ナビゲーション項目
+========================================================= */
 
 .nav-item {
     flex: 1;
 
-    max-width: 120px;
+    max-width: 160px;
 
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     justify-content: center;
-
-    gap: 3px;
 
     text-decoration: none;
 
-    color: #999;
+    color: #aaa;
 
-    font-size: 11px;
+    font-size: 10px;
+    line-height: 1.2;
 
-    transition: color 0.2s;
+    transition: color 0.15s ease;
 }
 
+.nav-item:hover {
+    color: #777;
+}
+
+
+/* 現在のページ */
+
+.nav-item.active {
+    color: #eb9a6d;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ナビゲーションアイコン
+========================================================= */
+
 .nav-icon {
-    font-size: 20px;
+    margin-bottom: 3px;
+
+    font-size: 19px;
 
     line-height: 1;
 }
 
-.nav-item.active {
-    color: #333;
 
-    font-weight: 600;
-}
-
-.nav-item:hover {
-    color: #333;
-}
-
-
-/* =========================================
+/* =========================================================
    スマートフォン
-========================================= */
+========================================================= */
 
 @media (max-width: 480px) {
+
+    /* ---------- ヘッダー ---------- */
 
     .header {
         height: 58px;
     }
 
     .header h1 {
-        font-size: 18px;
+        font-size: 17px;
     }
+
+    .back-button {
+        left: 10px;
+
+        width: 38px;
+        height: 38px;
+
+        font-size: 24px;
+    }
+
+
+    /* ---------- メイン ---------- */
 
     .main {
-        padding: 22px 16px 36px;
+        padding: 20px 12px 90px;
     }
 
+
+    /* ---------- セクション ---------- */
+
     .section {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
 
     .section-title {
         font-size: 16px;
     }
 
+
+    /* ---------- カード ---------- */
+
     .info-card,
+    .step-card,
     .notice-card {
-        padding: 17px;
+        padding: 18px;
+
+        border-radius: 15px;
     }
 
-    .step-card {
-        padding: 18px 16px;
 
+    /* ---------- ステップ ---------- */
+
+    .step-card {
         gap: 12px;
     }
 
     .step-number {
+        flex: 0 0 34px;
+
         width: 34px;
         height: 34px;
 
-        font-size: 15px;
+        font-size: 13px;
     }
 
     .step-content h2 {
@@ -436,16 +489,24 @@ body {
     }
 
     .step-content p {
-        font-size: 13px;
+        font-size: 12px;
     }
+
+
+    /* ---------- ボタン ---------- */
 
     .action-button {
-        min-height: 44px;
-
-        font-size: 13px;
+        min-height: 45px;
     }
 
+
+    /* ---------- 下部ナビ ---------- */
+
     .bottom-nav {
-        height: 64px;
+        height: 60px;
+    }
+
+    .nav-icon {
+        font-size: 18px;
     }
 }
