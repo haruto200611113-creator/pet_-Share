@@ -147,7 +147,8 @@ document.addEventListener("DOMContentLoaded", function () {
             resultCard.style.display =
                 "none";
 
-
+            console.log("取得した問題:", questions);
+            console.log("第1問:", questions[0]);
             currentQuestionIndex = 0;
 
             showQuestion();
