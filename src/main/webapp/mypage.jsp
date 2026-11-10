@@ -45,6 +45,17 @@
     private String displayValue(String value) {
         return (value == null || value.trim().isEmpty()) ? "未登録" : value;
     }
+    // 会員ランクのDB値を画面表示用に変換
+private String displayUserRank(int userRank) {
+    switch (userRank) {
+        case 1:
+            return "仮会員";
+        case 2:
+            return "本会員";
+        default:
+            return "未設定";
+    }
+}
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -164,6 +175,10 @@
                 <span class="registration-label">アカウント名</span>
                 <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getAccountName())) %></span>
             </div>
+            <div class="registration-row">
+                <span class="registration-label">会員ランク</span>
+                <span class="registration-value"><%= escapeHtml(displayUserRank(loginUser.getUserRank())) %></span>
+            </div>
 
             <div class="registration-row">
                 <span class="registration-label">メールアドレス</span>
@@ -221,7 +236,52 @@
         </div>
 
     </section>
+    <% if (loginUser.getUserRank() == 1) { %>
 
+<section class="section">
+    <h2 class="section-title">会員ランク</h2>
+
+    <div class="registration-card">
+
+        <div class="registration-row">
+            <span class="registration-label">現在の会員ランク</span>
+
+            <span class="registration-value">
+                仮会員
+            </span>
+        </div>
+
+        <div style="text-align: center; padding: 20px 0;">
+
+            <a href="membership-upgrade.html"
+               class="edit-button">
+                本会員になる
+            </a>
+
+        </div>
+
+    </div>
+</section>
+
+<% } else if (loginUser.getUserRank() == 2) { %>
+
+<section class="section">
+    <h2 class="section-title">会員ランク</h2>
+
+    <div class="registration-card">
+
+        <div class="registration-row">
+            <span class="registration-label">現在の会員ランク</span>
+
+            <span class="registration-value">
+                本会員
+            </span>
+        </div>
+
+    </div>
+</section>
+
+<% } %>
 
 
     <!-- ====================================

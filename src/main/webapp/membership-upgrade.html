@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>本会員への昇格 - ペットシェアアプリ</title>
+
+    <link
+        rel="stylesheet"
+        href="membership-upgrade.css"
+    >
+</head>
+
+<body>
+
+<header class="header">
+
+    <button
+        type="button"
+        class="back-button"
+        onclick="history.back()"
+        aria-label="戻る"
+    >
+        ←
+    </button>
+
+    <h1>
+        本会員への昇格
+    </h1>
+
+</header>
+
+
+<main class="main">
+
+    <!-- ====================================
+         説明
+    ===================================== -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            本会員になるには
+        </h2>
+
+        <div class="info-card">
+
+            <p>
+                Pet Shareの本会員になるには、
+                以下の2つの手続きを行う必要があります。
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ====================================
+         本人確認
+    ===================================== -->
+
+    <section class="section">
+
+        <div class="step-card">
+
+            <div class="step-number">
+                ①
+            </div>
+
+            <div class="step-content">
+
+                <h2>
+                    本人確認
+                </h2>
+
+                <p>
+                    運転免許証などの本人確認書類を使用して、
+                    本人確認を行います。
+                </p>
+
+                <button
+                    type="button"
+                    class="action-button"
+                    id="identityButton"
+                >
+                    本人確認へ進む
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ====================================
+         ペット知識テスト
+    ===================================== -->
+
+    <section class="section">
+
+        <div class="step-card">
+
+            <div class="step-number">
+                ②
+            </div>
+
+            <div class="step-content">
+
+                <h2>
+                    ペット知識テスト
+                </h2>
+
+                <p>
+                    犬・猫に関する知識テストを受けます。
+                </p>
+
+                <p class="notice">
+                    ※1問につき5秒の制限時間があります。
+                </p>
+
+                <button
+                    type="button"
+                    class="action-button"
+                    id="testButton"
+                >
+                    ペット知識テストへ
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ====================================
+         注意事項
+    ===================================== -->
+
+    <section class="section">
+
+        <div class="notice-card">
+
+            <h2>
+                注意事項
+            </h2>
+
+            <ul>
+                <li>
+                    本人確認が必要です。
+                </li>
+
+                <li>
+                    ペット知識テストに合格する必要があります。
+                </li>
+
+                <li>
+                    テストは1問につき5秒です。
+                </li>
+
+                <li>
+                    すべての条件を満たすと本会員へ昇格できます。
+                </li>
+            </ul>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<nav class="bottom-nav">
+
+    <a
+        href="home.html"
+        class="nav-item"
+    >
+        <span class="nav-icon">🏠</span>
+        <span>ホーム</span>
+    </a>
+
+    <a
+        href="likes.html"
+        class="nav-item"
+    >
+        <span class="nav-icon">❤️</span>
+        <span>いいね</span>
+    </a>
+
+    <a
+        href="chat.html"
+        class="nav-item"
+    >
+        <span class="nav-icon">💬</span>
+        <span>チャット</span>
+    </a>
+
+    <a
+        href="mypage.jsp"
+        class="nav-item active"
+    >
+        <span class="nav-icon">👤</span>
+        <span>アカウント</span>
+    </a>
+
+</nav>
+
+
+<script>
+
+document.getElementById("identityButton")
+    .addEventListener("click", function () {
+
+        window.location.href = "identity-verification.html";
+
+    });
+
+
+document.getElementById("testButton")
+    .addEventListener("click", function () {
+
+        window.location.href = "pet-knowledge-test.html";
+
+    });
+
+</script>
+
+</body>
+
+</html>
