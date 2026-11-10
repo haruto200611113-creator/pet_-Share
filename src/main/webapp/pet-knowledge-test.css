@@ -1,0 +1,813 @@
+/* ========================================
+   基本設定
+======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+
+    background: #f7f3ef;
+
+    color: #4b3b33;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+}
+
+
+button {
+    font-family: inherit;
+}
+
+
+
+/* ========================================
+   ヘッダー
+======================================== */
+
+.header {
+    height: 60px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eee5df;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+}
+
+
+.header h1 {
+    margin: 0;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    color: #4b3b33;
+}
+
+
+/* ========================================
+   戻るボタン
+======================================== */
+
+.back-button {
+    position: absolute;
+
+    left: 15px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #555;
+
+    font-size: 25px;
+
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+
+.back-button:hover {
+    color: #e89b68;
+}
+
+
+
+/* ========================================
+   メイン
+======================================== */
+
+.main-content {
+    width: 100%;
+
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    padding: 25px 16px 50px;
+}
+
+
+
+/* ========================================
+   共通カード
+======================================== */
+
+.test-card,
+.result-card {
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 28px 25px;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+
+
+/* ========================================
+   非表示
+======================================== */
+
+.hidden {
+    display: none !important;
+}
+
+
+
+/* ========================================
+   テスト開始画面
+======================================== */
+
+
+/* ペットアイコン */
+
+.test-icon {
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background: #f3e4d5;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 32px;
+}
+
+
+
+/* タイトル */
+
+.test-card > h2 {
+    margin: 0 0 10px;
+
+    text-align: center;
+
+    color: #4b3b33;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+
+
+/* 説明 */
+
+.description {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    text-align: center;
+}
+
+
+
+/* ========================================
+   テストルール
+======================================== */
+
+.rule-box {
+    margin: 22px 0;
+
+    padding: 17px 18px;
+
+    background: #faf7f4;
+
+    border: 1px solid #eee3dc;
+
+    border-radius: 10px;
+}
+
+
+.rule-box h3 {
+    margin: 0 0 10px;
+
+    color: #4b3b33;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.rule-box ul {
+    margin: 0;
+
+    padding-left: 20px;
+
+    color: #666;
+
+    font-size: 12px;
+
+    line-height: 1.9;
+}
+
+
+.rule-box li {
+    margin-bottom: 2px;
+}
+
+
+.rule-box li:last-child {
+    margin-bottom: 0;
+}
+
+
+
+/* ========================================
+   メインボタン
+======================================== */
+
+.main-button {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #e89b68;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.1s ease;
+}
+
+
+.main-button:hover {
+    opacity: 0.9;
+}
+
+
+.main-button:active {
+    transform: translateY(1px);
+}
+
+
+
+/* ========================================
+   サブボタン
+======================================== */
+
+.sub-button {
+    width: 100%;
+
+    min-height: 45px;
+
+    padding: 0 18px;
+
+    border: 1px solid #ddd3cc;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #666;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.sub-button:hover {
+    background: #f8f5f1;
+
+    border-color: #d7cbc2;
+}
+
+
+
+/* ========================================
+   問題画面
+======================================== */
+
+#testCard {
+    padding: 22px 22px 25px;
+}
+
+
+
+/* ========================================
+   問題番号
+======================================== */
+
+.question-number {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+#questionNumber {
+    color: #4b3b33;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+
+#questionCount {
+    color: #999;
+
+    font-size: 12px;
+}
+
+
+
+/* ========================================
+   タイマー
+======================================== */
+
+.timer-area {
+    margin-bottom: 22px;
+
+    text-align: center;
+}
+
+
+.timer-label {
+    margin-bottom: 5px;
+
+    color: #999;
+
+    font-size: 11px;
+}
+
+
+.timer {
+    width: 62px;
+    height: 62px;
+
+    margin: 0 auto;
+
+    border: 4px solid #f0d9c9;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #e89b68;
+
+    font-size: 23px;
+
+    font-weight: 700;
+}
+
+
+
+/* ========================================
+   問題文
+======================================== */
+
+.question-area {
+    margin-bottom: 20px;
+
+    padding: 20px 17px;
+
+    background: #faf7f4;
+
+    border: 1px solid #eee3dc;
+
+    border-radius: 10px;
+}
+
+
+.question-area h2 {
+    margin: 0;
+
+    color: #4b3b33;
+
+    font-size: 16px;
+
+    line-height: 1.8;
+
+    font-weight: 700;
+
+    text-align: left;
+}
+
+
+
+/* ========================================
+   選択肢
+======================================== */
+
+.choices {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.choices button {
+    width: 100%;
+
+    min-height: 52px;
+
+    padding: 12px 15px;
+
+    border: 1px solid #ddd5cf;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #4b3b33;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.1s ease;
+}
+
+
+.choices button:hover {
+    background: #faf7f4;
+
+    border-color: #e6a16f;
+}
+
+
+.choices button:active {
+    transform: translateY(1px);
+}
+
+
+
+/* ========================================
+   結果画面
+======================================== */
+
+.result-card {
+    text-align: center;
+}
+
+
+
+/* ========================================
+   結果アイコン
+======================================== */
+
+.result-icon {
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 14px;
+
+    border-radius: 50%;
+
+    background: #f3e4d5;
+
+    color: #e89b68;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 30px;
+
+    font-weight: 700;
+}
+
+
+
+/* ========================================
+   結果タイトル
+======================================== */
+
+.result-card h2 {
+    margin: 0 0 9px;
+
+    color: #4b3b33;
+
+    font-size: 19px;
+
+    font-weight: 700;
+}
+
+
+
+/* ========================================
+   結果メッセージ
+======================================== */
+
+.result-card p {
+    line-height: 1.7;
+}
+
+
+#resultMessage {
+    margin: 0 0 20px;
+
+    color: #666;
+
+    font-size: 13px;
+}
+
+
+
+/* ========================================
+   スコア
+======================================== */
+
+.score-box {
+    margin: 0 auto 18px;
+
+    padding: 17px 20px;
+
+    background: #faf7f4;
+
+    border: 1px solid #eee3dc;
+
+    border-radius: 10px;
+}
+
+
+.score-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #999;
+
+    font-size: 11px;
+}
+
+
+.score {
+    display: block;
+
+    color: #e89b68;
+
+    font-size: 28px;
+
+    font-weight: 700;
+}
+
+
+
+/* ========================================
+   結果詳細
+======================================== */
+
+.result-detail {
+    margin: 0 0 22px;
+
+    color: #777;
+
+    font-size: 12px;
+
+    line-height: 1.8;
+}
+
+
+
+/* ========================================
+   再受験ボタン
+======================================== */
+
+#retryButton {
+    margin-top: 10px;
+}
+
+
+
+/* ========================================
+   スマートフォン
+======================================== */
+
+@media (max-width: 480px) {
+
+    .header {
+        height: 58px;
+    }
+
+
+    .header h1 {
+        font-size: 16px;
+    }
+
+
+    .back-button {
+        left: 10px;
+
+        width: 38px;
+        height: 38px;
+
+        font-size: 23px;
+    }
+
+
+    .main-content {
+        padding: 20px 12px 40px;
+    }
+
+
+    .test-card,
+    .result-card {
+        padding: 24px 17px;
+
+        border-radius: 14px;
+    }
+
+
+    #testCard {
+        padding: 19px 15px 22px;
+    }
+
+
+    .test-icon {
+        width: 58px;
+        height: 58px;
+
+        font-size: 29px;
+    }
+
+
+    .test-card > h2 {
+        font-size: 18px;
+    }
+
+
+    .description {
+        font-size: 12px;
+    }
+
+
+    .rule-box {
+        padding: 15px;
+    }
+
+
+    .rule-box h3 {
+        font-size: 12px;
+    }
+
+
+    .rule-box ul {
+        font-size: 11px;
+
+        line-height: 1.9;
+    }
+
+
+    .question-number {
+        margin-bottom: 15px;
+    }
+
+
+    #questionNumber {
+        font-size: 14px;
+    }
+
+
+    #questionCount {
+        font-size: 11px;
+    }
+
+
+    .timer-area {
+        margin-bottom: 19px;
+    }
+
+
+    .timer {
+        width: 58px;
+        height: 58px;
+
+        font-size: 21px;
+    }
+
+
+    .question-area {
+        padding: 17px 14px;
+
+        margin-bottom: 17px;
+    }
+
+
+    .question-area h2 {
+        font-size: 15px;
+
+        line-height: 1.7;
+    }
+
+
+    .choices {
+        gap: 8px;
+    }
+
+
+    .choices button {
+        min-height: 50px;
+
+        padding: 11px 13px;
+
+        font-size: 12px;
+    }
+
+
+    .result-icon {
+        width: 56px;
+        height: 56px;
+
+        font-size: 28px;
+    }
+
+
+    .result-card h2 {
+        font-size: 18px;
+    }
+
+
+    .score {
+        font-size: 26px;
+    }
+
+}

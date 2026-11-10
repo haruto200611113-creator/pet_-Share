@@ -16,14 +16,11 @@ public class PetKnowledgeTestServlet
 
     private static final long serialVersionUID = 1L;
 
-    private static final String QUESTIONS =
-            "petKnowledgeQuestions";
+    private static final String QUESTIONS = "petKnowledgeQuestions";
 
-    private static final String CURRENT =
-            "petKnowledgeCurrentQuestion";
+    private static final String CURRENT = "petKnowledgeCurrentQuestion";
 
-    private static final String SCORE =
-            "petKnowledgeScore";
+    private static final String SCORE = "petKnowledgeScore";
 
     /**
      * テスト開始
@@ -34,8 +31,7 @@ public class PetKnowledgeTestServlet
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session =
-                request.getSession(false);
+        HttpSession session = request.getSession(false);
 
         // ログイン確認
         if (session == null
@@ -48,8 +44,7 @@ public class PetKnowledgeTestServlet
             return;
         }
 
-        User loginUser =
-                (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute("loginUser");
 
         // すでに本会員ならテスト不要
         if (loginUser.getUserRank() == 2) {
@@ -64,13 +59,11 @@ public class PetKnowledgeTestServlet
         }
 
         // DBからランダム5問取得
-        PetKnowledgeQuestionDAO dao =
-                new PetKnowledgeQuestionDAO();
+        PetKnowledgeQuestionDAO dao = new PetKnowledgeQuestionDAO();
 
-        List<PetKnowledgeQuestion> questions =
-                dao.getRandomQuestions();
+        List<PetKnowledgeQuestion> questions = dao.getRandomQuestions();
 
-        if (questions.size() < 5) {
+        if (questions.size() < 30) {
 
             response.sendError(
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
@@ -94,17 +87,13 @@ public class PetKnowledgeTestServlet
         response.setContentType(
                 "application/json; charset=UTF-8");
 
-        StringBuilder json =
-                new StringBuilder();
+        StringBuilder json = new StringBuilder();
 
         json.append("{\"status\":\"start\",\"questions\":[");
 
-        for (int i = 0;
-                i < questions.size();
-                i++) {
+        for (int i = 0; i < questions.size(); i++) {
 
-            PetKnowledgeQuestion q =
-                    questions.get(i);
+            PetKnowledgeQuestion q = questions.get(i);
 
             if (i > 0) {
                 json.append(",");
@@ -163,8 +152,7 @@ public class PetKnowledgeTestServlet
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session =
-                request.getSession(false);
+        HttpSession session = request.getSession(false);
 
         // ログイン確認
         if (session == null
@@ -177,8 +165,7 @@ public class PetKnowledgeTestServlet
             return;
         }
 
-        User loginUser =
-                (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute("loginUser");
 
         // 本会員なら処理不要
         if (loginUser.getUserRank() == 2) {
@@ -193,9 +180,7 @@ public class PetKnowledgeTestServlet
         }
 
         @SuppressWarnings("unchecked")
-        List<PetKnowledgeQuestion> questions =
-                (List<PetKnowledgeQuestion>)
-                        session.getAttribute(QUESTIONS);
+        List<PetKnowledgeQuestion> questions = (List<PetKnowledgeQuestion>) session.getAttribute(QUESTIONS);
 
         if (questions == null
                 || questions.size() != 5) {
@@ -207,12 +192,10 @@ public class PetKnowledgeTestServlet
             return;
         }
 
-        String questionIndexText =
-                request.getParameter(
-                        "questionIndex");
+        String questionIndexText = request.getParameter(
+                "questionIndex");
 
-        String answerText =
-                request.getParameter("answer");
+        String answerText = request.getParameter("answer");
 
         if (questionIndexText == null
                 || answerText == null) {
@@ -229,13 +212,11 @@ public class PetKnowledgeTestServlet
 
         try {
 
-            questionIndex =
-                    Integer.parseInt(
-                            questionIndexText);
+            questionIndex = Integer.parseInt(
+                    questionIndexText);
 
-            answer =
-                    Integer.parseInt(
-                            answerText);
+            answer = Integer.parseInt(
+                    answerText);
 
         } catch (NumberFormatException e) {
 
@@ -259,16 +240,13 @@ public class PetKnowledgeTestServlet
             return;
         }
 
-        PetKnowledgeQuestion question =
-                questions.get(questionIndex);
+        PetKnowledgeQuestion question = questions.get(questionIndex);
 
-        int score =
-                (int) session.getAttribute(
-                        SCORE);
+        int score = (int) session.getAttribute(
+                SCORE);
 
         // 正解判定
-        if (answer ==
-                question.getCorrectAnswer()) {
+        if (answer == question.getCorrectAnswer()) {
 
             score++;
         }
@@ -277,22 +255,20 @@ public class PetKnowledgeTestServlet
                 SCORE,
                 score);
 
-        boolean lastQuestion =
-                questionIndex ==
-                        questions.size() - 1;
+        boolean lastQuestion = questionIndex == questions.size() - 1;
 
         response.setContentType(
                 "application/json; charset=UTF-8");
 
-        StringBuilder json =
-                new StringBuilder();
+        StringBuilder json = new StringBuilder();
 
         json.append("{");
 
         if (lastQuestion) {
 
-            boolean passed =
-                    score >= 4;
+            int requiredScore = (int) Math.ceil(questions.size() * 0.9);
+
+            boolean passed = score >= requiredScore;
 
             json.append("\"status\":\"finished\",");
             json.append("\"score\":")
@@ -304,16 +280,13 @@ public class PetKnowledgeTestServlet
             // 合格した場合
             if (passed) {
 
-                int accountId =
-                        loginUser.getAccountId();
+                int accountId = loginUser.getAccountId();
 
-                UserDAO userDAO =
-                        new UserDAO();
+                UserDAO userDAO = new UserDAO();
 
-                boolean upgraded =
-                        userDAO.updateUserRank(
-                                accountId,
-                                2);
+                boolean upgraded = userDAO.updateUserRank(
+                        accountId,
+                        2);
 
                 if (upgraded) {
 

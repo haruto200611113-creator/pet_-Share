@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let timerInterval = null;
 
-    let timeLeft = 5;
+    let timeLeft = 10;
 
     let answerLocked = false;
 
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 data.questions || [];
 
 
-            if (questions.length !== 5) {
+            if (questions.length !== 30) {
 
                 throw new Error(
                     "テスト問題を正しく取得できませんでした。"
@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        // 5秒スタート
+        // 10秒スタート
         startTimer();
     }
 
@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function startTimer() {
 
-        timeLeft = 5;
+        timeLeft = 10;
 
         timer.textContent =
             timeLeft;
@@ -527,7 +527,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "不合格";
 
         resultMessage.textContent =
-            "本会員になるには4問以上正解する必要があります。";
+            "本会員になるには90%以上正解する必要があります。";
 
         resultDetail.textContent =
             "今回は"
