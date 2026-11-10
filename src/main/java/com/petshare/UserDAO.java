@@ -1353,6 +1353,55 @@ public class UserDAO {
         }
     }
 
+    
+       // =====================================
+    // 会員ランク変更
+    // =====================================
+
+    public boolean updateUserRank(
+            int accountId,
+            int userRank) {
+
+        if (accountId <= 0
+                || (userRank != 1 && userRank != 2)) {
+            return false;
+        }
+
+        String sql =
+                "UPDATE accounts "
+                + "SET user_rank = ? "
+                + "WHERE account_id = ?";
+
+        try (
+                Connection con = getConnection();
+                PreparedStatement ps =
+                        con.prepareStatement(sql)) {
+
+            ps.setInt(1, userRank);
+            ps.setInt(2, accountId);
+
+            int result = ps.executeUpdate();
+
+            System.out.println("===== 会員ランク変更 =====");
+            System.out.println("account_id：" + accountId);
+            System.out.println("変更後user_rank：" + userRank);
+            System.out.println("更新件数：" + result);
+            System.out.println("==========================");
+
+            return result > 0;
+
+        } catch (SQLException e) {
+
+            System.err.println(
+                    "会員ランク変更に失敗しました。");
+
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+
     // =====================================
     // プロフィール取得
     // =====================================

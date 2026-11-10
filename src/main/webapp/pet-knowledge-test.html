@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ペット知識テスト - ペットシェアアプリ</title>
+
+    <link
+        rel="stylesheet"
+        href="pet-knowledge-test.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================
+     ヘッダー
+======================================== -->
+
+<header class="header">
+
+    <button
+        type="button"
+        id="backButton"
+        class="back-button"
+        aria-label="戻る"
+    >
+        ←
+    </button>
+
+
+    <h1>
+        ペット知識テスト
+    </h1>
+
+</header>
+
+
+
+<!-- ========================================
+     メイン
+======================================== -->
+
+<main class="main-content">
+
+
+    <!-- ====================================
+         テスト説明
+    ==================================== -->
+
+    <section
+        id="startCard"
+        class="test-card"
+    >
+
+        <div class="test-icon">
+            🐾
+        </div>
+
+
+        <h2>
+            ペット知識テスト
+        </h2>
+
+
+        <p class="description">
+
+            本会員になるための
+            ペット知識テストです。
+
+            <br>
+
+            犬・猫に関する問題が出題されます。
+
+        </p>
+
+
+
+        <!-- ルール -->
+
+        <div class="rule-box">
+
+            <h3>
+                テストのルール
+            </h3>
+
+
+            <ul>
+
+                <li>
+                    全5問出題されます。
+                </li>
+
+                <li>
+                    1問につき5秒の制限時間があります。
+                </li>
+
+                <li>
+                    時間切れになると不正解になります。
+                </li>
+
+                <li>
+                    全問終了後に自動で採点します。
+                </li>
+
+                <li>
+                    4問以上正解すると合格です。
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+        <!-- 開始 -->
+
+        <button
+            type="button"
+            id="startTestButton"
+            class="main-button"
+        >
+            テストを開始する
+        </button>
+
+
+    </section>
+
+
+
+    <!-- ====================================
+         テスト画面
+    ==================================== -->
+
+    <section
+        id="testCard"
+        class="test-card hidden"
+    >
+
+
+        <!-- 問題番号 -->
+
+        <div class="question-number">
+
+            <span id="questionNumber">
+                第1問
+            </span>
+
+            <span id="questionCount">
+                1 / 5
+            </span>
+
+        </div>
+
+
+
+        <!-- タイマー -->
+
+        <div class="timer-area">
+
+            <div class="timer-label">
+                残り時間
+            </div>
+
+
+            <div
+                id="timer"
+                class="timer"
+            >
+                5
+            </div>
+
+        </div>
+
+
+
+        <!-- 問題 -->
+
+        <div class="question-area">
+
+            <h2 id="questionText">
+                問題文
+            </h2>
+
+        </div>
+
+
+
+        <!-- 選択肢 -->
+
+        <div
+            id="choices"
+            class="choices"
+        >
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ====================================
+         結果画面
+    ==================================== -->
+
+    <section
+        id="resultCard"
+        class="result-card hidden"
+    >
+
+
+        <div
+            id="resultIcon"
+            class="result-icon"
+        >
+            ✓
+        </div>
+
+
+        <h2 id="resultTitle">
+            テスト結果
+        </h2>
+
+
+        <p id="resultMessage">
+            結果
+        </p>
+
+
+
+        <!-- スコア -->
+
+        <div class="score-box">
+
+            <span class="score-label">
+                正解数
+            </span>
+
+
+            <span
+                id="score"
+                class="score"
+            >
+                0 / 5
+            </span>
+
+        </div>
+
+
+
+        <!-- 結果説明 -->
+
+        <p
+            id="resultDetail"
+            class="result-detail"
+        >
+        </p>
+
+
+
+        <!-- 合格時 -->
+
+        <button
+            type="button"
+            id="upgradeButton"
+            class="main-button hidden"
+        >
+            本会員になる
+        </button>
+
+
+
+        <!-- 不合格時 -->
+
+        <button
+            type="button"
+            id="retryButton"
+            class="sub-button hidden"
+        >
+            もう一度受験する
+        </button>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ========================================
+     JavaScript
+======================================== -->
+
+<script
+    src="pet-knowledge-test.js"
+></script>
+
+
+</body>
+
+</html>

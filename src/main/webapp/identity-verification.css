@@ -1,11 +1,21 @@
+/* ========================================
+   本人確認画面
+   identity-verification.css
+======================================== */
+
+
+/* ========================================
+   全体
+======================================== */
+
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
-
-    background: #f7f3ef;
+    background-color: #f7f3ef;
     color: #4b3b33;
 
     font-family:
@@ -13,89 +23,147 @@ body {
         BlinkMacSystemFont,
         "Segoe UI",
         "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans",
         "Yu Gothic",
         Meiryo,
         sans-serif;
+
+    line-height: 1.7;
 }
 
 
-/* =========================
+/* ========================================
    ヘッダー
-========================= */
+======================================== */
 
 .header {
-    height: 60px;
+    position: relative;
 
     display: flex;
     align-items: center;
-    justify-content: center;
 
-    position: relative;
+    height: 60px;
 
-    background: #ffffff;
+    background-color: #ffffff;
 
-    border-bottom: 1px solid #eee5df;
+    border-bottom:
+        1px solid #eee5df;
+
+    padding: 0 16px;
+
+    box-sizing: border-box;
 }
 
-.header h1 {
-    margin: 0;
 
-    font-size: 18px;
-}
-
-
-/* =========================
-   戻る
-========================= */
+/* 戻るボタン */
 
 .back-button {
-    position: absolute;
-
-    left: 15px;
-
     width: 40px;
     height: 40px;
 
     border: none;
 
-    background: transparent;
+    background-color: transparent;
 
-    font-size: 25px;
+    color: #4b3b33;
+
+    font-size: 28px;
+
+    line-height: 40px;
+
+    text-align: center;
 
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.1s ease;
 }
 
 
-/* =========================
+/* 戻るボタン ホバー */
+
+.back-button:hover {
+    background-color: #f7f1eb;
+}
+
+
+/* 戻るボタン クリック */
+
+.back-button:active {
+    transform: scale(0.92);
+}
+
+
+/* ヘッダータイトル */
+
+.header h1 {
+    position: absolute;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    color: #4b3b33;
+
+    white-space: nowrap;
+}
+
+
+
+/* ========================================
    メイン
-========================= */
+======================================== */
 
 .main-content {
     width: 100%;
+
     max-width: 650px;
 
     margin: 0 auto;
 
-    padding: 25px 16px 50px;
+    padding:
+        25px 16px 50px;
 }
 
 
-/* =========================
+
+/* ========================================
    本人確認カード
-========================= */
+======================================== */
 
 .verification-card {
-    padding: 30px 22px;
-
-    background: #ffffff;
+    background-color: #ffffff;
 
     border-radius: 18px;
+
+    padding:
+        30px 24px 28px;
 
     text-align: center;
 
     box-shadow:
-        0 2px 12px rgba(0, 0, 0, 0.05);
+        0 4px 16px rgba(75, 59, 51, 0.06);
+
+    border:
+        1px solid #eee5df;
 }
+
+
+
+/* ========================================
+   アイコン
+======================================== */
 
 .verification-icon {
     width: 70px;
@@ -107,163 +175,278 @@ body {
     align-items: center;
     justify-content: center;
 
+    background-color: #f7f1eb;
+
     border-radius: 50%;
 
-    background: #f7f1eb;
-
     font-size: 36px;
+
+    line-height: 1;
 }
+
+
+
+/* ========================================
+   タイトル
+======================================== */
 
 .verification-card h2 {
-    margin: 0 0 10px;
+    margin-bottom: 12px;
 
-    font-size: 19px;
+    color: #4b3b33;
+
+    font-size: 21px;
+
+    font-weight: 700;
 }
+
+
+
+/* ========================================
+   説明文
+======================================== */
 
 .description {
-    margin: 0 auto 22px;
+    margin-bottom: 24px;
 
-    max-width: 480px;
+    color: #766860;
 
-    color: #777;
+    font-size: 14px;
 
-    font-size: 13px;
-
-    line-height: 1.8;
+    line-height: 1.9;
 }
 
 
-/* =========================
+
+/* ========================================
    必要なもの
-========================= */
+======================================== */
 
 .info-box {
-    padding: 18px;
+    margin-top: 20px;
 
-    margin-bottom: 16px;
+    padding:
+        18px 18px 16px;
 
-    background: #faf7f4;
+    background-color: #faf7f4;
+
+    border:
+        1px solid #eee5df;
 
     border-radius: 12px;
 
     text-align: left;
 }
 
+
+
+/* 必要なものタイトル */
+
 .info-box h3 {
-    margin: 0 0 10px;
+    margin-bottom: 10px;
+
+    color: #5b483e;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+
+
+/* 必要なものリスト */
+
+.info-box ul {
+    padding-left: 22px;
+
+    color: #6f625b;
 
     font-size: 14px;
 }
 
-.info-box ul {
-    margin: 0;
 
-    padding-left: 20px;
 
-    color: #666;
+/* リスト項目 */
 
-    font-size: 12px;
-
-    line-height: 2;
+.info-box li {
+    margin-bottom: 5px;
 }
 
 
-/* =========================
-   注意
-========================= */
+/* 最後の項目 */
+
+.info-box li:last-child {
+    margin-bottom: 0;
+}
+
+
+
+/* ========================================
+   注意事項
+======================================== */
 
 .notice {
     display: flex;
-    align-items: center;
 
-    gap: 8px;
+    align-items: flex-start;
 
-    padding: 12px;
+    gap: 9px;
 
-    margin-bottom: 22px;
+    margin-top: 18px;
 
-    border-radius: 9px;
+    padding:
+        13px 14px;
 
-    background: #fff7f2;
+    background-color: #fff7f2;
+
+    border:
+        1px solid #f2e2d8;
+
+    border-radius: 10px;
 
     text-align: left;
 }
 
+
+
+/* 鍵アイコン */
+
 .notice span {
-    font-size: 18px;
+    flex-shrink: 0;
+
+    font-size: 17px;
+
+    line-height: 1.5;
 }
+
+
+
+/* 注意文 */
 
 .notice p {
-    margin: 0;
+    color: #766860;
 
-    color: #777;
+    font-size: 13px;
 
-    font-size: 11px;
+    line-height: 1.7;
 }
 
 
-/* =========================
+
+/* ========================================
    開始ボタン
-========================= */
+======================================== */
 
 .start-button {
     width: 100%;
-    height: 50px;
+
+    min-height: 50px;
+
+    margin-top: 24px;
+
+    padding:
+        12px 20px;
 
     border: none;
 
     border-radius: 10px;
 
-    background: #eb9a6d;
+    background-color: #eb9a6d;
 
     color: #ffffff;
 
-    font-family: inherit;
-
-    font-size: 14px;
+    font-size: 15px;
 
     font-weight: 700;
 
+    font-family: inherit;
+
     cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.1s ease,
+        opacity 0.2s ease;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
-.start-button:hover {
-    opacity: 0.9;
+
+
+/* ボタン ホバー */
+
+.start-button:hover:not(:disabled) {
+    background-color: #e58d5f;
 }
+
+
+
+/* ボタン クリック */
+
+.start-button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+
+
+/* 無効状態 */
+
+.start-button:disabled {
+    cursor: default;
+}
+
+
+
+/* ========================================
+   画面確認用メッセージ
+======================================== */
 
 .screen-note {
-    margin: 13px 0 0;
+    margin-top: 12px;
 
-    color: #aaa;
+    color: #9a8d85;
 
-    font-size: 10px;
+    font-size: 12px;
+
+    line-height: 1.6;
 }
 
 
-/* =========================
-   完了
-========================= */
+
+/* ========================================
+   本人確認完了カード
+======================================== */
 
 .completed-card {
-    margin-top: 18px;
+    margin-top: 20px;
 
-    padding: 25px;
+    padding:
+        28px 24px;
 
-    background: #ffffff;
+    background-color: #ffffff;
 
     border-radius: 16px;
 
-    text-align: center;
+    border:
+        1px solid #eee5df;
 
     box-shadow:
-        0 2px 10px rgba(0, 0, 0, 0.05);
+        0 4px 16px rgba(75, 59, 51, 0.06);
+
+    text-align: center;
 }
 
-.completed-icon {
-    width: 55px;
-    height: 55px;
 
-    margin: 0 auto 12px;
+
+/* ========================================
+   完了アイコン
+======================================== */
+
+.completed-icon {
+    width: 62px;
+    height: 62px;
+
+    margin: 0 auto 14px;
 
     display: flex;
     align-items: center;
@@ -271,40 +454,216 @@ body {
 
     border-radius: 50%;
 
-    background: #eb9a6d;
+    background-color: #f7f1eb;
 
-    color: #ffffff;
+    color: #eb9a6d;
 
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 34px;
+
+    font-weight: 700;
+
+    line-height: 1;
 }
+
+
+
+/* ========================================
+   完了タイトル
+======================================== */
 
 .completed-card h2 {
-    margin: 0 0 8px;
+    margin-bottom: 8px;
 
-    font-size: 17px;
+    color: #4b3b33;
+
+    font-size: 20px;
+
+    font-weight: 700;
 }
+
+
+
+/* ========================================
+   完了説明
+======================================== */
 
 .completed-card p {
-    margin: 0;
+    color: #766860;
 
-    color: #777;
+    font-size: 14px;
 
-    font-size: 12px;
+    line-height: 1.8;
 }
+
+
+
+/* ========================================
+   完了カード内ボタン
+======================================== */
+
+.completed-card .start-button {
+    margin-top: 20px;
+}
+
+
+
+/* ========================================
+   非表示
+======================================== */
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
+
+
+/* ========================================
+   スマートフォン対応
+======================================== */
 
 @media (max-width: 480px) {
 
-    .main-content {
-        padding: 20px 12px 40px;
+    .header {
+        height: 56px;
+
+        padding:
+            0 12px;
     }
 
-    .verification-card {
-        padding: 25px 18px;
+
+    .back-button {
+        width: 38px;
+        height: 38px;
+
+        font-size: 26px;
     }
+
+
+    .header h1 {
+        font-size: 17px;
+    }
+
+
+    .main-content {
+        padding:
+            20px 12px 40px;
+    }
+
+
+    .verification-card {
+        padding:
+            26px 18px 24px;
+
+        border-radius: 16px;
+    }
+
+
+    .verification-icon {
+        width: 64px;
+        height: 64px;
+
+        font-size: 32px;
+
+        margin-bottom: 16px;
+    }
+
+
+    .verification-card h2 {
+        font-size: 19px;
+    }
+
+
+    .description {
+        font-size: 13px;
+    }
+
+
+    .info-box {
+        padding:
+            16px 15px 14px;
+    }
+
+
+    .info-box h3 {
+        font-size: 14px;
+    }
+
+
+    .info-box ul {
+        font-size: 13px;
+    }
+
+
+    .notice p {
+        font-size: 12px;
+    }
+
+
+    .start-button {
+        min-height: 48px;
+
+        font-size: 14px;
+    }
+
+
+    .completed-card {
+        padding:
+            24px 18px;
+    }
+
+
+    .completed-icon {
+        width: 58px;
+        height: 58px;
+
+        font-size: 31px;
+    }
+
+
+    .completed-card h2 {
+        font-size: 18px;
+    }
+
+
+    .completed-card p {
+        font-size: 13px;
+    }
+
+}
+
+
+
+/* ========================================
+   小さいスマートフォン対応
+======================================== */
+
+@media (max-width: 360px) {
+
+    .main-content {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+
+    .verification-card {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+
+    .info-box {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+
+    .verification-card h2 {
+        font-size: 18px;
+    }
+
+
+    .description {
+        font-size: 12px;
+    }
+
 }

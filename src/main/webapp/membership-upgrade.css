@@ -1,0 +1,451 @@
+/* =========================================
+   Pet Share
+   本会員への昇格
+========================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Noto Sans JP",
+        "Yu Gothic",
+        "Meiryo",
+        sans-serif;
+
+    background: #f7f7f7;
+    color: #333;
+
+    min-height: 100vh;
+
+    padding-bottom: 90px;
+}
+
+
+/* =========================================
+   ヘッダー
+========================================= */
+
+.header {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 64px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eeeeee;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header h1 {
+    font-size: 20px;
+    font-weight: 600;
+
+    color: #333;
+}
+
+
+/* 戻るボタン */
+
+.back-button {
+    position: absolute;
+    left: 16px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 28px;
+    line-height: 1;
+
+    color: #333;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-button:hover {
+    background: #f3f3f3;
+    border-radius: 50%;
+}
+
+
+/* =========================================
+   メイン
+========================================= */
+
+.main {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    padding: 28px 20px 40px;
+}
+
+
+/* =========================================
+   セクション
+========================================= */
+
+.section {
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 17px;
+    font-weight: 600;
+
+    margin-bottom: 12px;
+
+    color: #333;
+}
+
+
+/* =========================================
+   説明カード
+========================================= */
+
+.info-card {
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    line-height: 1.8;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.info-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+
+/* =========================================
+   ステップカード
+========================================= */
+
+.step-card {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 16px;
+
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 12px;
+
+    padding: 22px 20px;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================
+   番号
+========================================= */
+
+.step-number {
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
+    background: #f0f0f0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    color: #333;
+}
+
+
+/* =========================================
+   ステップ内容
+========================================= */
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h2 {
+    font-size: 17px;
+
+    font-weight: 600;
+
+    margin-bottom: 10px;
+
+    color: #333;
+}
+
+.step-content p {
+    font-size: 14px;
+
+    line-height: 1.8;
+
+    color: #666;
+
+    margin-bottom: 12px;
+}
+
+
+/* =========================================
+   注意書き
+========================================= */
+
+.notice {
+    font-size: 13px !important;
+
+    color: #777 !important;
+
+    margin-top: -4px;
+}
+
+
+/* =========================================
+   ボタン
+========================================= */
+
+.action-button {
+    display: block;
+
+    width: 100%;
+
+    min-height: 46px;
+
+    margin-top: 16px;
+
+    padding: 12px 18px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #333;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.2s,
+        transform 0.1s;
+}
+
+.action-button:hover {
+    opacity: 0.85;
+}
+
+.action-button:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================================
+   注意事項カード
+========================================= */
+
+.notice-card {
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.notice-card h2 {
+    font-size: 16px;
+
+    font-weight: 600;
+
+    margin-bottom: 14px;
+
+    color: #333;
+}
+
+.notice-card ul {
+    padding-left: 20px;
+}
+
+.notice-card li {
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    color: #666;
+
+    margin-bottom: 6px;
+}
+
+.notice-card li:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================================
+   下部ナビ
+========================================= */
+
+.bottom-nav {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 68px;
+
+    background: #ffffff;
+
+    border-top: 1px solid #eeeeee;
+
+    display: flex;
+
+    justify-content: space-around;
+
+    align-items: stretch;
+
+    z-index: 1000;
+}
+
+.nav-item {
+    flex: 1;
+
+    max-width: 120px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 3px;
+
+    text-decoration: none;
+
+    color: #999;
+
+    font-size: 11px;
+
+    transition: color 0.2s;
+}
+
+.nav-icon {
+    font-size: 20px;
+
+    line-height: 1;
+}
+
+.nav-item.active {
+    color: #333;
+
+    font-weight: 600;
+}
+
+.nav-item:hover {
+    color: #333;
+}
+
+
+/* =========================================
+   スマートフォン
+========================================= */
+
+@media (max-width: 480px) {
+
+    .header {
+        height: 58px;
+    }
+
+    .header h1 {
+        font-size: 18px;
+    }
+
+    .main {
+        padding: 22px 16px 36px;
+    }
+
+    .section {
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        font-size: 16px;
+    }
+
+    .info-card,
+    .notice-card {
+        padding: 17px;
+    }
+
+    .step-card {
+        padding: 18px 16px;
+
+        gap: 12px;
+    }
+
+    .step-number {
+        width: 34px;
+        height: 34px;
+
+        font-size: 15px;
+    }
+
+    .step-content h2 {
+        font-size: 16px;
+    }
+
+    .step-content p {
+        font-size: 13px;
+    }
+
+    .action-button {
+        min-height: 44px;
+
+        font-size: 13px;
+    }
+
+    .bottom-nav {
+        height: 64px;
+    }
+}
