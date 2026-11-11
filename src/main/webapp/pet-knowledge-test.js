@@ -232,6 +232,9 @@ document.addEventListener("DOMContentLoaded", function () {
             questions[
                 currentQuestionIndex
             ];
+            console.log("現在の問題:", question);
+console.log("問題文:", question.questionText);
+console.log("選択肢:", question.choices);
 
 
         if (!question) {
