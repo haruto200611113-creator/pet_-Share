@@ -1457,33 +1457,22 @@ textarea:focus-visible {
 ========================= */
 
 .change-complete-message {
-    position: fixed;
+    display: none;
 
+    position: fixed;
     top: 50%;
     left: 50%;
-
     transform: translate(-50%, -50%);
-
     padding: 28px 50px;
-
     background: #ffffff;
-
     border-radius: 16px;
-
     color: #4b3b33;
-
     font-size: 24px;
-
     font-weight: 600;
-
-    box-shadow:
-        0 6px 25px rgba(0, 0, 0, 0.18);
-
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.18);
     z-index: 9999;
-
     animation: messageFadeIn 0.2s ease;
 }
-
 
 /* 表示アニメーション */
 
