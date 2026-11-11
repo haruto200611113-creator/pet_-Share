@@ -141,6 +141,10 @@ public class PetRegisterServlet extends HttpServlet {
          */
         PetDAO dao = new PetDAO();
 
+        System.out.println("===== ペット登録開始 =====");
+        System.out.println("accountId = " + accountId);
+        System.out.println("petName = " + pet.getPetName());
+        System.out.println("petType = " + pet.getPetType());
         boolean result = dao.insertPet(pet);
 
         if (result) {

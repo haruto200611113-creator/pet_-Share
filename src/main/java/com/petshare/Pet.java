@@ -18,8 +18,7 @@ public class Pet {
     private String breed;
     private String gender;
     private Date birthDate;
-    private double weight;
-
+    private Double weight;
     // ==============================
     // 性格・特徴
     // ==============================
@@ -61,7 +60,7 @@ public class Pet {
     // シェア情報
     // ==============================
 
-    private int sharePrice;
+    private Integer sharePrice;
     private Date shareStartDate;
     private Date shareEndDate;
     private String shareConditions;
@@ -148,11 +147,11 @@ public class Pet {
         this.birthDate = birthDate;
     }
 
-    public double getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
@@ -292,11 +291,11 @@ public class Pet {
         this.precautions = precautions;
     }
 
-    public int getSharePrice() {
+    public Integer getSharePrice() {
         return sharePrice;
     }
 
-    public void setSharePrice(int sharePrice) {
+    public void setSharePrice(Integer sharePrice) {
         this.sharePrice = sharePrice;
     }
 
