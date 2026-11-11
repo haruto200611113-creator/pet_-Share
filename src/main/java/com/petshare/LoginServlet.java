@@ -75,11 +75,15 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession(true);
 
             // ⑤ ユーザー情報を保存
-            // ⑤ ユーザー情報を保存
             session.setAttribute("loginUser", fullUser);
 
             // プロフィール更新などで使用するアカウントIDを保存
             session.setAttribute("accountId", fullUser.getAccountId());
+
+            // 会員ランクを保存
+            // 1 = 仮会員
+            // 2 = 本会員
+            session.setAttribute("userRank", fullUser.getUserRank());
 
             System.out.println("===== セッション保存確認 =====");
             System.out.println("アカウントID：" + fullUser.getAccountId());
