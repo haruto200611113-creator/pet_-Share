@@ -547,9 +547,7 @@ postButton.addEventListener(
     "click",
     function () {
 
-        postModal.classList.add(
-            "show"
-        );
+        window.location.href = "pet-register.html";
 
     }
 );
