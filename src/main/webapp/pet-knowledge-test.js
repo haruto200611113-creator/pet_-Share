@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    console.log("Pet Knowledge Test JS 読み込みOK");
+
     // ==============================
     // HTML要素
     // ==============================
@@ -58,18 +60,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // ==============================
 
     let questions = [];
-
     let currentQuestionIndex = 0;
-
     let timerInterval = null;
-
     let timeLeft = 10;
-
     let answerLocked = false;
 
 
     // ==============================
-    // テスト開始
+    // テスト開始ボタン
     // ==============================
 
     startTestButton.addEventListener(
@@ -78,7 +76,13 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
+    // ==============================
+    // テスト開始
+    // ==============================
+
     async function startTest() {
+
+        console.log("開始ボタンが押されました");
 
         try {
 
@@ -86,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             startTestButton.textContent =
                 "問題を読み込んでいます...";
+
 
             const response =
                 await fetch(
@@ -96,20 +101,40 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 );
 
+
+            console.log(
+                "GETステータス:",
+                response.status
+            );
+
+
             if (!response.ok) {
 
                 throw new Error(
                     "テスト開始に失敗しました。"
                 );
+
             }
+
 
             const data =
                 await response.json();
 
 
+            console.log(
+                "取得したデータ:",
+                data
+            );
+
+
+            // ==============================
             // すでに本会員
-            if (data.status ===
-                "already_member") {
+            // ==============================
+
+            if (
+                data.status ===
+                "already_member"
+            ) {
 
                 alert(
                     "すでに本会員です。"
@@ -122,52 +147,73 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
+            // ==============================
             // 問題取得
+            // ==============================
+
             questions =
                 data.questions || [];
 
 
-            if (questions.length !== 30) {
+            console.log(
+                "取得した問題:",
+                questions
+            );
+
+
+            if (
+                questions.length !== 30
+            ) {
 
                 throw new Error(
                     "テスト問題を正しく取得できませんでした。"
                 );
+
             }
 
 
-            // 開始画面を隠す
+            // ==============================
+            // 画面切り替え
+            // ==============================
+
             startCard.style.display =
                 "none";
 
-            // テスト画面を表示
             testCard.style.display =
                 "block";
 
-            // 結果画面を隠す
             resultCard.style.display =
                 "none";
 
-            console.log("取得した問題:", questions);
-            console.log("第1問:", questions[0]);
+
             currentQuestionIndex = 0;
 
             showQuestion();
 
-        } catch (error) {
+        }
 
-            console.error(error);
+        catch (error) {
+
+            console.error(
+                "テスト開始エラー:",
+                error
+            );
+
 
             alert(
                 "テストを開始できませんでした。\n"
                 + error.message
             );
 
+
             startTestButton.disabled =
                 false;
 
             startTestButton.textContent =
                 "テストを開始する";
+
         }
+
     }
 
 
@@ -175,107 +221,110 @@ document.addEventListener("DOMContentLoaded", function () {
     // 問題表示
     // ==============================
 
-    // ==============================
-// 問題表示
-// ==============================
-function showQuestion() {
+    function showQuestion() {
 
-    stopTimer();
+        stopTimer();
 
-    answerLocked = false;
+        answerLocked = false;
 
-    const question =
-        questions[currentQuestionIndex];
 
-    // 問題データ確認
-    console.log("現在の問題:", question);
+        const question =
+            questions[
+                currentQuestionIndex
+            ];
 
-    // 問題が存在しない場合
-    if (!question) {
 
-        console.error(
-            "問題データが見つかりません。",
-            currentQuestionIndex,
-            questions
-        );
+        if (!question) {
 
-        return;
-    }
+            console.error(
+                "問題データがありません:",
+                currentQuestionIndex
+            );
 
-    // ==============================
-    // 問題番号
-    // ==============================
+            return;
 
-    questionNumber.textContent =
-        "第" + (currentQuestionIndex + 1) + "問";
+        }
 
-    // ==============================
-    // 全問題数
-    // ==============================
 
-    questionCount.textContent =
-        (currentQuestionIndex + 1)
-        + " / "
-        + questions.length;
+        // ==============================
+        // 問題番号
+        // ==============================
 
-    // ==============================
-    // 問題文
-    // ==============================
+        questionNumber.textContent =
+            "第" +
+            (currentQuestionIndex + 1) +
+            "問";
 
-    questionText.textContent =
-        question.questionText || "問題文を取得できませんでした。";
 
-    // ==============================
-    // 選択肢をクリア
-    // ==============================
+        questionCount.textContent =
+            (currentQuestionIndex + 1) +
+            " / " +
+            questions.length;
 
-    choices.innerHTML = "";
 
-    // ==============================
-    // 選択肢
-    // ==============================
+        // ==============================
+        // 問題文
+        // ==============================
 
-    const choiceList = [
-        question.choices[0],
-        question.choices[1],
-        question.choices[2],
-        question.choices[3]
-    ];
+        questionText.textContent =
+            question.questionText;
 
-    choiceList.forEach(function (choice, index) {
 
-        const button =
-            document.createElement("button");
+        // ==============================
+        // 選択肢
+        // ==============================
 
-        button.type = "button";
+        choices.innerHTML = "";
 
-        button.className = "choice-button";
 
-        button.textContent =
-            choice;
+        question.choices.forEach(
+            function (choice, index) {
 
-        button.dataset.answer =
-            index + 1;
+                const button =
+                    document.createElement(
+                        "button"
+                    );
 
-        button.addEventListener(
-            "click",
-            function () {
 
-                submitAnswer(index + 1);
+                button.type =
+                    "button";
+
+                button.className =
+                    "choice-button";
+
+                button.textContent =
+                    choice;
+
+                button.dataset.answer =
+                    index + 1;
+
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        submitAnswer(
+                            index + 1
+                        );
+
+                    }
+                );
+
+
+                choices.appendChild(
+                    button
+                );
 
             }
         );
 
-        choices.appendChild(button);
 
-    });
+        // ==============================
+        // タイマー開始
+        // ==============================
 
-    // ==============================
-    // 10秒スタート
-    // ==============================
+        startTimer();
 
-    startTimer();
-}
     }
 
 
@@ -285,10 +334,13 @@ function showQuestion() {
 
     function startTimer() {
 
+        stopTimer();
+
         timeLeft = 10;
 
         timer.textContent =
             timeLeft;
+
 
         timerInterval =
             setInterval(
@@ -300,18 +352,21 @@ function showQuestion() {
                         timeLeft;
 
 
-                    // 0秒
-                    if (timeLeft <= 0) {
+                    if (
+                        timeLeft <= 0
+                    ) {
 
                         stopTimer();
 
-                        // 時間切れ
+                        // 時間切れは不正解
                         submitAnswer(null);
+
                     }
 
                 },
                 1000
             );
+
     }
 
 
@@ -321,14 +376,18 @@ function showQuestion() {
 
     function stopTimer() {
 
-        if (timerInterval !== null) {
+        if (
+            timerInterval !== null
+        ) {
 
             clearInterval(
                 timerInterval
             );
 
             timerInterval = null;
+
         }
+
     }
 
 
@@ -336,28 +395,39 @@ function showQuestion() {
     // 回答送信
     // ==============================
 
-    async function submitAnswer(answer) {
+    async function submitAnswer(
+        answer
+    ) {
 
-        // 二重回答防止
-        if (answerLocked) {
+        if (
+            answerLocked
+        ) {
+
             return;
+
         }
+
 
         answerLocked = true;
 
         stopTimer();
 
 
-        // ボタンを無効化
+        // ==============================
+        // 選択肢を無効化
+        // ==============================
+
         const buttons =
             choices.querySelectorAll(
                 "button"
             );
 
+
         buttons.forEach(
             function (button) {
 
-                button.disabled = true;
+                button.disabled =
+                    true;
 
             }
         );
@@ -368,20 +438,25 @@ function showQuestion() {
             const formData =
                 new URLSearchParams();
 
+
             formData.append(
                 "questionIndex",
                 currentQuestionIndex
             );
 
 
-            // 時間切れの場合
-            // answer = null
-            // → 不正解として扱う
             formData.append(
                 "answer",
                 answer === null
                     ? "0"
                     : answer
+            );
+
+
+            console.log(
+                "回答送信:",
+                currentQuestionIndex,
+                answer
             );
 
 
@@ -405,11 +480,14 @@ function showQuestion() {
                 );
 
 
-            if (!response.ok) {
+            if (
+                !response.ok
+            ) {
 
                 throw new Error(
                     "回答送信に失敗しました。"
                 );
+
             }
 
 
@@ -417,16 +495,27 @@ function showQuestion() {
                 await response.json();
 
 
+            console.log(
+                "回答結果:",
+                data
+            );
+
+
             // ==============================
             // テスト終了
             // ==============================
 
-            if (data.status ===
-                "finished") {
+            if (
+                data.status ===
+                "finished"
+            ) {
 
-                showResult(data);
+                showResult(
+                    data
+                );
 
                 return;
+
             }
 
 
@@ -434,8 +523,10 @@ function showQuestion() {
             // 次の問題
             // ==============================
 
-            if (data.status ===
-                "next") {
+            if (
+                data.status ===
+                "next"
+            ) {
 
                 currentQuestionIndex =
                     data.nextQuestion;
@@ -443,24 +534,33 @@ function showQuestion() {
                 showQuestion();
 
                 return;
+
             }
 
 
-            // 予期しない結果
             throw new Error(
                 "不正な回答結果です。"
             );
 
-        } catch (error) {
+        }
 
-            console.error(error);
+        catch (error) {
+
+            console.error(
+                "回答送信エラー:",
+                error
+            );
+
 
             alert(
                 "回答の送信中にエラーが発生しました。\n"
                 + error.message
             );
 
-            answerLocked = false;
+
+            answerLocked =
+                false;
+
 
             buttons.forEach(
                 function (button) {
@@ -471,8 +571,11 @@ function showQuestion() {
                 }
             );
 
+
             startTimer();
+
         }
+
     }
 
 
@@ -484,6 +587,7 @@ function showQuestion() {
 
         stopTimer();
 
+
         testCard.style.display =
             "none";
 
@@ -494,13 +598,19 @@ function showQuestion() {
         const score =
             data.score;
 
+
         scoreElement.textContent =
-            score;
+            score + " / 30";
 
 
+        // ==============================
         // 合格
-        if (data.passed &&
-            data.upgraded) {
+        // ==============================
+
+        if (
+            data.passed &&
+            data.upgraded
+        ) {
 
             resultIcon.textContent =
                 "🎉";
@@ -514,6 +624,7 @@ function showQuestion() {
             resultDetail.textContent =
                 "あなたは本会員になりました。";
 
+
             upgradeButton.style.display =
                 "block";
 
@@ -521,12 +632,18 @@ function showQuestion() {
                 "none";
 
             return;
+
         }
 
 
+        // ==============================
         // 合格したがDB更新失敗
-        if (data.passed &&
-            !data.upgraded) {
+        // ==============================
+
+        if (
+            data.passed &&
+            !data.upgraded
+        ) {
 
             resultIcon.textContent =
                 "⚠️";
@@ -540,6 +657,7 @@ function showQuestion() {
             resultDetail.textContent =
                 "もう一度お試しください。";
 
+
             upgradeButton.style.display =
                 "none";
 
@@ -547,10 +665,14 @@ function showQuestion() {
                 "block";
 
             return;
+
         }
 
 
+        // ==============================
         // 不合格
+        // ==============================
+
         resultIcon.textContent =
             "😢";
 
@@ -561,15 +683,17 @@ function showQuestion() {
             "本会員になるには90%以上正解する必要があります。";
 
         resultDetail.textContent =
-            "今回は"
-            + score
-            + "問正解でした。";
+            "今回は" +
+            score +
+            "問正解でした。";
+
 
         upgradeButton.style.display =
             "none";
 
         retryButton.style.display =
             "block";
+
     }
 
 
@@ -577,7 +701,9 @@ function showQuestion() {
     // 本会員になった後
     // ==============================
 
-    if (upgradeButton) {
+    if (
+        upgradeButton
+    ) {
 
         upgradeButton.addEventListener(
             "click",
@@ -588,6 +714,7 @@ function showQuestion() {
 
             }
         );
+
     }
 
 
@@ -595,7 +722,9 @@ function showQuestion() {
     // 再受験
     // ==============================
 
-    if (retryButton) {
+    if (
+        retryButton
+    ) {
 
         retryButton.addEventListener(
             "click",
@@ -607,14 +736,22 @@ function showQuestion() {
                 startCard.style.display =
                     "block";
 
+
                 startTestButton.disabled =
                     false;
 
                 startTestButton.textContent =
                     "もう一度テストを受ける";
 
+
+                questions = [];
+
+                currentQuestionIndex =
+                    0;
+
             }
         );
+
     }
 
 });
