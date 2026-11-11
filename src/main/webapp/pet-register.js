@@ -309,35 +309,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (response.redirected) {
 
-                    window.location.href =
-                        response.url;
+    window.location.href = response.url;
 
-                    return;
-                }
+    return;
+}
 
 
-                /*
-                 * 通常はServlet側で
-                 * redirectされる想定
-                 */
+/*
+ * Servletからリダイレクトされなかった場合
+ */
 
-                if (response.ok) {
+if (response.ok) {
 
-                    window.location.href =
-                        "pet-register.html?success=true";
+    alert("ペットを登録しました。");
 
-                } else {
+    window.location.href = "home.html";
 
-                    alert(
-                        "ペットの登録に失敗しました。"
-                    );
+} else {
 
-                    registerButton.disabled =
-                        false;
+    alert("ペットの登録に失敗しました。");
 
-                    registerButton.textContent =
-                        "ペットを登録する";
-                }
+    registerButton.disabled = false;
+
+    registerButton.textContent = "ペットを登録する";
+}
 
             } catch (error) {
 

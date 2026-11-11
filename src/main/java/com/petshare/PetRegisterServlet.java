@@ -56,6 +56,7 @@ public class PetRegisterServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
+        System.out.println("===== PetRegisterServlet doPost 開始 =====");
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
 
