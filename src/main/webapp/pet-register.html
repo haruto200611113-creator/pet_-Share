@@ -100,7 +100,11 @@
 
     <h1>ペット登録</h1>
 
-    <form action="pet-register" method="post">
+   <form
+    action="pet-register"
+    method="post"
+    enctype="multipart/form-data"
+>
 
         <!-- ========================= -->
         <!-- 基本情報 -->
@@ -120,12 +124,22 @@
         </div>
 
         <div class="form-group">
-            <label for="petImage">ペット画像URL</label>
-            <input type="text"
-                   id="petImage"
-                   name="petImage"
-                   placeholder="https://example.com/pet.jpg">
-        </div>
+            <label for="petImage">ペット画像</label>
+
+    <input
+        type="file"
+        id="petImage"
+        name="petImage"
+        accept="image/*"
+    >
+
+    <div class="pet-image-preview">
+        <img
+            id="petImagePreview"
+            alt="ペット画像プレビュー"
+        >
+    </div>
+</div>
 
         <div class="form-group">
             <label for="petType">
