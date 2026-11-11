@@ -118,216 +118,119 @@ public class PetDAO {
 
     public boolean insertPet(Pet pet) {
 
-        if (pet == null) {
+    String sql =
+            "INSERT INTO pets (" +
+            "account_id, " +
+            "pet_name, " +
+            "pet_image, " +
+            "pet_type, " +
+            "breed, " +
+            "gender, " +
+            "birth_date, " +
+            "weight, " +
+            "personality, " +
+            "features, " +
+            "likes, " +
+            "dislikes, " +
+            "other_animals, " +
+            "children_compatibility, " +
+            "food_info, " +
+            "walk_info, " +
+            "toilet_info, " +
+            "alone_time, " +
+            "care_info, " +
+            "vaccination, " +
+            "neutering, " +
+            "medical_history, " +
+            "allergies, " +
+            "medication, " +
+            "precautions, " +
+            "share_price, " +
+            "share_start_date, " +
+            "share_end_date, " +
+            "share_conditions" +
+            ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            System.err.println(
-                    "ペット情報がありません。");
+    try (
+        Connection conn = getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(sql)
+    ) {
 
-            return false;
+        int i = 1;
+
+        pstmt.setInt(i++, pet.getAccountId());
+
+        pstmt.setString(i++, pet.getPetName());
+        pstmt.setString(i++, pet.getPetImage());
+        pstmt.setString(i++, pet.getPetType());
+        pstmt.setString(i++, pet.getBreed());
+        pstmt.setString(i++, pet.getGender());
+
+        pstmt.setDate(i++, pet.getBirthDate());
+
+        if (pet.getWeight() != null) {
+            pstmt.setDouble(i++, pet.getWeight());
+        } else {
+            pstmt.setNull(i++, java.sql.Types.DECIMAL);
         }
 
-        String sql = """
-                INSERT INTO pets (
-                    account_id,
-                    pet_name,
-                    pet_image,
-                    pet_type,
-                    breed,
-                    gender,
-                    birth_date,
-                    weight,
-                    personality,
-                    features,
-                    likes,
-                    dislikes,
-                    other_animals,
-                    children_compatibility,
-                    food_info,
-                    walk_info,
-                    toilet_info,
-                    alone_time,
-                    care_info,
-                    vaccination,
-                    neutering,
-                    medical_history,
-                    allergies,
-                    medication,
-                    precautions,
-                    share_price,
-                    share_start_date,
-                    share_end_date,
-                    share_conditions
-                )
-                VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?, ?, ?, ?
-                )
-                """;
+        pstmt.setString(i++, pet.getPersonality());
+        pstmt.setString(i++, pet.getFeatures());
+        pstmt.setString(i++, pet.getLikes());
+        pstmt.setString(i++, pet.getDislikes());
 
-        try (
-                Connection conn = getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        pstmt.setString(i++, pet.getOtherAnimals());
+        pstmt.setString(i++, pet.getChildrenCompatibility());
 
-            int i = 1;
+        pstmt.setString(i++, pet.getFoodInfo());
+        pstmt.setString(i++, pet.getWalkInfo());
+        pstmt.setString(i++, pet.getToiletInfo());
+        pstmt.setString(i++, pet.getAloneTime());
+        pstmt.setString(i++, pet.getCareInfo());
 
-            ps.setInt(i++, pet.getAccountId());
+        pstmt.setString(i++, pet.getVaccination());
+        pstmt.setString(i++, pet.getNeutering());
+        pstmt.setString(i++, pet.getMedicalHistory());
+        pstmt.setString(i++, pet.getAllergies());
+        pstmt.setString(i++, pet.getMedication());
+        pstmt.setString(i++, pet.getPrecautions());
 
-            ps.setString(i++, pet.getPetName());
-            ps.setString(i++, pet.getPetImage());
-            ps.setString(i++, pet.getPetType());
-            ps.setString(i++, pet.getBreed());
-            ps.setString(i++, pet.getGender());
-
-            // 生年月日
-            if (pet.getBirthDate() != null) {
-
-                ps.setDate(
-                        i++,
-                        pet.getBirthDate());
-
-            } else {
-
-                ps.setNull(
-                        i++,
-                        java.sql.Types.DATE);
-            }
-
-            // 体重
-            if (pet.getWeight() > 0) {
-
-                ps.setDouble(
-                        i++,
-                        pet.getWeight());
-
-            } else {
-
-                ps.setNull(
-                        i++,
-                        java.sql.Types.DECIMAL);
-            }
-
-            // 性格・特徴
-            ps.setString(
-                    i++,
-                    pet.getPersonality());
-
-            ps.setString(
-                    i++,
-                    pet.getFeatures());
-
-            ps.setString(
-                    i++,
-                    pet.getLikes());
-
-            ps.setString(
-                    i++,
-                    pet.getDislikes());
-
-            // 相性
-            ps.setString(
-                    i++,
-                    pet.getOtherAnimals());
-
-            ps.setString(
-                    i++,
-                    pet.getChildrenCompatibility());
-
-            // 飼育情報
-            ps.setString(
-                    i++,
-                    pet.getFoodInfo());
-
-            ps.setString(
-                    i++,
-                    pet.getWalkInfo());
-
-            ps.setString(
-                    i++,
-                    pet.getToiletInfo());
-
-            ps.setString(
-                    i++,
-                    pet.getAloneTime());
-
-            ps.setString(
-                    i++,
-                    pet.getCareInfo());
-
-            // 健康・安全情報
-            ps.setString(
-                    i++,
-                    pet.getVaccination());
-
-            ps.setString(
-                    i++,
-                    pet.getNeutering());
-
-            ps.setString(
-                    i++,
-                    pet.getMedicalHistory());
-
-            ps.setString(
-                    i++,
-                    pet.getAllergies());
-
-            ps.setString(
-                    i++,
-                    pet.getMedication());
-
-            ps.setString(
-                    i++,
-                    pet.getPrecautions());
-
-            // シェア情報
-            ps.setInt(
-                    i++,
-                    pet.getSharePrice());
-
-            if (pet.getShareStartDate() != null) {
-
-                ps.setDate(
-                        i++,
-                        pet.getShareStartDate());
-
-            } else {
-
-                ps.setNull(
-                        i++,
-                        java.sql.Types.DATE);
-            }
-
-            if (pet.getShareEndDate() != null) {
-
-                ps.setDate(
-                        i++,
-                        pet.getShareEndDate());
-
-            } else {
-
-                ps.setNull(
-                        i++,
-                        java.sql.Types.DATE);
-            }
-
-            ps.setString(
-                    i++,
-                    pet.getShareConditions());
-
-            int result = ps.executeUpdate();
-
-            return result > 0;
-
-        } catch (SQLException e) {
-
-            System.err.println(
-                    "ペット登録中にSQLエラーが発生しました。");
-
-            e.printStackTrace();
-
-            return false;
+        if (pet.getSharePrice() != null) {
+            pstmt.setInt(i++, pet.getSharePrice());
+        } else {
+            pstmt.setNull(i++, java.sql.Types.INTEGER);
         }
+
+        pstmt.setDate(i++, pet.getShareStartDate());
+        pstmt.setDate(i++, pet.getShareEndDate());
+
+        pstmt.setString(i++, pet.getShareConditions());
+
+        int result = pstmt.executeUpdate();
+
+        System.out.println("=================================");
+        System.out.println("ペット登録結果: " + result);
+        System.out.println("account_id: " + pet.getAccountId());
+        System.out.println("pet_name: " + pet.getPetName());
+        System.out.println("pet_type: " + pet.getPetType());
+        System.out.println("=================================");
+
+        return result > 0;
+
+    } catch (SQLException e) {
+
+        System.out.println("=================================");
+        System.out.println("ペット登録でSQLエラーが発生しました");
+        System.out.println("エラー内容: " + e.getMessage());
+        System.out.println("SQLState: " + e.getSQLState());
+        System.out.println("ErrorCode: " + e.getErrorCode());
+        System.out.println("=================================");
+
+        e.printStackTrace();
+
+        return false;
     }
+}
 
     // =====================================
     // ペットIDから取得
