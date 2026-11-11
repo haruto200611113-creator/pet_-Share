@@ -1,449 +1,711 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ペット登録 | Pet Share</title>
 
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/design.css">
+    <title>ペット登録 - ペットシェアアプリ</title>
 
-    <style>
-        body {
-            background-color: #f7f7f7;
-        }
-
-        .register-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 30px;
-            background: #fff;
-            border-radius: 12px;
-        }
-
-        h1 {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        h2 {
-            margin-top: 35px;
-            margin-bottom: 20px;
-            padding: 10px;
-            border-left: 5px solid #333;
-            background: #f2f2f2;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
-
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .required {
-            color: red;
-            margin-left: 5px;
-        }
-
-        .button-area {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 40px;
-        }
-
-        button {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .register-button {
-            background-color: #333;
-            color: white;
-        }
-
-        .back-button {
-            background-color: #ddd;
-        }
-
-        button:hover {
-            opacity: 0.8;
-        }
-    </style>
+    <link rel="stylesheet" href="pet-register.css">
 </head>
 
 <body>
 
-<div class="register-container">
-
-    <h1>ペット登録</h1>
-
-   <form
-    action="pet-register"
-    method="post"
-    enctype="multipart/form-data"
->
-
-        <!-- ========================= -->
-        <!-- 基本情報 -->
-        <!-- ========================= -->
-
-        <h2>基本情報</h2>
-
-        <div class="form-group">
-            <label for="petName">
-                ペットの名前<span class="required">*</span>
-            </label>
-            <input type="text"
-                   id="petName"
-                   name="petName"
-                   maxlength="50"
-                   required>
-        </div>
-
-        <div class="form-group">
-            <label for="petImage">ペット画像</label>
-
-    <input
-        type="file"
-        id="petImage"
-        name="petImage"
-        accept="image/*"
-    >
-
-    <div class="pet-image-preview">
-        <img
-            id="petImagePreview"
-            alt="ペット画像プレビュー"
-        >
-    </div>
-</div>
-
-        <div class="form-group">
-            <label for="petType">
-                種類<span class="required">*</span>
-            </label>
-
-            <select id="petType" name="petType" required>
-                <option value="">選択してください</option>
-                <option value="犬">犬</option>
-                <option value="猫">猫</option>
-                <option value="その他">その他</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="breed">品種</label>
-            <input type="text"
-                   id="breed"
-                   name="breed"
-                   maxlength="50">
-        </div>
-
-        <div class="form-group">
-            <label for="gender">性別</label>
-
-            <select id="gender" name="gender">
-                <option value="">選択してください</option>
-                <option value="オス">オス</option>
-                <option value="メス">メス</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="birthDate">生年月日</label>
-
-            <input type="date"
-                   id="birthDate"
-                   name="birthDate">
-        </div>
-
-        <div class="form-group">
-            <label for="weight">体重（kg）</label>
-
-            <input type="number"
-                   id="weight"
-                   name="weight"
-                   min="0"
-                   step="0.01">
-        </div>
-
-
-        <!-- ========================= -->
-        <!-- 性格・特徴 -->
-        <!-- ========================= -->
-
-        <h2>性格・特徴</h2>
-
-        <div class="form-group">
-            <label for="personality">性格</label>
+    <!-- =========================
+         ヘッダー
+    ========================== -->
 
-            <textarea id="personality"
-                      name="personality"
-                      maxlength="300"
-                      placeholder="例：人懐っこく、元気な性格です。"></textarea>
-        </div>
+    <header class="header">
 
-        <div class="form-group">
-            <label for="features">特徴</label>
+        <button
+            type="button"
+            id="backButton"
+            class="back-button"
+            aria-label="戻る">
+            ←
+        </button>
 
-            <textarea id="features"
-                      name="features"
-                      maxlength="500"></textarea>
-        </div>
+        <h1>
+            ペット登録
+        </h1>
 
-        <div class="form-group">
-            <label for="likes">好きなもの</label>
+    </header>
 
-            <textarea id="likes"
-                      name="likes"
-                      maxlength="500"
-                      placeholder="例：ボール遊び、おやつ"></textarea>
-        </div>
 
-        <div class="form-group">
-            <label for="dislikes">苦手なもの</label>
+    <main class="main-content">
 
-            <textarea id="dislikes"
-                      name="dislikes"
-                      maxlength="500"></textarea>
-        </div>
 
+        <!-- =========================
+             基本情報
+        ========================== -->
 
-        <!-- ========================= -->
-        <!-- 相性 -->
-        <!-- ========================= -->
+        <section class="section">
 
-        <h2>他の動物・子どもとの相性</h2>
+            <h2 class="section-title">
+                基本情報
+            </h2>
 
-        <div class="form-group">
-            <label for="otherAnimals">他の動物との相性</label>
+            <div class="form-card">
 
-            <input type="text"
-                   id="otherAnimals"
-                   name="otherAnimals"
-                   maxlength="100"
-                   placeholder="例：犬は大丈夫、猫は苦手">
-        </div>
+                <div class="form-group">
 
-        <div class="form-group">
-            <label for="childrenCompatibility">
-                子どもとの相性
-            </label>
+                    <label for="petName">
+                        ペットの名前
+                        <span class="required">必須</span>
+                    </label>
 
-            <select id="childrenCompatibility"
-                    name="childrenCompatibility">
+                    <input
+                        type="text"
+                        id="petName"
+                        name="petName"
+                        maxlength="50"
+                        placeholder="例：ポチ"
+                        required>
 
-                <option value="">選択してください</option>
-                <option value="良い">良い</option>
-                <option value="普通">普通</option>
-                <option value="苦手">苦手</option>
+                </div>
 
-            </select>
-        </div>
 
+                <!-- ペット画像 -->
 
-        <!-- ========================= -->
-        <!-- お世話情報 -->
-        <!-- ========================= -->
+                <div class="form-group">
 
-        <h2>お世話情報</h2>
+                    <label for="petImage">
+                        ペットの画像
+                    </label>
 
-        <div class="form-group">
-            <label for="foodInfo">食事</label>
+                    <div class="image-upload-area">
 
-            <textarea id="foodInfo"
-                      name="foodInfo"
-                      maxlength="500"></textarea>
-        </div>
+                        <div class="pet-image-preview">
 
-        <div class="form-group">
-            <label for="walkInfo">散歩</label>
+                            <img
+                                id="petImagePreview"
+                                alt="ペット画像">
 
-            <textarea id="walkInfo"
-                      name="walkInfo"
-                      maxlength="500"></textarea>
-        </div>
+                            <span
+                                id="petImageDefault"
+                                class="pet-image-fallback">
+                                🐾
+                            </span>
 
-        <div class="form-group">
-            <label for="toiletInfo">トイレ</label>
+                        </div>
 
-            <textarea id="toiletInfo"
-                      name="toiletInfo"
-                      maxlength="300"></textarea>
-        </div>
 
-        <div class="form-group">
-            <label for="aloneTime">留守番可能時間</label>
+                        <label
+                            for="petImage"
+                            class="image-change-button">
+                            画像を選択
+                        </label>
 
-            <input type="text"
-                   id="aloneTime"
-                   name="aloneTime"
-                   maxlength="100"
-                   placeholder="例：4時間程度">
-        </div>
+                        <input
+                            type="file"
+                            id="petImage"
+                            name="petImage"
+                            accept="image/jpeg,image/png,image/webp"
+                            hidden>
 
-        <div class="form-group">
-            <label for="careInfo">その他のお世話</label>
+                        <p class="input-note">
+                            JPG・PNG・WebPに対応しています。
+                        </p>
 
-            <textarea id="careInfo"
-                      name="careInfo"
-                      maxlength="500"></textarea>
-        </div>
+                    </div>
 
+                </div>
 
-        <!-- ========================= -->
-        <!-- 健康・安全 -->
-        <!-- ========================= -->
 
-        <h2>健康・安全情報</h2>
+                <div class="form-group">
 
-        <div class="form-group">
-            <label for="vaccination">ワクチン接種</label>
+                    <label for="petType">
+                        種類
+                        <span class="required">必須</span>
+                    </label>
 
-            <select id="vaccination"
-                    name="vaccination">
+                    <select
+                        id="petType"
+                        name="petType"
+                        required>
 
-                <option value="">選択してください</option>
-                <option value="済">済</option>
-                <option value="未接種">未接種</option>
-                <option value="不明">不明</option>
+                        <option value="">
+                            選択してください
+                        </option>
 
-            </select>
-        </div>
+                        <option value="犬">
+                            犬
+                        </option>
 
-        <div class="form-group">
-            <label for="neutering">避妊・去勢</label>
+                        <option value="猫">
+                            猫
+                        </option>
 
-            <select id="neutering"
-                    name="neutering">
+                        <option value="その他">
+                            その他
+                        </option>
 
-                <option value="">選択してください</option>
-                <option value="済">済</option>
-                <option value="未実施">未実施</option>
-                <option value="不明">不明</option>
+                    </select>
 
-            </select>
-        </div>
+                </div>
 
-        <div class="form-group">
-            <label for="medicalHistory">既往歴</label>
 
-            <textarea id="medicalHistory"
-                      name="medicalHistory"
-                      maxlength="500"></textarea>
-        </div>
+                <div class="form-group">
 
-        <div class="form-group">
-            <label for="allergies">アレルギー</label>
+                    <label for="breed">
+                        品種
+                    </label>
 
-            <textarea id="allergies"
-                      name="allergies"
-                      maxlength="500"></textarea>
-        </div>
+                    <input
+                        type="text"
+                        id="breed"
+                        name="breed"
+                        maxlength="50"
+                        placeholder="例：ミニチュアダックスフンド">
 
-        <div class="form-group">
-            <label for="medication">服用中の薬</label>
+                </div>
 
-            <textarea id="medication"
-                      name="medication"
-                      maxlength="500"></textarea>
-        </div>
 
-        <div class="form-group">
-            <label for="precautions">注意事項</label>
+                <div class="form-group">
 
-            <textarea id="precautions"
-                      name="precautions"
-                      maxlength="500"></textarea>
-        </div>
+                    <label for="gender">
+                        性別
+                    </label>
 
+                    <select
+                        id="gender"
+                        name="gender">
 
-        <!-- ========================= -->
-        <!-- シェア情報 -->
-        <!-- ========================= -->
+                        <option value="">
+                            選択してください
+                        </option>
 
-        <h2>ペットシェア情報</h2>
+                        <option value="オス">
+                            オス
+                        </option>
 
-        <div class="form-group">
-            <label for="sharePrice">シェア料金（円）</label>
+                        <option value="メス">
+                            メス
+                        </option>
 
-            <input type="number"
-                   id="sharePrice"
-                   name="sharePrice"
-                   min="0">
-        </div>
+                    </select>
 
-        <div class="form-group">
-            <label for="shareStartDate">シェア開始日</label>
+                </div>
 
-            <input type="date"
-                   id="shareStartDate"
-                   name="shareStartDate">
-        </div>
 
-        <div class="form-group">
-            <label for="shareEndDate">シェア終了日</label>
+                <div class="form-group">
 
-            <input type="date"
-                   id="shareEndDate"
-                   name="shareEndDate">
-        </div>
+                    <label for="birthDate">
+                        生年月日
+                    </label>
 
-        <div class="form-group">
-            <label for="shareConditions">シェア条件</label>
+                    <input
+                        type="date"
+                        id="birthDate"
+                        name="birthDate">
 
-            <textarea id="shareConditions"
-                      name="shareConditions"
-                      maxlength="500"
-                      placeholder="例：室内飼育限定、散歩必須など"></textarea>
-        </div>
+                </div>
 
 
-        <!-- ========================= -->
-        <!-- ボタン -->
-        <!-- ========================= -->
+                <div class="form-group">
+
+                    <label for="weight">
+                        体重
+                        <span>kg</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        id="weight"
+                        name="weight"
+                        min="0"
+                        step="0.01"
+                        placeholder="例：5.5">
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             性格・特徴
+        ========================== -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                性格・特徴
+            </h2>
+
+            <div class="form-card">
+
+                <div class="form-group">
+
+                    <label for="personality">
+                        性格
+                    </label>
+
+                    <textarea
+                        id="personality"
+                        name="personality"
+                        maxlength="300"
+                        rows="5"
+                        placeholder="例：人懐っこくて元気な性格です。"></textarea>
+
+                    <p class="input-note">
+                        300文字以内で入力してください。
+                    </p>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="features">
+                        特徴
+                    </label>
+
+                    <textarea
+                        id="features"
+                        name="features"
+                        maxlength="500"
+                        rows="5"
+                        placeholder="ペットの特徴を入力してください"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="likes">
+                        好きなもの
+                    </label>
+
+                    <textarea
+                        id="likes"
+                        name="likes"
+                        maxlength="500"
+                        rows="4"
+                        placeholder="例：散歩、おもちゃ、おやつ"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="dislikes">
+                        苦手なもの
+                    </label>
+
+                    <textarea
+                        id="dislikes"
+                        name="dislikes"
+                        maxlength="500"
+                        rows="4"
+                        placeholder="例：大きな音、雷"></textarea>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             他の動物・子ども
+        ========================== -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                他の動物・子どもとの相性
+            </h2>
+
+            <div class="form-card">
+
+                <div class="form-group">
+
+                    <label for="otherAnimals">
+                        他の動物との相性
+                    </label>
+
+                    <input
+                        type="text"
+                        id="otherAnimals"
+                        name="otherAnimals"
+                        maxlength="100"
+                        placeholder="例：犬とは仲良くできます">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="childrenCompatibility">
+                        子どもとの相性
+                    </label>
+
+                    <select
+                        id="childrenCompatibility"
+                        name="childrenCompatibility">
+
+                        <option value="">
+                            選択してください
+                        </option>
+
+                        <option value="良い">
+                            良い
+                        </option>
+
+                        <option value="普通">
+                            普通
+                        </option>
+
+                        <option value="苦手">
+                            苦手
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             お世話情報
+        ========================== -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                お世話情報
+            </h2>
+
+            <div class="form-card">
+
+                <div class="form-group">
+
+                    <label for="foodInfo">
+                        食事
+                    </label>
+
+                    <textarea
+                        id="foodInfo"
+                        name="foodInfo"
+                        maxlength="500"
+                        rows="4"
+                        placeholder="食事の量や回数など"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="walkInfo">
+                        散歩
+                    </label>
+
+                    <textarea
+                        id="walkInfo"
+                        name="walkInfo"
+                        maxlength="500"
+                        rows="4"
+                        placeholder="散歩の時間や回数など"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="toiletInfo">
+                        トイレ
+                    </label>
+
+                    <textarea
+                        id="toiletInfo"
+                        name="toiletInfo"
+                        maxlength="300"
+                        rows="4"
+                        placeholder="トイレの場所や注意点など"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="aloneTime">
+                        留守番できる時間
+                    </label>
+
+                    <input
+                        type="text"
+                        id="aloneTime"
+                        name="aloneTime"
+                        maxlength="100"
+                        placeholder="例：4時間程度">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="careInfo">
+                        その他のお世話
+                    </label>
+
+                    <textarea
+                        id="careInfo"
+                        name="careInfo"
+                        maxlength="500"
+                        rows="4"
+                        placeholder="その他のお世話に関する情報"></textarea>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             健康情報
+        ========================== -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                健康情報
+            </h2>
+
+            <div class="form-card">
+
+                <div class="form-group">
+
+                    <label for="vaccination">
+                        ワクチン接種
+                    </label>
+
+                    <select
+                        id="vaccination"
+                        name="vaccination">
+
+                        <option value="">
+                            選択してください
+                        </option>
+
+                        <option value="済">
+                            済
+                        </option>
+
+                        <option value="未">
+                            未
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="neutering">
+                        避妊・去勢
+                    </label>
+
+                    <select
+                        id="neutering"
+                        name="neutering">
+
+                        <option value="">
+                            選択してください
+                        </option>
+
+                        <option value="済">
+                            済
+                        </option>
+
+                        <option value="未">
+                            未
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="medicalHistory">
+                        病歴
+                    </label>
+
+                    <textarea
+                        id="medicalHistory"
+                        name="medicalHistory"
+                        maxlength="500"
+                        rows="4"
+                        placeholder="これまでの病歴など"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="allergies">
+                        アレルギー
+                    </label>
+
+                    <textarea
+                        id="allergies"
+                        name="allergies"
+                        maxlength="500"
+                        rows="4"
+                        placeholder="食べ物や薬などのアレルギー"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="medication">
+                        服用中の薬
+                    </label>
+
+                    <textarea
+                        id="medication"
+                        name="medication"
+                        maxlength="500"
+                        rows="4"
+                        placeholder="現在服用している薬など"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="precautions">
+                        注意事項
+                    </label>
+
+                    <textarea
+                        id="precautions"
+                        name="precautions"
+                        maxlength="500"
+                        rows="4"
+                        placeholder="シェアする際に注意してほしいこと"></textarea>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             シェア情報
+        ========================== -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                ペットシェア情報
+            </h2>
+
+            <div class="form-card">
+
+                <div class="form-group">
+
+                    <label for="sharePrice">
+                        シェア料金
+                        <span>円</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        id="sharePrice"
+                        name="sharePrice"
+                        min="0"
+                        placeholder="例：3000">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="shareStartDate">
+                        シェア開始日
+                    </label>
+
+                    <input
+                        type="date"
+                        id="shareStartDate"
+                        name="shareStartDate">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="shareEndDate">
+                        シェア終了日
+                    </label>
+
+                    <input
+                        type="date"
+                        id="shareEndDate"
+                        name="shareEndDate">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="shareConditions">
+                        シェア条件
+                    </label>
+
+                    <textarea
+                        id="shareConditions"
+                        name="shareConditions"
+                        maxlength="500"
+                        rows="5"
+                        placeholder="シェアする際の条件など"></textarea>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             登録ボタン
+        ========================== -->
 
         <div class="button-area">
 
-            <button type="button"
-                    class="back-button"
-                    onclick="history.back()">
-                戻る
+            <button
+                type="button"
+                id="registerButton"
+                class="save-button">
+                ペットを登録する
             </button>
 
-            <button type="submit"
-                    class="register-button">
-                ペットを登録する
+            <button
+                type="button"
+                id="cancelButton"
+                class="cancel-button">
+                キャンセル
             </button>
 
         </div>
 
-    </form>
+    </main>
 
-</div>
+
+    <script src="pet-register.js"></script>
 
 </body>
+
 </html>

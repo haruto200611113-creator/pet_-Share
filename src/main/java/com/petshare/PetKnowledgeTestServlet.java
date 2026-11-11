@@ -290,12 +290,17 @@ public class PetKnowledgeTestServlet
 
                 if (upgraded) {
 
-                    // セッション上のユーザー情報も更新
+                    // セッション上のユーザー情報を本会員に更新
                     loginUser.setUserRank(2);
 
                     session.setAttribute(
                             "loginUser",
                             loginUser);
+
+                    // AccessControlが参照するユーザーランクも更新
+                    session.setAttribute(
+                            "userRank",
+                            2);
 
                     json.append(",");
                     json.append(

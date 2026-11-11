@@ -1,0 +1,437 @@
+/* =========================
+   基本
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    background: #f7f3ef;
+
+    color: #4b3b33;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+}
+
+
+/* =========================
+   ヘッダー
+========================= */
+
+.header {
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eee5df;
+}
+
+.header h1 {
+    margin: 0;
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   戻るボタン
+========================= */
+
+.back-button {
+    position: absolute;
+
+    left: 15px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #555;
+
+    font-size: 25px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   メイン
+========================= */
+
+.main-content {
+    width: 100%;
+
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    padding: 25px 16px 60px;
+}
+
+
+/* =========================
+   セクション
+========================= */
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    margin: 0 0 10px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    color: #4b3b33;
+}
+
+
+/* =========================
+   カード
+========================= */
+
+.form-card {
+    padding: 22px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================
+   フォーム
+========================= */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+.form-group label span {
+    margin-left: 5px;
+
+    color: #999;
+
+    font-size: 11px;
+
+    font-weight: normal;
+}
+
+.required {
+    margin-left: 5px;
+
+    color: #e47f55 !important;
+
+    font-size: 11px !important;
+
+    font-weight: normal !important;
+}
+
+
+/* =========================
+   入力欄
+========================= */
+
+input,
+select,
+textarea {
+    width: 100%;
+
+    border: 1px solid #ddd5cf;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #333;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+
+input,
+select {
+    height: 46px;
+
+    padding: 0 13px;
+}
+
+
+textarea {
+    padding: 12px 13px;
+
+    line-height: 1.6;
+
+    resize: vertical;
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #eb9a6d;
+}
+
+
+/* =========================
+   プレースホルダー
+========================= */
+
+input::placeholder,
+textarea::placeholder {
+    color: #aaa;
+}
+
+
+/* =========================
+   入力補足
+========================= */
+
+.input-note {
+    margin: 6px 0 0;
+
+    color: #999;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   画像アップロード
+========================= */
+
+.image-upload-area {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    padding: 8px 0 3px;
+}
+
+
+.pet-image-preview {
+    width: 180px;
+    height: 180px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 16px;
+
+    background: #f7f3ef;
+
+    border: 1px solid #eee5df;
+
+    margin-bottom: 14px;
+}
+
+
+.pet-image-preview img {
+    width: 100%;
+    height: 100%;
+
+    display: none;
+
+    object-fit: cover;
+}
+
+
+.pet-image-fallback {
+    font-size: 52px;
+
+    color: #c9b8ae;
+}
+
+
+.image-change-button {
+    display: inline-flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    width: auto !important;
+
+    min-width: 130px;
+
+    height: 42px;
+
+    padding: 0 20px;
+
+    margin: 0 !important;
+
+    border: 1px solid #eb9a6d;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #d97e50;
+
+    font-size: 13px !important;
+
+    font-weight: 600 !important;
+
+    cursor: pointer;
+}
+
+
+.image-change-button:hover {
+    background: #fff6f1;
+}
+
+
+/* =========================
+   ボタン
+========================= */
+
+.button-area {
+    margin-top: 5px;
+
+    padding-bottom: 20px;
+}
+
+
+.save-button {
+    width: 100%;
+
+    height: 50px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #eb9a6d;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.save-button:hover {
+    opacity: 0.9;
+}
+
+
+.cancel-button {
+    width: 100%;
+
+    height: 48px;
+
+    margin-top: 10px;
+
+    border: 1px solid #ddd5cf;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #666;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.cancel-button:hover {
+    background: #faf8f6;
+}
+
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 480px) {
+
+    .header {
+        height: 56px;
+    }
+
+    .header h1 {
+        font-size: 17px;
+    }
+
+    .main-content {
+        padding: 20px 12px 45px;
+    }
+
+    .form-card {
+        padding: 18px;
+    }
+
+    .section {
+        margin-bottom: 22px;
+    }
+
+    .pet-image-preview {
+        width: 160px;
+        height: 160px;
+    }
+
+}
