@@ -1066,3 +1066,44 @@ if (logoutButton) {
 ===================================================== */
 
 loadPets();
+
+
+/* =====================================================
+   ペット登録完了メッセージ
+===================================================== */
+
+const urlParams =
+    new URLSearchParams(window.location.search);
+
+if (
+    urlParams.get("petRegistered") === "true"
+) {
+
+    const message =
+        document.getElementById(
+            "pet-register-complete-message"
+        );
+
+    if (message) {
+
+        message.style.display = "block";
+
+        setTimeout(function () {
+
+            message.style.display = "none";
+
+        }, 1500);
+
+    }
+
+    /*
+     * URLから
+     * ?petRegistered=true
+     * を削除
+     */
+    window.history.replaceState(
+        {},
+        document.title,
+        "home.html"
+    );
+}

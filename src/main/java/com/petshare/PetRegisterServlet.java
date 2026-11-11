@@ -419,30 +419,14 @@ public class PetRegisterServlet extends HttpServlet {
         // ==========================================
 
         if (result) {
+            System.out.println("ペット登録成功");
 
-            System.out.println(
-                    "ペット登録成功");
+            response.sendRedirect("home.html?petRegistered=true");
 
-            response.sendRedirect(
-                    request.getContextPath()
-                            + "/pet-register.html"
-                            + "?success=true");
+        } else {
+            System.out.println("ペット登録失敗");
 
-        }
-
-        // ==========================================
-        // 登録失敗
-        // ==========================================
-
-        else {
-
-            System.out.println(
-                    "ペット登録失敗");
-
-            response.sendRedirect(
-                    request.getContextPath()
-                            + "/pet-register.html"
-                            + "?error=true");
+            response.sendRedirect("pet-register.html?error=true");
         }
     }
 
