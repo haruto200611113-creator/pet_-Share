@@ -1,365 +1,479 @@
 // ========================================
-// プロフィール編集ページ
+// ペット詳細ページ
 // ========================================
 
-// ========================================
-// 要素取得
-// ========================================
-
-const backButton =
-document.getElementById("backButton");
-
-const profileImageInput =
-document.getElementById("profileImageInput");
-
-const profileImagePreview =
-document.getElementById("profileImagePreview");
-
-const profileImageDefault =
-document.getElementById("profileImageDefault");
-
-const accountName =
-document.getElementById("accountName");
-
-const selfIntroduction =
-document.getElementById("selfIntroduction");
-
-const saveProfileButton =
-document.getElementById("saveProfileButton");
-
-const cancelButton =
-document.getElementById("cancelButton");
 
 // ========================================
-// プロフィールデータ
+// ペットID取得
 // ========================================
 
-const defaultProfileData = {
+const params =
+    new URLSearchParams(window.location.search);
 
-accountName: "ユーザー名",
+const petId =
+    params.get("petId");
 
-selfIntroduction: "",
-
-profileImage: ""
-
-};
-
-function getProfileData() {
-
-
-const savedData =
-    localStorage.getItem("profileData");
-
-
-if (!savedData) {
-
-    return defaultProfileData;
-
-}
-
-
-try {
-
-    return {
-
-        ...defaultProfileData,
-
-        ...JSON.parse(savedData)
-
-    };
-
-} catch (error) {
-
-    console.error(
-        "プロフィールデータの読み込みに失敗しました。",
-        error
-    );
-
-    return defaultProfileData;
-
-}
-
-
-}
-
-let profileData =
-getProfileData();
 
 // ========================================
-// プロフィール表示
+// ペット情報取得
 // ========================================
 
-function displayProfileData() {
+async function loadPetDetail() {
 
+    // petIdがない場合
+    if (!petId) {
 
-if (accountName) {
+        alert("ペットIDが指定されていません。");
 
-    accountName.value =
-        profileData.accountName || "";
+        window.location.href =
+            "home.html";
 
-}
-
-
-if (selfIntroduction) {
-
-    selfIntroduction.value =
-        profileData.selfIntroduction || "";
-
-}
-
-
-displayProfileImage();
-
-
-}
-
-// ========================================
-// プロフィール画像表示
-// ========================================
-
-function displayProfileImage() {
-
-
-if (
-    profileData.profileImage &&
-    profileImagePreview
-) {
-
-    profileImagePreview.src =
-        profileData.profileImage;
-
-    profileImagePreview.style.display =
-        "block";
-
-
-    if (profileImageDefault) {
-
-        profileImageDefault.style.display =
-            "none";
-
-    }
-
-} else {
-
-    if (profileImagePreview) {
-
-        profileImagePreview.src = "";
-
-        profileImagePreview.style.display =
-            "none";
-
+        return;
     }
 
 
-    if (profileImageDefault) {
+    try {
 
-        profileImageDefault.style.display =
-            "block";
-
-    }
-
-}
-
-
-}
-
-// ========================================
-// プロフィール画像変更
-// ========================================
-
-if (profileImageInput) {
-
-
-profileImageInput.addEventListener(
-    "change",
-    function () {
-
-        const file =
-            this.files[0];
-
-
-        if (!file) {
-
-            return;
-
-        }
-
-
-        if (!file.type.startsWith("image/")) {
-
-            alert(
-                "画像ファイルを選択してください。"
+        const response =
+            await fetch(
+                `pet-detail?petId=${encodeURIComponent(petId)}`
             );
 
-            this.value = "";
 
-            return;
+        if (!response.ok) {
 
-        }
-
-
-        // 5MBまで
-
-        const maxSize =
-            5 * 1024 * 1024;
-
-
-        if (file.size > maxSize) {
-
-            alert(
-                "画像サイズは5MB以下にしてください。"
+            throw new Error(
+                "ペット情報の取得に失敗しました。"
             );
 
-            this.value = "";
-
-            return;
-
         }
 
 
-        const reader =
-            new FileReader();
+        const pet =
+            await response.json();
 
 
-        reader.onload =
-            function (event) {
-
-                profileData.profileImage =
-                    event.target.result;
-
-                displayProfileImage();
-
-            };
-
-
-        reader.onerror =
-            function () {
-
-                alert(
-                    "画像の読み込みに失敗しました。"
-                );
-
-            };
-
-
-        reader.readAsDataURL(file);
-
-    }
-);
-
-}
-
-// ========================================
-// プロフィール保存
-// ========================================
-
-if (saveProfileButton) {
-
-saveProfileButton.addEventListener(
-    "click",
-    function () {
-
-
-        const newAccountName =
-            accountName.value.trim();
-
-
-        const newSelfIntroduction =
-            selfIntroduction.value.trim();
-
-
-        if (!newAccountName) {
-
-            alert(
-                "アカウント名を入力してください。"
-            );
-
-            accountName.focus();
-
-            return;
-
-        }
-
-
-        profileData.accountName =
-            newAccountName;
-
-
-        profileData.selfIntroduction =
-            newSelfIntroduction;
-
-
-        localStorage.setItem(
-            "profileData",
-            JSON.stringify(profileData)
+        console.log(
+            "取得したペット情報:",
+            pet
         );
 
+
+        displayPetDetail(pet);
+
+
+    } catch (error) {
+
+        console.error(
+            "ペット詳細取得エラー:",
+            error
+        );
 
         alert(
-            "プロフィールを保存しました。"
+            "ペット情報を取得できませんでした。"
         );
 
-    }
-);
+        window.location.href =
+            "home.html";
 
+    }
 
 }
 
+
 // ========================================
-// 戻るボタン
+// ペット情報表示
 // ========================================
 
-if (backButton) {
+function displayPetDetail(pet) {
 
-backButton.addEventListener(
-    "click",
-    function () {
 
-        // ひとつ前のページへ戻る
+    // ========================================
+    // ペット名
+    // ========================================
 
-        window.history.back();
+    const petName =
+        document.getElementById("petName");
+
+
+    if (petName) {
+
+        petName.textContent =
+            pet.name || "名前未設定";
 
     }
-);
-
-}
-
-// ========================================
-// キャンセル
-// ========================================
-
-if (cancelButton) {
-
-cancelButton.addEventListener(
-    "click",
-    function () {
 
 
-        const result =
-            confirm(
-                "変更内容を破棄して前のページに戻りますか？"
-            );
+
+    // ========================================
+    // ペット画像
+    // ========================================
+
+    const petImage =
+        document.getElementById("petImage");
 
 
-        if (!result) {
+    if (petImage) {
 
-            return;
+        if (pet.imagePath) {
+
+            petImage.src =
+                pet.imagePath;
+
+        } else {
+
+            petImage.src =
+                "https://placehold.co/800x600?text=Pet+Image";
 
         }
 
 
-        // ひとつ前のページへ戻る
-
-        window.history.back();
+        petImage.alt =
+            pet.name || "ペット画像";
 
     }
-);
 
+
+
+    // ========================================
+    // ペット種類
+    // ========================================
+
+    const petType =
+        document.getElementById("petType");
+
+
+    if (petType) {
+
+        let typeText =
+            pet.type || "未設定";
+
+
+        if (pet.breed) {
+
+            typeText +=
+                `（${pet.breed}）`;
+
+        }
+
+
+        petType.textContent =
+            typeText;
+
+    }
+
+
+
+    // ========================================
+    // 年齢
+    // ========================================
+
+    const petAge =
+        document.getElementById("petAge");
+
+
+    if (petAge) {
+
+        if (pet.age !== undefined &&
+            pet.age !== null) {
+
+            petAge.textContent =
+                `${pet.age}歳`;
+
+        } else {
+
+            petAge.textContent =
+                "不明";
+
+        }
+
+    }
+
+
+
+    // ========================================
+    // 料金
+    // ========================================
+
+    const petPrice =
+        document.getElementById("petPrice");
+
+
+    if (petPrice) {
+
+        if (
+            pet.sharePrice !== undefined &&
+            pet.sharePrice !== null
+        ) {
+
+            petPrice.textContent =
+                Number(
+                    pet.sharePrice
+                ).toLocaleString();
+
+        } else {
+
+            petPrice.textContent =
+                "0";
+
+        }
+
+    }
+
+
+
+    // ========================================
+    // シェア可能期間
+    // ========================================
+
+    const sharePeriod =
+        document.getElementById(
+            "sharePeriod"
+        );
+
+
+    if (sharePeriod) {
+
+        const startDate =
+            formatDate(
+                pet.shareStartDate
+            );
+
+        const endDate =
+            formatDate(
+                pet.shareEndDate
+            );
+
+
+        if (startDate && endDate) {
+
+            sharePeriod.textContent =
+                `${startDate} ～ ${endDate}`;
+
+        } else if (startDate) {
+
+            sharePeriod.textContent =
+                `${startDate} ～`;
+
+        } else if (endDate) {
+
+            sharePeriod.textContent =
+                `～ ${endDate}`;
+
+        } else {
+
+            sharePeriod.textContent =
+                "設定なし";
+
+        }
+
+    }
+
+
+
+    // ========================================
+    // ペットについて
+    // ========================================
+
+    const petDescription =
+        document.getElementById(
+            "petDescription"
+        );
+
+
+    if (petDescription) {
+
+        let description = "";
+
+
+        // 性格
+
+        if (pet.personality) {
+
+            description +=
+                `性格：${pet.personality}`;
+
+        }
+
+
+        // 特徴
+
+        if (pet.features) {
+
+            if (description) {
+
+                description +=
+                    "\n";
+
+            }
+
+            description +=
+                `特徴：${pet.features}`;
+
+        }
+
+
+        // 好きなもの
+
+        if (pet.likes) {
+
+            if (description) {
+
+                description +=
+                    "\n";
+
+            }
+
+            description +=
+                `好きなもの：${pet.likes}`;
+
+        }
+
+
+        // 苦手なもの
+
+        if (pet.dislikes) {
+
+            if (description) {
+
+                description +=
+                    "\n";
+
+            }
+
+            description +=
+                `苦手なもの：${pet.dislikes}`;
+
+        }
+
+
+        if (description) {
+
+            petDescription.textContent =
+                description;
+
+        } else {
+
+            petDescription.textContent =
+                "ペット情報は登録されていません。";
+
+        }
+
+    }
+
+
+
+    // ========================================
+    // シェア条件
+    // ========================================
+
+    const conditionBox =
+        document.querySelector(
+            ".condition-box"
+        );
+
+
+    if (conditionBox) {
+
+        if (pet.shareConditions) {
+
+            conditionBox.innerHTML = `
+                <p>
+                    ✓ ${escapeHtml(
+                        pet.shareConditions
+                    )}
+                </p>
+            `;
+
+        } else {
+
+            conditionBox.innerHTML = `
+                <p>
+                    シェア条件は登録されていません。
+                </p>
+            `;
+
+        }
+
+    }
+
+
+
+    // ========================================
+    // デバッグ用
+    // ========================================
+
+    console.log(
+        "表示したペットID:",
+        pet.petId
+    );
 
 }
 
+
 // ========================================
-// 初期表示
+// 日付を「○月○日」に変換
 // ========================================
 
-displayProfileData();
+function formatDate(dateString) {
+
+    if (
+        !dateString ||
+        dateString === "null" ||
+        dateString === "undefined"
+    ) {
+
+        return "";
+
+    }
+
+
+    const date =
+        new Date(dateString);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "";
+
+    }
+
+
+    return `${date.getMonth() + 1}月${date.getDate()}日`;
+
+}
+
+
+// ========================================
+// HTMLエスケープ
+// ========================================
+
+function escapeHtml(value) {
+
+    if (value === null ||
+        value === undefined) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// ========================================
+// 初期処理
+// ========================================
+
+loadPetDetail();
