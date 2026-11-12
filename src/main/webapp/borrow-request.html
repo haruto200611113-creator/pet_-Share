@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ペットを借りる - Pet Share</title>
+
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="design.css">
+
+    <style>
+        .borrow-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .borrow-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4b3b33;
+        }
+
+        .pet-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            background: #faf7f4;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .pet-info img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .pet-info-text h2 {
+            margin: 0 0 10px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #4b3b33;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background: #f7f3ef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .result-box {
+            background: #fff8e8;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0;
+            font-size: 16px;
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #d66b3d;
+        }
+
+        .error-message {
+            display: none;
+            color: #d9534f;
+            background: #fff0f0;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #d88b5b;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            opacity: 0.9;
+        }
+
+        .back-button {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="borrow-container">
+
+    <h1 class="borrow-title">
+        このペットを借りる
+    </h1>
+
+    <!-- ペット情報 -->
+    <div class="pet-info">
+
+        <img
+            id="petImage"
+            src="https://placehold.co/300x300?text=Pet"
+            alt="ペット画像">
+
+        <div class="pet-info-text">
+
+            <h2 id="petName">
+                読み込み中...
+            </h2>
+
+            <p>
+                種類：
+                <span id="petType">-</span>
+            </p>
+
+            <p>
+                年齢：
+                <span id="petAge">-</span>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- シェア可能期間 -->
+    <div class="info-box">
+
+        <h3>シェア可能期間</h3>
+
+        <p id="sharePeriod">
+            読み込み中...
+        </p>
+
+        <p id="shareConditions">
+            シェア条件を読み込み中...
+        </p>
+
+    </div>
+
+
+    <!-- エラー -->
+    <div
+        id="errorMessage"
+        class="error-message">
+    </div>
+
+
+    <!-- 利用開始日時 -->
+    <div class="form-group">
+
+        <label for="startDatetime">
+            利用開始日時
+        </label>
+
+        <input
+            type="datetime-local"
+            id="startDatetime"
+            required>
+
+    </div>
+
+
+    <!-- 利用終了日時 -->
+    <div class="form-group">
+
+        <label for="endDatetime">
+            利用終了日時
+        </label>
+
+        <input
+            type="datetime-local"
+            id="endDatetime"
+            required>
+
+    </div>
+
+
+    <!-- 計算結果 -->
+    <div class="result-box">
+
+        <div class="result-row">
+
+            <span>
+                利用時間
+            </span>
+
+            <strong id="usageHours">
+                0時間
+            </strong>
+
+        </div>
+
+
+        <div class="result-row">
+
+            <span>
+                利用料金
+            </span>
+
+            <strong
+                id="sharePrice"
+                class="price">
+                0円
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- 申込みボタン -->
+    <button
+        type="button"
+        id="submitButton"
+        class="submit-button">
+
+        この内容で申し込む
+
+    </button>
+
+
+    <a
+        href="javascript:history.back()"
+        class="back-button">
+
+        ← ペット詳細に戻る
+
+    </a>
+
+</div>
+
+
+<script src="borrow-request.js"></script>
+
+</body>
+</html>
