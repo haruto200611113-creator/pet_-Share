@@ -19,68 +19,7 @@ const currentUser = {
 };
 
 
-/* =====================================================
-   仮ペットデータ
-   将来的にはJava APIから取得する
-===================================================== */
-
-let pets = [
-    {
-        petId: 1,
-        userId: 2,
-        name: "ポチ",
-        type: "犬",
-        age: 3,
-        area: "山口県",
-        imagePath:
-            "https://images.unsplash.com/photo-1552053831-71594a27632d?w=600",
-        createdAt:
-            "2026-08-30T10:00:00",
-        liked: false
-    },
-
-    {
-        petId: 2,
-        userId: 3,
-        name: "ミケ",
-        type: "猫",
-        age: 2,
-        area: "福岡県",
-        imagePath:
-            "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=600",
-        createdAt:
-            "2026-08-29T10:00:00",
-        liked: false
-    },
-
-    {
-        petId: 3,
-        userId: 4,
-        name: "ココ",
-        type: "犬",
-        age: 5,
-        area: "広島県",
-        imagePath:
-            "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600",
-        createdAt:
-            "2026-08-28T10:00:00",
-        liked: false
-    },
-
-    {
-        petId: 4,
-        userId: 5,
-        name: "モモ",
-        type: "猫",
-        age: 1,
-        area: "大阪府",
-        imagePath:
-            "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=600",
-        createdAt:
-            "2026-08-27T10:00:00",
-        liked: false
-    }
-];
+let pets = [];
 
 
 /* =====================================================
@@ -128,11 +67,42 @@ const applyButton =
    ペット一覧取得
 ===================================================== */
 
-function loadPets() {
+async function loadPets() {
 
-    displayPets(
-        getFilteredPets()
-    );
+    try {
+
+        const response = await fetch("pet-list");
+
+        if (!response.ok) {
+            throw new Error(
+                "ペット一覧の取得に失敗しました"
+            );
+        }
+
+        pets = await response.json();
+
+        displayPets(
+            getFilteredPets()
+        );
+
+    } catch (error) {
+
+        console.error(
+            "ペット一覧取得エラー:",
+            error
+        );
+
+        petList.innerHTML = `
+            <p style="
+                grid-column: 1 / -1;
+                text-align: center;
+                color: #998880;
+                padding: 40px 0;
+            ">
+                ペット一覧を取得できませんでした。
+            </p>
+        `;
+    }
 }
 
 
