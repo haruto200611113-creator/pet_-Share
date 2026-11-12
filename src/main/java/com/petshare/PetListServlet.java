@@ -15,179 +15,187 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/pet-list")
 public class PetListServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-    private final PetDAO petDAO = new PetDAO();
+        private final PetDAO petDAO = new PetDAO();
 
-    @Override
-    protected void doGet(
-            HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
+        @Override
+        protected void doGet(
+                        HttpServletRequest request,
+                        HttpServletResponse response)
+                        throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
+                HttpSession session = request.getSession(false);
 
-        // ログイン確認
-        if (session == null
-                || session.getAttribute("loginUser") == null) {
+                // ログイン確認
+                if (session == null
+                                || session.getAttribute("loginUser") == null) {
 
-            response.setStatus(
-                    HttpServletResponse.SC_UNAUTHORIZED);
+                        response.setStatus(
+                                        HttpServletResponse.SC_UNAUTHORIZED);
 
-            response.setContentType(
-                    "application/json; charset=UTF-8");
+                        response.setContentType(
+                                        "application/json; charset=UTF-8");
 
-            response.getWriter().write(
-                    "{\"error\":\"ログインしてください\"}");
+                        response.getWriter().write(
+                                        "{\"error\":\"ログインしてください\"}");
 
-            return;
-        }
-
-        try {
-
-            // DBからペット一覧を取得
-            List<Pet> pets = petDAO.findAll();
-
-            response.setContentType(
-                    "application/json; charset=UTF-8");
-
-            response.setCharacterEncoding("UTF-8");
-
-            PrintWriter out = response.getWriter();
-
-            out.print("[");
-
-            for (int i = 0; i < pets.size(); i++) {
-
-                Pet pet = pets.get(i);
-
-                if (i > 0) {
-                    out.print(",");
+                        return;
                 }
 
-                out.print("{");
+                try {
 
-                out.print(
-                        "\"petId\":"
-                                + pet.getPetId()
-                                + ",");
+                        // ログイン中のアカウントIDを取得
+                        int loginAccountId = (Integer) session.getAttribute("accountId");
 
-                out.print(
-                        "\"name\":\""
-                                + escapeJson(
-                                        pet.getPetName())
-                                + "\",");
+                        // DBからペット一覧を取得
+                        List<Pet> pets = petDAO.findAll();
 
-                out.print(
-                        "\"type\":\""
-                                + escapeJson(
-                                        pet.getPetType())
-                                + "\",");
+                        // シェア中 ＋ 自分以外のペットだけに絞り込む
+                        pets = pets.stream()
+                                        .filter(Pet::isShared)
+                                        .filter(pet -> pet.getAccountId() != loginAccountId)
+                                        .toList();
+                        response.setContentType(
+                                        "application/json; charset=UTF-8");
 
-                out.print(
-                        "\"imagePath\":\""
-                                + escapeJson(
-                                        pet.getPetImage())
-                                + "\",");
+                        response.setCharacterEncoding("UTF-8");
 
-                out.print(
-                        "\"age\":"
-                                + calculateAge(
-                                        pet.getBirthDate())
-                                + ",");
+                        PrintWriter out = response.getWriter();
 
-                out.print(
-                        "\"area\":\"\" ,");
+                        out.print("[");
 
-                out.print(
-                        "\"createdAt\":\""
-                                + formatDate(
-                                        pet.getCreatedAt())
-                                + "\",");
+                        for (int i = 0; i < pets.size(); i++) {
 
-                out.print(
-                        "\"liked\":false");
+                                Pet pet = pets.get(i);
 
-                out.print("}");
-            }
+                                if (i > 0) {
+                                        out.print(",");
+                                }
 
-            out.print("]");
+                                out.print("{");
 
-        } catch (Exception e) {
+                                out.print(
+                                                "\"petId\":"
+                                                                + pet.getPetId()
+                                                                + ",");
 
-            e.printStackTrace();
+                                out.print(
+                                                "\"name\":\""
+                                                                + escapeJson(
+                                                                                pet.getPetName())
+                                                                + "\",");
 
-            response.setStatus(
-                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                                out.print(
+                                                "\"type\":\""
+                                                                + escapeJson(
+                                                                                pet.getPetType())
+                                                                + "\",");
 
-            response.setContentType(
-                    "application/json; charset=UTF-8");
+                                out.print(
+                                                "\"imagePath\":\""
+                                                                + escapeJson(
+                                                                                pet.getPetImage())
+                                                                + "\",");
 
-            response.getWriter().write(
-                    "{\"error\":\"ペット一覧の取得に失敗しました\"}");
-        }
-    }
+                                out.print(
+                                                "\"age\":"
+                                                                + calculateAge(
+                                                                                pet.getBirthDate())
+                                                                + ",");
 
-    // =====================================
-    // JSONエスケープ
-    // =====================================
+                                out.print(
+                                                "\"area\":\"\" ,");
 
-    private String escapeJson(String value) {
+                                out.print(
+                                                "\"createdAt\":\""
+                                                                + formatDate(
+                                                                                pet.getCreatedAt())
+                                                                + "\",");
 
-        if (value == null) {
-            return "";
-        }
+                                out.print(
+                                                "\"liked\":false");
 
-        return value
-                .replace("\\", "\\\\")
-                .replace("\"", "\\\"")
-                .replace("\n", "\\n")
-                .replace("\r", "\\r")
-                .replace("\t", "\\t");
-    }
+                                out.print("}");
+                        }
 
-    // =====================================
-    // 年齢計算
-    // =====================================
+                        out.print("]");
 
-    private int calculateAge(
-            java.sql.Date birthDate) {
+                } catch (Exception e) {
 
-        if (birthDate == null) {
-            return 0;
-        }
+                        e.printStackTrace();
 
-        java.time.LocalDate birth = birthDate.toLocalDate();
+                        response.setStatus(
+                                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
-        java.time.LocalDate today = java.time.LocalDate.now();
+                        response.setContentType(
+                                        "application/json; charset=UTF-8");
 
-        int age = today.getYear()
-                - birth.getYear();
-
-        if (today.getMonthValue() < birth.getMonthValue()
-                || (today.getMonthValue() == birth.getMonthValue()
-                        && today.getDayOfMonth() < birth.getDayOfMonth())) {
-
-            age--;
+                        response.getWriter().write(
+                                        "{\"error\":\"ペット一覧の取得に失敗しました\"}");
+                }
         }
 
-        return Math.max(age, 0);
-    }
+        // =====================================
+        // JSONエスケープ
+        // =====================================
 
-    // =====================================
-    // 日付フォーマット
-    // =====================================
+        private String escapeJson(String value) {
 
-    private String formatDate(
-            java.sql.Timestamp timestamp) {
+                if (value == null) {
+                        return "";
+                }
 
-        if (timestamp == null) {
-            return "";
+                return value
+                                .replace("\\", "\\\\")
+                                .replace("\"", "\\\"")
+                                .replace("\n", "\\n")
+                                .replace("\r", "\\r")
+                                .replace("\t", "\\t");
         }
 
-        SimpleDateFormat format = new SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:ss");
+        // =====================================
+        // 年齢計算
+        // =====================================
 
-        return format.format(timestamp);
-    }
+        private int calculateAge(
+                        java.sql.Date birthDate) {
+
+                if (birthDate == null) {
+                        return 0;
+                }
+
+                java.time.LocalDate birth = birthDate.toLocalDate();
+
+                java.time.LocalDate today = java.time.LocalDate.now();
+
+                int age = today.getYear()
+                                - birth.getYear();
+
+                if (today.getMonthValue() < birth.getMonthValue()
+                                || (today.getMonthValue() == birth.getMonthValue()
+                                                && today.getDayOfMonth() < birth.getDayOfMonth())) {
+
+                        age--;
+                }
+
+                return Math.max(age, 0);
+        }
+
+        // =====================================
+        // 日付フォーマット
+        // =====================================
+
+        private String formatDate(
+                        java.sql.Timestamp timestamp) {
+
+                if (timestamp == null) {
+                        return "";
+                }
+
+                SimpleDateFormat format = new SimpleDateFormat(
+                                "yyyy-MM-dd'T'HH:mm:ss");
+
+                return format.format(timestamp);
+        }
 }

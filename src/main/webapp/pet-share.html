@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>ペットをシェアする</title>
+
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="design.css">
+
+    <style>
+
+        .share-container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 30px;
+        }
+
+        .share-title {
+            text-align: center;
+            color: #4b3b33;
+            margin-bottom: 10px;
+        }
+
+        .share-description {
+            text-align: center;
+            color: #777;
+            margin-bottom: 35px;
+        }
+
+        .share-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .pet-info {
+            padding: 20px;
+            background: #f8f6f3;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .pet-info h2 {
+            margin: 0 0 10px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .time-info {
+            margin-top: 25px;
+            padding: 20px;
+            background: #eef5ee;
+            border-radius: 12px;
+        }
+
+        .time-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .price {
+            font-size: 26px;
+            font-weight: bold;
+            color: #557058;
+        }
+
+        .error-message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff0f0;
+            color: #c0392b;
+            border-radius: 8px;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #6f8f72;
+            color: #fff;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            opacity: 0.85;
+        }
+
+        .back-button {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #4b3b33;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="share-container">
+
+    <h1 class="share-title">
+        ペットをシェアする
+    </h1>
+
+    <p class="share-description">
+        シェア可能な日時を設定してください
+    </p>
+
+    <div class="share-card">
+
+        <!-- ペット情報 -->
+        <div class="pet-info">
+
+            <h2 id="petName">
+                ペット
+            </h2>
+
+            <p>
+                このペットをシェア可能にします。
+            </p>
+
+        </div>
+
+        <!-- フォーム -->
+        <form
+            id="shareForm"
+            action="pet-share"
+            method="post">
+
+            <!-- ペットID -->
+            <input
+                type="hidden"
+                id="petId"
+                name="petId">
+
+            <!-- 開始日時 -->
+            <div class="form-group">
+
+                <label for="availableStart">
+                    シェア開始日時
+                </label>
+
+                <input
+                    type="datetime-local"
+                    id="availableStart"
+                    name="availableStart"
+                    required>
+
+            </div>
+
+            <!-- 終了日時 -->
+            <div class="form-group">
+
+                <label for="availableEnd">
+                    シェア終了日時
+                </label>
+
+                <input
+                    type="datetime-local"
+                    id="availableEnd"
+                    name="availableEnd"
+                    required>
+
+            </div>
+
+            <!-- 利用時間・料金 -->
+            <div class="time-info">
+
+                <div class="time-row">
+
+                    <span>
+                        シェア可能時間
+                    </span>
+
+                    <strong id="usageHours">
+                        0時間
+                    </strong>
+
+                </div>
+
+                <div class="time-row">
+
+                    <span>
+                        料金
+                    </span>
+
+                    <strong
+                        id="sharePrice"
+                        class="price">
+                        0円
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <!-- エラー -->
+            <div
+                id="errorMessage"
+                class="error-message">
+            </div>
+
+            <button
+                type="submit"
+                class="submit-button">
+
+                この内容でシェアする
+
+            </button>
+
+        </form>
+
+        <a
+            href="pet-share-select.jsp"
+            class="back-button">
+            ← ペット選択に戻る
+        </a>
+
+    </div>
+
+</div>
+
+<script src="pet-share.js"></script>
+
+</body>
+
+</html>

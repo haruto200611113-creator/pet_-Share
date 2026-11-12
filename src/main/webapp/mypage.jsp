@@ -11,6 +11,9 @@
         response.sendRedirect(request.getContextPath() + "/login.html");
         return;
     }
+        // シェア設定結果
+    String shareSuccess = request.getParameter("shareSuccess");
+    String shareError = request.getParameter("shareError");
 %>
 
 <%!
@@ -77,7 +80,24 @@ private String displayUserRank(int userRank) {
 </head>
 
 <body>
+<% if ("true".equals(shareSuccess)) { %>
 
+    <div class="change-complete-message"
+         id="share-success-message">
+        ペットのシェア設定が完了しました
+    </div>
+
+<% } %>
+
+
+<% if (shareError != null && !shareError.isBlank()) { %>
+
+    <div class="share-error-message"
+         id="share-error-message">
+        <%= escapeHtml(shareError) %>
+    </div>
+
+<% } %>
 
 <!-- ========================================
      ヘッダー
@@ -451,6 +471,36 @@ private String displayUserRank(int userRank) {
                 </span>
 
             </a>
+            <!-- ====================================
+     ペットをシェアする
+===================================== -->
+
+<a
+    href="pet-share-select.jsp"
+    class="status-card"
+>
+
+    <span class="status-icon">
+        🐾
+    </span>
+
+    <div>
+
+        <span class="status-label">
+            ペットをシェアする
+        </span>
+
+        <span class="unit">
+            自分のペットをシェアできます
+        </span>
+
+    </div>
+
+    <span class="arrow">
+        ›
+    </span>
+
+</a>
 
 
         </div>
@@ -716,6 +766,31 @@ document.addEventListener("DOMContentLoaded", async function () {
 </script>
 <script src="mypage.js"></script>
 
-</body>
+<script>
 
+    setTimeout(() => {
+
+        const successMessage =
+            document.getElementById(
+                "share-success-message"
+            );
+
+        const errorMessage =
+            document.getElementById(
+                "share-error-message"
+            );
+
+        if (successMessage) {
+            successMessage.style.display = "none";
+        }
+
+        if (errorMessage) {
+            errorMessage.style.display = "none";
+        }
+
+    }, 3000);
+
+</script>
+
+</body>
 </html>

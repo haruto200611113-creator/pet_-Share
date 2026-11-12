@@ -60,11 +60,12 @@ public class Pet {
     // シェア情報
     // ==============================
 
+    private boolean isShared;
+
     private Integer sharePrice;
     private Date shareStartDate;
     private Date shareEndDate;
     private String shareConditions;
-
     // ==============================
     // 管理情報
     // ==============================
@@ -289,6 +290,14 @@ public class Pet {
 
     public void setPrecautions(String precautions) {
         this.precautions = precautions;
+    }
+
+    public boolean isShared() {
+        return isShared;
+    }
+
+    public void setIsShared(boolean isShared) {
+        this.isShared = isShared;
     }
 
     public Integer getSharePrice() {
