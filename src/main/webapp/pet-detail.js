@@ -477,3 +477,35 @@ function escapeHtml(value) {
 // ========================================
 
 loadPetDetail();
+// ========================================
+// このペットを借りる
+// ========================================
+
+const borrowButton =
+    document.getElementById("borrowButton");
+
+
+if (borrowButton) {
+
+    borrowButton.addEventListener(
+        "click",
+        function () {
+
+            if (!petId) {
+
+                alert(
+                    "ペットIDが指定されていません。"
+                );
+
+                return;
+            }
+
+
+            // 借りる申込画面へ移動
+            window.location.href =
+                `borrow-request.html?petId=${encodeURIComponent(petId)}`;
+
+        }
+    );
+
+}
