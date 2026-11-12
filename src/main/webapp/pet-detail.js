@@ -174,8 +174,10 @@ function displayPetDetail(pet) {
 
     if (petAge) {
 
-        if (pet.age !== undefined &&
-            pet.age !== null) {
+        if (
+            pet.age !== undefined &&
+            pet.age !== null
+        ) {
 
             petAge.textContent =
                 `${pet.age}歳`;
@@ -223,7 +225,7 @@ function displayPetDetail(pet) {
 
 
     // ========================================
-    // シェア可能期間
+    // 新しいシェア可能時間
     // ========================================
 
     const sharePeriod =
@@ -234,36 +236,39 @@ function displayPetDetail(pet) {
 
     if (sharePeriod) {
 
-        const startDate =
-            formatDate(
-                pet.shareStartDate
-            );
+        if (
+            pet.shareAvailable &&
+            pet.availableStart &&
+            pet.availableEnd
+        ) {
 
-        const endDate =
-            formatDate(
-                pet.shareEndDate
-            );
+            const start =
+                formatDateTime(
+                    pet.availableStart
+                );
+
+            const end =
+                formatDateTime(
+                    pet.availableEnd
+                );
 
 
-        if (startDate && endDate) {
+            if (start && end) {
 
-            sharePeriod.textContent =
-                `${startDate} ～ ${endDate}`;
+                sharePeriod.textContent =
+                    `${start} ～ ${end}`;
 
-        } else if (startDate) {
+            } else {
 
-            sharePeriod.textContent =
-                `${startDate} ～`;
+                sharePeriod.textContent =
+                    "現在シェア可能な時間が設定されていません。";
 
-        } else if (endDate) {
-
-            sharePeriod.textContent =
-                `～ ${endDate}`;
+            }
 
         } else {
 
             sharePeriod.textContent =
-                "設定なし";
+                "現在シェア可能な時間が設定されていません。";
 
         }
 
@@ -286,7 +291,9 @@ function displayPetDetail(pet) {
         let description = "";
 
 
+        // ========================================
         // 性格
+        // ========================================
 
         if (pet.personality) {
 
@@ -296,7 +303,9 @@ function displayPetDetail(pet) {
         }
 
 
+        // ========================================
         // 特徴
+        // ========================================
 
         if (pet.features) {
 
@@ -313,7 +322,9 @@ function displayPetDetail(pet) {
         }
 
 
+        // ========================================
         // 好きなもの
+        // ========================================
 
         if (pet.likes) {
 
@@ -330,7 +341,9 @@ function displayPetDetail(pet) {
         }
 
 
+        // ========================================
         // 苦手なもの
+        // ========================================
 
         if (pet.dislikes) {
 
@@ -346,6 +359,10 @@ function displayPetDetail(pet) {
 
         }
 
+
+        // ========================================
+        // 表示
+        // ========================================
 
         if (description) {
 
@@ -408,14 +425,29 @@ function displayPetDetail(pet) {
         pet.petId
     );
 
+    console.log(
+        "シェア可能:",
+        pet.shareAvailable
+    );
+
+    console.log(
+        "シェア開始日時:",
+        pet.availableStart
+    );
+
+    console.log(
+        "シェア終了日時:",
+        pet.availableEnd
+    );
+
 }
 
 
 // ========================================
-// 日付を「○月○日」に変換
+// 日時を「YYYY年MM月DD日 HH:MM」に変換
 // ========================================
 
-function formatDate(dateString) {
+function formatDateTime(dateString) {
 
     if (
         !dateString ||
@@ -443,7 +475,37 @@ function formatDate(dateString) {
     }
 
 
-    return `${date.getMonth() + 1}月${date.getDate()}日`;
+    const year =
+        date.getFullYear();
+
+
+    const month =
+        date.getMonth() + 1;
+
+
+    const day =
+        date.getDate();
+
+
+    const hour =
+        String(
+            date.getHours()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const minute =
+        String(
+            date.getMinutes()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return `${year}年${month}月${day}日 ${hour}:${minute}`;
 
 }
 
@@ -454,8 +516,10 @@ function formatDate(dateString) {
 
 function escapeHtml(value) {
 
-    if (value === null ||
-        value === undefined) {
+    if (
+        value === null ||
+        value === undefined
+    ) {
 
         return "";
 
@@ -463,11 +527,26 @@ function escapeHtml(value) {
 
 
     return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
@@ -477,12 +556,16 @@ function escapeHtml(value) {
 // ========================================
 
 loadPetDetail();
+
+
 // ========================================
 // このペットを借りる
 // ========================================
 
 const borrowButton =
-    document.getElementById("borrowButton");
+    document.getElementById(
+        "borrowButton"
+    );
 
 
 if (borrowButton) {
@@ -498,10 +581,14 @@ if (borrowButton) {
                 );
 
                 return;
+
             }
 
 
+            // ========================================
             // 借りる申込画面へ移動
+            // ========================================
+
             window.location.href =
                 `borrow-request.html?petId=${encodeURIComponent(petId)}`;
 

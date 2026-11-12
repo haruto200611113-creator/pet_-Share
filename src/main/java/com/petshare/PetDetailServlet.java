@@ -3,6 +3,7 @@ package com.petshare;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -15,7 +16,12 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/pet-detail")
 public class PetDetailServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
+
     private final PetDAO petDAO = new PetDAO();
+
+    // 新しい時間単位のシェア情報を取得するDAO
+    private final PetShareDAO petShareDAO = new PetShareDAO();
 
     @Override
     protected void doGet(
@@ -23,7 +29,9 @@ public class PetDetailServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("application/json; charset=UTF-8");
+        response.setContentType(
+                "application/json; charset=UTF-8");
+
         response.setCharacterEncoding("UTF-8");
 
         String petIdParam = request.getParameter("petId");
@@ -32,7 +40,8 @@ public class PetDetailServlet extends HttpServlet {
         // petId確認
         // ==============================
 
-        if (petIdParam == null || petIdParam.isBlank()) {
+        if (petIdParam == null ||
+                petIdParam.isBlank()) {
 
             response.setStatus(
                     HttpServletResponse.SC_BAD_REQUEST);
@@ -65,6 +74,13 @@ public class PetDetailServlet extends HttpServlet {
             }
 
             // ==============================
+            // 新しいシェア情報取得
+            // ==============================
+
+            PetShare petShare = petShareDAO.findActiveByPetId(
+                    petId);
+
+            // ==============================
             // JSON出力
             // ==============================
 
@@ -72,60 +88,122 @@ public class PetDetailServlet extends HttpServlet {
 
             out.print("{");
 
+            // ==============================
+            // 基本情報
+            // ==============================
+
             out.print("\"petId\":");
             out.print(pet.getPetId());
             out.print(",");
 
             out.print("\"name\":\"");
-            out.print(escapeJson(pet.getPetName()));
+            out.print(
+                    escapeJson(
+                            pet.getPetName()));
             out.print("\",");
 
             out.print("\"imagePath\":\"");
-            out.print(escapeJson(pet.getPetImage()));
+            out.print(
+                    escapeJson(
+                            pet.getPetImage()));
             out.print("\",");
 
             out.print("\"type\":\"");
-            out.print(escapeJson(pet.getPetType()));
+            out.print(
+                    escapeJson(
+                            pet.getPetType()));
             out.print("\",");
 
             out.print("\"breed\":\"");
-            out.print(escapeJson(pet.getBreed()));
+            out.print(
+                    escapeJson(
+                            pet.getBreed()));
             out.print("\",");
 
             out.print("\"gender\":\"");
-            out.print(escapeJson(pet.getGender()));
+            out.print(
+                    escapeJson(
+                            pet.getGender()));
             out.print("\",");
+
+            // ==============================
+            // 年齢
+            // ==============================
 
             out.print("\"age\":");
-            out.print(calculateAge(pet.getBirthDate()));
+            out.print(
+                    calculateAge(
+                            pet.getBirthDate()));
             out.print(",");
+
+            // ==============================
+            // 体重
+            // ==============================
 
             out.print("\"weight\":");
-            out.print(
-                    pet.getWeight() != null
-                            ? pet.getWeight()
-                            : 0);
+
+            if (pet.getWeight() != null) {
+                out.print(
+                        pet.getWeight());
+            } else {
+                out.print("0");
+            }
+
             out.print(",");
 
+            // ==============================
+            // 性格
+            // ==============================
+
             out.print("\"personality\":\"");
-            out.print(escapeJson(pet.getPersonality()));
+            out.print(
+                    escapeJson(
+                            pet.getPersonality()));
             out.print("\",");
+
+            // ==============================
+            // 特徴
+            // ==============================
 
             out.print("\"features\":\"");
-            out.print(escapeJson(pet.getFeatures()));
+            out.print(
+                    escapeJson(
+                            pet.getFeatures()));
             out.print("\",");
+
+            // ==============================
+            // 好きなもの
+            // ==============================
 
             out.print("\"likes\":\"");
-            out.print(escapeJson(pet.getLikes()));
+            out.print(
+                    escapeJson(
+                            pet.getLikes()));
             out.print("\",");
+
+            // ==============================
+            // 苦手なもの
+            // ==============================
 
             out.print("\"dislikes\":\"");
-            out.print(escapeJson(pet.getDislikes()));
+            out.print(
+                    escapeJson(
+                            pet.getDislikes()));
             out.print("\",");
 
+            // ==============================
+            // 他の動物
+            // ==============================
+
             out.print("\"otherAnimals\":\"");
-            out.print(escapeJson(pet.getOtherAnimals()));
+            out.print(
+                    escapeJson(
+                            pet.getOtherAnimals()));
             out.print("\",");
+
+            // ==============================
+            // 子どもとの相性
+            // ==============================
 
             out.print("\"childrenCompatibility\":\"");
             out.print(
@@ -133,33 +211,79 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getChildrenCompatibility()));
             out.print("\",");
 
+            // ==============================
+            // 食事
+            // ==============================
+
             out.print("\"foodInfo\":\"");
-            out.print(escapeJson(pet.getFoodInfo()));
+            out.print(
+                    escapeJson(
+                            pet.getFoodInfo()));
             out.print("\",");
+
+            // ==============================
+            // 散歩
+            // ==============================
 
             out.print("\"walkInfo\":\"");
-            out.print(escapeJson(pet.getWalkInfo()));
+            out.print(
+                    escapeJson(
+                            pet.getWalkInfo()));
             out.print("\",");
+
+            // ==============================
+            // トイレ
+            // ==============================
 
             out.print("\"toiletInfo\":\"");
-            out.print(escapeJson(pet.getToiletInfo()));
+            out.print(
+                    escapeJson(
+                            pet.getToiletInfo()));
             out.print("\",");
+
+            // ==============================
+            // 留守番
+            // ==============================
 
             out.print("\"aloneTime\":\"");
-            out.print(escapeJson(pet.getAloneTime()));
+            out.print(
+                    escapeJson(
+                            pet.getAloneTime()));
             out.print("\",");
+
+            // ==============================
+            // お世話
+            // ==============================
 
             out.print("\"careInfo\":\"");
-            out.print(escapeJson(pet.getCareInfo()));
+            out.print(
+                    escapeJson(
+                            pet.getCareInfo()));
             out.print("\",");
+
+            // ==============================
+            // ワクチン
+            // ==============================
 
             out.print("\"vaccination\":\"");
-            out.print(escapeJson(pet.getVaccination()));
+            out.print(
+                    escapeJson(
+                            pet.getVaccination()));
             out.print("\",");
 
+            // ==============================
+            // 去勢・避妊
+            // ==============================
+
             out.print("\"neutering\":\"");
-            out.print(escapeJson(pet.getNeutering()));
+            out.print(
+                    escapeJson(
+                            pet.getNeutering()));
             out.print("\",");
+
+            // ==============================
+            // 既往歴
+            // ==============================
 
             out.print("\"medicalHistory\":\"");
             out.print(
@@ -167,44 +291,130 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getMedicalHistory()));
             out.print("\",");
 
+            // ==============================
+            // アレルギー
+            // ==============================
+
             out.print("\"allergies\":\"");
-            out.print(escapeJson(pet.getAllergies()));
+            out.print(
+                    escapeJson(
+                            pet.getAllergies()));
             out.print("\",");
+
+            // ==============================
+            // 薬
+            // ==============================
 
             out.print("\"medication\":\"");
-            out.print(escapeJson(pet.getMedication()));
+            out.print(
+                    escapeJson(
+                            pet.getMedication()));
             out.print("\",");
+
+            // ==============================
+            // 注意事項
+            // ==============================
 
             out.print("\"precautions\":\"");
-            out.print(escapeJson(pet.getPrecautions()));
+            out.print(
+                    escapeJson(
+                            pet.getPrecautions()));
             out.print("\",");
 
+            // ==============================
+            // 旧シェア料金
+            // ==============================
+
             out.print("\"sharePrice\":");
-            out.print(
-                    pet.getSharePrice() != null
-                            ? pet.getSharePrice()
-                            : 0);
+
+            if (pet.getSharePrice() != null) {
+
+                out.print(
+                        pet.getSharePrice());
+
+            } else {
+
+                out.print("0");
+            }
+
             out.print(",");
 
+            // ==============================
+            // 旧シェア開始日
+            // ※互換性維持のため残す
+            // ==============================
+
             out.print("\"shareStartDate\":\"");
+
             out.print(
                     escapeJson(
                             String.valueOf(
                                     pet.getShareStartDate())));
+
             out.print("\",");
 
+            // ==============================
+            // 旧シェア終了日
+            // ※互換性維持のため残す
+            // ==============================
+
             out.print("\"shareEndDate\":\"");
+
             out.print(
                     escapeJson(
                             String.valueOf(
                                     pet.getShareEndDate())));
-            out.print("\",");
+
+            out.print(",");
+
+            // ==============================
+            // 新しい時間単位シェア情報
+            // ==============================
+
+            if (petShare != null) {
+
+                out.print("\"shareAvailable\":true,");
+
+                out.print("\"availableStart\":\"");
+                out.print(
+                        escapeJson(
+                                petShare
+                                        .getAvailableStart()
+                                        .toString()));
+                out.print("\",");
+
+                out.print("\"availableEnd\":\"");
+                out.print(
+                        escapeJson(
+                                petShare
+                                        .getAvailableEnd()
+                                        .toString()));
+                out.print("\"");
+
+            } else {
+
+                out.print("\"shareAvailable\":false,");
+                out.print("\"availableStart\":\"\",");
+                out.print("\"availableEnd\":\"\"");
+            }
+
+            out.print(",");
+
+            // ==============================
+            // シェア条件
+            // ==============================
 
             out.print("\"shareConditions\":\"");
+
             out.print(
                     escapeJson(
                             pet.getShareConditions()));
+
             out.print("\"");
+
+            // ==============================
+            // JSON終了
+            // ==============================
 
             out.print("}");
 
