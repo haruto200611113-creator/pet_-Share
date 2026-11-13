@@ -3,7 +3,6 @@ package com.petshare;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -16,11 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/pet-detail")
 public class PetDetailServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-
     private final PetDAO petDAO = new PetDAO();
-
-    // 新しい時間単位のシェア情報を取得するDAO
     private final PetShareDAO petShareDAO = new PetShareDAO();
 
     @Override
@@ -29,16 +24,10 @@ public class PetDetailServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType(
-                "application/json; charset=UTF-8");
-
+        response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         String petIdParam = request.getParameter("petId");
-
-        // ==============================
-        // petId確認
-        // ==============================
 
         if (petIdParam == null ||
                 petIdParam.isBlank()) {
@@ -56,9 +45,9 @@ public class PetDetailServlet extends HttpServlet {
 
             int petId = Integer.parseInt(petIdParam);
 
-            // ==============================
-            // DBからペット取得
-            // ==============================
+            // ========================================
+            // ペット情報取得
+            // ========================================
 
             Pet pet = petDAO.findById(petId);
 
@@ -73,28 +62,27 @@ public class PetDetailServlet extends HttpServlet {
                 return;
             }
 
-            // ==============================
+            // ========================================
             // 新しいシェア情報取得
-            // ==============================
+            // ========================================
 
-            PetShare petShare = petShareDAO.findActiveByPetId(
-                    petId);
-
-            // ==============================
-            // JSON出力
-            // ==============================
+            PetShare petShare = petShareDAO.findActiveByPetId(petId);
 
             PrintWriter out = response.getWriter();
 
             out.print("{");
 
-            // ==============================
-            // 基本情報
-            // ==============================
+            // ========================================
+            // ペットID
+            // ========================================
 
             out.print("\"petId\":");
             out.print(pet.getPetId());
             out.print(",");
+
+            // ========================================
+            // ペット名
+            // ========================================
 
             out.print("\"name\":\"");
             out.print(
@@ -102,11 +90,19 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getPetName()));
             out.print("\",");
 
+            // ========================================
+            // ペット画像
+            // ========================================
+
             out.print("\"imagePath\":\"");
             out.print(
                     escapeJson(
                             pet.getPetImage()));
             out.print("\",");
+
+            // ========================================
+            // ペット種類
+            // ========================================
 
             out.print("\"type\":\"");
             out.print(
@@ -114,11 +110,19 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getPetType()));
             out.print("\",");
 
+            // ========================================
+            // 犬種・猫種
+            // ========================================
+
             out.print("\"breed\":\"");
             out.print(
                     escapeJson(
                             pet.getBreed()));
             out.print("\",");
+
+            // ========================================
+            // 性別
+            // ========================================
 
             out.print("\"gender\":\"");
             out.print(
@@ -126,9 +130,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getGender()));
             out.print("\",");
 
-            // ==============================
+            // ========================================
             // 年齢
-            // ==============================
+            // ========================================
 
             out.print("\"age\":");
             out.print(
@@ -136,24 +140,28 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getBirthDate()));
             out.print(",");
 
-            // ==============================
+            // ========================================
             // 体重
-            // ==============================
+            // ========================================
 
             out.print("\"weight\":");
 
             if (pet.getWeight() != null) {
+
                 out.print(
                         pet.getWeight());
+
             } else {
+
                 out.print("0");
+
             }
 
             out.print(",");
 
-            // ==============================
+            // ========================================
             // 性格
-            // ==============================
+            // ========================================
 
             out.print("\"personality\":\"");
             out.print(
@@ -161,9 +169,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getPersonality()));
             out.print("\",");
 
-            // ==============================
+            // ========================================
             // 特徴
-            // ==============================
+            // ========================================
 
             out.print("\"features\":\"");
             out.print(
@@ -171,9 +179,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getFeatures()));
             out.print("\",");
 
-            // ==============================
+            // ========================================
             // 好きなもの
-            // ==============================
+            // ========================================
 
             out.print("\"likes\":\"");
             out.print(
@@ -181,9 +189,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getLikes()));
             out.print("\",");
 
-            // ==============================
+            // ========================================
             // 苦手なもの
-            // ==============================
+            // ========================================
 
             out.print("\"dislikes\":\"");
             out.print(
@@ -191,9 +199,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getDislikes()));
             out.print("\",");
 
-            // ==============================
+            // ========================================
             // 他の動物
-            // ==============================
+            // ========================================
 
             out.print("\"otherAnimals\":\"");
             out.print(
@@ -201,9 +209,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getOtherAnimals()));
             out.print("\",");
 
-            // ==============================
+            // ========================================
             // 子どもとの相性
-            // ==============================
+            // ========================================
 
             out.print("\"childrenCompatibility\":\"");
             out.print(
@@ -211,9 +219,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getChildrenCompatibility()));
             out.print("\",");
 
-            // ==============================
-            // 食事
-            // ==============================
+            // ========================================
+            // 食事情報
+            // ========================================
 
             out.print("\"foodInfo\":\"");
             out.print(
@@ -221,9 +229,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getFoodInfo()));
             out.print("\",");
 
-            // ==============================
-            // 散歩
-            // ==============================
+            // ========================================
+            // 散歩情報
+            // ========================================
 
             out.print("\"walkInfo\":\"");
             out.print(
@@ -231,9 +239,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getWalkInfo()));
             out.print("\",");
 
-            // ==============================
-            // トイレ
-            // ==============================
+            // ========================================
+            // トイレ情報
+            // ========================================
 
             out.print("\"toiletInfo\":\"");
             out.print(
@@ -241,9 +249,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getToiletInfo()));
             out.print("\",");
 
-            // ==============================
-            // 留守番
-            // ==============================
+            // ========================================
+            // 留守番時間
+            // ========================================
 
             out.print("\"aloneTime\":\"");
             out.print(
@@ -251,9 +259,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getAloneTime()));
             out.print("\",");
 
-            // ==============================
-            // お世話
-            // ==============================
+            // ========================================
+            // お世話情報
+            // ========================================
 
             out.print("\"careInfo\":\"");
             out.print(
@@ -261,9 +269,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getCareInfo()));
             out.print("\",");
 
-            // ==============================
+            // ========================================
             // ワクチン
-            // ==============================
+            // ========================================
 
             out.print("\"vaccination\":\"");
             out.print(
@@ -271,9 +279,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getVaccination()));
             out.print("\",");
 
-            // ==============================
-            // 去勢・避妊
-            // ==============================
+            // ========================================
+            // 避妊・去勢
+            // ========================================
 
             out.print("\"neutering\":\"");
             out.print(
@@ -281,9 +289,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getNeutering()));
             out.print("\",");
 
-            // ==============================
+            // ========================================
             // 既往歴
-            // ==============================
+            // ========================================
 
             out.print("\"medicalHistory\":\"");
             out.print(
@@ -291,9 +299,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getMedicalHistory()));
             out.print("\",");
 
-            // ==============================
+            // ========================================
             // アレルギー
-            // ==============================
+            // ========================================
 
             out.print("\"allergies\":\"");
             out.print(
@@ -301,9 +309,9 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getAllergies()));
             out.print("\",");
 
-            // ==============================
+            // ========================================
             // 薬
-            // ==============================
+            // ========================================
 
             out.print("\"medication\":\"");
             out.print(
@@ -311,19 +319,19 @@ public class PetDetailServlet extends HttpServlet {
                             pet.getMedication()));
             out.print("\",");
 
-            // ==============================
+            // ========================================
             // 注意事項
-            // ==============================
+            // ========================================
 
             out.print("\"precautions\":\"");
             out.print(
                     escapeJson(
                             pet.getPrecautions()));
-            out.print("\",");
+            out.print(",");
 
-            // ==============================
-            // 旧シェア料金
-            // ==============================
+            // ========================================
+            // 料金
+            // ========================================
 
             out.print("\"sharePrice\":");
 
@@ -335,74 +343,62 @@ public class PetDetailServlet extends HttpServlet {
             } else {
 
                 out.print("0");
+
             }
 
             out.print(",");
 
-            // ==============================
-            // 旧シェア開始日
-            // ※互換性維持のため残す
-            // ==============================
-
-            out.print("\"shareStartDate\":\"");
-
-            out.print(
-                    escapeJson(
-                            String.valueOf(
-                                    pet.getShareStartDate())));
-
-            out.print("\",");
-
-            // ==============================
-            // 旧シェア終了日
-            // ※互換性維持のため残す
-            // ==============================
-
-            out.print("\"shareEndDate\":\"");
-
-            out.print(
-                    escapeJson(
-                            String.valueOf(
-                                    pet.getShareEndDate())));
-
-            out.print(",");
-
-            // ==============================
-            // 新しい時間単位シェア情報
-            // ==============================
+            // ========================================
+            // 新しいシェア可能情報
+            // ========================================
 
             if (petShare != null) {
 
-                out.print("\"shareAvailable\":true,");
+                // シェア可能
+                out.print(
+                        "\"shareAvailable\":true,");
 
-                out.print("\"availableStart\":\"");
+                // シェア開始日時
+                out.print(
+                        "\"availableStart\":\"");
+
                 out.print(
                         escapeJson(
-                                petShare
-                                        .getAvailableStart()
-                                        .toString()));
+                                String.valueOf(
+                                        petShare.getAvailableStart())));
+
                 out.print("\",");
 
-                out.print("\"availableEnd\":\"");
+                // シェア終了日時
+                out.print(
+                        "\"availableEnd\":\"");
+
                 out.print(
                         escapeJson(
-                                petShare
-                                        .getAvailableEnd()
-                                        .toString()));
+                                String.valueOf(
+                                        petShare.getAvailableEnd())));
+
                 out.print("\"");
 
             } else {
 
-                out.print("\"shareAvailable\":false,");
-                out.print("\"availableStart\":\"\",");
-                out.print("\"availableEnd\":\"\"");
+                // シェア設定なし
+                out.print(
+                        "\"shareAvailable\":false,");
+
+                out.print(
+                        "\"availableStart\":\"\",");
+
+                out.print(
+                        "\"availableEnd\":\"\"");
+
             }
 
             out.print(",");
 
-            // ==============================
+            // ========================================
             // シェア条件
-            // ==============================
+            // ========================================
 
             out.print("\"shareConditions\":\"");
 
@@ -412,9 +408,9 @@ public class PetDetailServlet extends HttpServlet {
 
             out.print("\"");
 
-            // ==============================
+            // ========================================
             // JSON終了
-            // ==============================
+            // ========================================
 
             out.print("}");
 
@@ -435,17 +431,21 @@ public class PetDetailServlet extends HttpServlet {
 
             response.getWriter().write(
                     "{\"error\":\"ペット情報の取得に失敗しました\"}");
+
         }
+
     }
 
-    // ==============================
+    // ========================================
     // JSONエスケープ
-    // ==============================
+    // ========================================
 
     private String escapeJson(String value) {
 
         if (value == null) {
+
             return "";
+
         }
 
         return value
@@ -453,16 +453,19 @@ public class PetDetailServlet extends HttpServlet {
                 .replace("\"", "\\\"")
                 .replace("\r", "\\r")
                 .replace("\n", "\\n");
+
     }
 
-    // ==============================
+    // ========================================
     // 年齢計算
-    // ==============================
+    // ========================================
 
     private int calculateAge(Date birthDate) {
 
         if (birthDate == null) {
+
             return 0;
+
         }
 
         LocalDate birth = birthDate.toLocalDate();
@@ -472,5 +475,7 @@ public class PetDetailServlet extends HttpServlet {
         return Period.between(
                 birth,
                 today).getYears();
+
     }
+
 }
