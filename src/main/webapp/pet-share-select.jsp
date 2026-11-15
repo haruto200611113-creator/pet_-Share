@@ -555,14 +555,9 @@
                              シェアをやめる
                         ================================= -->
 
-                        <form
-                            action="pet-share-stop"
-                            method="post"
-                            onsubmit="
-                                return confirm(
-                                    'このペットのシェアをやめますか？'
-                                );
-                            ">
+                        <form action="pet-share-stop"
+      method="post"
+      class="stop-share-form">
 
                             <input
                                 type="hidden"
@@ -614,7 +609,48 @@
 
 </div>
 
+<!-- ========================================
+     シェア停止確認モーダル
+========================================= -->
 
+<div
+    id="share-stop-confirm-modal"
+    class="logout-confirm-overlay"
+    style="display: none;"
+>
+
+    <div class="logout-confirm-modal">
+
+        <h2>シェアを停止しますか？</h2>
+
+        <p>
+            このペットのシェアを<br>
+            やめてもよろしいですか？
+        </p>
+
+        <div class="logout-confirm-buttons">
+
+            <button
+                type="button"
+                id="share-stop-cancel-button"
+                class="logout-cancel-button"
+            >
+                キャンセル
+            </button>
+
+            <button
+                type="button"
+                id="share-stop-confirm-button"
+                class="logout-confirm-button"
+            >
+                シェアをやめる
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 </body>
 <script>
     setTimeout(function () {
