@@ -206,4 +206,65 @@ public class PetShareDAO {
 
         return null;
     }
+    // ========================================
+    // シェアを停止する
+    // ========================================
+
+    public boolean stopShare(int petId) {
+
+        String sql = """
+                UPDATE pet_shares
+                SET is_active = FALSE
+                WHERE pet_id = ?
+                  AND is_active = TRUE
+                """;
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, petId);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+
+            System.err.println(
+                    "シェア停止中にSQLエラーが発生しました。");
+
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+    // ========================================
+    // 期限切れシェアを停止する
+    // ========================================
+
+    public int deactivateExpiredShares() {
+
+        String sql = """
+                UPDATE pet_shares
+                SET is_active = FALSE
+                WHERE is_active = TRUE
+                  AND available_end <= NOW()
+                """;
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            return ps.executeUpdate();
+
+        } catch (SQLException e) {
+
+            System.err.println(
+                    "期限切れシェアの停止中にSQLエラーが発生しました。");
+
+            e.printStackTrace();
+
+            return 0;
+        }
+    }
 }
