@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java"
+    contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
+
 <%@ page import="com.petshare.User" %>
 
 <%
@@ -8,17 +10,28 @@
 
     // ログインしていない場合はログイン画面へ戻す
     if (loginUser == null) {
-        response.sendRedirect(request.getContextPath() + "/login.html");
+        response.sendRedirect(
+            request.getContextPath() + "/login.html"
+        );
         return;
     }
-        // シェア設定結果
-    String shareSuccess = request.getParameter("shareSuccess");
-    String shareError = request.getParameter("shareError");
+
+    // シェア設定結果
+    String shareSuccess =
+        request.getParameter("shareSuccess");
+
+    String shareStopSuccess =
+        request.getParameter("shareStopSuccess");
+
+    String shareError =
+        request.getParameter("shareError");
 %>
+
 
 <%!
     // HTML特殊文字をエスケープする処理
     private String escapeHtml(String value) {
+
         if (value == null) {
             return "";
         }
@@ -30,40 +43,71 @@
                     .replace("'", "&#39;");
     }
 
+
     // 性別のDB値を画面表示用に変換
     private String displayGender(String gender) {
-        if (gender == null || gender.trim().isEmpty()) {
+
+        if (gender == null ||
+            gender.trim().isEmpty()) {
+
             return "未登録";
         }
+
         switch (gender.trim().toLowerCase()) {
-            case "male": return "男性";
-            case "female": return "女性";
-            case "other": return "その他";
-            case "undisclosed": return "回答しない";
-            default: return gender;
+
+            case "male":
+                return "男性";
+
+            case "female":
+                return "女性";
+
+            case "other":
+                return "その他";
+
+            case "undisclosed":
+                return "回答しない";
+
+            default:
+                return gender;
         }
     }
 
+
     // 空欄を「未登録」として表示
     private String displayValue(String value) {
-        return (value == null || value.trim().isEmpty()) ? "未登録" : value;
+
+        return (
+            value == null ||
+            value.trim().isEmpty()
+        )
+        ? "未登録"
+        : value;
     }
+
+
     // 会員ランクのDB値を画面表示用に変換
-private String displayUserRank(int userRank) {
-    switch (userRank) {
-        case 1:
-            return "仮会員";
-        case 2:
-            return "本会員";
-        default:
-            return "未設定";
+    private String displayUserRank(int userRank) {
+
+        switch (userRank) {
+
+            case 1:
+                return "仮会員";
+
+            case 2:
+                return "本会員";
+
+            default:
+                return "未設定";
+        }
     }
-}
 %>
+
+
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -77,38 +121,35 @@ private String displayUserRank(int userRank) {
         rel="stylesheet"
         href="mypage.css"
     >
+
 </head>
 
-<body>
-    <%
-    String shareStopSuccess =
-            request.getParameter("shareStopSuccess");
 
-    String shareError =
-            request.getParameter("shareError");
-%>
+<body>
+
+
+<!-- ========================================
+     シェア設定完了・エラーメッセージ
+========================================= -->
 
 <% if ("true".equals(shareStopSuccess)) { %>
 
-<div id="share-stop-success-message"
-     class="change-complete-message">
-    シェアを停止しました
-</div>
+    <div
+        id="share-stop-success-message"
+        class="change-complete-message"
+    >
+        シェアを停止しました
+    </div>
 
 <% } %>
 
-<% if (shareError != null) { %>
 
-<div id="share-error-message"
-     class="change-error-message">
-    <%= shareError %>
-</div>
-
-<% } %>
 <% if ("true".equals(shareSuccess)) { %>
 
-    <div class="change-complete-message"
-         id="share-success-message">
+    <div
+        id="share-success-message"
+        class="change-complete-message"
+    >
         ペットのシェア設定が完了しました
     </div>
 
@@ -117,12 +158,16 @@ private String displayUserRank(int userRank) {
 
 <% if (shareError != null && !shareError.isBlank()) { %>
 
-    <div class="share-error-message"
-         id="share-error-message">
+    <div
+        id="share-error-message"
+        class="change-error-message"
+    >
         <%= escapeHtml(shareError) %>
     </div>
 
 <% } %>
+
+
 
 <!-- ========================================
      ヘッダー
@@ -138,6 +183,7 @@ private String displayUserRank(int userRank) {
     >
         ←
     </button>
+
 
     <h1>
         マイページ
@@ -160,6 +206,7 @@ private String displayUserRank(int userRank) {
 
     <section class="profile-card">
 
+
         <!-- プロフィール画像 -->
 
         <div class="profile-icon">
@@ -170,6 +217,7 @@ private String displayUserRank(int userRank) {
                 alt="プロフィール画像"
             >
 
+
             <span id="profileDefaultIcon">
                 🐾
             </span>
@@ -177,20 +225,36 @@ private String displayUserRank(int userRank) {
         </div>
 
 
+
         <!-- プロフィール情報 -->
 
         <div class="profile-info">
 
-           <h2 id="userName" data-server-rendered="true">
-    <%= escapeHtml(loginUser.getAccountName()) %>
-</h2>
+            <h2
+                id="userName"
+                data-server-rendered="true"
+            >
+                <%= escapeHtml(
+                    loginUser.getAccountName()
+                ) %>
+            </h2>
 
-<p id="userArea" data-server-rendered="true">
-    📍 <%= escapeHtml(loginUser.getPrefecture()) %>
-    <%= escapeHtml(loginUser.getCity()) %>
-</p>
+
+            <p
+                id="userArea"
+                data-server-rendered="true"
+            >
+                📍
+                <%= escapeHtml(
+                    loginUser.getPrefecture()
+                ) %>
+                <%= escapeHtml(
+                    loginUser.getCity()
+                ) %>
+            </p>
 
         </div>
+
 
 
         <!-- プロフィール編集 -->
@@ -206,430 +270,654 @@ private String displayUserRank(int userRank) {
 
 
 
+
     <!-- ====================================
          登録情報
     ===================================== -->
 
     <section class="section">
 
-        <h2 class="section-title">登録情報</h2>
+        <h2 class="section-title">
+            登録情報
+        </h2>
+
 
         <div class="registration-card">
 
-            <div class="registration-row">
-                <span class="registration-label">アカウント名</span>
-                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getAccountName())) %></span>
-            </div>
-            <div class="registration-row">
-                <span class="registration-label">会員ランク</span>
-                <span class="registration-value"><%= escapeHtml(displayUserRank(loginUser.getUserRank())) %></span>
-            </div>
 
             <div class="registration-row">
-                <span class="registration-label">メールアドレス</span>
-                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getEmail())) %></span>
+
+                <span class="registration-label">
+                    アカウント名
+                </span>
+
+                <span class="registration-value">
+                    <%= escapeHtml(
+                        displayValue(
+                            loginUser.getAccountName()
+                        )
+                    ) %>
+                </span>
+
             </div>
 
-            <div class="registration-row">
-    <span class="registration-label">氏名</span>
-    <span class="registration-value">
-        <%= escapeHtml(displayValue(loginUser.getLastName())) %>
-        <%= escapeHtml(displayValue(loginUser.getFirstName())) %>
-    </span>
-</div>
 
             <div class="registration-row">
-                <span class="registration-label">生年月日</span>
-                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getBirthDate())) %></span>
+
+                <span class="registration-label">
+                    会員ランク
+                </span>
+
+                <span class="registration-value">
+                    <%= escapeHtml(
+                        displayUserRank(
+                            loginUser.getUserRank()
+                        )
+                    ) %>
+                </span>
+
             </div>
 
-            <div class="registration-row">
-                <span class="registration-label">性別</span>
-                <span class="registration-value"><%= escapeHtml(displayGender(loginUser.getGender())) %></span>
-            </div>
 
             <div class="registration-row">
-                <span class="registration-label">電話番号</span>
-                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getPhone())) %></span>
+
+                <span class="registration-label">
+                    メールアドレス
+                </span>
+
+                <span class="registration-value">
+                    <%= escapeHtml(
+                        displayValue(
+                            loginUser.getEmail()
+                        )
+                    ) %>
+                </span>
+
             </div>
 
-            <div class="registration-row">
-                <span class="registration-label">郵便番号</span>
-                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getPostalCode())) %></span>
-            </div>
 
             <div class="registration-row">
-                <span class="registration-label">都道府県</span>
-                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getPrefecture())) %></span>
+
+                <span class="registration-label">
+                    氏名
+                </span>
+
+                <span class="registration-value">
+
+                    <%= escapeHtml(
+                        displayValue(
+                            loginUser.getLastName()
+                        )
+                    ) %>
+
+                    <%= escapeHtml(
+                        displayValue(
+                            loginUser.getFirstName()
+                        )
+                    ) %>
+
+                </span>
+
             </div>
 
-            <div class="registration-row">
-                <span class="registration-label">市区町村</span>
-                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getCity())) %></span>
-            </div>
 
             <div class="registration-row">
-                <span class="registration-label">番地</span>
-                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getAddress())) %></span>
+
+                <span class="registration-label">
+                    生年月日
+                </span>
+
+                <span class="registration-value">
+                    <%= escapeHtml(
+                        displayValue(
+                            loginUser.getBirthDate()
+                        )
+                    ) %>
+                </span>
+
             </div>
 
+
             <div class="registration-row">
-                <span class="registration-label">建物名</span>
-                <span class="registration-value"><%= escapeHtml(displayValue(loginUser.getBuilding())) %></span>
+
+                <span class="registration-label">
+                    性別
+                </span>
+
+                <span class="registration-value">
+                    <%= escapeHtml(
+                        displayGender(
+                            loginUser.getGender()
+                        )
+                    ) %>
+                </span>
+
             </div>
+
+
+            <div class="registration-row">
+
+                <span class="registration-label">
+                    電話番号
+                </span>
+
+                <span class="registration-value">
+                    <%= escapeHtml(
+                        displayValue(
+                            loginUser.getPhone()
+                        )
+                    ) %>
+                </span>
+
+            </div>
+
+
+            <div class="registration-row">
+
+                <span class="registration-label">
+                    郵便番号
+                </span>
+
+                <span class="registration-value">
+                    <%= escapeHtml(
+                        displayValue(
+                            loginUser.getPostalCode()
+                        )
+                    ) %>
+                </span>
+
+            </div>
+
+
+            <div class="registration-row">
+
+                <span class="registration-label">
+                    都道府県
+                </span>
+
+                <span class="registration-value">
+                    <%= escapeHtml(
+                        displayValue(
+                            loginUser.getPrefecture()
+                        )
+                    ) %>
+                </span>
+
+            </div>
+
+
+            <div class="registration-row">
+
+                <span class="registration-label">
+                    市区町村
+                </span>
+
+                <span class="registration-value">
+                    <%= escapeHtml(
+                        displayValue(
+                            loginUser.getCity()
+                        )
+                    ) %>
+                </span>
+
+            </div>
+
+
+            <div class="registration-row">
+
+                <span class="registration-label">
+                    番地
+                </span>
+
+                <span class="registration-value">
+                    <%= escapeHtml(
+                        displayValue(
+                            loginUser.getAddress()
+                        )
+                    ) %>
+                </span>
+
+            </div>
+
+
+            <div class="registration-row">
+
+                <span class="registration-label">
+                    建物名
+                </span>
+
+                <span class="registration-value">
+                    <%= escapeHtml(
+                        displayValue(
+                            loginUser.getBuilding()
+                        )
+                    ) %>
+                </span>
+
+            </div>
+
 
         </div>
 
     </section>
-    <% if (loginUser.getUserRank() == 1) { %>
 
-<section class="section">
-    <h2 class="section-title">会員ランク</h2>
 
-    <div class="registration-card">
 
-        <div class="registration-row">
-            <span class="registration-label">現在の会員ランク</span>
+<% if (loginUser.getUserRank() == 1) { %>
 
-            <span class="registration-value">
-                仮会員
-            </span>
+
+    <section class="section">
+
+        <h2 class="section-title">
+            会員ランク
+        </h2>
+
+
+        <div class="registration-card">
+
+
+            <div class="registration-row">
+
+                <span class="registration-label">
+                    現在の会員ランク
+                </span>
+
+
+                <span class="registration-value">
+                    仮会員
+                </span>
+
+            </div>
+
+
+            <div
+                style="text-align: center; padding: 20px 0;"
+            >
+
+                <a
+                    href="membership-upgrade.html"
+                    class="edit-button"
+                >
+                    本会員になる
+                </a>
+
+            </div>
+
+
         </div>
 
-        <div style="text-align: center; padding: 20px 0;">
+    </section>
 
-            <a href="membership-upgrade.html"
-               class="edit-button">
-                本会員になる
-            </a>
-
-        </div>
-
-    </div>
-</section>
 
 <% } else if (loginUser.getUserRank() == 2) { %>
 
-<section class="section">
-    <h2 class="section-title">会員ランク</h2>
 
-    <div class="registration-card">
+    <section class="section">
 
-        <div class="registration-row">
-            <span class="registration-label">現在の会員ランク</span>
+        <h2 class="section-title">
+            会員ランク
+        </h2>
 
-            <span class="registration-value">
-                本会員
-            </span>
+
+        <div class="registration-card">
+
+
+            <div class="registration-row">
+
+                <span class="registration-label">
+                    現在の会員ランク
+                </span>
+
+
+                <span class="registration-value">
+                    本会員
+                </span>
+
+            </div>
+
+
         </div>
 
-    </div>
-</section>
+    </section>
+
 
 <% } %>
 
 
-    <!-- ====================================
-         利用状況
-    ===================================== -->
-
-    <section class="section">
-
-        <h2 class="section-title">
-            利用状況
-        </h2>
 
 
-        <div class="status-grid">
-
-
-            <!-- ====================================
-                 自分の投稿
-            ===================================== -->
-
-            <a
-                href="my-posts.html"
-                class="status-card"
-            >
-
-                <span class="status-icon">
-                    🐶
-                </span>
-
-
-                <div>
-
-                    <span class="status-label">
-                        自分の投稿
-                    </span>
-
-                    <strong id="postCount">
-                        0
-                    </strong>
-
-                    <span class="unit">
-                        件
-                    </span>
-
-                </div>
-
-
-                <span class="arrow">
-                    ›
-                </span>
-
-            </a>
-
-
-
-            <!-- ====================================
-                 いいね
-            ===================================== -->
-
-            <a
-                href="likes.html"
-                class="status-card"
-            >
-
-                <span class="status-icon">
-                    ❤️
-                </span>
-
-
-                <div>
-
-                    <span class="status-label">
-                        いいねしたペット
-                    </span>
-
-                    <strong id="likeCount">
-                        0
-                    </strong>
-
-                    <span class="unit">
-                        件
-                    </span>
-
-                </div>
-
-
-                <span class="arrow">
-                    ›
-                </span>
-
-            </a>
-
-
-
-            <!-- ====================================
-                 シェア履歴
-            ===================================== -->
-
-            <a
-                href="share-history.html"
-                class="status-card"
-            >
-
-                <span class="status-icon">
-                    📅
-                </span>
-
-
-                <div>
-
-                    <span class="status-label">
-                        シェア履歴
-                    </span>
-
-                    <strong id="shareCount">
-                        0
-                    </strong>
-
-                    <span class="unit">
-                        件
-                    </span>
-
-                </div>
-
-
-                <span class="arrow">
-                    ›
-                </span>
-
-            </a>
-
-
-
-            <!-- ====================================
-                 申し込み状況
-            ===================================== -->
-
-            <a
-                href="application-status.html"
-                class="status-card"
-            >
-
-                <span class="status-icon">
-                    📝
-                </span>
-
-
-                <div>
-
-                    <span class="status-label">
-                        申し込み状況
-                    </span>
-
-                    <strong id="applicationCount">
-                        0
-                    </strong>
-
-                    <span class="unit">
-                        件
-                    </span>
-
-                </div>
-
-
-                <span class="arrow">
-                    ›
-                </span>
-
-            </a>
-            <!-- ====================================
-     ペットをシェアする
+<!-- ====================================
+     利用状況
 ===================================== -->
 
-<a
-    href="pet-share-select.jsp"
-    class="status-card"
->
+<section class="section">
 
-    <span class="status-icon">
-        🐾
-    </span>
 
-    <div>
+    <h2 class="section-title">
+        利用状況
+    </h2>
 
-        <span class="status-label">
-            ペットをシェアする
-        </span>
 
-        <span class="unit">
-            自分のペットをシェアできます
-        </span>
+    <div class="status-grid">
+
+
+        <!-- ====================================
+             自分の投稿
+        ===================================== -->
+
+        <a
+            href="my-posts.html"
+            class="status-card"
+        >
+
+            <span class="status-icon">
+                🐶
+            </span>
+
+
+            <div>
+
+                <span class="status-label">
+                    自分の投稿
+                </span>
+
+
+                <strong id="postCount">
+                    0
+                </strong>
+
+
+                <span class="unit">
+                    件
+                </span>
+
+            </div>
+
+
+            <span class="arrow">
+                ›
+            </span>
+
+        </a>
+
+
+
+
+        <!-- ====================================
+             いいね
+        ===================================== -->
+
+        <a
+            href="likes.html"
+            class="status-card"
+        >
+
+            <span class="status-icon">
+                ❤️
+            </span>
+
+
+            <div>
+
+                <span class="status-label">
+                    いいねしたペット
+                </span>
+
+
+                <strong id="likeCount">
+                    0
+                </strong>
+
+
+                <span class="unit">
+                    件
+                </span>
+
+            </div>
+
+
+            <span class="arrow">
+                ›
+            </span>
+
+        </a>
+
+
+
+
+        <!-- ====================================
+             シェア履歴
+        ===================================== -->
+
+        <a
+            href="share-history.html"
+            class="status-card"
+        >
+
+            <span class="status-icon">
+                📅
+            </span>
+
+
+            <div>
+
+                <span class="status-label">
+                    シェア履歴
+                </span>
+
+
+                <strong id="shareCount">
+                    0
+                </strong>
+
+
+                <span class="unit">
+                    件
+                </span>
+
+            </div>
+
+
+            <span class="arrow">
+                ›
+            </span>
+
+        </a>
+
+
+
+
+        <!-- ====================================
+             申し込み状況
+        ===================================== -->
+
+        <a
+            href="application-status.html"
+            class="status-card"
+        >
+
+            <span class="status-icon">
+                📝
+            </span>
+
+
+            <div>
+
+                <span class="status-label">
+                    申し込み状況
+                </span>
+
+
+                <strong id="applicationCount">
+                    0
+                </strong>
+
+
+                <span class="unit">
+                    件
+                </span>
+
+            </div>
+
+
+            <span class="arrow">
+                ›
+            </span>
+
+        </a>
+
+
+
+
+        <!-- ====================================
+             ペットをシェアする
+        ===================================== -->
+
+        <a
+            href="pet-share-select.jsp"
+            class="status-card"
+        >
+
+            <span class="status-icon">
+                🐾
+            </span>
+
+
+            <div>
+
+                <span class="status-label">
+                    ペットをシェアする
+                </span>
+
+
+                <span class="unit">
+                    自分のペットをシェアできます
+                </span>
+
+            </div>
+
+
+            <span class="arrow">
+                ›
+            </span>
+
+        </a>
+
 
     </div>
 
-    <span class="arrow">
-        ›
-    </span>
-
-</a>
-
-
-        </div>
-
-    </section>
+</section>
 
 
 
-    <!-- ====================================
-         その他
-    ===================================== -->
 
-    <section class="section">
+<!-- ====================================
+     その他
+===================================== -->
 
-        <h2 class="section-title">
-            その他
-        </h2>
+<section class="section">
 
 
-        <div class="menu-card">
+    <h2 class="section-title">
+        その他
+    </h2>
 
 
-            <!-- ====================================
-                 設定
-            ===================================== -->
-
-            <a
-                href="settings.html"
-                class="menu-row"
-            >
-
-                <span class="menu-icon">
-                    ⚙️
-                </span>
-
-                <span class="menu-text">
-                    設定
-                </span>
-
-                <span class="arrow">
-                    ›
-                </span>
-
-            </a>
+    <div class="menu-card">
 
 
+        <!-- ====================================
+             設定
+        ===================================== -->
 
-            <!-- ====================================
-                 利用規約
-            ===================================== -->
+        <a
+            href="settings.html"
+            class="menu-row"
+        >
 
-            <a
-                href="terms.html"
-                class="menu-row"
-                id="termsLink"
-            >
+            <span class="menu-icon">
+                ⚙️
+            </span>
 
-                <span class="menu-icon">
-                    📄
-                </span>
 
-                <span class="menu-text">
-                    利用規約
-                </span>
+            <span class="menu-text">
+                設定
+            </span>
 
-                <span class="arrow">
-                    ›
-                </span>
 
-            </a>
+            <span class="arrow">
+                ›
+            </span>
+
+        </a>
 
 
 
-            <!-- ====================================
-                 プライバシーポリシー
-            ===================================== -->
 
-            <a
-                href="privacy.html"
-                class="menu-row"
-                id="privacyLink"
-            >
+        <!-- ====================================
+             利用規約
+        ===================================== -->
 
-                <span class="menu-icon">
-                    🔒
-                </span>
+        <a
+            href="terms.html"
+            class="menu-row"
+            id="termsLink"
+        >
 
-                <span class="menu-text">
-                    プライバシーポリシー
-                </span>
-
-                <span class="arrow">
-                    ›
-                </span>
-
-            </a>
+            <span class="menu-icon">
+                📄
+            </span>
 
 
-        </div>
+            <span class="menu-text">
+                利用規約
+            </span>
 
-    </section>
+
+            <span class="arrow">
+                ›
+            </span>
+
+        </a>
+
+
+
+
+        <!-- ====================================
+             プライバシーポリシー
+        ===================================== -->
+
+        <a
+            href="privacy.html"
+            class="menu-row"
+            id="privacyLink"
+        >
+
+            <span class="menu-icon">
+                🔒
+            </span>
+
+
+            <span class="menu-text">
+                プライバシーポリシー
+            </span>
+
+
+            <span class="arrow">
+                ›
+            </span>
+
+        </a>
+
+
+    </div>
+
+</section>
+
 
 
 </main>
+
 
 
 
@@ -652,11 +940,13 @@ private String displayUserRank(int userRank) {
             🏠
         </span>
 
+
         <span>
             ホーム
         </span>
 
     </a>
+
 
 
 
@@ -672,11 +962,13 @@ private String displayUserRank(int userRank) {
             ❤️
         </span>
 
+
         <span>
             いいね
         </span>
 
     </a>
+
 
 
 
@@ -692,6 +984,7 @@ private String displayUserRank(int userRank) {
             💬
         </span>
 
+
         <span>
             チャット
         </span>
@@ -700,17 +993,19 @@ private String displayUserRank(int userRank) {
 
 
 
+
     <!-- アカウント -->
 
     <a
-    href="mypage.jsp"
-    class="nav-item active"
-    data-page="account"
->
+        href="mypage.jsp"
+        class="nav-item active"
+        data-page="account"
+    >
 
         <span class="nav-icon">
             👤
         </span>
+
 
         <span>
             アカウント
@@ -722,152 +1017,228 @@ private String displayUserRank(int userRank) {
 </nav>
 
 
+
+
+<!-- ========================================
+     プロフィール画像取得
+========================================= -->
+
 <script>
-document.addEventListener("DOMContentLoaded", async function () {
 
-    try {
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
 
-        const response = await fetch("profile-get", {
-            method: "GET"
-        });
+        try {
 
-        if (!response.ok) {
-            console.error("プロフィール情報の取得に失敗しました");
-            return;
+            const response =
+                await fetch("profile-get", {
+                    method: "GET"
+                });
+
+
+            if (!response.ok) {
+
+                console.error(
+                    "プロフィール情報の取得に失敗しました"
+                );
+
+                return;
+            }
+
+
+            const profile =
+                await response.json();
+
+
+            const profileImage =
+                document.getElementById(
+                    "profileImage"
+                );
+
+
+            const profileDefaultIcon =
+                document.getElementById(
+                    "profileDefaultIcon"
+                );
+
+
+
+            /*
+             * DBにプロフィール画像が登録されている場合
+             */
+
+            if (
+                profile.profileImage &&
+                profile.profileImage.trim() !== ""
+            ) {
+
+                profileImage.src =
+                    profile.profileImage;
+
+                profileImage.style.display =
+                    "block";
+
+                profileDefaultIcon.style.display =
+                    "none";
+
+            }
+
+
+
+            /*
+             * プロフィール画像がない場合
+             * 今まで通り🐾を表示
+             */
+
+            else {
+
+                profileImage.style.display =
+                    "none";
+
+                profileDefaultIcon.style.display =
+                    "block";
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "プロフィール画像取得エラー：",
+                error
+            );
+
         }
-
-        const profile = await response.json();
-
-        const profileImage =
-            document.getElementById("profileImage");
-
-        const profileDefaultIcon =
-            document.getElementById("profileDefaultIcon");
-
-
-        /*
-         * DBにプロフィール画像が登録されている場合
-         */
-        if (
-            profile.profileImage &&
-            profile.profileImage.trim() !== ""
-        ) {
-
-            profileImage.src =
-                profile.profileImage;
-
-            profileImage.style.display =
-                "block";
-
-            profileDefaultIcon.style.display =
-                "none";
-
-        }
-
-        /*
-         * プロフィール画像がない場合
-         * 今まで通り🐾を表示
-         */
-        else {
-
-            profileImage.style.display =
-                "none";
-
-            profileDefaultIcon.style.display =
-                "block";
-        }
-
-
-    } catch (error) {
-
-        console.error(
-            "プロフィール画像取得エラー：",
-            error
-        );
 
     }
+);
 
-});
 </script>
+
+
+
 <script src="mypage.js"></script>
+
+
+
+
+<!-- ========================================
+     シェア完了・エラー表示制御
+========================================= -->
 
 <script>
 
-    setTimeout(() => {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
 
         const successMessage =
             document.getElementById(
                 "share-success-message"
             );
 
+
+        const stopSuccessMessage =
+            document.getElementById(
+                "share-stop-success-message"
+            );
+
+
         const errorMessage =
             document.getElementById(
                 "share-error-message"
             );
 
+
+
+        /*
+         * シェア開始成功
+         */
+
         if (successMessage) {
-            successMessage.style.display = "none";
+
+            setTimeout(function () {
+
+                successMessage.style.display =
+                    "none";
+
+            }, 3000);
+
         }
+
+
+
+        /*
+         * シェア停止成功
+         */
+
+        if (stopSuccessMessage) {
+
+            setTimeout(function () {
+
+                stopSuccessMessage.style.display =
+                    "none";
+
+            }, 3000);
+
+        }
+
+
+
+        /*
+         * エラーメッセージ
+         */
 
         if (errorMessage) {
-            errorMessage.style.display = "none";
+
+            setTimeout(function () {
+
+                errorMessage.style.display =
+                    "none";
+
+            }, 3000);
+
         }
 
-    }, 3000);
 
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
 
-    const successMessage =
-        document.getElementById(
-            "share-stop-success-message"
+        /*
+         * URLからメッセージ用パラメータを削除
+         */
+
+        const url =
+            new URL(window.location.href);
+
+
+        url.searchParams.delete(
+            "shareSuccess"
         );
 
-    const errorMessage =
-        document.getElementById(
-            "share-error-message"
+
+        url.searchParams.delete(
+            "shareStopSuccess"
         );
 
-    if (successMessage) {
 
-        setTimeout(function () {
+        url.searchParams.delete(
+            "shareError"
+        );
 
-            successMessage.style.display =
-                "none";
 
-        }, 3000);
+        window.history.replaceState(
+            {},
+            document.title,
+            url.pathname
+        );
+
     }
 
-    if (errorMessage) {
+);
 
-        setTimeout(function () {
-
-            errorMessage.style.display =
-                "none";
-
-        }, 3000);
-    }
-
-    // URLからメッセージ用パラメータを削除
-    const url =
-        new URL(window.location.href);
-
-    url.searchParams.delete(
-        "shareStopSuccess"
-    );
-
-    url.searchParams.delete(
-        "shareError"
-    );
-
-    window.history.replaceState(
-        {},
-        document.title,
-        url.pathname
-    );
-
-});
 </script>
+
+
 </body>
+
 </html>
