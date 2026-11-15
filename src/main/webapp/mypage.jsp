@@ -80,6 +80,31 @@ private String displayUserRank(int userRank) {
 </head>
 
 <body>
+    <%
+    String shareStopSuccess =
+            request.getParameter("shareStopSuccess");
+
+    String shareError =
+            request.getParameter("shareError");
+%>
+
+<% if ("true".equals(shareStopSuccess)) { %>
+
+<div id="share-stop-success-message"
+     class="change-complete-message">
+    シェアを停止しました
+</div>
+
+<% } %>
+
+<% if (shareError != null) { %>
+
+<div id="share-error-message"
+     class="change-error-message">
+    <%= shareError %>
+</div>
+
+<% } %>
 <% if ("true".equals(shareSuccess)) { %>
 
     <div class="change-complete-message"
@@ -791,6 +816,58 @@ document.addEventListener("DOMContentLoaded", async function () {
     }, 3000);
 
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    const successMessage =
+        document.getElementById(
+            "share-stop-success-message"
+        );
+
+    const errorMessage =
+        document.getElementById(
+            "share-error-message"
+        );
+
+    if (successMessage) {
+
+        setTimeout(function () {
+
+            successMessage.style.display =
+                "none";
+
+        }, 3000);
+    }
+
+    if (errorMessage) {
+
+        setTimeout(function () {
+
+            errorMessage.style.display =
+                "none";
+
+        }, 3000);
+    }
+
+    // URLからメッセージ用パラメータを削除
+    const url =
+        new URL(window.location.href);
+
+    url.searchParams.delete(
+        "shareStopSuccess"
+    );
+
+    url.searchParams.delete(
+        "shareError"
+    );
+
+    window.history.replaceState(
+        {},
+        document.title,
+        url.pathname
+    );
+
+});
+</script>
 </body>
 </html>
