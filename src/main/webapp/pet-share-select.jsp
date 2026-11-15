@@ -294,7 +294,72 @@
 
             text-decoration: none;
         }
+/* ========================================
+   完了メッセージ
+======================================== */
 
+.change-complete-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    padding: 28px 50px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    color: #4b3b33;
+
+    font-size: 24px;
+    font-weight: 600;
+
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.18);
+
+    z-index: 9999;
+
+    animation: messageFadeIn 0.2s ease;
+}
+
+/* エラーメッセージ */
+
+.change-error-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    padding: 28px 50px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    color: #b85c5c;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.18);
+
+    z-index: 9999;
+
+    animation: messageFadeIn 0.2s ease;
+}
+
+@keyframes messageFadeIn {
+
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
     </style>
 
 </head>
@@ -302,7 +367,31 @@
 
 <body>
 
+<%
+    String shareStopSuccess =
+            request.getParameter("shareStopSuccess");
 
+    String shareError =
+            request.getParameter("shareError");
+%>
+
+<% if ("true".equals(shareStopSuccess)) { %>
+
+<div id="share-stop-success-message"
+     class="change-complete-message">
+    シェアを停止しました
+</div>
+
+<% } %>
+
+<% if (shareError != null) { %>
+
+<div id="share-error-message"
+     class="change-error-message">
+    <%= shareError %>
+</div>
+
+<% } %>
 <div class="container">
 
 
@@ -527,5 +616,45 @@
 
 
 </body>
+<script>
+    setTimeout(function () {
 
+        const successMessage =
+            document.getElementById(
+                "share-stop-success-message"
+            );
+
+        const errorMessage =
+            document.getElementById(
+                "share-error-message"
+            );
+
+        if (successMessage) {
+            successMessage.style.display = "none";
+        }
+
+        if (errorMessage) {
+            errorMessage.style.display = "none";
+        }
+
+        // URLからパラメータを削除
+        const url =
+            new URL(window.location.href);
+
+        url.searchParams.delete(
+            "shareStopSuccess"
+        );
+
+        url.searchParams.delete(
+            "shareError"
+        );
+
+        window.history.replaceState(
+            {},
+            document.title,
+            url.pathname
+        );
+
+    }, 3000);
+</script>
 </html>
