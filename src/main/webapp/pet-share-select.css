@@ -1,0 +1,600 @@
+/* ========================================
+   基本設定
+======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans JP",
+        sans-serif;
+
+    background: #f7f4f0;
+
+    color: #4b3b33;
+}
+
+
+/* ========================================
+   メインコンテナ
+======================================== */
+
+.container {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    padding: 30px 20px 100px;
+}
+
+
+/* ========================================
+   戻るボタン
+======================================== */
+
+.back {
+    display: inline-block;
+
+    margin-bottom: 25px;
+
+    color: #6f8f72;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+.back:hover {
+    opacity: 0.7;
+}
+
+
+/* ========================================
+   タイトル
+======================================== */
+
+h1 {
+    margin: 0;
+
+    text-align: center;
+
+    font-size: 28px;
+
+    color: #4b3b33;
+}
+
+
+/* ========================================
+   説明
+======================================== */
+
+.description {
+    margin: 10px 0 30px;
+
+    text-align: center;
+
+    color: #777;
+
+    font-size: 15px;
+}
+
+
+/* ========================================
+   ペット一覧
+======================================== */
+
+.pet-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 20px;
+}
+
+
+/* ========================================
+   ペットカード
+======================================== */
+
+.pet-card {
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.pet-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 20px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ========================================
+   ペット画像
+======================================== */
+
+.pet-image-area {
+    width: 100%;
+    height: 220px;
+
+    background: #eee9e3;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.pet-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.no-image {
+    font-size: 60px;
+}
+
+
+/* ========================================
+   ペット情報
+======================================== */
+
+.pet-info {
+    padding: 20px;
+}
+
+.pet-info h2 {
+    margin: 0 0 12px;
+
+    font-size: 21px;
+
+    color: #4b3b33;
+}
+
+.pet-info p {
+    margin: 6px 0;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* ========================================
+   シェア中表示
+======================================== */
+
+.shared-status {
+    margin-top: 18px;
+
+    padding: 11px;
+
+    border-radius: 10px;
+
+    background: #eef5ee;
+
+    color: #557058;
+
+    text-align: center;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+
+/* ========================================
+   シェアボタン
+======================================== */
+
+.share-button {
+    display: block;
+
+    width: 100%;
+
+    margin-top: 18px;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #6f8f72;
+
+    color: #ffffff;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease;
+}
+
+.share-button:hover {
+    background: #5f7e62;
+}
+
+.share-button:active {
+    transform: scale(0.98);
+}
+
+
+/* ========================================
+   シェア停止ボタン
+======================================== */
+
+.stop-share-button {
+    display: block;
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #b85c5c;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease;
+}
+
+.stop-share-button:hover {
+    background: #a84f4f;
+}
+
+.stop-share-button:active {
+    transform: scale(0.98);
+}
+
+
+/* ========================================
+   ペット未登録
+======================================== */
+
+.empty-message {
+    max-width: 450px;
+
+    margin: 60px auto;
+
+    padding: 40px 25px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    text-align: center;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.empty-icon {
+    margin-bottom: 15px;
+
+    font-size: 55px;
+}
+
+.empty-message p {
+    margin: 0 0 25px;
+
+    color: #777;
+
+    font-size: 15px;
+}
+
+
+/* ========================================
+   ペット登録ボタン
+======================================== */
+
+.register-button {
+    display: inline-block;
+
+    padding: 12px 25px;
+
+    border-radius: 10px;
+
+    background: #6f8f72;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: bold;
+}
+
+.register-button:hover {
+    background: #5f7e62;
+}
+
+
+/* ========================================
+   確認モーダル
+======================================== */
+
+.confirm-overlay {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        rgba(0, 0, 0, 0.45);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 9999;
+
+    animation:
+        overlayFadeIn 0.2s ease;
+}
+
+
+/* ========================================
+   モーダル本体
+======================================== */
+
+.confirm-modal {
+    width: 100%;
+    max-width: 380px;
+
+    padding: 30px 25px 25px;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.25);
+
+    text-align: center;
+
+    animation:
+        modalFadeIn 0.2s ease;
+}
+
+
+/* ========================================
+   モーダルアイコン
+======================================== */
+
+.confirm-icon {
+    margin-bottom: 12px;
+
+    font-size: 42px;
+}
+
+
+/* ========================================
+   モーダルタイトル
+======================================== */
+
+.confirm-modal h2 {
+    margin: 0 0 12px;
+
+    color: #4b3b33;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+
+/* ========================================
+   モーダル説明
+======================================== */
+
+.confirm-modal p {
+    margin: 0 0 25px;
+
+    color: #777;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* ========================================
+   ボタン
+======================================== */
+
+.confirm-buttons {
+    display: flex;
+
+    gap: 10px;
+}
+
+
+/* キャンセル */
+
+.cancel-button {
+    flex: 1;
+
+    min-height: 46px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #eeeeee;
+
+    color: #555555;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease;
+}
+
+.cancel-button:hover {
+    background: #dddddd;
+}
+
+
+/* シェア停止確定 */
+
+.confirm-button {
+    flex: 1;
+
+    min-height: 46px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #b85c5c;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease;
+}
+
+.confirm-button:hover {
+    background: #a84f4f;
+}
+
+
+/* ========================================
+   アニメーション
+======================================== */
+
+@keyframes overlayFadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes modalFadeIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            scale(1);
+    }
+}
+
+
+/* ========================================
+   スマートフォン
+======================================== */
+
+@media (max-width: 600px) {
+
+    .container {
+        padding:
+            25px 15px 90px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .pet-list {
+        grid-template-columns: 1fr;
+    }
+
+    .pet-image-area {
+        height: 200px;
+    }
+
+    .confirm-modal {
+        max-width: 340px;
+
+        padding:
+            27px 20px 22px;
+    }
+
+    .confirm-modal h2 {
+        font-size: 18px;
+    }
+
+    .confirm-buttons {
+        gap: 8px;
+    }
+
+}
