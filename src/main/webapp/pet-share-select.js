@@ -1,202 +1,148 @@
-/* =====================================================
-   Pet Share Select
-   シェア停止確認モーダル
-===================================================== */
+document.addEventListener("DOMContentLoaded", function () {
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+    // ==========================================
+    // モーダル取得
+    // ==========================================
 
-        /*
-         * モーダル
-         */
-        const modal =
-            document.getElementById(
-                "share-stop-confirm-modal"
-            );
+    const modal =
+        document.getElementById("share-stop-confirm-modal");
+
+    const cancelButton =
+        document.getElementById("share-stop-cancel-button");
+
+    const confirmButton =
+        document.getElementById("share-stop-confirm-button");
 
 
-        /*
-         * キャンセルボタン
-         */
-        const cancelButton =
-            document.getElementById(
-                "share-stop-cancel-button"
-            );
+    // ==========================================
+    // 確認中のフォーム
+    // ==========================================
+
+    let selectedForm = null;
 
 
-        /*
-         * 確定ボタン
-         */
-        const confirmButton =
-            document.getElementById(
-                "share-stop-confirm-button"
-            );
+    // ==========================================
+    // シェア停止フォーム取得
+    // ==========================================
+
+    const stopShareForms =
+        document.querySelectorAll(".stop-share-form");
 
 
-        /*
-         * 現在確認中のフォーム
-         */
-        let selectedForm = null;
+    console.log(
+        "シェア停止フォーム数：",
+        stopShareForms.length
+    );
 
 
+    // ==========================================
+    // 「シェアをやめる」ボタン
+    // ==========================================
 
-        /* =================================================
-           シェア停止フォーム
-        ================================================= */
+    stopShareForms.forEach(function (form) {
 
-        const stopShareForms =
-            document.querySelectorAll(
-                ".stop-share-form"
-            );
-
-
-        stopShareForms.forEach(
-            function (form) {
-
-                form.addEventListener(
-                    "submit",
-                    function (event) {
-
-                        /*
-                         * 通常のsubmitを一旦止める
-                         *
-                         * ここではまだServletへ送信しない
-                         */
-                        event.preventDefault();
+        const stopButton =
+            form.querySelector(".stop-share-button");
 
 
-                        /*
-                         * どのペットのフォームか保存
-                         */
-                        selectedForm = form;
+        if (!stopButton) {
+            return;
+        }
 
 
-                        /*
-                         * モーダルを表示
-                         */
-                        modal.style.display =
-                            "flex";
+        stopButton.addEventListener("click", function () {
+
+            console.log("シェア停止確認を表示");
 
 
-                        /*
-                         * 背景スクロールを停止
-                         */
-                        document.body.style.overflow =
-                            "hidden";
-
-                    }
-                );
-
-            }
-        );
+            // 押されたフォームを保存
+            selectedForm = form;
 
 
-
-        /* =================================================
-           キャンセル
-        ================================================= */
-
-        cancelButton.addEventListener(
-            "click",
-            function () {
-
-                closeModal();
-
-            }
-        );
+            // モーダルを表示
+            modal.style.display = "flex";
 
 
+            // 背景スクロール停止
+            document.body.style.overflow = "hidden";
 
-        /* =================================================
-           「シェアをやめる」
-        ================================================= */
+        });
 
-        confirmButton.addEventListener(
-            "click",
-            function () {
-
-                if (selectedForm !== null) {
-
-                    /*
-                     * 確認済みなので、
-                     * 本来のフォーム送信を実行
-                     */
-                    selectedForm.submit();
-
-                }
-
-            }
-        );
+    });
 
 
+    // ==========================================
+    // キャンセル
+    // ==========================================
 
-        /* =================================================
-           モーダル背景をクリック
-        ================================================= */
+    cancelButton.addEventListener("click", function () {
 
-        modal.addEventListener(
-            "click",
-            function (event) {
+        closeModal();
 
-                /*
-                 * モーダル本体ではなく
-                 * 背景をクリックした場合
-                 */
-                if (
-                    event.target === modal
-                ) {
-
-                    closeModal();
-
-                }
-
-            }
-        );
+    });
 
 
+    // ==========================================
+    // 確認
+    // ==========================================
 
-        /* =================================================
-           ESCキー
-        ================================================= */
+    confirmButton.addEventListener("click", function () {
 
-        document.addEventListener(
-            "keydown",
-            function (event) {
+        if (selectedForm !== null) {
 
-                if (
-                    event.key === "Escape"
-                    &&
-                    modal.style.display !== "none"
-                ) {
-
-                    closeModal();
-
-                }
-
-            }
-        );
-
-
-
-        /* =================================================
-           モーダルを閉じる
-        ================================================= */
-
-        function closeModal() {
-
-            modal.style.display =
-                "none";
-
-            selectedForm = null;
-
-            /*
-             * 背景スクロールを元に戻す
-             */
-            document.body.style.overflow =
-                "";
+            // フォームを送信
+            selectedForm.submit();
 
         }
 
+    });
+
+
+    // ==========================================
+    // 背景クリック
+    // ==========================================
+
+    modal.addEventListener("click", function (event) {
+
+        if (event.target === modal) {
+
+            closeModal();
+
+        }
+
+    });
+
+
+    // ==========================================
+    // ESCキー
+    // ==========================================
+
+    document.addEventListener("keydown", function (event) {
+
+        if (
+            event.key === "Escape" &&
+            modal.style.display !== "none"
+        ) {
+
+            closeModal();
+
+        }
+
+    });
+
+
+    // ==========================================
+    // モーダルを閉じる
+    // ==========================================
+
+    function closeModal() {
+
+        modal.style.display = "none";
+
+        selectedForm = null;
+
+        document.body.style.overflow = "";
+
     }
-);
+
+});
