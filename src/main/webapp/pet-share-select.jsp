@@ -311,7 +311,7 @@
 
             <button
                 type="button"
-                id="stop-share-confirm-button"
+                id="share-stop-confirm-button"
                 class="confirm-button"
             >
                 シェアをやめる
