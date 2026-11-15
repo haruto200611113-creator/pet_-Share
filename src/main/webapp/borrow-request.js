@@ -84,6 +84,382 @@ function hideError() {
 
 
 // ========================================
+// 申込み確認モーダル
+// ========================================
+
+function createConfirmModal(hours, price) {
+
+    return new Promise(function (resolve) {
+
+        // 背景
+        const overlay =
+            document.createElement("div");
+
+        overlay.id =
+            "share-confirm-overlay";
+
+
+        // モーダル本体
+        const modal =
+            document.createElement("div");
+
+        modal.id =
+            "share-confirm-modal";
+
+
+        // タイトル
+        const title =
+            document.createElement("h2");
+
+        title.textContent =
+            "借用申込みの確認";
+
+
+        // メッセージ
+        const message =
+            document.createElement("p");
+
+        message.className =
+            "share-confirm-message";
+
+        message.textContent =
+            "以下の内容で申込みますか？";
+
+
+        // 利用時間
+        const timeRow =
+            document.createElement("div");
+
+        timeRow.className =
+            "share-confirm-row";
+
+        timeRow.innerHTML =
+            `
+            <span>利用時間</span>
+            <strong>${hours.toFixed(2)}時間</strong>
+            `;
+
+
+        // 利用料金
+        const priceRow =
+            document.createElement("div");
+
+        priceRow.className =
+            "share-confirm-row price-row";
+
+        priceRow.innerHTML =
+            `
+            <span>利用料金</span>
+            <strong>${price.toLocaleString()}円</strong>
+            `;
+
+
+        // ボタンエリア
+        const buttonArea =
+            document.createElement("div");
+
+        buttonArea.className =
+            "share-confirm-buttons";
+
+
+        // キャンセル
+        const cancelButton =
+            document.createElement("button");
+
+        cancelButton.type =
+            "button";
+
+        cancelButton.textContent =
+            "キャンセル";
+
+        cancelButton.className =
+            "share-cancel-button";
+
+
+        // 申込み
+        const okButton =
+            document.createElement("button");
+
+        okButton.type =
+            "button";
+
+        okButton.textContent =
+            "申し込む";
+
+        okButton.className =
+            "share-ok-button";
+
+
+        // ボタン追加
+        buttonArea.appendChild(
+            cancelButton
+        );
+
+        buttonArea.appendChild(
+            okButton
+        );
+
+
+        // モーダル構築
+        modal.appendChild(title);
+        modal.appendChild(message);
+        modal.appendChild(timeRow);
+        modal.appendChild(priceRow);
+        modal.appendChild(buttonArea);
+
+        overlay.appendChild(modal);
+
+        document.body.appendChild(
+            overlay
+        );
+
+
+        // キャンセル
+        cancelButton.addEventListener(
+            "click",
+            function () {
+
+                overlay.remove();
+
+                resolve(false);
+            }
+        );
+
+
+        // 申込み
+        okButton.addEventListener(
+            "click",
+            function () {
+
+                overlay.remove();
+
+                resolve(true);
+            }
+        );
+
+
+        // 背景クリック
+        overlay.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === overlay
+                ) {
+
+                    overlay.remove();
+
+                    resolve(false);
+                }
+            }
+        );
+    });
+}
+
+
+// ========================================
+// 確認モーダルCSS
+// ========================================
+
+const confirmStyle =
+    document.createElement("style");
+
+confirmStyle.textContent = `
+
+    #share-confirm-overlay {
+
+        position: fixed;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background: rgba(0, 0, 0, 0.45);
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        z-index: 99999;
+    }
+
+
+    #share-confirm-modal {
+
+        width: min(90%, 460px);
+
+        background: #ffffff;
+
+        border-radius: 16px;
+
+        padding: 32px;
+
+        box-sizing: border-box;
+
+        box-shadow:
+            0 10px 35px rgba(0, 0, 0, 0.25);
+
+        text-align: center;
+
+        animation:
+            shareModalFadeIn 0.2s ease;
+    }
+
+
+    #share-confirm-modal h2 {
+
+        margin: 0 0 20px;
+
+        color: #4b3b33;
+
+        font-size: 24px;
+    }
+
+
+    .share-confirm-message {
+
+        margin: 0 0 24px;
+
+        color: #555555;
+
+        font-size: 16px;
+    }
+
+
+    .share-confirm-row {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        padding: 14px 16px;
+
+        margin-bottom: 10px;
+
+        background: #f8f5f1;
+
+        border-radius: 10px;
+
+        color: #4b3b33;
+
+        font-size: 16px;
+    }
+
+
+    .share-confirm-row strong {
+
+        font-size: 17px;
+    }
+
+
+    .share-confirm-row.price-row {
+
+        background: #fff4e8;
+    }
+
+
+    .share-confirm-row.price-row strong {
+
+        color: #e2763c;
+
+        font-size: 22px;
+    }
+
+
+    .share-confirm-buttons {
+
+        display: flex;
+
+        justify-content: center;
+
+        gap: 14px;
+
+        margin-top: 26px;
+    }
+
+
+    .share-confirm-buttons button {
+
+        border: none;
+
+        border-radius: 8px;
+
+        padding: 12px 28px;
+
+        font-size: 16px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition:
+            opacity 0.2s ease,
+            transform 0.1s ease;
+    }
+
+
+    .share-confirm-buttons button:hover {
+
+        opacity: 0.85;
+    }
+
+
+    .share-confirm-buttons button:active {
+
+        transform: scale(0.97);
+    }
+
+
+    .share-cancel-button {
+
+        background: #eeeeee;
+
+        color: #555555;
+    }
+
+
+    .share-ok-button {
+
+        background: #df9565;
+
+        color: #ffffff;
+    }
+
+
+    @keyframes shareModalFadeIn {
+
+        from {
+
+            opacity: 0;
+
+            transform:
+                translateY(10px)
+                scale(0.97);
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform:
+                translateY(0)
+                scale(1);
+        }
+    }
+
+`;
+
+document.head.appendChild(
+    confirmStyle
+);
+
+
+// ========================================
 // ペット詳細取得
 // ========================================
 
@@ -116,17 +492,13 @@ async function loadPet() {
             await response.json();
 
 
-        // ------------------------------
-        // ペット名
-        // ------------------------------
+        // --------------------------------
+        // ペット情報
+        // --------------------------------
 
         petName.textContent =
             pet.name || "名前未設定";
 
-
-        // ------------------------------
-        // 画像
-        // ------------------------------
 
         if (pet.imagePath) {
 
@@ -140,10 +512,6 @@ async function loadPet() {
         }
 
 
-        // ------------------------------
-        // 種類
-        // ------------------------------
-
         let typeText =
             pet.type || "未設定";
 
@@ -156,10 +524,6 @@ async function loadPet() {
         petType.textContent =
             typeText;
 
-
-        // ------------------------------
-        // 年齢
-        // ------------------------------
 
         if (
             pet.age !== undefined &&
@@ -176,45 +540,65 @@ async function loadPet() {
         }
 
 
-        // ------------------------------
-        // シェア期間
-        // ------------------------------
+        // =================================
+        // ★ シェア可能期間
+        // =================================
+        //
+        // PetDetailServletでは
+        //
+        // availableStart
+        // availableEnd
+        //
+        // という名前でJSONを返している
+        // =================================
 
         const start =
             formatDateTime(
-                pet.shareStartDate
+                pet.availableStart
             );
 
         const end =
             formatDateTime(
-                pet.shareEndDate
+                pet.availableEnd
             );
+
 
         if (start && end) {
 
-            sharePeriod.textContent =
-                `${start} ～ ${end}`;
+            sharePeriod.innerHTML =
+                `
+                <strong>貸し出し可能な期間</strong><br>
+                ${start}<br>
+                ～<br>
+                ${end}
+                `;
 
         } else if (start) {
 
-            sharePeriod.textContent =
-                `${start} ～`;
+            sharePeriod.innerHTML =
+                `
+                <strong>貸し出し可能な期間</strong><br>
+                ${start}～
+                `;
 
         } else if (end) {
 
-            sharePeriod.textContent =
-                `～ ${end}`;
+            sharePeriod.innerHTML =
+                `
+                <strong>貸し出し可能な期間</strong><br>
+                ～${end}
+                `;
 
         } else {
 
             sharePeriod.textContent =
-                "設定なし";
+                "貸し出し可能な期間が設定されていません。";
         }
 
 
-        // ------------------------------
+        // --------------------------------
         // シェア条件
-        // ------------------------------
+        // --------------------------------
 
         if (pet.shareConditions) {
 
@@ -226,6 +610,7 @@ async function loadPet() {
             shareConditions.textContent =
                 "シェア条件は登録されていません。";
         }
+
 
     } catch (error) {
 
@@ -256,8 +641,10 @@ function formatDateTime(dateString) {
         return "";
     }
 
+
     const date =
         new Date(dateString);
+
 
     if (
         Number.isNaN(
@@ -267,6 +654,7 @@ function formatDateTime(dateString) {
 
         return "";
     }
+
 
     const year =
         date.getFullYear();
@@ -287,6 +675,7 @@ function formatDateTime(dateString) {
             date.getMinutes()
         ).padStart(2, "0");
 
+
     return `${year}年${month}月${day}日 ${hour}:${minute}`;
 }
 
@@ -298,6 +687,7 @@ function formatDateTime(dateString) {
 function calculateUsageHours() {
 
     hideError();
+
 
     if (
         !startDatetime.value ||
@@ -325,10 +715,7 @@ function calculateUsageHours() {
         );
 
 
-    // ------------------------------------
-    // 終了が開始より前
-    // ------------------------------------
-
+    // 終了日時チェック
     if (end <= start) {
 
         showError(
@@ -345,10 +732,7 @@ function calculateUsageHours() {
     }
 
 
-    // ------------------------------------
-    // 利用開始日時が現在より前
-    // ------------------------------------
-
+    // 開始日時チェック
     const now =
         new Date();
 
@@ -368,10 +752,7 @@ function calculateUsageHours() {
     }
 
 
-    // ------------------------------------
-    // ミリ秒 → 時間
-    // ------------------------------------
-
+    // 利用時間
     const milliseconds =
         end.getTime() -
         start.getTime();
@@ -385,15 +766,13 @@ function calculateUsageHours() {
         `${hours.toFixed(2)}時間`;
 
 
-    // ------------------------------------
-    // 料金計算
-    // ------------------------------------
-
+    // 料金
     const price =
         calculatePrice(hours);
 
     sharePrice.textContent =
         `${price.toLocaleString()}円`;
+
 
     return hours;
 }
@@ -451,11 +830,6 @@ function calculatePrice(hours) {
 
     } else {
 
-        // --------------------------------
-        // 72時間を超えた場合
-        // 24時間増えるごとに3,000円追加
-        // --------------------------------
-
         const extraHours =
             hours - 72;
 
@@ -471,7 +845,7 @@ function calculatePrice(hours) {
 
 
 // ========================================
-// 日時変更時
+// 日時変更
 // ========================================
 
 startDatetime.addEventListener(
@@ -491,15 +865,12 @@ endDatetime.addEventListener(
 
 submitButton.addEventListener(
     "click",
-    function () {
+    async function () {
 
         hideError();
 
 
-        // --------------------------------
         // ペットID確認
-        // --------------------------------
-
         if (!petId) {
 
             showError(
@@ -510,10 +881,7 @@ submitButton.addEventListener(
         }
 
 
-        // --------------------------------
-        // 日時入力確認
-        // --------------------------------
-
+        // 日時確認
         if (
             !startDatetime.value ||
             !endDatetime.value
@@ -527,10 +895,7 @@ submitButton.addEventListener(
         }
 
 
-        // --------------------------------
-        // 利用時間・料金を再計算
-        // --------------------------------
-
+        // 利用時間計算
         const hours =
             calculateUsageHours();
 
@@ -544,16 +909,13 @@ submitButton.addEventListener(
             calculatePrice(hours);
 
 
-        // --------------------------------
-        // 確認
-        // --------------------------------
-
+        // 確認モーダル
         const confirmed =
-            confirm(
-                "以下の内容で申込みますか？\n\n" +
-                `利用時間：${hours.toFixed(2)}時間\n` +
-                `利用料金：${price.toLocaleString()}円`
+            await createConfirmModal(
+                hours,
+                price
             );
+
 
         if (!confirmed) {
 
@@ -561,9 +923,9 @@ submitButton.addEventListener(
         }
 
 
-        // --------------------------------
-        // ServletへPOST送信
-        // --------------------------------
+        // =================================
+        // ServletへPOST
+        // =================================
 
         const form =
             document.createElement("form");
@@ -575,10 +937,7 @@ submitButton.addEventListener(
             "share-request";
 
 
-        // --------------------------------
         // ペットID
-        // --------------------------------
-
         const petIdInput =
             document.createElement("input");
 
@@ -596,10 +955,7 @@ submitButton.addEventListener(
         );
 
 
-        // --------------------------------
-        // 利用開始日時
-        // --------------------------------
-
+        // 開始日時
         const startInput =
             document.createElement("input");
 
@@ -617,10 +973,7 @@ submitButton.addEventListener(
         );
 
 
-        // --------------------------------
-        // 利用終了日時
-        // --------------------------------
-
+        // 終了日時
         const endInput =
             document.createElement("input");
 
@@ -638,18 +991,10 @@ submitButton.addEventListener(
         );
 
 
-        // --------------------------------
-        // フォームを画面に追加
-        // --------------------------------
-
         document.body.appendChild(
             form
         );
 
-
-        // --------------------------------
-        // 送信
-        // --------------------------------
 
         form.submit();
     }
@@ -657,7 +1002,7 @@ submitButton.addEventListener(
 
 
 // ========================================
-// 申込み結果表示
+// 申込み結果
 // ========================================
 
 const resultParams =
@@ -666,10 +1011,7 @@ const resultParams =
     );
 
 
-// ----------------------------------------
-// 申込み成功
-// ----------------------------------------
-
+// 成功
 if (
     resultParams.get("success") === "true"
 ) {
@@ -686,10 +1028,7 @@ if (
 }
 
 
-// ----------------------------------------
-// 申込みエラー
-// ----------------------------------------
-
+// エラー
 const requestError =
     resultParams.get("error");
 
