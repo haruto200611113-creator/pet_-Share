@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/pet-detail")
 public class PetDetailServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
+
     private final PetDAO petDAO = new PetDAO();
     private final PetShareDAO petShareDAO = new PetShareDAO();
 
@@ -28,6 +30,10 @@ public class PetDetailServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String petIdParam = request.getParameter("petId");
+
+        // ========================================
+        // petIdチェック
+        // ========================================
 
         if (petIdParam == null ||
                 petIdParam.isBlank()) {
@@ -63,7 +69,7 @@ public class PetDetailServlet extends HttpServlet {
             }
 
             // ========================================
-            // 新しいシェア情報取得
+            // シェア情報取得
             // ========================================
 
             PetShare petShare = petShareDAO.findActiveByPetId(petId);
@@ -327,10 +333,10 @@ public class PetDetailServlet extends HttpServlet {
             out.print(
                     escapeJson(
                             pet.getPrecautions()));
-            out.print(",");
+            out.print("\",");
 
             // ========================================
-            // 料金
+            // シェア料金
             // ========================================
 
             out.print("\"sharePrice\":");
@@ -349,7 +355,7 @@ public class PetDetailServlet extends HttpServlet {
             out.print(",");
 
             // ========================================
-            // 新しいシェア可能情報
+            // シェア可能情報
             // ========================================
 
             if (petShare != null) {
@@ -431,9 +437,7 @@ public class PetDetailServlet extends HttpServlet {
 
             response.getWriter().write(
                     "{\"error\":\"ペット情報の取得に失敗しました\"}");
-
         }
-
     }
 
     // ========================================
@@ -443,9 +447,7 @@ public class PetDetailServlet extends HttpServlet {
     private String escapeJson(String value) {
 
         if (value == null) {
-
             return "";
-
         }
 
         return value
@@ -453,7 +455,6 @@ public class PetDetailServlet extends HttpServlet {
                 .replace("\"", "\\\"")
                 .replace("\r", "\\r")
                 .replace("\n", "\\n");
-
     }
 
     // ========================================
@@ -463,9 +464,7 @@ public class PetDetailServlet extends HttpServlet {
     private int calculateAge(Date birthDate) {
 
         if (birthDate == null) {
-
             return 0;
-
         }
 
         LocalDate birth = birthDate.toLocalDate();
@@ -475,7 +474,5 @@ public class PetDetailServlet extends HttpServlet {
         return Period.between(
                 birth,
                 today).getYears();
-
     }
-
 }
