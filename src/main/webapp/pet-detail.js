@@ -193,35 +193,7 @@ function displayPetDetail(pet) {
 
 
 
-    // ========================================
-    // 料金
-    // ========================================
-
-    const petPrice =
-        document.getElementById("petPrice");
-
-
-    if (petPrice) {
-
-        if (
-            pet.sharePrice !== undefined &&
-            pet.sharePrice !== null
-        ) {
-
-            petPrice.textContent =
-                Number(
-                    pet.sharePrice
-                ).toLocaleString();
-
-        } else {
-
-            petPrice.textContent =
-                "0";
-
-        }
-
-    }
-
+   
 
 
     // ========================================

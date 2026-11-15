@@ -305,6 +305,10 @@ public class ShareRequestServlet extends HttpServlet {
     // 料金計算
     // ========================================
 
+    // ========================================
+    // 料金計算
+    // ========================================
+
     private int calculatePrice(
             double hours) {
 
@@ -348,9 +352,22 @@ public class ShareRequestServlet extends HttpServlet {
 
             return 7000;
 
-        } else {
+        } else if (hours <= 72) {
 
             return 9000;
+
+        } else {
+
+            // 72時間を超えた場合
+            // 24時間ごとに3,000円追加
+
+            double extraHours = hours - 72;
+
+            int extraDays = (int) Math.ceil(
+                    extraHours / 24.0);
+
+            return 9000 +
+                    (extraDays * 3000);
         }
     }
 }

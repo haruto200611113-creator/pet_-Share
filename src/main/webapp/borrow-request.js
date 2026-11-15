@@ -310,7 +310,7 @@ function calculateUsageHours() {
         sharePrice.textContent =
             "0円";
 
-        return;
+        return null;
     }
 
 
@@ -325,7 +325,10 @@ function calculateUsageHours() {
         );
 
 
+    // ------------------------------------
     // 終了が開始より前
+    // ------------------------------------
+
     if (end <= start) {
 
         showError(
@@ -338,9 +341,13 @@ function calculateUsageHours() {
         sharePrice.textContent =
             "0円";
 
-        return;
+        return null;
     }
 
+
+    // ------------------------------------
+    // 利用開始日時が現在より前
+    // ------------------------------------
 
     const now =
         new Date();
@@ -357,11 +364,14 @@ function calculateUsageHours() {
         sharePrice.textContent =
             "0円";
 
-        return;
+        return null;
     }
 
 
+    // ------------------------------------
     // ミリ秒 → 時間
+    // ------------------------------------
+
     const milliseconds =
         end.getTime() -
         start.getTime();
@@ -375,11 +385,17 @@ function calculateUsageHours() {
         `${hours.toFixed(2)}時間`;
 
 
+    // ------------------------------------
+    // 料金計算
+    // ------------------------------------
+
     const price =
         calculatePrice(hours);
 
     sharePrice.textContent =
         `${price.toLocaleString()}円`;
+
+    return hours;
 }
 
 
@@ -429,9 +445,27 @@ function calculatePrice(hours) {
 
         return 7000;
 
-    } else {
+    } else if (hours <= 72) {
 
         return 9000;
+
+    } else {
+
+        // --------------------------------
+        // 72時間を超えた場合
+        // 24時間増えるごとに3,000円追加
+        // --------------------------------
+
+        const extraHours =
+            hours - 72;
+
+        const extraDays =
+            Math.ceil(
+                extraHours / 24
+            );
+
+        return 9000 +
+            (extraDays * 3000);
     }
 }
 
@@ -462,6 +496,10 @@ submitButton.addEventListener(
         hideError();
 
 
+        // --------------------------------
+        // ペットID確認
+        // --------------------------------
+
         if (!petId) {
 
             showError(
@@ -471,6 +509,10 @@ submitButton.addEventListener(
             return;
         }
 
+
+        // --------------------------------
+        // 日時入力確認
+        // --------------------------------
 
         if (
             !startDatetime.value ||
@@ -485,64 +527,184 @@ submitButton.addEventListener(
         }
 
 
-        const start =
-            new Date(
-                startDatetime.value
-            );
+        // --------------------------------
+        // 利用時間・料金を再計算
+        // --------------------------------
 
-        const end =
-            new Date(
-                endDatetime.value
-            );
+        const hours =
+            calculateUsageHours();
 
-
-        if (end <= start) {
-
-            showError(
-                "利用終了日時は利用開始日時より後にしてください。"
-            );
+        if (hours === null) {
 
             return;
         }
-
-
-        const milliseconds =
-            end.getTime() -
-            start.getTime();
-
-        const hours =
-            milliseconds /
-            (1000 * 60 * 60);
 
 
         const price =
             calculatePrice(hours);
 
 
-        console.log(
-            "申込み内容:",
-            {
-                petId: petId,
-                startDatetime:
-                    startDatetime.value,
-                endDatetime:
-                    endDatetime.value,
-                usageHours:
-                    hours,
-                sharePrice:
-                    price
-            }
+        // --------------------------------
+        // 確認
+        // --------------------------------
+
+        const confirmed =
+            confirm(
+                "以下の内容で申込みますか？\n\n" +
+                `利用時間：${hours.toFixed(2)}時間\n` +
+                `利用料金：${price.toLocaleString()}円`
+            );
+
+        if (!confirmed) {
+
+            return;
+        }
+
+
+        // --------------------------------
+        // ServletへPOST送信
+        // --------------------------------
+
+        const form =
+            document.createElement("form");
+
+        form.method =
+            "POST";
+
+        form.action =
+            "share-request";
+
+
+        // --------------------------------
+        // ペットID
+        // --------------------------------
+
+        const petIdInput =
+            document.createElement("input");
+
+        petIdInput.type =
+            "hidden";
+
+        petIdInput.name =
+            "petId";
+
+        petIdInput.value =
+            petId;
+
+        form.appendChild(
+            petIdInput
         );
 
 
-        // 次の段階でServletへ送信
-        alert(
-            "申込み内容を確認しました。\n\n" +
-            `利用時間：${hours.toFixed(2)}時間\n` +
-            `利用料金：${price.toLocaleString()}円`
+        // --------------------------------
+        // 利用開始日時
+        // --------------------------------
+
+        const startInput =
+            document.createElement("input");
+
+        startInput.type =
+            "hidden";
+
+        startInput.name =
+            "startDatetime";
+
+        startInput.value =
+            startDatetime.value;
+
+        form.appendChild(
+            startInput
         );
+
+
+        // --------------------------------
+        // 利用終了日時
+        // --------------------------------
+
+        const endInput =
+            document.createElement("input");
+
+        endInput.type =
+            "hidden";
+
+        endInput.name =
+            "endDatetime";
+
+        endInput.value =
+            endDatetime.value;
+
+        form.appendChild(
+            endInput
+        );
+
+
+        // --------------------------------
+        // フォームを画面に追加
+        // --------------------------------
+
+        document.body.appendChild(
+            form
+        );
+
+
+        // --------------------------------
+        // 送信
+        // --------------------------------
+
+        form.submit();
     }
 );
+
+
+// ========================================
+// 申込み結果表示
+// ========================================
+
+const resultParams =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+// ----------------------------------------
+// 申込み成功
+// ----------------------------------------
+
+if (
+    resultParams.get("success") === "true"
+) {
+
+    alert(
+        "ペットの借用申込みが完了しました。"
+    );
+
+    window.history.replaceState(
+        {},
+        document.title,
+        `borrow-request.html?petId=${encodeURIComponent(petId)}`
+    );
+}
+
+
+// ----------------------------------------
+// 申込みエラー
+// ----------------------------------------
+
+const requestError =
+    resultParams.get("error");
+
+if (requestError) {
+
+    showError(
+        requestError
+    );
+
+    window.history.replaceState(
+        {},
+        document.title,
+        `borrow-request.html?petId=${encodeURIComponent(petId)}`
+    );
+}
 
 
 // ========================================
