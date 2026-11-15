@@ -1,148 +1,136 @@
-document.addEventListener("DOMContentLoaded", function () {
+let selectedForm = null;
 
-    // ==========================================
-    // モーダル取得
-    // ==========================================
+
+// ==========================================
+// シェア停止確認モーダルを開く
+// ==========================================
+
+function openShareStopModal(button) {
+
+    console.log("シェア停止モーダルを開きます");
+
+    selectedForm = button.closest(".stop-share-form");
 
     const modal =
         document.getElementById("share-stop-confirm-modal");
 
-    const cancelButton =
-        document.getElementById("share-stop-cancel-button");
+    if (!modal) {
 
-    const confirmButton =
-        document.getElementById("share-stop-confirm-button");
+        console.error(
+            "share-stop-confirm-modal が見つかりません"
+        );
 
+        return;
+    }
 
-    // ==========================================
-    // 確認中のフォーム
-    // ==========================================
+    modal.style.display = "flex";
 
-    let selectedForm = null;
-
-
-    // ==========================================
-    // シェア停止フォーム取得
-    // ==========================================
-
-    const stopShareForms =
-        document.querySelectorAll(".stop-share-form");
+    document.body.style.overflow = "hidden";
+}
 
 
-    console.log(
-        "シェア停止フォーム数：",
-        stopShareForms.length
-    );
+// ==========================================
+// DOM読み込み後
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        console.log(
+            "pet-share-select.js 読み込み完了"
+        );
 
 
-    // ==========================================
-    // 「シェアをやめる」ボタン
-    // ==========================================
+        const modal =
+            document.getElementById(
+                "share-stop-confirm-modal"
+            );
 
-    stopShareForms.forEach(function (form) {
+        const cancelButton =
+            document.getElementById(
+                "share-stop-cancel-button"
+            );
 
-        const stopButton =
-            form.querySelector(".stop-share-button");
-
-
-        if (!stopButton) {
-            return;
-        }
-
-
-        stopButton.addEventListener("click", function () {
-
-            console.log("シェア停止確認を表示");
+        const confirmButton =
+            document.getElementById(
+                "share-stop-confirm-button"
+            );
 
 
-            // 押されたフォームを保存
-            selectedForm = form;
+        // ======================================
+        // キャンセル
+        // ======================================
+
+        cancelButton.addEventListener(
+            "click",
+            function () {
+
+                closeShareStopModal();
+
+            }
+        );
 
 
-            // モーダルを表示
-            modal.style.display = "flex";
+        // ======================================
+        // シェア停止確定
+        // ======================================
+
+        confirmButton.addEventListener(
+            "click",
+            function () {
+
+                if (selectedForm !== null) {
+
+                    selectedForm.submit();
+
+                }
+
+            }
+        );
 
 
-            // 背景スクロール停止
-            document.body.style.overflow = "hidden";
+        // ======================================
+        // 背景クリック
+        // ======================================
 
-        });
+        modal.addEventListener(
+            "click",
+            function (event) {
 
-    });
+                if (
+                    event.target === modal
+                ) {
 
+                    closeShareStopModal();
 
-    // ==========================================
-    // キャンセル
-    // ==========================================
+                }
 
-    cancelButton.addEventListener("click", function () {
+            }
+        );
 
-        closeModal();
-
-    });
-
-
-    // ==========================================
-    // 確認
-    // ==========================================
-
-    confirmButton.addEventListener("click", function () {
-
-        if (selectedForm !== null) {
-
-            // フォームを送信
-            selectedForm.submit();
-
-        }
-
-    });
+    }
+);
 
 
-    // ==========================================
-    // 背景クリック
-    // ==========================================
+// ==========================================
+// モーダルを閉じる
+// ==========================================
 
-    modal.addEventListener("click", function (event) {
+function closeShareStopModal() {
 
-        if (event.target === modal) {
+    const modal =
+        document.getElementById(
+            "share-stop-confirm-modal"
+        );
 
-            closeModal();
-
-        }
-
-    });
-
-
-    // ==========================================
-    // ESCキー
-    // ==========================================
-
-    document.addEventListener("keydown", function (event) {
-
-        if (
-            event.key === "Escape" &&
-            modal.style.display !== "none"
-        ) {
-
-            closeModal();
-
-        }
-
-    });
-
-
-    // ==========================================
-    // モーダルを閉じる
-    // ==========================================
-
-    function closeModal() {
+    if (modal) {
 
         modal.style.display = "none";
 
-        selectedForm = null;
-
-        document.body.style.overflow = "";
-
     }
 
-});
+    selectedForm = null;
+
+    document.body.style.overflow = "";
+}

@@ -205,27 +205,25 @@
                         -->
 
                         <form
-                            action="pet-share-stop"
-                            method="post"
-                            class="stop-share-form"
-                        >
+    action="pet-share-stop"
+    method="post"
+    class="stop-share-form"
+    id="stop-share-form-<%= pet.getPetId() %>"
+>
+    <input
+        type="hidden"
+        name="petId"
+        value="<%= pet.getPetId() %>"
+    >
 
-                            <input
-                                type="hidden"
-                                name="petId"
-                                value="<%= pet.getPetId() %>"
-                            >
-
-
-                            <button
-                                type="submit"
-                                class="stop-share-button"
-                            >
-                                シェアをやめる
-                            </button>
-
-                        </form>
-
+    <button
+        type="button"
+        class="stop-share-button"
+        onclick="openShareStopModal(this)"
+    >
+        シェアをやめる
+    </button>
+</form>
 
                     <% } else { %>
 
