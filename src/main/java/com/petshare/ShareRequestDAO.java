@@ -239,8 +239,8 @@ public class ShareRequestDAO {
 
     public boolean existsOverlappingRequest(
             int petId,
-            Timestamp startDatetime,
-            Timestamp endDatetime) {
+            java.time.LocalDateTime startDatetime,
+            java.time.LocalDateTime endDatetime) {
 
         String sql = """
                 SELECT COUNT(*)
@@ -253,34 +253,29 @@ public class ShareRequestDAO {
 
         try (
                 Connection conn = getConnection();
-
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(
-                    1,
-                    petId);
+            ps.setInt(1, petId);
 
             ps.setTimestamp(
                     2,
-                    endDatetime);
+                    java.sql.Timestamp.valueOf(endDatetime));
 
             ps.setTimestamp(
                     3,
-                    startDatetime);
+                    java.sql.Timestamp.valueOf(startDatetime));
 
-            try (
-                    ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
 
                 if (rs.next()) {
-
                     return rs.getInt(1) > 0;
                 }
             }
 
         } catch (SQLException e) {
 
-            System.err.println(
-                    "重複申込み確認中にSQLエラーが発生しました。");
+            System.out.println(
+                    "重複申込みチェックでエラーが発生しました");
 
             e.printStackTrace();
         }
