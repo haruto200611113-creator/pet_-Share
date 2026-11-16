@@ -31,13 +31,14 @@ public class ShareRequestServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
+        // リクエストの文字コード
         request.setCharacterEncoding("UTF-8");
 
         HttpSession session = request.getSession(false);
 
-        // ====================================
+        // ========================================
         // ログインチェック
-        // ====================================
+        // ========================================
 
         if (!AccessControl.isFullMember(session)) {
 
@@ -50,9 +51,9 @@ public class ShareRequestServlet extends HttpServlet {
 
         try {
 
-            // =================================
-            // ログインユーザー
-            // =================================
+            // ========================================
+            // ログインユーザー取得
+            // ========================================
 
             Object accountId = session.getAttribute("accountId");
 
@@ -67,9 +68,9 @@ public class ShareRequestServlet extends HttpServlet {
 
             int borrowerId = (Integer) accountId;
 
-            // =================================
-            // パラメータ
-            // =================================
+            // ========================================
+            // パラメータ取得
+            // ========================================
 
             String petIdString = request.getParameter("petId");
 
@@ -77,12 +78,12 @@ public class ShareRequestServlet extends HttpServlet {
 
             String endString = request.getParameter("endDatetime");
 
-            // =================================
+            // ========================================
             // ペットID確認
-            // =================================
+            // ========================================
 
-            if (petIdString == null ||
-                    petIdString.isBlank()) {
+            if (petIdString == null
+                    || petIdString.isBlank()) {
 
                 response.sendRedirect(
                         request.getContextPath()
@@ -93,14 +94,14 @@ public class ShareRequestServlet extends HttpServlet {
 
             int petId = Integer.parseInt(petIdString);
 
-            // =================================
+            // ========================================
             // 日時入力チェック
-            // =================================
+            // ========================================
 
-            if (startString == null ||
-                    endString == null ||
-                    startString.isBlank() ||
-                    endString.isBlank()) {
+            if (startString == null
+                    || endString == null
+                    || startString.isBlank()
+                    || endString.isBlank()) {
 
                 response.sendRedirect(
                         request.getContextPath()
@@ -111,9 +112,9 @@ public class ShareRequestServlet extends HttpServlet {
                 return;
             }
 
-            // =================================
+            // ========================================
             // 日時変換
-            // =================================
+            // ========================================
 
             LocalDateTime start = LocalDateTime.parse(
                     startString);
@@ -121,9 +122,9 @@ public class ShareRequestServlet extends HttpServlet {
             LocalDateTime end = LocalDateTime.parse(
                     endString);
 
-            // =================================
-            // 開始 < 終了
-            // =================================
+            // ========================================
+            // 開始日時 < 終了日時
+            // ========================================
 
             if (!start.isBefore(end)) {
 
@@ -131,14 +132,14 @@ public class ShareRequestServlet extends HttpServlet {
                         request.getContextPath()
                                 + "/borrow-request.html?petId="
                                 + petId
-                                + "&error=利用終了日時は開始日時より後にしてください");
+                                + "&error=invalid_datetime");
 
                 return;
             }
 
-            // =================================
+            // ========================================
             // 過去日時チェック
-            // =================================
+            // ========================================
 
             if (start.isBefore(
                     LocalDateTime.now())) {
@@ -147,14 +148,14 @@ public class ShareRequestServlet extends HttpServlet {
                         request.getContextPath()
                                 + "/borrow-request.html?petId="
                                 + petId
-                                + "&error=利用開始日時は現在時刻以降にしてください");
+                                + "&error=past_datetime");
 
                 return;
             }
 
-            // =================================
+            // ========================================
             // ペット取得
-            // =================================
+            // ========================================
 
             Pet pet = petDAO.findById(petId);
 
@@ -167,9 +168,9 @@ public class ShareRequestServlet extends HttpServlet {
                 return;
             }
 
-            // =================================
-            // 自分のペットは禁止
-            // =================================
+            // ========================================
+            // 自分のペットは借りられない
+            // ========================================
 
             if (pet.getAccountId() == borrowerId) {
 
@@ -180,9 +181,9 @@ public class ShareRequestServlet extends HttpServlet {
                 return;
             }
 
-            // =================================
+            // ========================================
             // シェア設定確認
-            // =================================
+            // ========================================
 
             if (!pet.isShared()) {
 
@@ -194,9 +195,9 @@ public class ShareRequestServlet extends HttpServlet {
                 return;
             }
 
-            // =================================
+            // ========================================
             // シェア可能期間取得
-            // =================================
+            // ========================================
 
             PetShare petShare = petShareDAO.findActiveByPetId(
                     petId);
@@ -219,9 +220,9 @@ public class ShareRequestServlet extends HttpServlet {
                     .getAvailableEnd()
                     .toLocalDateTime();
 
-            // =================================
+            // ========================================
             // シェア可能期間チェック
-            // =================================
+            // ========================================
 
             if (start.isBefore(
                     availableStart)
@@ -233,14 +234,14 @@ public class ShareRequestServlet extends HttpServlet {
                         request.getContextPath()
                                 + "/borrow-request.html?petId="
                                 + petId
-                                + "&error=シェア可能期間外です");
+                                + "&error=outside_period");
 
                 return;
             }
 
-            // =================================
-            // 利用時間
-            // =================================
+            // ========================================
+            // 利用時間計算
+            // ========================================
 
             Duration duration = Duration.between(
                     start,
@@ -249,15 +250,15 @@ public class ShareRequestServlet extends HttpServlet {
             double hours = duration.toMinutes()
                     / 60.0;
 
-            // =================================
+            // ========================================
             // 料金計算
-            // =================================
+            // ========================================
 
             int price = calculatePrice(hours);
 
-            // =================================
+            // ========================================
             // 重複チェック
-            // =================================
+            // ========================================
 
             if (shareRequestDAO
                     .existsOverlappingRequest(
@@ -269,14 +270,14 @@ public class ShareRequestServlet extends HttpServlet {
                         request.getContextPath()
                                 + "/borrow-request.html?petId="
                                 + petId
-                                + "&error=この時間帯にはすでに申込みがあります");
+                                + "&error=overlap");
 
                 return;
             }
 
-            // =================================
+            // ========================================
             // ShareRequest作成
-            // =================================
+            // ========================================
 
             ShareRequest shareRequest = new ShareRequest();
 
@@ -301,16 +302,16 @@ public class ShareRequestServlet extends HttpServlet {
             shareRequest.setStatus(
                     "pending");
 
-            // =================================
+            // ========================================
             // DB登録
-            // =================================
+            // ========================================
 
             boolean result = shareRequestDAO.insert(
                     shareRequest);
 
-            // =================================
+            // ========================================
             // 登録成功
-            // =================================
+            // ========================================
 
             if (result) {
 
@@ -323,25 +324,31 @@ public class ShareRequestServlet extends HttpServlet {
                 return;
             }
 
-            // =================================
+            // ========================================
             // 登録失敗
-            // =================================
+            // ========================================
 
             response.sendRedirect(
                     request.getContextPath()
                             + "/borrow-request.html?petId="
                             + petId
-                            + "&error=申込みの登録に失敗しました");
+                            + "&error=insert_failed");
 
         } catch (Exception e) {
 
+            // ========================================
+            // システムエラー
+            // ========================================
+
             e.printStackTrace();
+
+            String petId = request.getParameter("petId");
 
             response.sendRedirect(
                     request.getContextPath()
                             + "/borrow-request.html?petId="
-                            + request.getParameter("petId")
-                            + "&error=システムエラーが発生しました");
+                            + petId
+                            + "&error=system_error");
         }
     }
 
@@ -352,50 +359,62 @@ public class ShareRequestServlet extends HttpServlet {
     private int calculatePrice(
             double hours) {
 
+        // 1時間まで
         if (hours <= 1) {
 
             return 500;
 
+            // 2時間まで
         } else if (hours <= 2) {
 
             return 900;
 
+            // 3時間まで
         } else if (hours <= 3) {
 
             return 1200;
 
+            // 4時間まで
         } else if (hours <= 4) {
 
             return 1500;
 
+            // 5時間まで
         } else if (hours <= 5) {
 
             return 1800;
 
+            // 6時間まで
         } else if (hours <= 6) {
 
             return 2000;
 
+            // 8時間まで
         } else if (hours <= 8) {
 
             return 2500;
 
+            // 12時間まで
         } else if (hours <= 12) {
 
             return 3000;
 
+            // 24時間まで
         } else if (hours <= 24) {
 
             return 4000;
 
+            // 48時間まで
         } else if (hours <= 48) {
 
             return 7000;
 
+            // 72時間まで
         } else if (hours <= 72) {
 
             return 9000;
 
+            // 72時間を超える場合
         } else {
 
             double extraHours = hours - 72;
@@ -403,8 +422,8 @@ public class ShareRequestServlet extends HttpServlet {
             int extraDays = (int) Math.ceil(
                     extraHours / 24.0);
 
-            return 9000 +
-                    (extraDays * 3000);
+            return 9000
+                    + (extraDays * 3000);
         }
     }
 }
