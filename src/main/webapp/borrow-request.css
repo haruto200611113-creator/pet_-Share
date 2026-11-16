@@ -1,0 +1,535 @@
+/* ========================================
+   ペット借用申込み画面
+======================================== */
+
+
+/* ========================================
+   メインコンテナ
+======================================== */
+
+.borrow-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ========================================
+   タイトル
+======================================== */
+
+.borrow-title {
+    text-align: center;
+
+    margin-bottom: 30px;
+
+    color: #4b3b33;
+}
+
+
+/* ========================================
+   ペット情報
+======================================== */
+
+.pet-info {
+    display: flex;
+
+    gap: 20px;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background: #faf7f4;
+
+    border-radius: 12px;
+
+    margin-bottom: 30px;
+}
+
+
+.pet-info img {
+    width: 120px;
+    height: 120px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+}
+
+
+.pet-info-text h2 {
+    margin: 0 0 10px;
+}
+
+
+/* ========================================
+   入力フォーム
+======================================== */
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-weight: bold;
+
+    color: #4b3b33;
+}
+
+
+.form-group input {
+    width: 100%;
+
+    padding: 12px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+}
+
+
+/* ========================================
+   シェア情報
+======================================== */
+
+.info-box {
+    background: #f7f3ef;
+
+    border-radius: 10px;
+
+    padding: 15px;
+
+    margin-bottom: 25px;
+}
+
+
+.info-box h3 {
+    margin-top: 0;
+
+    color: #4b3b33;
+}
+
+
+#sharePeriod {
+    line-height: 1.8;
+
+    margin: 15px 0;
+}
+
+
+#shareConditions {
+    line-height: 1.6;
+
+    margin-bottom: 0;
+}
+
+
+/* ========================================
+   エラーメッセージ
+======================================== */
+
+.error-message {
+    display: none;
+
+    color: #d9534f;
+
+    background: #fff0f0;
+
+    padding: 12px;
+
+    border-radius: 8px;
+
+    margin-bottom: 20px;
+}
+
+
+/* ========================================
+   計算結果
+======================================== */
+
+.result-box {
+    background: #fff8e8;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    margin-top: 25px;
+
+    margin-bottom: 25px;
+}
+
+
+.result-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin: 12px 0;
+
+    font-size: 16px;
+}
+
+
+.price {
+    font-size: 28px;
+
+    font-weight: bold;
+
+    color: #d66b3d;
+}
+
+
+/* ========================================
+   申込みボタン
+======================================== */
+
+.submit-button {
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #d88b5b;
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.submit-button:hover {
+    opacity: 0.9;
+}
+
+
+/* ========================================
+   戻るボタン
+======================================== */
+
+.back-button {
+    display: block;
+
+    text-align: center;
+
+    margin-top: 20px;
+
+    color: #666;
+
+    text-decoration: none;
+}
+
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+
+/* ========================================
+   申込み完了メッセージ
+======================================== */
+
+.request-result-message {
+    display: none;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    background: #ffffff;
+
+    color: #4b3b33;
+
+    padding: 28px 50px;
+
+    border-radius: 16px;
+
+    font-size: 24px;
+
+    font-weight: 600;
+
+    text-align: center;
+
+    box-shadow:
+        0 6px 25px rgba(0, 0, 0, 0.18);
+
+    z-index: 99999;
+
+    animation:
+        requestMessageFadeIn
+        0.2s ease;
+}
+
+
+/* ========================================
+   申込みエラーメッセージ
+======================================== */
+
+.request-result-error {
+    display: none;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    background: #ffffff;
+
+    color: #d9534f;
+
+    padding: 28px 50px;
+
+    border-radius: 16px;
+
+    font-size: 20px;
+
+    font-weight: 600;
+
+    text-align: center;
+
+    box-shadow:
+        0 6px 25px rgba(0, 0, 0, 0.18);
+
+    z-index: 99999;
+
+    animation:
+        requestMessageFadeIn
+        0.2s ease;
+}
+
+
+/* ========================================
+   確認モーダル
+======================================== */
+
+#share-confirm-overlay {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        rgba(0, 0, 0, 0.45);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 99999;
+}
+
+
+#share-confirm-modal {
+    width: min(90%, 460px);
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 32px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.25);
+
+    text-align: center;
+
+    animation:
+        shareModalFadeIn
+        0.2s ease;
+}
+
+
+#share-confirm-modal h2 {
+    margin: 0 0 20px;
+
+    color: #4b3b33;
+
+    font-size: 24px;
+}
+
+
+.share-confirm-message {
+    margin: 0 0 24px;
+
+    color: #555555;
+
+    font-size: 16px;
+}
+
+
+.share-confirm-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 14px 16px;
+
+    margin-bottom: 10px;
+
+    background: #f8f5f1;
+
+    border-radius: 10px;
+
+    color: #4b3b33;
+
+    font-size: 16px;
+}
+
+
+.share-confirm-row strong {
+    font-size: 17px;
+}
+
+
+.share-confirm-row.price-row {
+    background: #fff4e8;
+}
+
+
+.share-confirm-row.price-row strong {
+    color: #e2763c;
+
+    font-size: 22px;
+}
+
+
+/* ========================================
+   確認モーダルのボタン
+======================================== */
+
+.share-confirm-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    margin-top: 26px;
+}
+
+
+.share-confirm-buttons button {
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 12px 28px;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.1s ease;
+}
+
+
+.share-confirm-buttons button:hover {
+    opacity: 0.85;
+}
+
+
+.share-confirm-buttons button:active {
+    transform: scale(0.97);
+}
+
+
+.share-cancel-button {
+    background: #eeeeee;
+
+    color: #555555;
+}
+
+
+.share-ok-button {
+    background: #df9565;
+
+    color: #ffffff;
+}
+
+
+/* ========================================
+   アニメーション
+======================================== */
+
+@keyframes requestMessageFadeIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translate(-50%, -50%)
+            scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+    }
+}
+
+
+@keyframes shareModalFadeIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(10px)
+            scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}

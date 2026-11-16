@@ -106,7 +106,7 @@ public class ShareRequestServlet extends HttpServlet {
                         request.getContextPath()
                                 + "/borrow-request.html?petId="
                                 + petId
-                                + "&error=日時を入力してください");
+                                + "&error=invalid_datetime");
 
                 return;
             }
