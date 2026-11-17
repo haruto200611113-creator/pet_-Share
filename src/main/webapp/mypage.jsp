@@ -27,7 +27,6 @@
         request.getParameter("shareError");
 %>
 
-
 <%!
     // HTML特殊文字をエスケープする処理
     private String escapeHtml(String value) {
@@ -37,12 +36,11 @@
         }
 
         return value.replace("&", "&amp;")
-                    .replace("<", "&lt;")
-                    .replace(">", "&gt;")
-                    .replace("\"", "&quot;")
-                    .replace("'", "&#39;");
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;");
     }
-
 
     // 性別のDB値を画面表示用に変換
     private String displayGender(String gender) {
@@ -72,7 +70,6 @@
         }
     }
 
-
     // 空欄を「未登録」として表示
     private String displayValue(String value) {
 
@@ -83,7 +80,6 @@
         ? "未登録"
         : value;
     }
-
 
     // 会員ランクのDB値を画面表示用に変換
     private String displayUserRank(int userRank) {
@@ -101,7 +97,6 @@
         }
     }
 %>
-
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -168,7 +163,6 @@
 <% } %>
 
 
-
 <!-- ========================================
      ヘッダー
 ========================================= -->
@@ -184,13 +178,11 @@
         ←
     </button>
 
-
     <h1>
         マイページ
     </h1>
 
 </header>
-
 
 
 <!-- ========================================
@@ -206,7 +198,6 @@
 
     <section class="profile-card">
 
-
         <!-- プロフィール画像 -->
 
         <div class="profile-icon">
@@ -217,13 +208,11 @@
                 alt="プロフィール画像"
             >
 
-
             <span id="profileDefaultIcon">
                 🐾
             </span>
 
         </div>
-
 
 
         <!-- プロフィール情報 -->
@@ -256,7 +245,6 @@
         </div>
 
 
-
         <!-- プロフィール編集 -->
 
         <a
@@ -267,8 +255,6 @@
         </a>
 
     </section>
-
-
 
 
     <!-- ====================================
@@ -502,9 +488,11 @@
     </section>
 
 
+    <!-- ====================================
+         会員ランク
+    ===================================== -->
 
 <% if (loginUser.getUserRank() == 1) { %>
-
 
     <section class="section">
 
@@ -515,13 +503,11 @@
 
         <div class="registration-card">
 
-
             <div class="registration-row">
 
                 <span class="registration-label">
                     現在の会員ランク
                 </span>
-
 
                 <span class="registration-value">
                     仮会員
@@ -543,14 +529,12 @@
 
             </div>
 
-
         </div>
 
     </section>
 
 
 <% } else if (loginUser.getUserRank() == 2) { %>
-
 
     <section class="section">
 
@@ -561,13 +545,11 @@
 
         <div class="registration-card">
 
-
             <div class="registration-row">
 
                 <span class="registration-label">
                     現在の会員ランク
                 </span>
-
 
                 <span class="registration-value">
                     本会員
@@ -575,15 +557,11 @@
 
             </div>
 
-
         </div>
 
     </section>
 
-
 <% } %>
-
-
 
 
 <!-- ====================================
@@ -591,7 +569,6 @@
 ===================================== -->
 
 <section class="section">
-
 
     <h2 class="section-title">
         利用状況
@@ -621,11 +598,9 @@
                     自分の投稿
                 </span>
 
-
                 <strong id="postCount">
                     0
                 </strong>
-
 
                 <span class="unit">
                     件
@@ -639,8 +614,6 @@
             </span>
 
         </a>
-
-
 
 
         <!-- ====================================
@@ -663,11 +636,9 @@
                     いいねしたペット
                 </span>
 
-
                 <strong id="likeCount">
                     0
                 </strong>
-
 
                 <span class="unit">
                     件
@@ -681,8 +652,6 @@
             </span>
 
         </a>
-
-
 
 
         <!-- ====================================
@@ -705,11 +674,9 @@
                     シェア履歴
                 </span>
 
-
                 <strong id="shareCount">
                     0
                 </strong>
-
 
                 <span class="unit">
                     件
@@ -723,8 +690,6 @@
             </span>
 
         </a>
-
-
 
 
         <!-- ====================================
@@ -747,11 +712,9 @@
                     申し込み状況
                 </span>
 
-
                 <strong id="applicationCount">
                     0
                 </strong>
-
 
                 <span class="unit">
                     件
@@ -767,70 +730,106 @@
         </a>
 
 
+        <!-- ====================================
+             ペットをシェアする
+        ===================================== -->
 
-
-       <!-- ====================================
-     ペットをシェアする
-===================================== -->
-
-<a
-    href="pet-share-select.jsp"
-    class="status-card"
->
-
-    <span class="status-icon">
-        🐾
-    </span>
-
-    <div>
-
-        <span class="status-label">
-            ペットをシェアする
-        </span>
-
-        <span class="unit">
-            自分のペットをシェアできます
-        </span>
-
-    </div>
-
-    <span class="arrow">
+        <a
+            href="pet-share-select.jsp"
+            class="status-card"
         >
-    </span>
 
-</a>
+            <span class="status-icon">
+                🐾
+            </span>
 
 
-<!-- ====================================
-     ペットシェアリクエスト
-===================================== -->
+            <div>
 
-<a
-    href="pet-share-request.html"
-    class="status-card"
->
+                <span class="status-label">
+                    ペットをシェアする
+                </span>
 
-    <span class="status-icon">
-        📩
-    </span>
+                <span class="unit">
+                    自分のペットをシェアできます
+                </span>
 
-    <div>
+            </div>
 
-        <span class="status-label">
-            ペットシェアリクエスト
-        </span>
 
-        <span class="unit">
-            届いたシェア申込みを確認できます
-        </span>
+            <span class="arrow">
+                >
+            </span>
 
-    </div>
+        </a>
 
-    <span class="arrow">
+
+        <!-- ====================================
+             ペットシェアリクエスト
+        ===================================== -->
+
+        <a
+            href="pet-share-request.html"
+            class="status-card"
         >
-    </span>
 
-</a>
+            <span class="status-icon">
+                📩
+            </span>
+
+
+            <div>
+
+                <span class="status-label">
+                    ペットシェアリクエスト
+                </span>
+
+                <span class="unit">
+                    届いたシェア申込みを確認できます
+                </span>
+
+            </div>
+
+
+            <span class="arrow">
+                >
+            </span>
+
+        </a>
+
+
+        <!-- ====================================
+             ペットシェア申込み状況
+        ===================================== -->
+
+        <a
+            href="share-request-my-list.html"
+            class="status-card"
+        >
+
+            <span class="status-icon">
+                📋
+            </span>
+
+
+            <div>
+
+                <span class="status-label">
+                    ペットシェア申込み状況
+                </span>
+
+                <span class="unit">
+                    自分が申し込んだシェアを確認できます
+                </span>
+
+            </div>
+
+
+            <span class="arrow">
+                >
+            </span>
+
+        </a>
 
 
     </div>
@@ -838,14 +837,11 @@
 </section>
 
 
-
-
 <!-- ====================================
      その他
 ===================================== -->
 
 <section class="section">
-
 
     <h2 class="section-title">
         その他
@@ -868,19 +864,15 @@
                 ⚙️
             </span>
 
-
             <span class="menu-text">
                 設定
             </span>
-
 
             <span class="arrow">
                 ›
             </span>
 
         </a>
-
-
 
 
         <!-- ====================================
@@ -897,19 +889,15 @@
                 📄
             </span>
 
-
             <span class="menu-text">
                 利用規約
             </span>
-
 
             <span class="arrow">
                 ›
             </span>
 
         </a>
-
-
 
 
         <!-- ====================================
@@ -926,11 +914,9 @@
                 🔒
             </span>
 
-
             <span class="menu-text">
                 プライバシーポリシー
             </span>
-
 
             <span class="arrow">
                 ›
@@ -944,10 +930,7 @@
 </section>
 
 
-
 </main>
-
-
 
 
 <!-- ========================================
@@ -969,14 +952,11 @@
             🏠
         </span>
 
-
         <span>
             ホーム
         </span>
 
     </a>
-
-
 
 
     <!-- いいね -->
@@ -991,14 +971,11 @@
             ❤️
         </span>
 
-
         <span>
             いいね
         </span>
 
     </a>
-
-
 
 
     <!-- チャット -->
@@ -1013,14 +990,11 @@
             💬
         </span>
 
-
         <span>
             チャット
         </span>
 
     </a>
-
-
 
 
     <!-- アカウント -->
@@ -1035,7 +1009,6 @@
             👤
         </span>
 
-
         <span>
             アカウント
         </span>
@@ -1044,8 +1017,6 @@
 
 
 </nav>
-
-
 
 
 <!-- ========================================
@@ -1092,7 +1063,6 @@ document.addEventListener(
                 );
 
 
-
             /*
              * DBにプロフィール画像が登録されている場合
              */
@@ -1112,8 +1082,6 @@ document.addEventListener(
                     "none";
 
             }
-
-
 
             /*
              * プロフィール画像がない場合
@@ -1140,15 +1108,13 @@ document.addEventListener(
         }
 
     }
+
 );
 
 </script>
 
 
-
 <script src="mypage.js"></script>
-
-
 
 
 <!-- ========================================
@@ -1180,7 +1146,6 @@ document.addEventListener(
             );
 
 
-
         /*
          * シェア開始成功
          */
@@ -1195,7 +1160,6 @@ document.addEventListener(
             }, 3000);
 
         }
-
 
 
         /*
@@ -1214,7 +1178,6 @@ document.addEventListener(
         }
 
 
-
         /*
          * エラーメッセージ
          */
@@ -1229,7 +1192,6 @@ document.addEventListener(
             }, 3000);
 
         }
-
 
 
         /*

@@ -313,6 +313,61 @@ public class ShareRequestDAO {
 
         return list;
     }
+    // ========================================
+    // 借りる側のリクエスト一覧取得
+    // ========================================
+
+    public List<ShareRequest> findRequestsForBorrower(
+            int borrowerAccountId) {
+
+        List<ShareRequest> list = new ArrayList<>();
+
+        String sql = """
+                SELECT
+                    sr.request_id,
+                    sr.pet_id,
+                    sr.borrower_id,
+                    sr.start_datetime,
+                    sr.end_datetime,
+                    sr.usage_hours,
+                    sr.share_price,
+                    sr.status,
+                    sr.created_at
+                FROM share_requests sr
+                INNER JOIN pets p
+                    ON sr.pet_id = p.pet_id
+                WHERE sr.borrower_id = ?
+                ORDER BY sr.created_at DESC
+                """;
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(
+                    1,
+                    borrowerAccountId);
+
+            try (
+                    ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    list.add(
+                            createShareRequest(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+
+            System.err.println(
+                    "借りる側のシェアリクエスト取得中にSQLエラーが発生しました。");
+
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 
     // ========================================
     // リクエストの所有者ID取得

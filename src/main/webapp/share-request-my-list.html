@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ペットシェア申込み状況</title>
+
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="design.css">
+    <link rel="stylesheet" href="share-request-my-list.css">
+</head>
+
+<body>
+
+<main class="request-container">
+
+    <h1 class="request-title">
+        ペットシェア申込み状況
+    </h1>
+
+    <p class="request-description">
+        自分が申し込んだペットシェアの状況を確認できます。
+    </p>
+
+    <div id="message"
+         class="message"
+         style="display: none;">
+    </div>
+
+    <div id="requestList"
+         class="request-list">
+
+        <p class="loading-message">
+            申込み状況を読み込んでいます……
+        </p>
+
+    </div>
+
+    <a href="mypage.jsp"
+       class="back-button">
+        マイページに戻る
+    </a>
+
+</main>
+
+<script src="share-request-my-list.js"></script>
+
+</body>
+</html>
