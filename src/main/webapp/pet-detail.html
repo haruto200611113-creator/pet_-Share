@@ -10,8 +10,20 @@
 
     <title>ペット詳細｜ペットシェアアプリ</title>
 
+
+    <!-- ペット詳細CSS -->
     <link rel="stylesheet"
           href="pet-detail.css">
+
+
+    <!-- 共通ハンバーガーメニューCSS -->
+    <link rel="stylesheet"
+          href="common-menu.css">
+
+
+    <!-- 共通下部ナビゲーションCSS -->
+    <link rel="stylesheet"
+          href="bottom-nav.css">
 
 </head>
 
@@ -43,6 +55,153 @@
 
 
 <!-- =========================
+     ハンバーガーメニュー
+========================== -->
+
+<!--
+    common-menu.jsがこの要素を使用して
+    メニューの開閉を行います
+-->
+
+<button
+    type="button"
+    id="menuButton"
+    class="menu-button"
+    aria-label="メニューを開く">
+    ☰
+</button>
+
+
+<!-- 背景オーバーレイ -->
+
+<div
+    id="menuOverlay"
+    class="menu-overlay">
+</div>
+
+
+
+<!-- =========================
+     サイドメニュー
+========================== -->
+
+<aside
+    id="sideMenu"
+    class="side-menu">
+
+
+    <!-- メニューヘッダー -->
+
+    <div class="side-menu-header">
+
+        <h2 class="side-menu-title">
+            メニュー
+        </h2>
+
+
+        <button
+            type="button"
+            id="closeMenuButton"
+            class="close-menu-button"
+            aria-label="メニューを閉じる">
+            ×
+        </button>
+
+    </div>
+
+
+
+    <!-- メニュー項目 -->
+
+    <div class="side-menu-list">
+
+
+        <!-- アカウント -->
+
+        <a href="mypage.jsp">
+            👤 マイページ
+        </a>
+
+
+        <a href="profile-edit.html">
+            ✏️ プロフィール編集
+        </a>
+
+
+        <a href="my-posts.html">
+            📋 自分の投稿
+        </a>
+
+
+        <a href="likes.html">
+            ❤️ いいねしたペット
+        </a>
+
+
+
+        <!-- ペットシェア -->
+
+        <a href="share-history.html">
+            🐾 シェア履歴
+        </a>
+
+
+        <a href="application-status.html">
+            📅 申し込み状況
+        </a>
+
+
+        <a href="chat.html">
+            💬 チャット
+        </a>
+
+
+
+        <!-- サポート -->
+
+        <a href="faq.html">
+            ❓ よくある質問
+        </a>
+
+
+        <a href="terms.html"
+           id="termsLink">
+            📖 利用規約
+        </a>
+
+
+        <a href="privacy.html">
+            🔒 プライバシーポリシー
+        </a>
+
+
+        <a href="contact.html">
+            📩 お問い合わせ
+        </a>
+
+
+
+        <!-- その他 -->
+
+        <a href="settings.html">
+            ⚙️ 設定
+        </a>
+
+
+        <button
+            type="button"
+            id="logoutButton"
+            class="menu-button-item">
+            🚪 ログアウト
+        </button>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =========================
      メイン
 ========================== -->
 
@@ -59,8 +218,7 @@
             id="petImage"
             class="pet-image"
             src="https://placehold.co/800x600?text=Pet+Image"
-            alt="ペット画像"
-        >
+            alt="ペット画像">
 
     </section>
 
@@ -88,19 +246,17 @@
             <button
                 type="button"
                 id="likeButton"
-                class="like-button"
-            >
+                class="like-button">
+
                 ♡
+
                 <span id="likeCount">
                     0
                 </span>
+
             </button>
 
         </div>
-
-
-
-       
 
 
 
@@ -154,7 +310,6 @@
 
             </div>
 
-
         </div>
 
     </section>
@@ -178,8 +333,7 @@
                 id="ownerImage"
                 class="owner-image"
                 src="https://placehold.co/100x100?text=User"
-                alt="プロフィール画像"
-            >
+                alt="プロフィール画像">
 
 
             <div class="owner-info">
@@ -280,15 +434,16 @@
 
     <section class="application-section">
 
-    <button
-        type="button"
-        id="borrowButton"
-        class="share-button"
-    >
-        このペットを借りる
-    </button>
+        <button
+            type="button"
+            id="borrowButton"
+            class="share-button">
 
-</section>
+            このペットを借りる
+
+        </button>
+
+    </section>
 
 </main>
 
@@ -298,7 +453,16 @@
      JavaScript
 ========================== -->
 
+<!-- ペット詳細処理 -->
 <script src="pet-detail.js"></script>
+
+
+<!-- 共通ハンバーガーメニュー -->
+<script src="common-menu.js"></script>
+
+
+<!-- 共通下部ナビゲーション -->
+<script src="bottom-nav.js"></script>
 
 
 </body>

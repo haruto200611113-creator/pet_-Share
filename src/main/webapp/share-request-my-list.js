@@ -1,501 +1,681 @@
 document.addEventListener("DOMContentLoaded", function () {
-    loadShareRequests();
-});
-
-
-/**
- * 自分が申し込んだペットシェアを取得
- */
-async function loadShareRequests() {
 
     const requestList = document.getElementById("requestList");
     const message = document.getElementById("message");
 
-    try {
-
-        const response = await fetch("share-request-my-list");
-
-        // ログインしていない場合
-        if (response.status === 401) {
-            window.location.href = "login.html";
+    /*
+     * =====================================================
+     * 画面表示
+     * =====================================================
+     */
+    function showMessage(text, type = "") {
+        if (!message) {
             return;
         }
 
-        if (!response.ok) {
-            throw new Error("データの取得に失敗しました。");
+        message.textContent = text;
+        message.className = "";
+
+        if (type) {
+            message.classList.add(type);
         }
 
-        const requests = await response.json();
-
-        displayRequests(requests);
-
-    } catch (error) {
-
-        console.error(error);
-
-        requestList.innerHTML = `
-            <p class="empty-message">
-                申込み状況の取得に失敗しました。
-            </p>
-        `;
-
-        if (message) {
-            showMessage(
-                "申込み状況の取得に失敗しました。",
-                "error"
-            );
-        }
-    }
-}
-
-
-/**
- * 申込み一覧を表示
- */
-function displayRequests(requests) {
-
-    const requestList = document.getElementById("requestList");
-
-    // 申込みがない場合
-    if (!requests || requests.length === 0) {
-
-        requestList.innerHTML = `
-            <p class="empty-message">
-                ペットシェアの申込みはありません。
-            </p>
-        `;
-
-        return;
+        message.style.display = "block";
     }
 
-    requestList.innerHTML = "";
 
-    requests.forEach(function (request) {
-
-        let statusText = "";
-        let statusClass = "";
-
-        /*
-         * ステータス表示
-         */
-        switch (request.status) {
-
-            case "pending":
-                statusText = "承認待ち";
-                statusClass = "status-pending";
-                break;
-
-            case "approved":
-                statusText = "承認済み";
-                statusClass = "status-approved";
-                break;
-
-            case "rejected":
-                statusText = "拒否済み";
-                statusClass = "status-rejected";
-                break;
-
-            case "cancelled":
-                statusText = "キャンセル済み";
-                statusClass = "status-cancelled";
-                break;
-
-            default:
-                statusText = request.status;
-                statusClass = "";
-                break;
+    /*
+     * =====================================================
+     * HTMLエスケープ
+     * =====================================================
+     */
+    function escapeHtml(value) {
+        if (value === null || value === undefined) {
+            return "";
         }
 
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 
-        /*
-         * ペット画像
-         */
-        let petImageHtml = "";
 
-        if (
-            request.petImage &&
-            request.petImage.trim() !== ""
-        ) {
+    /*
+     * =====================================================
+     * 確認モーダル
+     *
+     * 「申込みをキャンセルしますか？」
+     *
+     * [ キャンセルする ] [ キャンセルしない ]
+     * =====================================================
+     */
+    function showConfirmModal(title, messageText, confirmText, onConfirm) {
 
-            let imageSrc = request.petImage;
+        // 既にモーダルが存在する場合は削除
+        const existingModal = document.getElementById("customConfirmModal");
 
-            /*
-             * DBにBase64だけ保存されている場合
-             * data:image/jpeg;base64, を付ける
-             */
-            if (!imageSrc.startsWith("data:image/")) {
-                imageSrc =
-                    "data:image/jpeg;base64," + imageSrc;
-            }
-
-            petImageHtml = `
-                <div class="pet-image-box">
-                    <img
-                        src="${escapeHtml(imageSrc)}"
-                        alt="${escapeHtml(request.petName || "ペット")}"
-                        class="pet-request-image"
-                    >
-                </div>
-            `;
-
-        } else {
-
-            /*
-             * 画像が登録されていない場合
-             */
-            petImageHtml = `
-                <div class="pet-image-box pet-image-default">
-                    🐾
-                </div>
-            `;
+        if (existingModal) {
+            existingModal.remove();
         }
 
+        const overlay = document.createElement("div");
+        overlay.id = "customConfirmModal";
+        overlay.className = "custom-modal-overlay";
 
-        /*
-         * ペット名
-         */
-        const petName =
-            request.petName &&
-            request.petName.trim() !== ""
-                ? request.petName
-                : "名前未登録";
+        overlay.innerHTML = `
+            <div class="custom-modal-content" role="dialog" aria-modal="true">
 
+                <div class="custom-modal-icon">
+                    ?
+                </div>
 
-        /*
-         * キャンセルボタン
-         *
-         * pending（承認待ち）の場合だけ表示
-         */
-        let cancelButtonHtml = "";
+                <h2 class="custom-modal-title">
+                    ${escapeHtml(title)}
+                </h2>
 
-        if (request.status === "pending") {
+                <p class="custom-modal-message">
+                    ${escapeHtml(messageText)}
+                </p>
 
-            cancelButtonHtml = `
-                <div class="request-buttons">
+                <div class="custom-modal-buttons">
 
                     <button
                         type="button"
-                        class="cancel-button"
-                        data-request-id="${request.requestId}">
-                        申込みをキャンセル
+                        class="custom-modal-confirm-button"
+                        id="customModalConfirmButton">
+                        ${escapeHtml(confirmText)}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="custom-modal-cancel-button"
+                        id="customModalCancelButton">
+                        キャンセルしない
                     </button>
 
                 </div>
-            `;
-        }
-
-
-        /*
-         * 申込みカード
-         */
-        const card = document.createElement("div");
-
-        card.className = "request-card";
-
-
-        /*
-         * ペット画像＋ペット名
-         * その他の情報は今まで通り
-         */
-        card.innerHTML = `
-
-            <div class="request-header">
-
-                <div class="request-pet-info">
-
-                    ${petImageHtml}
-
-                    <h2 class="request-pet-name">
-                        ${escapeHtml(petName)}
-                    </h2>
-
-                </div>
-
-                <span class="request-status ${statusClass}">
-                    ${escapeHtml(statusText)}
-                </span>
 
             </div>
-
-
-            <div class="request-info">
-
-                <div class="request-row">
-
-                    <span class="request-label">
-                        利用開始日時
-                    </span>
-
-                    <span class="request-value">
-                        ${escapeHtml(
-                            formatDateTime(
-                                request.startDatetime
-                            )
-                        )}
-                    </span>
-
-                </div>
-
-
-                <div class="request-row">
-
-                    <span class="request-label">
-                        利用終了日時
-                    </span>
-
-                    <span class="request-value">
-                        ${escapeHtml(
-                            formatDateTime(
-                                request.endDatetime
-                            )
-                        )}
-                    </span>
-
-                </div>
-
-
-                <div class="request-row">
-
-                    <span class="request-label">
-                        利用時間
-                    </span>
-
-                    <span class="request-value">
-                        ${formatUsageHours(
-                            request.usageHours
-                        )}
-                    </span>
-
-                </div>
-
-
-                <div class="request-row">
-
-                    <span class="request-label">
-                        申込み日時
-                    </span>
-
-                    <span class="request-value">
-                        ${escapeHtml(
-                            formatDateTime(
-                                request.createdAt
-                            )
-                        )}
-                    </span>
-
-                </div>
-
-
-                <div class="request-row">
-
-                    <span class="request-label">
-                        ステータス
-                    </span>
-
-                    <span class="request-value">
-
-                        <span class="request-status ${statusClass}">
-                            ${escapeHtml(statusText)}
-                        </span>
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            ${cancelButtonHtml}
-
         `;
 
+        document.body.appendChild(overlay);
 
-        requestList.appendChild(card);
-    });
-}
+        // 背景スクロール停止
+        document.body.style.overflow = "hidden";
+
+        const confirmButton =
+            document.getElementById("customModalConfirmButton");
+
+        const cancelButton =
+            document.getElementById("customModalCancelButton");
 
 
-/**
- * キャンセルボタンのクリック処理
- */
-document.addEventListener("click", async function (event) {
+        /*
+         * キャンセルする
+         */
+        confirmButton.addEventListener("click", async function () {
 
-    const button =
-        event.target.closest(".cancel-button");
+            confirmButton.disabled = true;
+            cancelButton.disabled = true;
 
-    if (!button) {
-        return;
+            closeModal();
+
+            if (typeof onConfirm === "function") {
+                await onConfirm();
+            }
+        });
+
+
+        /*
+         * キャンセルしない
+         */
+        cancelButton.addEventListener("click", function () {
+            closeModal();
+        });
+
+
+        /*
+         * モーダル外をクリックした場合
+         * → キャンセルしないと同じ扱い
+         */
+        overlay.addEventListener("click", function (event) {
+
+            if (event.target === overlay) {
+                closeModal();
+            }
+        });
+
+
+        /*
+         * ESCキー
+         * → キャンセルしないと同じ扱い
+         */
+        function handleEscape(event) {
+
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        }
+
+        document.addEventListener("keydown", handleEscape);
+
+
+        /*
+         * モーダルを閉じる
+         */
+        function closeModal() {
+
+            document.removeEventListener("keydown", handleEscape);
+
+            if (overlay) {
+                overlay.remove();
+            }
+
+            document.body.style.overflow = "";
+        }
     }
 
-    const requestId =
-        button.dataset.requestId;
 
-    const confirmed =
-        confirm(
-            "このペットシェア申込みをキャンセルしますか？"
-        );
+    /*
+     * =====================================================
+     * メッセージモーダル
+     * =====================================================
+     */
+    function showMessageModal(title, messageText, buttonText, onClose) {
 
-    if (!confirmed) {
-        return;
+        const existingModal =
+            document.getElementById("customMessageModal");
+
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        const overlay = document.createElement("div");
+
+        overlay.id = "customMessageModal";
+        overlay.className = "custom-modal-overlay";
+
+        overlay.innerHTML = `
+            <div class="custom-modal-content" role="dialog" aria-modal="true">
+
+                <div class="custom-modal-icon">
+                    ✓
+                </div>
+
+                <h2 class="custom-modal-title">
+                    ${escapeHtml(title)}
+                </h2>
+
+                <p class="custom-modal-message">
+                    ${escapeHtml(messageText)}
+                </p>
+
+                <div class="custom-modal-buttons">
+
+                    <button
+                        type="button"
+                        class="custom-modal-confirm-button"
+                        id="customMessageCloseButton">
+                        ${escapeHtml(buttonText)}
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        document.body.style.overflow = "hidden";
+
+        const closeButton =
+            document.getElementById("customMessageCloseButton");
+
+
+        closeButton.addEventListener("click", function () {
+
+            closeMessageModal();
+
+            if (typeof onClose === "function") {
+                onClose();
+            }
+        });
+
+
+        overlay.addEventListener("click", function (event) {
+
+            if (event.target === overlay) {
+
+                closeMessageModal();
+
+                if (typeof onClose === "function") {
+                    onClose();
+                }
+            }
+        });
+
+
+        function handleEscape(event) {
+
+            if (event.key === "Escape") {
+
+                closeMessageModal();
+
+                if (typeof onClose === "function") {
+                    onClose();
+                }
+            }
+        }
+
+        document.addEventListener("keydown", handleEscape);
+
+
+        function closeMessageModal() {
+
+            document.removeEventListener("keydown", handleEscape);
+
+            if (overlay) {
+                overlay.remove();
+            }
+
+            document.body.style.overflow = "";
+        }
     }
 
-    button.disabled = true;
-    button.textContent = "キャンセル中...";
 
+    /*
+     * =====================================================
+     * キャンセル処理
+     * =====================================================
+     */
+    async function cancelRequest(requestId) {
 
-    try {
+        try {
 
-        const formData = new FormData();
+            const formData = new FormData();
 
-        formData.append(
-            "requestId",
-            requestId
-        );
+            formData.append("requestId", requestId);
 
-
-        const response =
-            await fetch("share-request-cancel", {
+            const response = await fetch("share-request-cancel", {
                 method: "POST",
                 body: formData
             });
 
 
-        // ログインしていない場合
-        if (response.status === 401) {
+            /*
+             * ログイン切れ
+             */
+            if (response.status === 401) {
 
-            alert("ログインが必要です。");
+                showMessageModal(
+                    "ログインが必要です",
+                    "ログインしてからもう一度操作してください。",
+                    "ログイン画面へ",
+                    function () {
+                        window.location.href = "login.html";
+                    }
+                );
 
-            window.location.href =
-                "login.html";
-
-            return;
-        }
+                return;
+            }
 
 
-        const result =
-            await response.json();
+            /*
+             * サーバーエラー
+             */
+            if (!response.ok) {
+
+                throw new Error(
+                    "キャンセル処理に失敗しました。"
+                );
+            }
 
 
-        if (!result.success) {
-
-            alert(
-                result.message ||
-                "キャンセルに失敗しました。"
+            /*
+             * キャンセル成功
+             */
+            showMessageModal(
+                "キャンセルしました",
+                "ペットシェアの申込みをキャンセルしました。",
+                "OK",
+                function () {
+                    loadRequests();
+                }
             );
 
-            button.disabled = false;
+        } catch (error) {
 
-            button.textContent =
-                "申込みをキャンセル";
+            console.error(error);
 
+            showMessageModal(
+                "エラー",
+                "申込みのキャンセルに失敗しました。もう一度お試しください。",
+                "OK"
+            );
+        }
+    }
+
+
+    /*
+     * =====================================================
+     * 申込み一覧取得
+     * =====================================================
+     */
+    async function loadRequests() {
+
+        try {
+
+            if (requestList) {
+                requestList.innerHTML = `
+                    <div class="loading-message">
+                        読み込み中...
+                    </div>
+                `;
+            }
+
+            const response =
+                await fetch("share-request-my-list", {
+                    method: "GET"
+                });
+
+
+            /*
+             * ログインしていない
+             */
+            if (response.status === 401) {
+
+                if (requestList) {
+                    requestList.innerHTML = "";
+                }
+
+                showMessageModal(
+                    "ログインが必要です",
+                    "ログインしてから申込み状況を確認してください。",
+                    "ログイン画面へ",
+                    function () {
+                        window.location.href = "login.html";
+                    }
+                );
+
+                return;
+            }
+
+
+            /*
+             * その他のエラー
+             */
+            if (!response.ok) {
+                throw new Error(
+                    "申込み一覧の取得に失敗しました。"
+                );
+            }
+
+
+            const data = await response.json();
+
+            renderRequests(data);
+
+        } catch (error) {
+
+            console.error(error);
+
+            if (requestList) {
+
+                requestList.innerHTML = `
+                    <div class="error-message">
+                        申込み状況の取得に失敗しました。
+                    </div>
+                `;
+            }
+        }
+    }
+
+
+    /*
+     * =====================================================
+     * 申込み一覧表示
+     * =====================================================
+     */
+    function renderRequests(requests) {
+
+        if (!requestList) {
             return;
         }
 
-
-        alert(
-            "申込みをキャンセルしました。"
-        );
+        requestList.innerHTML = "";
 
 
         /*
-         * 一覧を再読み込み
+         * 申込みがない場合
          */
-        loadShareRequests();
+        if (!requests || requests.length === 0) {
+
+            requestList.innerHTML = `
+                <div class="empty-message">
+                    現在、ペットシェアの申込みはありません。
+                </div>
+            `;
+
+            return;
+        }
 
 
-    } catch (error) {
+        /*
+         * 申込みを1件ずつ表示
+         */
+        requests.forEach(function (request) {
 
-        console.error(
-            "キャンセル処理エラー:",
-            error
-        );
+            const card = document.createElement("div");
 
-        alert(
-            "システムエラーが発生しました。"
-        );
+            card.className = "request-card";
 
-        button.disabled = false;
 
-        button.textContent =
-            "申込みをキャンセル";
+            /*
+             * ステータス
+             */
+            let statusText = "";
+            let statusClass = "";
+
+            switch (request.status) {
+
+                case "pending":
+                    statusText = "承認待ち";
+                    statusClass = "pending";
+                    break;
+
+                case "approved":
+                    statusText = "承認済み";
+                    statusClass = "approved";
+                    break;
+
+                case "rejected":
+                    statusText = "拒否済み";
+                    statusClass = "rejected";
+                    break;
+
+                case "cancelled":
+                    statusText = "キャンセル済み";
+                    statusClass = "cancelled";
+                    break;
+
+                default:
+                    statusText = request.status || "";
+                    statusClass = "";
+            }
+
+
+            /*
+             * ペット画像
+             */
+            let petImage = "";
+
+            if (request.petImage) {
+
+                petImage = `
+                    <img
+                        src="${escapeHtml(request.petImage)}"
+                        alt="${escapeHtml(request.petName || "ペット")}"
+                        class="request-pet-image">
+                `;
+
+            } else {
+
+                petImage = `
+                    <div class="request-pet-image no-image">
+                        🐾
+                    </div>
+                `;
+            }
+
+
+            /*
+             * ペット情報
+             */
+            const petName =
+                escapeHtml(request.petName || "名前なし");
+
+            const ownerName =
+                escapeHtml(request.ownerName || "不明");
+
+            const startTime =
+                escapeHtml(request.startTime || "");
+
+            const endTime =
+                escapeHtml(request.endTime || "");
+
+
+            /*
+             * カードHTML
+             */
+            card.innerHTML = `
+
+                <div class="request-card-main">
+
+                    <div class="request-pet">
+
+                        ${petImage}
+
+                        <div class="request-pet-info">
+
+                            <h3 class="request-pet-name">
+                                ${petName}
+                            </h3>
+
+                            <p class="request-owner">
+                                飼い主：${ownerName}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="request-status ${statusClass}">
+                        ${statusText}
+                    </div>
+
+                </div>
+
+
+                <div class="request-detail">
+
+                    ${
+                        startTime
+                            ? `
+                                <div class="request-info-row">
+                                    <span class="label">
+                                        利用開始
+                                    </span>
+
+                                    <span class="value">
+                                        ${startTime}
+                                    </span>
+                                </div>
+                              `
+                            : ""
+                    }
+
+
+                    ${
+                        endTime
+                            ? `
+                                <div class="request-info-row">
+                                    <span class="label">
+                                        利用終了
+                                    </span>
+
+                                    <span class="value">
+                                        ${endTime}
+                                    </span>
+                                </div>
+                              `
+                            : ""
+                    }
+
+                </div>
+            `;
+
+
+            /*
+             * =================================================
+             * 承認待ちの場合のみキャンセルボタンを表示
+             * =================================================
+             */
+            if (request.status === "pending") {
+
+                const cancelButton =
+                    document.createElement("button");
+
+                cancelButton.type = "button";
+
+                cancelButton.className =
+                    "cancel-button";
+
+                cancelButton.textContent =
+                    "申込みをキャンセル";
+
+
+                /*
+                 * キャンセルボタンをクリック
+                 */
+                cancelButton.addEventListener(
+                    "click",
+                    function () {
+
+                        showConfirmModal(
+                            "申込みをキャンセルしますか？",
+                            "このペットシェア申込みをキャンセルします。",
+                            "キャンセルする",
+                            async function () {
+
+                                await cancelRequest(
+                                    request.requestId
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                card.appendChild(cancelButton);
+            }
+
+
+            requestList.appendChild(card);
+        });
     }
-});
 
-
-/**
- * 日時を見やすい形式に変換
- */
-function formatDateTime(dateTime) {
-
-    if (!dateTime) {
-        return "";
-    }
 
     /*
-     * Timestampの形式
-     * 2026-11-17 14:30:00
+     * =====================================================
+     * 初期処理
+     * =====================================================
      */
-    return dateTime
-        .replace("T", " ")
-        .substring(0, 16);
-}
+    loadRequests();
 
-
-/**
- * 利用時間を表示
- */
-function formatUsageHours(hours) {
-
-    const value = Number(hours);
-
-    if (Number.isNaN(value)) {
-        return "";
-    }
-
-    if (value % 1 === 0) {
-        return `${value}時間`;
-    }
-
-    return `${value.toFixed(2)}時間`;
-}
-
-
-/**
- * HTMLエスケープ
- */
-function escapeHtml(value) {
-
-    if (value === null || value === undefined) {
-        return "";
-    }
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-/**
- * メッセージ表示
- */
-function showMessage(text, type) {
-
-    const message =
-        document.getElementById("message");
-
-    if (!message) {
-        return;
-    }
-
-    message.textContent = text;
-
-    message.className =
-        "message " +
-        (type === "error"
-            ? "message-error"
-            : "message-success");
-
-    message.style.display = "block";
-}
+});

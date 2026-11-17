@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 
 <head>
-
 
 <meta charset="UTF-8">
 
@@ -19,13 +17,23 @@
     href="profile-edit.css"
 >
 
+<link
+    rel="stylesheet"
+    href="common-menu.css"
+>
+
+<link
+    rel="stylesheet"
+    href="bottom-nav.css"
+>
 
 </head>
 
+
 <body>
 
-<header class="header">
 
+<header class="header">
 
 <button
     type="button"
@@ -36,13 +44,131 @@
     ←
 </button>
 
-
 <h1>
     プロフィール編集
 </h1>
 
-
 </header>
+
+
+<!-- ========================================
+     ハンバーガーメニュー
+========================================= -->
+
+<button
+    type="button"
+    id="menuButton"
+    class="menu-button"
+    aria-label="メニューを開く"
+>
+    ☰
+</button>
+
+
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+></div>
+
+
+<aside
+    id="sideMenu"
+    class="side-menu"
+>
+
+    <div class="side-menu-header">
+
+        <h2 class="side-menu-title">
+            メニュー
+        </h2>
+
+        <button
+            type="button"
+            id="closeMenuButton"
+            class="close-menu-button"
+            aria-label="メニューを閉じる"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div class="side-menu-list">
+
+        <a href="mypage.jsp">
+            <span class="side-menu-icon">👤</span>
+            マイページ
+        </a>
+
+        <a href="profile-edit.html">
+            <span class="side-menu-icon">✏️</span>
+            プロフィール編集
+        </a>
+
+        <a href="my-posts.html">
+            <span class="side-menu-icon">📋</span>
+            自分の投稿
+        </a>
+
+        <a href="likes.html">
+            <span class="side-menu-icon">❤️</span>
+            いいねしたペット
+        </a>
+
+        <a href="share-history.html">
+            <span class="side-menu-icon">🐾</span>
+            シェア履歴
+        </a>
+
+        <a href="application-status.html">
+            <span class="side-menu-icon">📅</span>
+            申し込み状況
+        </a>
+
+        <a href="chat.html">
+            <span class="side-menu-icon">💬</span>
+            チャット
+        </a>
+
+        <a href="faq.html">
+            <span class="side-menu-icon">❓</span>
+            よくある質問
+        </a>
+
+        <a href="terms.html">
+            <span class="side-menu-icon">📖</span>
+            利用規約
+        </a>
+
+        <a href="privacy.html">
+            <span class="side-menu-icon">🔒</span>
+            プライバシーポリシー
+        </a>
+
+        <a href="contact.html">
+            <span class="side-menu-icon">📩</span>
+            お問い合わせ
+        </a>
+
+        <a href="settings.html">
+            <span class="side-menu-icon">⚙️</span>
+            設定
+        </a>
+
+        <button
+            type="button"
+            id="logoutButton"
+        >
+            <span class="side-menu-icon">🚪</span>
+            ログアウト
+        </button>
+
+    </div>
+
+</aside>
+
+
 
 <main class="main-content">
 
@@ -239,7 +365,18 @@
 
 </main>
 
+
+
+<!-- ========================================
+     下部ナビ
+========================================= -->
+
 <script src="profile-edit.js"></script>
+
+<script src="common-menu.js"></script>
+
+<script src="bottom-nav.js"></script>
+
 
 </body>
 

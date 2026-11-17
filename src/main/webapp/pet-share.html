@@ -2,16 +2,22 @@
 <html lang="ja">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport"
+    <meta
+        name="viewport"
         content="width=device-width, initial-scale=1.0">
 
     <title>ペットをシェアする</title>
 
+    <!-- 共通CSS -->
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="design.css">
+    <link rel="stylesheet" href="common-menu.css">
+    <link rel="stylesheet" href="bottom-nav.css">
 
+    <!-- ページ専用CSS -->
     <style>
 
         .share-container {
@@ -126,7 +132,124 @@
 
 </head>
 
+
 <body>
+
+<!-- ========================================
+     共通ハンバーガーメニュー
+======================================== -->
+
+<button
+    type="button"
+    id="menuButton"
+    class="menu-button"
+    aria-label="メニューを開く">
+    ☰
+</button>
+
+
+<div
+    id="menuOverlay"
+    class="menu-overlay">
+</div>
+
+
+<aside
+    id="sideMenu"
+    class="side-menu">
+
+    <div class="side-menu-header">
+
+        <h2 class="side-menu-title">
+            メニュー
+        </h2>
+
+        <button
+            type="button"
+            id="closeMenuButton"
+            class="close-menu-button"
+            aria-label="メニューを閉じる">
+            ×
+        </button>
+
+    </div>
+
+
+    <div class="side-menu-list">
+
+        <a href="mypage.jsp">
+            <span class="side-menu-icon">👤</span>
+            マイページ
+        </a>
+
+        <a href="profile-edit.html">
+            <span class="side-menu-icon">✏️</span>
+            プロフィール編集
+        </a>
+
+        <a href="my-posts.html">
+            <span class="side-menu-icon">📋</span>
+            自分の投稿
+        </a>
+
+        <a href="likes.html">
+            <span class="side-menu-icon">❤️</span>
+            いいねしたペット
+        </a>
+
+        <a href="share-history.html">
+            <span class="side-menu-icon">🐾</span>
+            シェア履歴
+        </a>
+
+        <a href="application-status.html">
+            <span class="side-menu-icon">📅</span>
+            申し込み状況
+        </a>
+
+        <a href="chat.html">
+            <span class="side-menu-icon">💬</span>
+            チャット
+        </a>
+
+        <a href="faq.html">
+            <span class="side-menu-icon">❓</span>
+            よくある質問
+        </a>
+
+        <a href="terms.html">
+            <span class="side-menu-icon">📖</span>
+            利用規約
+        </a>
+
+        <a href="privacy.html">
+            <span class="side-menu-icon">🔒</span>
+            プライバシーポリシー
+        </a>
+
+        <a href="contact.html">
+            <span class="side-menu-icon">📩</span>
+            お問い合わせ
+        </a>
+
+        <a href="settings.html">
+            <span class="side-menu-icon">⚙️</span>
+            設定
+        </a>
+
+        <button
+            type="button"
+            id="logoutButton">
+
+            <span class="side-menu-icon">🚪</span>
+            ログアウト
+
+        </button>
+
+    </div>
+
+</aside>
+
 
 <div class="share-container">
 
@@ -134,13 +257,17 @@
         ペットをシェアする
     </h1>
 
+
     <p class="share-description">
         シェア可能な日時を設定してください
     </p>
 
+
     <div class="share-card">
 
+
         <!-- ペット情報 -->
+
         <div class="pet-info">
 
             <h2 id="petName">
@@ -153,19 +280,25 @@
 
         </div>
 
+
         <!-- フォーム -->
+
         <form
             id="shareForm"
             action="pet-share"
             method="post">
 
+
             <!-- ペットID -->
+
             <input
                 type="hidden"
                 id="petId"
                 name="petId">
 
+
             <!-- 開始日時 -->
+
             <div class="form-group">
 
                 <label for="availableStart">
@@ -180,7 +313,9 @@
 
             </div>
 
+
             <!-- 終了日時 -->
+
             <div class="form-group">
 
                 <label for="availableEnd">
@@ -195,27 +330,35 @@
 
             </div>
 
+
             <!-- シェア可能時間 -->
-<div class="time-info">
 
-    <div class="time-row">
+            <div class="time-info">
 
-        <span>
-            シェア可能時間
-        </span>
+                <div class="time-row">
 
-        <strong id="usageHours">
-            0時間
-        </strong>
+                    <span>
+                        シェア可能時間
+                    </span>
 
-    </div>
+                    <strong id="usageHours">
+                        0時間
+                    </strong>
 
-</div>
+                </div>
+
+            </div>
+
+
             <!-- エラー -->
+
             <div
                 id="errorMessage"
                 class="error-message">
             </div>
+
+
+            <!-- シェアボタン -->
 
             <button
                 type="submit"
@@ -225,19 +368,33 @@
 
             </button>
 
+
         </form>
+
+
+        <!-- 戻る -->
 
         <a
             href="pet-share-select.jsp"
             class="back-button">
+
             ← ペット選択に戻る
+
         </a>
+
 
     </div>
 
 </div>
 
+
+<!-- ========================================
+     JavaScript
+======================================== -->
+
 <script src="pet-share.js"></script>
+<script src="common-menu.js"></script>
+<script src="bottom-nav.js"></script>
 
 </body>
 

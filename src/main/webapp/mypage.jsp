@@ -27,6 +27,7 @@
         request.getParameter("shareError");
 %>
 
+
 <%!
     // HTML特殊文字をエスケープする処理
     private String escapeHtml(String value) {
@@ -41,6 +42,7 @@
                 .replace("\"", "&quot;")
                 .replace("'", "&#39;");
     }
+
 
     // 性別のDB値を画面表示用に変換
     private String displayGender(String gender) {
@@ -70,6 +72,7 @@
         }
     }
 
+
     // 空欄を「未登録」として表示
     private String displayValue(String value) {
 
@@ -80,6 +83,7 @@
         ? "未登録"
         : value;
     }
+
 
     // 会員ランクのDB値を画面表示用に変換
     private String displayUserRank(int userRank) {
@@ -98,6 +102,7 @@
     }
 %>
 
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -115,6 +120,16 @@
     <link
         rel="stylesheet"
         href="mypage.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="common-menu.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="bottom-nav.css"
     >
 
 </head>
@@ -163,6 +178,7 @@
 <% } %>
 
 
+
 <!-- ========================================
      ヘッダー
 ========================================= -->
@@ -183,6 +199,126 @@
     </h1>
 
 </header>
+
+
+
+<!-- ========================================
+     ハンバーガーメニュー
+========================================= -->
+
+<button
+    type="button"
+    id="menuButton"
+    class="menu-button"
+    aria-label="メニューを開く"
+>
+    ☰
+</button>
+
+
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+></div>
+
+
+<aside
+    id="sideMenu"
+    class="side-menu"
+>
+
+    <div class="side-menu-header">
+
+        <h2 class="side-menu-title">
+            メニュー
+        </h2>
+
+        <button
+            type="button"
+            id="closeMenuButton"
+            class="close-menu-button"
+            aria-label="メニューを閉じる"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div class="side-menu-list">
+
+        <a href="mypage.jsp">
+            <span class="side-menu-icon">👤</span>
+            マイページ
+        </a>
+
+        <a href="profile-edit.html">
+            <span class="side-menu-icon">✏️</span>
+            プロフィール編集
+        </a>
+
+        <a href="my-posts.html">
+            <span class="side-menu-icon">📋</span>
+            自分の投稿
+        </a>
+
+        <a href="likes.html">
+            <span class="side-menu-icon">❤️</span>
+            いいねしたペット
+        </a>
+
+        <a href="share-history.html">
+            <span class="side-menu-icon">🐾</span>
+            シェア履歴
+        </a>
+
+        <a href="application-status.html">
+            <span class="side-menu-icon">📅</span>
+            申し込み状況
+        </a>
+
+        <a href="chat.html">
+            <span class="side-menu-icon">💬</span>
+            チャット
+        </a>
+
+        <a href="faq.html">
+            <span class="side-menu-icon">❓</span>
+            よくある質問
+        </a>
+
+        <a href="terms.html">
+            <span class="side-menu-icon">📖</span>
+            利用規約
+        </a>
+
+        <a href="privacy.html">
+            <span class="side-menu-icon">🔒</span>
+            プライバシーポリシー
+        </a>
+
+        <a href="contact.html">
+            <span class="side-menu-icon">📩</span>
+            お問い合わせ
+        </a>
+
+        <a href="settings.html">
+            <span class="side-menu-icon">⚙️</span>
+            設定
+        </a>
+
+        <button
+            type="button"
+            id="logoutButton"
+        >
+            <span class="side-menu-icon">🚪</span>
+            ログアウト
+        </button>
+
+    </div>
+
+</aside>
+
 
 
 <!-- ========================================
@@ -255,6 +391,7 @@
         </a>
 
     </section>
+
 
 
     <!-- ====================================
@@ -488,6 +625,7 @@
     </section>
 
 
+
     <!-- ====================================
          会員ランク
     ===================================== -->
@@ -564,6 +702,7 @@
 <% } %>
 
 
+
 <!-- ====================================
      利用状況
 ===================================== -->
@@ -578,9 +717,7 @@
     <div class="status-grid">
 
 
-        <!-- ====================================
-             自分の投稿
-        ===================================== -->
+        <!-- 自分の投稿 -->
 
         <a
             href="my-posts.html"
@@ -616,9 +753,8 @@
         </a>
 
 
-        <!-- ====================================
-             いいね
-        ===================================== -->
+
+        <!-- いいね -->
 
         <a
             href="likes.html"
@@ -654,9 +790,8 @@
         </a>
 
 
-        <!-- ====================================
-             シェア履歴
-        ===================================== -->
+
+        <!-- シェア履歴 -->
 
         <a
             href="share-history.html"
@@ -692,9 +827,8 @@
         </a>
 
 
-        <!-- ====================================
-             申し込み状況
-        ===================================== -->
+
+        <!-- 申し込み状況 -->
 
         <a
             href="application-status.html"
@@ -730,9 +864,8 @@
         </a>
 
 
-        <!-- ====================================
-             ペットをシェアする
-        ===================================== -->
+
+        <!-- ペットをシェアする -->
 
         <a
             href="pet-share-select.jsp"
@@ -764,9 +897,8 @@
         </a>
 
 
-        <!-- ====================================
-             ペットシェアリクエスト
-        ===================================== -->
+
+        <!-- ペットシェアリクエスト -->
 
         <a
             href="pet-share-request.html"
@@ -798,9 +930,8 @@
         </a>
 
 
-        <!-- ====================================
-             ペットシェア申込み状況
-        ===================================== -->
+
+        <!-- ペットシェア申込み状況 -->
 
         <a
             href="share-request-my-list.html"
@@ -837,6 +968,7 @@
 </section>
 
 
+
 <!-- ====================================
      その他
 ===================================== -->
@@ -851,9 +983,7 @@
     <div class="menu-card">
 
 
-        <!-- ====================================
-             設定
-        ===================================== -->
+        <!-- 設定 -->
 
         <a
             href="settings.html"
@@ -875,9 +1005,8 @@
         </a>
 
 
-        <!-- ====================================
-             利用規約
-        ===================================== -->
+
+        <!-- 利用規約 -->
 
         <a
             href="terms.html"
@@ -900,9 +1029,8 @@
         </a>
 
 
-        <!-- ====================================
-             プライバシーポリシー
-        ===================================== -->
+
+        <!-- プライバシーポリシー -->
 
         <a
             href="privacy.html"
@@ -933,14 +1061,12 @@
 </main>
 
 
+
 <!-- ========================================
      下部ナビ
 ========================================= -->
 
 <nav class="bottom-nav">
-
-
-    <!-- ホーム -->
 
     <a
         href="home.html"
@@ -959,8 +1085,6 @@
     </a>
 
 
-    <!-- いいね -->
-
     <a
         href="likes.html"
         class="nav-item"
@@ -977,8 +1101,6 @@
 
     </a>
 
-
-    <!-- チャット -->
 
     <a
         href="chat.html"
@@ -997,8 +1119,6 @@
     </a>
 
 
-    <!-- アカウント -->
-
     <a
         href="mypage.jsp"
         class="nav-item active"
@@ -1015,8 +1135,8 @@
 
     </a>
 
-
 </nav>
+
 
 
 <!-- ========================================
@@ -1083,6 +1203,7 @@ document.addEventListener(
 
             }
 
+
             /*
              * プロフィール画像がない場合
              * 今まで通り🐾を表示
@@ -1114,7 +1235,13 @@ document.addEventListener(
 </script>
 
 
+
 <script src="mypage.js"></script>
+
+<script src="common-menu.js"></script>
+
+<script src="bottom-nav.js"></script>
+
 
 
 <!-- ========================================
@@ -1146,6 +1273,7 @@ document.addEventListener(
             );
 
 
+
         /*
          * シェア開始成功
          */
@@ -1160,6 +1288,7 @@ document.addEventListener(
             }, 3000);
 
         }
+
 
 
         /*
@@ -1178,6 +1307,7 @@ document.addEventListener(
         }
 
 
+
         /*
          * エラーメッセージ
          */
@@ -1192,6 +1322,7 @@ document.addEventListener(
             }, 3000);
 
         }
+
 
 
         /*
