@@ -1,0 +1,332 @@
+/* =====================================================
+   Pet Share
+   共通ハンバーガーメニュー
+===================================================== */
+
+
+/* =====================================================
+   ハンバーガーボタン
+===================================================== */
+
+.menu-button {
+    position: fixed;
+
+    top: 18px;
+    left: 18px;
+
+    width: 44px;
+    height: 44px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.95);
+
+    color: #6f5a4e;
+
+    font-size: 25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    z-index: 2200;
+
+    box-shadow:
+        0 3px 12px rgba(121, 82, 58, 0.12);
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+
+.menu-button:hover {
+    background: #fffaf7;
+}
+
+
+.menu-button:active {
+    transform: scale(0.92);
+}
+
+
+/* =====================================================
+   背景オーバーレイ
+===================================================== */
+
+.menu-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.35);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 2000;
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+
+
+.menu-overlay.show {
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+/* =====================================================
+   サイドメニュー
+===================================================== */
+
+.side-menu {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: min(320px, 85vw);
+    height: 100vh;
+
+    background: #ffffff;
+
+    z-index: 2100;
+
+    transform: translateX(-100%);
+
+    transition:
+        transform 0.25s ease;
+
+    box-shadow:
+        5px 0 20px rgba(0, 0, 0, 0.12);
+
+    overflow-y: auto;
+}
+
+
+.side-menu.show {
+    transform: translateX(0);
+}
+
+
+/* =====================================================
+   メニューヘッダー
+===================================================== */
+
+.side-menu-header {
+    position: relative;
+
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 20px;
+
+    border-bottom: 1px solid #eadfd8;
+
+    background: #fffaf7;
+}
+
+
+.side-menu-title {
+    margin: 0;
+
+    font-size: 20px;
+
+    color: #6f5a4e;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   閉じるボタン
+===================================================== */
+
+.close-menu-button {
+    position: absolute;
+
+    top: 14px;
+    right: 15px;
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #8d776b;
+
+    font-size: 28px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+}
+
+
+.close-menu-button:hover {
+    background: #f7eee9;
+
+    color: #d8895d;
+}
+
+
+/* =====================================================
+   メニュー項目
+===================================================== */
+
+.side-menu-list {
+    margin: 0;
+
+    padding: 12px 0 30px;
+
+    list-style: none;
+}
+
+
+.side-menu-list li {
+    margin: 0;
+    padding: 0;
+}
+
+
+.side-menu-list a,
+.side-menu-list button {
+    width: 100%;
+
+    min-height: 54px;
+
+    padding: 0 24px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #6f5a4e;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    display: flex;
+    align-items: center;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        background 0.2s,
+        color 0.2s;
+}
+
+
+.side-menu-list a:hover,
+.side-menu-list button:hover {
+    background: #fff6f1;
+
+    color: #d8895d;
+}
+
+
+/* =====================================================
+   アイコン
+===================================================== */
+
+.side-menu-icon {
+    width: 32px;
+
+    margin-right: 12px;
+
+    font-size: 20px;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   メニューを開いているとき
+   下部ナビをメニューの後ろにする
+===================================================== */
+
+body.menu-open .bottom-nav {
+    z-index: 900;
+}
+
+
+/*
+   メニューが開いているときは
+   オーバーレイとサイドメニューを
+   下部ナビより前に表示
+*/
+
+body.menu-open .menu-overlay {
+    z-index: 2000;
+}
+
+
+body.menu-open .side-menu {
+    z-index: 2100;
+}
+
+
+/* =====================================================
+   スマートフォン
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .menu-button {
+        top: 14px;
+        left: 14px;
+
+        width: 42px;
+        height: 42px;
+
+        font-size: 23px;
+    }
+
+
+    .side-menu {
+        width: 82vw;
+    }
+
+
+    .side-menu-header {
+        height: 64px;
+    }
+
+
+    .side-menu-title {
+        font-size: 18px;
+    }
+
+
+    .side-menu-list a,
+    .side-menu-list button {
+        min-height: 52px;
+
+        font-size: 14px;
+    }
+}

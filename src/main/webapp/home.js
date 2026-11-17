@@ -71,15 +71,19 @@ async function loadPets() {
 
     try {
 
-        const response = await fetch("pet-list");
+        const response =
+            await fetch("pet-list");
 
         if (!response.ok) {
+
             throw new Error(
                 "ペット一覧の取得に失敗しました"
             );
+
         }
 
-        pets = await response.json();
+        pets =
+            await response.json();
 
         displayPets(
             getFilteredPets()
@@ -93,16 +97,22 @@ async function loadPets() {
         );
 
         petList.innerHTML = `
+
             <p style="
                 grid-column: 1 / -1;
                 text-align: center;
                 color: #998880;
                 padding: 40px 0;
             ">
+
                 ペット一覧を取得できませんでした。
+
             </p>
+
         `;
+
     }
+
 }
 
 
@@ -121,17 +131,22 @@ function displayPets(list) {
     if (list.length === 0) {
 
         petList.innerHTML = `
+
             <p style="
                 grid-column: 1 / -1;
                 text-align: center;
                 color: #998880;
                 padding: 40px 0;
             ">
+
                 条件に合うペットが見つかりませんでした。
+
             </p>
+
         `;
 
         return;
+
     }
 
 
@@ -145,6 +160,7 @@ function displayPets(list) {
 
 
         card.innerHTML = `
+
             <div class="pet-image-area">
 
                 <a
@@ -167,7 +183,9 @@ function displayPets(list) {
                     data-pet-id="${pet.petId}"
                     aria-label="いいね"
                 >
+
                     ${pet.liked ? "♥" : "♡"}
+
                 </button>
 
             </div>
@@ -176,25 +194,37 @@ function displayPets(list) {
             <div class="pet-info">
 
                 <h3 class="pet-name">
+
                     ${escapeHtml(pet.name)}
+
                 </h3>
 
 
                 <p class="pet-detail">
-                    種類：${escapeHtml(pet.type)}
+
+                    種類：
+                    ${escapeHtml(pet.type)}
+
                 </p>
 
 
                 <p class="pet-detail">
-                    年齢：${pet.age}歳
+
+                    年齢：
+                    ${pet.age}歳
+
                 </p>
 
 
                 <p class="pet-detail">
-                    📍 ${escapeHtml(pet.area)}
+
+                    📍
+                    ${escapeHtml(pet.area)}
+
                 </p>
 
             </div>
+
         `;
 
 
@@ -232,6 +262,7 @@ function displayPets(list) {
             );
 
         });
+
 }
 
 
@@ -242,11 +273,27 @@ function displayPets(list) {
 function escapeHtml(value) {
 
     return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
 }
 
 
@@ -362,6 +409,7 @@ function getFilteredPets() {
 
 
     return result;
+
 }
 
 
@@ -389,7 +437,9 @@ searchInput.addEventListener(
     "keydown",
     function (event) {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
 
             displayPets(
                 getFilteredPets()
@@ -485,7 +535,9 @@ function toggleLike(petId) {
 
 
     if (!pet) {
+
         return;
+
     }
 
 
@@ -496,6 +548,7 @@ function toggleLike(petId) {
     displayPets(
         getFilteredPets()
     );
+
 }
 
 
@@ -504,20 +557,27 @@ function toggleLike(petId) {
 ===================================================== */
 
 const postButton =
-    document.getElementById("postButton");
+    document.getElementById(
+        "postButton"
+    );
 
 const postModal =
-    document.getElementById("postModal");
+    document.getElementById(
+        "postModal"
+    );
 
 const closeModal =
-    document.getElementById("closeModal");
+    document.getElementById(
+        "closeModal"
+    );
 
 
 postButton.addEventListener(
     "click",
     function () {
 
-        window.location.href = "pet-register.html";
+        window.location.href =
+            "pet-register.html";
 
     }
 );
@@ -537,7 +597,10 @@ postModal.addEventListener(
     "click",
     function (event) {
 
-        if (event.target === postModal) {
+        if (
+            event.target ===
+            postModal
+        ) {
 
             closePostModal();
 
@@ -552,6 +615,7 @@ function closePostModal() {
     postModal.classList.remove(
         "show"
     );
+
 }
 
 
@@ -560,10 +624,14 @@ function closePostModal() {
 ===================================================== */
 
 const petImage =
-    document.getElementById("petImage");
+    document.getElementById(
+        "petImage"
+    );
 
 const imagePreview =
-    document.getElementById("imagePreview");
+    document.getElementById(
+        "imagePreview"
+    );
 
 
 petImage.addEventListener(
@@ -576,13 +644,15 @@ petImage.addEventListener(
 
         if (!file) {
 
-            imagePreview.src = "";
+            imagePreview.src =
+                "";
 
             imagePreview.classList.remove(
                 "show"
             );
 
             return;
+
         }
 
 
@@ -604,7 +674,9 @@ petImage.addEventListener(
             };
 
 
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(
+            file
+        );
 
     }
 );
@@ -615,7 +687,9 @@ petImage.addEventListener(
 ===================================================== */
 
 const postForm =
-    document.getElementById("postForm");
+    document.getElementById(
+        "postForm"
+    );
 
 
 postForm.addEventListener(
@@ -627,32 +701,42 @@ postForm.addEventListener(
 
         const imageFile =
             document
-                .getElementById("petImage")
+                .getElementById(
+                    "petImage"
+                )
                 .files[0];
 
 
         const name =
             document
-                .getElementById("petName")
+                .getElementById(
+                    "petName"
+                )
                 .value
                 .trim();
 
 
         const type =
             document
-                .getElementById("petType")
+                .getElementById(
+                    "petType"
+                )
                 .value;
 
 
         const age =
             document
-                .getElementById("petAge")
+                .getElementById(
+                    "petAge"
+                )
                 .value;
 
 
         const area =
             document
-                .getElementById("petArea")
+                .getElementById(
+                    "petArea"
+                )
                 .value;
 
 
@@ -663,6 +747,7 @@ postForm.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -713,7 +798,8 @@ postForm.addEventListener(
                 postForm.reset();
 
 
-                imagePreview.src = "";
+                imagePreview.src =
+                    "";
 
                 imagePreview.classList.remove(
                     "show"
@@ -728,7 +814,10 @@ postForm.addEventListener(
                 );
 
 
-               
+                alert(
+                    "ペットを投稿しました！"
+                );
+
             };
 
 
@@ -743,6 +832,14 @@ postForm.addEventListener(
 /* =====================================================
    下部ナビゲーション
 ===================================================== */
+
+/*
+ * 下部ナビゲーション本体は
+ * bottom-nav.js が共通部品として生成する。
+ *
+ * そのため、ここでは
+ * 「ホーム画面内での処理」のみ行う。
+ */
 
 document
     .querySelectorAll(".nav-item")
@@ -761,7 +858,9 @@ document
                        ホーム
                     ========================== */
 
-                    if (page === "home") {
+                    if (
+                        page === "home"
+                    ) {
 
                         displayPets(
                             getFilteredPets()
@@ -783,7 +882,9 @@ document
                        いいね
                     ========================== */
 
-                    if (page === "like") {
+                    if (
+                        page === "like"
+                    ) {
 
                         const likedPets =
                             pets.filter(
@@ -806,7 +907,9 @@ document
                        チャット
                     ========================== */
 
-                    if (page === "chat") {
+                    if (
+                        page === "chat"
+                    ) {
 
                         alert(
                             "チャット機能はJavaとMySQLを接続した後に実装できます。"
@@ -819,7 +922,9 @@ document
                        アカウント
                     ========================== */
 
-                    if (page === "account") {
+                    if (
+                        page === "account"
+                    ) {
 
                         window.location.href =
                             "mypage.jsp";
@@ -832,7 +937,9 @@ document
                     ========================== */
 
                     document
-                        .querySelectorAll(".nav-item")
+                        .querySelectorAll(
+                            ".nav-item"
+                        )
                         .forEach(
                             function (nav) {
 
@@ -859,173 +966,36 @@ document
    ハンバーガーメニュー
 ===================================================== */
 
-const menuButton =
-    document.getElementById("menuButton");
-
-const sideMenu =
-    document.getElementById("sideMenu");
-
-const closeMenuButton =
-    document.getElementById("closeMenuButton");
-
-const menuOverlay =
-    document.getElementById("menuOverlay");
-
-
-/* =====================================================
-   メニューを開く
-===================================================== */
-
-function openMenu() {
-
-    sideMenu.classList.add(
-        "show"
-    );
-
-
-    menuOverlay.classList.add(
-        "show"
-    );
-
-
-    document.body.style.overflow =
-        "hidden";
-}
-
-
-/* =====================================================
-   メニューを閉じる
-===================================================== */
-
-function closeMenu() {
-
-    sideMenu.classList.remove(
-        "show"
-    );
-
-
-    menuOverlay.classList.remove(
-        "show"
-    );
-
-
-    document.body.style.overflow =
-        "";
-}
-
-
-/* =====================================================
-   ☰ボタン
-===================================================== */
-
-menuButton.addEventListener(
-    "click",
-    function () {
-
-        openMenu();
-
-    }
-);
-
-
-/* =====================================================
-   ×ボタン
-===================================================== */
-
-closeMenuButton.addEventListener(
-    "click",
-    function () {
-
-        closeMenu();
-
-    }
-);
-
-
-/* =====================================================
-   背景をクリックして閉じる
-===================================================== */
-
-menuOverlay.addEventListener(
-    "click",
-    function () {
-
-        closeMenu();
-
-    }
-);
-
-
-/* =====================================================
-   ESCキーで閉じる
-===================================================== */
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (event.key === "Escape") {
-
-            closeMenu();
-
-        }
-
-    }
-);
+/*
+ * ハンバーガーメニューは
+ * common-menu.js が共通部品として処理する。
+ *
+ * ここにはハンバーガーメニューの
+ * 開閉処理を書かない。
+ *
+ * これにより、
+ *
+ * home.html
+ * pet-detail.html
+ * mypage.jsp
+ * profile-edit.html
+ * settings.html
+ * その他のページ
+ *
+ * すべてで同じメニューを使用できる。
+ */
 
 
 /* =====================================================
    ログアウト
 ===================================================== */
 
-const logoutButton =
-    document.getElementById("logoutButton");
-
-
-if (logoutButton) {
-
-    logoutButton.addEventListener(
-        "click",
-        function () {
-
-            // 自作のログアウト確認画面を表示
-            if (
-                typeof window.showLogoutConfirm ===
-                "function"
-            ) {
-
-                window.showLogoutConfirm();
-
-            } else {
-
-                // 確認画面が読み込まれていない場合の予備処理
-                const result =
-                    confirm(
-                        "ログアウトしますか？"
-                    );
-
-
-                if (!result) {
-
-                    return;
-
-                }
-
-
-                // セッション情報を削除
-                sessionStorage.clear();
-
-
-                // ログイン画面へ移動
-                window.location.href =
-                    "login.html";
-
-            }
-
-        }
-    );
-
-}
+/*
+ * ログアウト処理も
+ * common-menu.js に移動。
+ *
+ * home.js では処理しない。
+ */
 
 
 /* =====================================================
@@ -1040,23 +1010,15 @@ loadPets();
 ===================================================== */
 
 const urlParams =
-    new URLSearchParams(window.location.search);
+    new URLSearchParams(
+        window.location.search
+    );
 
-/* =====================================================
-   ペット登録完了メッセージ
-===================================================== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-   /* =====================================================
-   ペット登録完了メッセージ
-===================================================== */
-
-const urlParams =
-    new URLSearchParams(window.location.search);
 
 if (
-    urlParams.get("petRegistered") === "true"
+    urlParams.get(
+        "petRegistered"
+    ) === "true"
 ) {
 
     const message =
@@ -1064,23 +1026,36 @@ if (
             "pet-register-complete-message"
         );
 
+
     if (message) {
 
-        message.style.display = "block";
+        message.style.display =
+            "block";
 
-        setTimeout(function () {
 
-            message.style.display = "none";
+        setTimeout(
+            function () {
 
-        }, 3000);
+                message.style.display =
+                    "none";
+
+            },
+            1500
+        );
 
     }
 
-    /* URLからパラメータを削除 */
+
+    /*
+     * URLから
+     * ?petRegistered=true
+     * を削除
+     */
+
     window.history.replaceState(
         {},
         document.title,
         "home.html"
     );
+
 }
-});
