@@ -472,6 +472,46 @@ public class ShareRequestDAO {
     }
 
     // ========================================
+    // 借りる側の申込みキャンセル
+    // ========================================
+
+    public boolean cancelRequest(
+            int requestId,
+            int borrowerId) {
+
+        String sql = """
+                UPDATE share_requests
+                SET status = 'cancelled'
+                WHERE request_id = ?
+                  AND borrower_id = ?
+                  AND status = 'pending'
+                """;
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(
+                    1,
+                    requestId);
+
+            ps.setInt(
+                    2,
+                    borrowerId);
+
+            return ps.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+
+            System.err.println(
+                    "シェア申込みのキャンセル中にSQLエラーが発生しました。");
+
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+    // ========================================
     // ResultSet → ShareRequest
     // ========================================
 

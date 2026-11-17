@@ -515,3 +515,42 @@ body {
         max-width: 100%;
     }
 }
+/* ========================================
+   申込みキャンセルボタン
+======================================== */
+
+.cancel-button {
+    width: 100%;
+    height: 45px;
+    border: none;
+    border-radius: 10px;
+    background: #eee5df;
+    color: #6b554b;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        opacity 0.15s ease,
+        transform 0.1s ease;
+}
+
+.cancel-button:hover {
+    opacity: 0.85;
+}
+
+.cancel-button:active {
+    transform: scale(0.98);
+}
+
+.cancel-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* キャンセル済み */
+
+.status-cancelled {
+    background: #f3eeee;
+    color: #8b7770;
+}

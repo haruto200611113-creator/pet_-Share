@@ -95,6 +95,11 @@ function displayRequests(requests) {
                 statusClass = "status-rejected";
                 break;
 
+            case "cancelled":
+                statusText = "キャンセル済み";
+                statusClass = "status-cancelled";
+                break;
+
             default:
                 statusText = request.status;
                 statusClass = "";
@@ -157,6 +162,30 @@ function displayRequests(requests) {
 
 
         /*
+         * キャンセルボタン
+         *
+         * pending（承認待ち）の場合だけ表示
+         */
+        let cancelButtonHtml = "";
+
+        if (request.status === "pending") {
+
+            cancelButtonHtml = `
+                <div class="request-buttons">
+
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        data-request-id="${request.requestId}">
+                        申込みをキャンセル
+                    </button>
+
+                </div>
+            `;
+        }
+
+
+        /*
          * 申込みカード
          */
         const card = document.createElement("div");
@@ -165,12 +194,7 @@ function displayRequests(requests) {
 
 
         /*
-         * ここが今回変更した部分
-         *
-         * 「ペットID：○○」
-         * ↓
-         * 「ペット画像＋ペット名」
-         *
+         * ペット画像＋ペット名
          * その他の情報は今まで通り
          */
         card.innerHTML = `
@@ -280,12 +304,121 @@ function displayRequests(requests) {
 
             </div>
 
+            ${cancelButtonHtml}
+
         `;
 
 
         requestList.appendChild(card);
     });
 }
+
+
+/**
+ * キャンセルボタンのクリック処理
+ */
+document.addEventListener("click", async function (event) {
+
+    const button =
+        event.target.closest(".cancel-button");
+
+    if (!button) {
+        return;
+    }
+
+    const requestId =
+        button.dataset.requestId;
+
+    const confirmed =
+        confirm(
+            "このペットシェア申込みをキャンセルしますか？"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = "キャンセル中...";
+
+
+    try {
+
+        const formData = new FormData();
+
+        formData.append(
+            "requestId",
+            requestId
+        );
+
+
+        const response =
+            await fetch("share-request-cancel", {
+                method: "POST",
+                body: formData
+            });
+
+
+        // ログインしていない場合
+        if (response.status === 401) {
+
+            alert("ログインが必要です。");
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+
+        const result =
+            await response.json();
+
+
+        if (!result.success) {
+
+            alert(
+                result.message ||
+                "キャンセルに失敗しました。"
+            );
+
+            button.disabled = false;
+
+            button.textContent =
+                "申込みをキャンセル";
+
+            return;
+        }
+
+
+        alert(
+            "申込みをキャンセルしました。"
+        );
+
+
+        /*
+         * 一覧を再読み込み
+         */
+        loadShareRequests();
+
+
+    } catch (error) {
+
+        console.error(
+            "キャンセル処理エラー:",
+            error
+        );
+
+        alert(
+            "システムエラーが発生しました。"
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+            "申込みをキャンセル";
+    }
+});
 
 
 /**
@@ -349,7 +482,8 @@ function escapeHtml(value) {
  */
 function showMessage(text, type) {
 
-    const message = document.getElementById("message");
+    const message =
+        document.getElementById("message");
 
     if (!message) {
         return;
