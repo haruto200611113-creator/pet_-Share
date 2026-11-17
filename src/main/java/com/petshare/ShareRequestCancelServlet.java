@@ -14,7 +14,8 @@ public class ShareRequestCancelServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private final ShareRequestDAO shareRequestDAO = new ShareRequestDAO();
+    private final ShareRequestDAO shareRequestDAO =
+            new ShareRequestDAO();
 
     @Override
     protected void doPost(
@@ -22,14 +23,17 @@ public class ShareRequestCancelServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("application/json; charset=UTF-8");
+        response.setContentType(
+                "application/json; charset=UTF-8");
 
-        HttpSession session = request.getSession(false);
+        HttpSession session =
+                request.getSession(false);
 
         // ログイン確認
         if (!AccessControl.isLoggedIn(session)) {
 
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(
+                    HttpServletResponse.SC_UNAUTHORIZED);
 
             response.getWriter().write("""
                     {
@@ -42,12 +46,18 @@ public class ShareRequestCancelServlet extends HttpServlet {
         }
 
         // リクエストID取得
-        String requestIdParam = request.getParameter("requestId");
+        String requestIdParam =
+                request.getParameter("requestId");
+
+        System.out.println(
+                "【キャンセル確認】requestIdParam = "
+                        + requestIdParam);
 
         if (requestIdParam == null
                 || requestIdParam.isBlank()) {
 
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(
+                    HttpServletResponse.SC_BAD_REQUEST);
 
             response.getWriter().write("""
                     {
@@ -63,11 +73,13 @@ public class ShareRequestCancelServlet extends HttpServlet {
 
         try {
 
-            requestId = Integer.parseInt(requestIdParam);
+            requestId =
+                    Integer.parseInt(requestIdParam);
 
         } catch (NumberFormatException e) {
 
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(
+                    HttpServletResponse.SC_BAD_REQUEST);
 
             response.getWriter().write("""
                     {
@@ -80,9 +92,10 @@ public class ShareRequestCancelServlet extends HttpServlet {
         }
 
         // ログイン中のユーザーID
-        int borrowerId = Integer.parseInt(
-                session.getAttribute("accountId")
-                        .toString());
+        int borrowerId =
+                Integer.parseInt(
+                        session.getAttribute("accountId")
+                                .toString());
 
         System.out.println(
                 "【キャンセル確認】requestId = "
@@ -90,9 +103,14 @@ public class ShareRequestCancelServlet extends HttpServlet {
                         + ", borrowerId = "
                         + borrowerId);
 
-        boolean cancelled = shareRequestDAO.cancelRequest(
-                requestId,
-                borrowerId);
+        boolean cancelled =
+                shareRequestDAO.cancelRequest(
+                        requestId,
+                        borrowerId);
+
+        System.out.println(
+                "【キャンセル結果】cancelled = "
+                        + cancelled);
 
         if (!cancelled) {
 
