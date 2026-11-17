@@ -23,28 +23,47 @@ async function loadShareRequests() {
         const response =
             await fetch("share-request-list");
 
+        // --------------------------------
+        // ログイン切れ
+        // --------------------------------
+
         if (response.status === 401) {
 
             window.location.href =
                 "login.html";
 
             return;
+
         }
 
+
+        // --------------------------------
+        // HTTPエラー
+        // --------------------------------
 
         if (!response.ok) {
 
             throw new Error(
-                "リクエスト一覧の取得に失敗しました。");
+                "リクエスト一覧の取得に失敗しました。"
+            );
 
         }
 
+
+        // --------------------------------
+        // JSON取得
+        // --------------------------------
 
         const requests =
             await response.json();
 
 
+        // --------------------------------
+        // 表示
+        // --------------------------------
+
         displayRequests(requests);
+
 
     } catch (error) {
 
@@ -55,7 +74,9 @@ async function loadShareRequests() {
                 リクエストの取得に失敗しました。
             </p>
         `;
+
     }
+
 }
 
 
@@ -73,8 +94,8 @@ function displayRequests(requests) {
     // リクエストなし
     // ------------------------------------
 
-    if (!requests
-        || requests.length === 0) {
+    if (!requests ||
+        requests.length === 0) {
 
         requestList.innerHTML = `
             <p class="empty-message">
@@ -83,15 +104,20 @@ function displayRequests(requests) {
         `;
 
         return;
+
     }
+
+
+    // ------------------------------------
+    // 一覧をクリア
+    // ------------------------------------
+
+    requestList.innerHTML = "";
 
 
     // ------------------------------------
     // カード作成
     // ------------------------------------
-
-    requestList.innerHTML = "";
-
 
     requests.forEach(request => {
 
@@ -149,8 +175,8 @@ function displayRequests(requests) {
                 statusText =
                     request.status;
 
-                statusClass =
-                    "";
+                statusClass = "";
+
         }
 
 
@@ -160,18 +186,18 @@ function displayRequests(requests) {
 
         const usageHours =
             formatUsageHours(
-                request.usageHours);
+                request.usageHours
+            );
 
 
         // --------------------------------
-        // HTML
+        // カードHTML
         // --------------------------------
 
         card.innerHTML = `
 
             <div class="request-pet-name">
-                ${escapeHtml(
-                    request.petName)}
+                ${escapeHtml(request.petName)}
             </div>
 
 
@@ -184,8 +210,7 @@ function displayRequests(requests) {
                     </span>
 
                     <span class="request-value">
-                        ${escapeHtml(
-                            request.borrowerName)}
+                        ${escapeHtml(request.borrowerName)}
                     </span>
 
                 </div>
@@ -198,8 +223,7 @@ function displayRequests(requests) {
                     </span>
 
                     <span class="request-value">
-                        ${escapeHtml(
-                            request.startDatetime)}
+                        ${escapeHtml(request.startDatetime)}
                     </span>
 
                 </div>
@@ -212,8 +236,7 @@ function displayRequests(requests) {
                     </span>
 
                     <span class="request-value">
-                        ${escapeHtml(
-                            request.endDatetime)}
+                        ${escapeHtml(request.endDatetime)}
                     </span>
 
                 </div>
@@ -253,10 +276,14 @@ function displayRequests(requests) {
 
             ${
                 request.status === "pending"
+
                 ? createActionButtons(
-                    request.requestId)
+                    request.requestId
+                )
+
                 : createProcessedMessage(
-                    statusText)
+                    statusText
+                )
             }
 
         `;
@@ -265,6 +292,7 @@ function displayRequests(requests) {
         requestList.appendChild(card);
 
     });
+
 }
 
 
@@ -272,8 +300,7 @@ function displayRequests(requests) {
 // 承認・拒否ボタン
 // ========================================
 
-function createActionButtons(
-    requestId) {
+function createActionButtons(requestId) {
 
     return `
 
@@ -307,6 +334,7 @@ function createActionButtons(
         </div>
 
     `;
+
 }
 
 
@@ -314,16 +342,16 @@ function createActionButtons(
 // 処理済みメッセージ
 // ========================================
 
-function createProcessedMessage(
-    statusText) {
+function createProcessedMessage(statusText) {
 
     return `
 
         <p class="processed-message">
-            このリクエストは「${statusText}」です。
+            このリクエストは「${escapeHtml(statusText)}」です。
         </p>
 
     `;
+
 }
 
 
@@ -333,7 +361,8 @@ function createProcessedMessage(
 
 async function updateRequestStatus(
     requestId,
-    status) {
+    status
+) {
 
     // ------------------------------------
     // 確認メッセージ
@@ -354,15 +383,21 @@ async function updateRequestStatus(
     }
 
 
+    // ------------------------------------
+    // 確認
+    // ------------------------------------
+
     if (!confirm(confirmMessage)) {
+
         return;
+
     }
 
 
     try {
 
         // --------------------------------
-        // POSTデータ作成
+        // POSTデータ
         // --------------------------------
 
         const formData =
@@ -370,16 +405,107 @@ async function updateRequestStatus(
 
         formData.append(
             "requestId",
-            requestId);
+            requestId
+        );
+
+
+        // ==========================================
+        // 承認処理
+        // ==========================================
+
+        if (status === "approved") {
+
+            const response =
+                await fetch(
+                    "share-request-approve",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/x-www-form-urlencoded"
+                        },
+
+                        body:
+                            formData.toString()
+                    }
+                );
+
+
+            // --------------------------------
+            // ログイン切れ
+            // --------------------------------
+
+            if (response.status === 401) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+
+            }
+
+
+            // --------------------------------
+            // HTTPエラー
+            // --------------------------------
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "承認処理に失敗しました。"
+                );
+
+            }
+
+
+            // --------------------------------
+            // JSON取得
+            // --------------------------------
+
+            const result =
+                await response.json();
+
+
+            // --------------------------------
+            // 成功
+            // --------------------------------
+
+            if (result.success) {
+
+                showMessage(
+                    result.message,
+                    "success"
+                );
+
+                // 最新状態を再取得
+                await loadShareRequests();
+
+            } else {
+
+                showMessage(
+                    result.message ||
+                    "承認できませんでした。",
+                    "error"
+                );
+
+            }
+
+
+            return;
+
+        }
+
+
+        // ==========================================
+        // 拒否処理
+        // ==========================================
 
         formData.append(
             "status",
-            status);
+            "rejected"
+        );
 
-
-        // --------------------------------
-        // サーバーへ送信
-        // --------------------------------
 
         const response =
             await fetch(
@@ -394,7 +520,8 @@ async function updateRequestStatus(
 
                     body:
                         formData.toString()
-                });
+                }
+            );
 
 
         // --------------------------------
@@ -407,6 +534,20 @@ async function updateRequestStatus(
                 "login.html";
 
             return;
+
+        }
+
+
+        // --------------------------------
+        // HTTPエラー
+        // --------------------------------
+
+        if (!response.ok) {
+
+            throw new Error(
+                "拒否処理に失敗しました。"
+            );
+
         }
 
 
@@ -426,7 +567,8 @@ async function updateRequestStatus(
 
             showMessage(
                 result.message,
-                "success");
+                "success"
+            );
 
             // 最新状態を再取得
             await loadShareRequests();
@@ -435,8 +577,11 @@ async function updateRequestStatus(
 
             showMessage(
                 result.message,
-                "error");
+                "error"
+            );
+
         }
+
 
     } catch (error) {
 
@@ -444,8 +589,11 @@ async function updateRequestStatus(
 
         showMessage(
             "処理中にエラーが発生しました。",
-            "error");
+            "error"
+        );
+
     }
+
 }
 
 
@@ -455,27 +603,33 @@ async function updateRequestStatus(
 
 function showMessage(
     message,
-    type) {
+    type
+) {
 
     const messageElement =
-        document.getElementById(
-            "message");
+        document.getElementById("message");
+
 
     messageElement.textContent =
         message;
 
+
     messageElement.className =
         "message";
+
 
     if (type === "success") {
 
         messageElement.classList.add(
-            "message-success");
+            "message-success"
+        );
 
     } else {
 
         messageElement.classList.add(
-            "message-error");
+            "message-error"
+        );
+
     }
 
 
@@ -483,13 +637,17 @@ function showMessage(
         "block";
 
 
-    // 3秒後に消す
+    // ------------------------------------
+    // 3秒後に非表示
+    // ------------------------------------
+
     setTimeout(() => {
 
         messageElement.style.display =
             "none";
 
     }, 3000);
+
 }
 
 
@@ -497,8 +655,7 @@ function showMessage(
 // 利用時間表示
 // ========================================
 
-function formatUsageHours(
-    hours) {
+function formatUsageHours(hours) {
 
     const number =
         Number(hours);
@@ -512,6 +669,7 @@ function formatUsageHours(
 
 
     return `${number.toFixed(2)}時間`;
+
 }
 
 
@@ -519,20 +677,28 @@ function formatUsageHours(
 // HTMLエスケープ
 // ========================================
 
-function escapeHtml(
-    value) {
+function escapeHtml(value) {
 
-    if (value === null
-        || value === undefined) {
+    if (
+        value === null ||
+        value === undefined
+    ) {
 
         return "";
+
     }
 
 
     return String(value)
+
         .replace(/&/g, "&amp;")
+
         .replace(/</g, "&lt;")
+
         .replace(/>/g, "&gt;")
+
         .replace(/"/g, "&quot;")
+
         .replace(/'/g, "&#039;");
+
 }
