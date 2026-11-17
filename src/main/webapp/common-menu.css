@@ -12,12 +12,14 @@
 .menu-button {
     position: fixed;
 
-    /*
-     * PC
-     * 画面右上の検索ボタン付近に配置
-     */
+    /* 検索ボタンの上付近 */
     top: 90px;
-    right: 18px;
+
+    /*
+     * rightを大きくすると左へ移動する
+     * 18px → 50px に変更
+     */
+    right: 50px;
 
     width: 44px;
     height: 44px;
@@ -185,9 +187,7 @@
 .close-menu-button {
     position: absolute;
 
-    /*
-     * ×ボタンはメニューヘッダー右上
-     */
+    /* メニュー内の右上 */
     top: 14px;
     right: 15px;
 
@@ -272,9 +272,6 @@
     display: flex;
     align-items: center;
 
-    /*
-     * メニュー項目の文字は左揃え
-     */
     text-align: left;
 
     cursor: pointer;
@@ -358,9 +355,10 @@ body.menu-open .side-menu {
     .menu-button {
         /*
          * スマホでも検索ボタンの上付近
+         * PCより少し右寄り
          */
         top: 90px;
-        right: 14px;
+        right: 40px;
 
         width: 42px;
         height: 42px;
@@ -410,15 +408,18 @@ body.menu-open .side-menu {
 
 
 /* =====================================================
-   さらに小さいスマートフォン
+   小さいスマートフォン
    例：iPhone SEなど
 ===================================================== */
 
 @media (max-width: 400px) {
 
     .menu-button {
+        /*
+         * 小さい画面ではさらに少し左へ
+         */
         top: 86px;
-        right: 12px;
+        right: 35px;
 
         width: 40px;
         height: 40px;
