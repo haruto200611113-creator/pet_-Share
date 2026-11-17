@@ -14,8 +14,7 @@ public class ShareRequestCancelServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private final ShareRequestDAO shareRequestDAO =
-            new ShareRequestDAO();
+    private final ShareRequestDAO shareRequestDAO = new ShareRequestDAO();
 
     @Override
     protected void doPost(
@@ -43,8 +42,7 @@ public class ShareRequestCancelServlet extends HttpServlet {
         }
 
         // リクエストID取得
-        String requestIdParam =
-                request.getParameter("requestId");
+        String requestIdParam = request.getParameter("requestId");
 
         if (requestIdParam == null
                 || requestIdParam.isBlank()) {
@@ -65,8 +63,7 @@ public class ShareRequestCancelServlet extends HttpServlet {
 
         try {
 
-            requestId =
-                    Integer.parseInt(requestIdParam);
+            requestId = Integer.parseInt(requestIdParam);
 
         } catch (NumberFormatException e) {
 
@@ -83,16 +80,19 @@ public class ShareRequestCancelServlet extends HttpServlet {
         }
 
         // ログイン中のユーザーID
-        int borrowerId =
-                Integer.parseInt(
-                        session.getAttribute("accountId")
-                                .toString());
+        int borrowerId = Integer.parseInt(
+                session.getAttribute("accountId")
+                        .toString());
 
-        // キャンセル処理
-        boolean cancelled =
-                shareRequestDAO.cancelRequest(
-                        requestId,
-                        borrowerId);
+        System.out.println(
+                "【キャンセル確認】requestId = "
+                        + requestId
+                        + ", borrowerId = "
+                        + borrowerId);
+
+        boolean cancelled = shareRequestDAO.cancelRequest(
+                requestId,
+                borrowerId);
 
         if (!cancelled) {
 
