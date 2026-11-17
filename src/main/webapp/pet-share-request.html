@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ペットシェアリクエスト</title>
+
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="design.css">
+    <link rel="stylesheet" href="pet-share-request.css">
+</head>
+
+<body>
+
+    <main class="request-container">
+
+        <h1 class="request-title">
+            ペットシェアリクエスト
+        </h1>
+
+        <p class="request-description">
+            自分のペットに届いたシェア申込みを確認できます。
+        </p>
+
+
+        <!-- ================================ -->
+        <!-- メッセージ -->
+        <!-- ================================ -->
+
+        <div id="message"
+             class="message"
+             style="display: none;">
+        </div>
+
+
+        <!-- ================================ -->
+        <!-- リクエスト一覧 -->
+        <!-- ================================ -->
+
+        <div id="requestList"
+             class="request-list">
+
+            <p class="loading-message">
+                リクエストを読み込んでいます……
+            </p>
+
+        </div>
+
+
+        <!-- ================================ -->
+        <!-- 戻る -->
+        <!-- ================================ -->
+
+        <a href="mypage.jsp"
+           class="back-button">
+            マイページに戻る
+        </a>
+
+    </main>
+
+
+    <script src="pet-share-request.js"></script>
+
+</body>
+
+</html>

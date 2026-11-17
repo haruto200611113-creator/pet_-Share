@@ -1,0 +1,252 @@
+/* ========================================
+   ペットシェアリクエスト
+======================================== */
+
+.request-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px 60px;
+}
+
+
+/* ========================================
+   タイトル
+======================================== */
+
+.request-title {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #4b3b33;
+    font-size: 32px;
+}
+
+
+.request-description {
+    text-align: center;
+    color: #777;
+    margin-bottom: 40px;
+}
+
+
+/* ========================================
+   リクエスト一覧
+======================================== */
+
+.request-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* ========================================
+   リクエストカード
+======================================== */
+
+.request-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 25px 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eeeeee;
+}
+
+
+.request-pet-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4b3b33;
+    margin-bottom: 20px;
+}
+
+
+/* ========================================
+   情報
+======================================== */
+
+.request-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+
+.request-row {
+    display: flex;
+    align-items: center;
+}
+
+
+.request-label {
+    width: 130px;
+    font-weight: bold;
+    color: #777;
+}
+
+
+.request-value {
+    color: #333;
+}
+
+
+/* ========================================
+   ステータス
+======================================== */
+
+.request-status {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+
+.status-approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+
+.status-rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+
+/* ========================================
+   ボタン
+======================================== */
+
+.request-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+
+.approve-button,
+.reject-button {
+    flex: 1;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.approve-button {
+    background: #7dbb72;
+    color: white;
+}
+
+
+.approve-button:hover {
+    opacity: 0.85;
+}
+
+
+.reject-button {
+    background: #d88a8a;
+    color: white;
+}
+
+
+.reject-button:hover {
+    opacity: 0.85;
+}
+
+
+/* ========================================
+   処理済み
+======================================== */
+
+.processed-message {
+    color: #777;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+
+/* ========================================
+   メッセージ
+======================================== */
+
+.message {
+    margin-bottom: 25px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+.message-success {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+
+.message-error {
+    background: #ffebee;
+    color: #c62828;
+}
+
+
+/* ========================================
+   空の状態
+======================================== */
+
+.empty-message {
+    text-align: center;
+    color: #777;
+    padding: 60px 20px;
+    background: #ffffff;
+    border-radius: 16px;
+}
+
+
+/* ========================================
+   読み込み中
+======================================== */
+
+.loading-message {
+    text-align: center;
+    color: #777;
+    padding: 40px;
+}
+
+
+/* ========================================
+   戻るボタン
+======================================== */
+
+.back-button {
+    display: block;
+    width: 250px;
+    margin: 40px auto 0;
+    padding: 14px;
+    text-align: center;
+
+    background: #eee;
+    color: #555;
+
+    border-radius: 10px;
+    text-decoration: none;
+
+    font-weight: bold;
+}
+
+
+.back-button:hover {
+    background: #ddd;
+}

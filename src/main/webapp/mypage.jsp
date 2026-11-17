@@ -769,39 +769,68 @@
 
 
 
-        <!-- ====================================
-             ペットをシェアする
-        ===================================== -->
+       <!-- ====================================
+     ペットをシェアする
+===================================== -->
 
-        <a
-            href="pet-share-select.jsp"
-            class="status-card"
+<a
+    href="pet-share-select.jsp"
+    class="status-card"
+>
+
+    <span class="status-icon">
+        🐾
+    </span>
+
+    <div>
+
+        <span class="status-label">
+            ペットをシェアする
+        </span>
+
+        <span class="unit">
+            自分のペットをシェアできます
+        </span>
+
+    </div>
+
+    <span class="arrow">
         >
+    </span>
 
-            <span class="status-icon">
-                🐾
-            </span>
-
-
-            <div>
-
-                <span class="status-label">
-                    ペットをシェアする
-                </span>
+</a>
 
 
-                <span class="unit">
-                    自分のペットをシェアできます
-                </span>
+<!-- ====================================
+     ペットシェアリクエスト
+===================================== -->
 
-            </div>
+<a
+    href="pet-share-request.html"
+    class="status-card"
+>
 
+    <span class="status-icon">
+        📩
+    </span>
 
-            <span class="arrow">
-                ›
-            </span>
+    <div>
 
-        </a>
+        <span class="status-label">
+            ペットシェアリクエスト
+        </span>
+
+        <span class="unit">
+            届いたシェア申込みを確認できます
+        </span>
+
+    </div>
+
+    <span class="arrow">
+        >
+    </span>
+
+</a>
 
 
     </div>
