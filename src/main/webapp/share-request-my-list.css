@@ -1,44 +1,176 @@
-/* ========================================
-   ペット情報
-======================================== */
+/* =====================================
+   Pet Share
+   ペットシェア申込み状況
+===================================== */
 
-.request-pet-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    min-width: 0;
+* {
+    box-sizing: border-box;
 }
 
 
-/* ========================================
-   ペット画像の角丸長方形
-======================================== */
+/* =====================================
+   ページ全体
+===================================== */
+
+body {
+    margin: 0;
+
+    background: #f7f3ef;
+
+    color: #4b3b33;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+
+/* =====================================
+   メインコンテナ
+===================================== */
+
+.request-container {
+    width: 100%;
+
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    padding: 30px 16px 40px;
+}
+
+
+/* =====================================
+   タイトル
+===================================== */
+
+.request-title {
+    margin: 0 0 8px;
+
+    color: #4b3b33;
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    text-align: center;
+}
+
+
+/* =====================================
+   説明文
+===================================== */
+
+.request-description {
+    margin: 0 0 25px;
+
+    color: #999;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    text-align: center;
+}
+
+
+/* =====================================
+   リクエスト一覧
+===================================== */
+
+.request-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+
+/* =====================================
+   リクエストカード
+===================================== */
+
+.request-card {
+    padding: 22px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =====================================
+   リクエストヘッダー
+===================================== */
+
+.request-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+
+/* =====================================
+   ペット情報
+===================================== */
+
+.request-pet-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+
+    flex: 1;
+}
+
+
+/* =====================================
+   ペット画像
+===================================== */
 
 .pet-image-box {
     width: 90px;
+
     height: 70px;
 
-    border-radius: 12px;
+    flex-shrink: 0;
 
     overflow: hidden;
 
-    flex-shrink: 0;
+    border-radius: 12px;
 
     background: #f1e9e3;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 }
 
 
-/* ========================================
-   ペット画像
-======================================== */
+/* =====================================
+   ペット画像本体
+===================================== */
 
 .pet-request-image {
     width: 100%;
+
     height: 100%;
 
     display: block;
@@ -47,43 +179,339 @@
 }
 
 
-/* ========================================
-   画像がない場合
-======================================== */
+/* =====================================
+   画像が登録されていない場合
+===================================== */
 
 .pet-image-default {
+    color: #999;
+
     font-size: 28px;
 }
 
 
-/* ========================================
+/* =====================================
    ペット名
-======================================== */
+===================================== */
 
 .request-pet-name {
     margin: 0;
 
-    font-size: 20px;
-    font-weight: bold;
-
     color: #4b3b33;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    line-height: 1.4;
+
+    word-break: break-word;
 }
 
 
-/* ========================================
-   スマートフォン
-======================================== */
+/* =====================================
+   ステータス
+===================================== */
 
-@media (max-width: 600px) {
+.request-status {
+    display: inline-block;
+
+    flex-shrink: 0;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-align: center;
+}
+
+
+/* -------------------------------------
+   承認待ち
+------------------------------------- */
+
+.status-pending {
+    background: #fff3e8;
+
+    color: #d9824b;
+}
+
+
+/* -------------------------------------
+   承認済み
+------------------------------------- */
+
+.status-approved {
+    background: #eaf6ee;
+
+    color: #4d8b62;
+}
+
+
+/* -------------------------------------
+   拒否済み
+------------------------------------- */
+
+.status-rejected {
+    background: #f8eeee;
+
+    color: #b86b6b;
+}
+
+
+/* =====================================
+   リクエスト情報
+===================================== */
+
+.request-info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 11px;
+
+    margin-bottom: 20px;
+}
+
+
+/* =====================================
+   情報1行
+===================================== */
+
+.request-row {
+    display: flex;
+
+    align-items: flex-start;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================
+   ラベル
+===================================== */
+
+.request-label {
+    flex: 0 0 85px;
+
+    color: #999;
+
+    font-weight: 600;
+}
+
+
+/* =====================================
+   内容
+===================================== */
+
+.request-value {
+    flex: 1;
+
+    color: #4b3b33;
+
+    word-break: break-word;
+}
+
+
+/* =====================================
+   成功・エラーメッセージ
+===================================== */
+
+.message {
+    margin-bottom: 18px;
+
+    padding: 12px 15px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+
+/* -------------------------------------
+   成功
+------------------------------------- */
+
+.message-success {
+    background: #eaf6ee;
+
+    color: #4d8b62;
+}
+
+
+/* -------------------------------------
+   エラー
+------------------------------------- */
+
+.message-error {
+    background: #f8eeee;
+
+    color: #b86b6b;
+}
+
+
+/* =====================================
+   読み込み中
+===================================== */
+
+.loading-message {
+    margin: 40px 0;
+
+    color: #999;
+
+    font-size: 13px;
+
+    text-align: center;
+}
+
+
+/* =====================================
+   リクエストなし
+===================================== */
+
+.empty-message {
+    margin: 40px 0;
+
+    color: #999;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    text-align: center;
+}
+
+
+/* =====================================
+   マイページに戻る
+===================================== */
+
+.back-button {
+    display: block;
+
+    width: 100%;
+
+    max-width: 300px;
+
+    height: 46px;
+
+    margin: 30px auto 0;
+
+    padding: 13px 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #ddd5cf;
+
+    border-radius: 10px;
+
+    color: #4b3b33;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    transition:
+        background 0.15s ease,
+        transform 0.1s ease;
+}
+
+
+/* =====================================
+   戻るボタン ホバー
+===================================== */
+
+.back-button:hover {
+    background: #f9f6f3;
+}
+
+
+/* =====================================
+   戻るボタン クリック
+===================================== */
+
+.back-button:active {
+    transform: scale(0.98);
+}
+
+
+/* =====================================
+   スマートフォン対応
+===================================== */
+
+@media (max-width: 480px) {
+
+    .request-container {
+        padding:
+            25px
+            14px
+            35px;
+    }
+
+
+    .request-title {
+        font-size: 20px;
+    }
+
+
+    .request-description {
+        font-size: 12px;
+    }
+
+
+    .request-card {
+        padding: 18px;
+    }
+
+
+    /* スマホでは画像を少し小さくする */
 
     .pet-image-box {
         width: 75px;
+
         height: 60px;
 
         border-radius: 10px;
     }
 
+
     .request-pet-name {
-        font-size: 18px;
+        font-size: 16px;
+    }
+
+
+    .request-row {
+        font-size: 12px;
+    }
+
+
+    .request-label {
+        flex: 0 0 75px;
+    }
+
+
+    .request-status {
+        padding: 5px 10px;
+
+        font-size: 11px;
+    }
+
+
+    .back-button {
+        max-width: 100%;
     }
 }
