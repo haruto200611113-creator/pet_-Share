@@ -3,26 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const requestList = document.getElementById("requestList");
     const message = document.getElementById("message");
 
-    /*
-     * =====================================================
-     * 画面表示
-     * =====================================================
-     */
-    function showMessage(text, type = "") {
-        if (!message) {
-            return;
-        }
-
-        message.textContent = text;
-        message.className = "";
-
-        if (type) {
-            message.classList.add(type);
-        }
-
-        message.style.display = "block";
-    }
-
 
     /*
      * =====================================================
@@ -30,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
      * =====================================================
      */
     function escapeHtml(value) {
+
         if (value === null || value === undefined) {
             return "";
         }
@@ -45,137 +26,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * =====================================================
-     * 確認モーダル
-     *
-     * 「申込みをキャンセルしますか？」
-     *
-     * [ キャンセルする ] [ キャンセルしない ]
+     * 日時を見やすく表示
      * =====================================================
      */
-    function showConfirmModal(title, messageText, confirmText, onConfirm) {
+    function formatDateTime(dateTime) {
 
-        // 既にモーダルが存在する場合は削除
-        const existingModal = document.getElementById("customConfirmModal");
-
-        if (existingModal) {
-            existingModal.remove();
+        if (!dateTime) {
+            return "";
         }
 
-        const overlay = document.createElement("div");
-        overlay.id = "customConfirmModal";
-        overlay.className = "custom-modal-overlay";
-
-        overlay.innerHTML = `
-            <div class="custom-modal-content" role="dialog" aria-modal="true">
-
-                <div class="custom-modal-icon">
-                    ?
-                </div>
-
-                <h2 class="custom-modal-title">
-                    ${escapeHtml(title)}
-                </h2>
-
-                <p class="custom-modal-message">
-                    ${escapeHtml(messageText)}
-                </p>
-
-                <div class="custom-modal-buttons">
-
-                    <button
-                        type="button"
-                        class="custom-modal-confirm-button"
-                        id="customModalConfirmButton">
-                        ${escapeHtml(confirmText)}
-                    </button>
-
-                    <button
-                        type="button"
-                        class="custom-modal-cancel-button"
-                        id="customModalCancelButton">
-                        キャンセルしない
-                    </button>
-
-                </div>
-
-            </div>
-        `;
-
-        document.body.appendChild(overlay);
-
-        // 背景スクロール停止
-        document.body.style.overflow = "hidden";
-
-        const confirmButton =
-            document.getElementById("customModalConfirmButton");
-
-        const cancelButton =
-            document.getElementById("customModalCancelButton");
+        return String(dateTime)
+            .replace("T", " ")
+            .substring(0, 16);
+    }
 
 
-        /*
-         * キャンセルする
-         */
-        confirmButton.addEventListener("click", async function () {
+    /*
+     * =====================================================
+     * 利用時間を表示
+     * =====================================================
+     */
+    function formatUsageHours(hours) {
 
-            confirmButton.disabled = true;
-            cancelButton.disabled = true;
+        const value = Number(hours);
 
-            closeModal();
-
-            if (typeof onConfirm === "function") {
-                await onConfirm();
-            }
-        });
-
-
-        /*
-         * キャンセルしない
-         */
-        cancelButton.addEventListener("click", function () {
-            closeModal();
-        });
-
-
-        /*
-         * モーダル外をクリックした場合
-         * → キャンセルしないと同じ扱い
-         */
-        overlay.addEventListener("click", function (event) {
-
-            if (event.target === overlay) {
-                closeModal();
-            }
-        });
-
-
-        /*
-         * ESCキー
-         * → キャンセルしないと同じ扱い
-         */
-        function handleEscape(event) {
-
-            if (event.key === "Escape") {
-                closeModal();
-            }
+        if (Number.isNaN(value)) {
+            return "";
         }
 
-        document.addEventListener("keydown", handleEscape);
-
-
-        /*
-         * モーダルを閉じる
-         */
-        function closeModal() {
-
-            document.removeEventListener("keydown", handleEscape);
-
-            if (overlay) {
-                overlay.remove();
-            }
-
-            document.body.style.overflow = "";
+        if (value % 1 === 0) {
+            return `${value}時間`;
         }
+
+        return `${value.toFixed(2)}時間`;
     }
 
 
@@ -184,7 +67,12 @@ document.addEventListener("DOMContentLoaded", function () {
      * メッセージモーダル
      * =====================================================
      */
-    function showMessageModal(title, messageText, buttonText, onClose) {
+    function showMessageModal(
+        title,
+        messageText,
+        buttonText,
+        onClose
+    ) {
 
         const existingModal =
             document.getElementById("customMessageModal");
@@ -193,25 +81,35 @@ document.addEventListener("DOMContentLoaded", function () {
             existingModal.remove();
         }
 
-        const overlay = document.createElement("div");
+
+        const overlay =
+            document.createElement("div");
 
         overlay.id = "customMessageModal";
         overlay.className = "custom-modal-overlay";
 
+
         overlay.innerHTML = `
-            <div class="custom-modal-content" role="dialog" aria-modal="true">
+
+            <div
+                class="custom-modal-content"
+                role="dialog"
+                aria-modal="true">
 
                 <div class="custom-modal-icon">
                     ✓
                 </div>
 
+
                 <h2 class="custom-modal-title">
                     ${escapeHtml(title)}
                 </h2>
 
+
                 <p class="custom-modal-message">
                     ${escapeHtml(messageText)}
                 </p>
+
 
                 <div class="custom-modal-buttons">
 
@@ -219,7 +117,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         type="button"
                         class="custom-modal-confirm-button"
                         id="customMessageCloseButton">
+
                         ${escapeHtml(buttonText)}
+
                     </button>
 
                 </div>
@@ -227,59 +127,235 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
         `;
 
+
         document.body.appendChild(overlay);
 
         document.body.style.overflow = "hidden";
 
+
         const closeButton =
-            document.getElementById("customMessageCloseButton");
+            document.getElementById(
+                "customMessageCloseButton"
+            );
 
 
-        closeButton.addEventListener("click", function () {
+        function closeMessageModal() {
 
-            closeMessageModal();
+            document.removeEventListener(
+                "keydown",
+                handleEscape
+            );
+
+            overlay.remove();
+
+            document.body.style.overflow = "";
 
             if (typeof onClose === "function") {
                 onClose();
             }
-        });
+        }
 
 
-        overlay.addEventListener("click", function (event) {
+        closeButton.addEventListener(
+            "click",
+            closeMessageModal
+        );
 
-            if (event.target === overlay) {
 
-                closeMessageModal();
+        overlay.addEventListener(
+            "click",
+            function (event) {
 
-                if (typeof onClose === "function") {
-                    onClose();
+                if (event.target === overlay) {
+                    closeMessageModal();
                 }
             }
-        });
+        );
 
 
         function handleEscape(event) {
 
             if (event.key === "Escape") {
-
                 closeMessageModal();
-
-                if (typeof onClose === "function") {
-                    onClose();
-                }
             }
         }
 
-        document.addEventListener("keydown", handleEscape);
+
+        document.addEventListener(
+            "keydown",
+            handleEscape
+        );
+    }
 
 
-        function closeMessageModal() {
+    /*
+     * =====================================================
+     * 確認モーダル
+     * =====================================================
+     *
+     * [ キャンセルする ] [ キャンセルしない ]
+     * =====================================================
+     */
+    function showConfirmModal(
+        title,
+        messageText,
+        onConfirm
+    ) {
 
-            document.removeEventListener("keydown", handleEscape);
+        const existingModal =
+            document.getElementById(
+                "customConfirmModal"
+            );
 
-            if (overlay) {
-                overlay.remove();
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+
+        const overlay =
+            document.createElement("div");
+
+        overlay.id = "customConfirmModal";
+        overlay.className = "custom-modal-overlay";
+
+
+        overlay.innerHTML = `
+
+            <div
+                class="custom-modal-content"
+                role="dialog"
+                aria-modal="true">
+
+                <div class="custom-modal-icon">
+                    ?
+                </div>
+
+
+                <h2 class="custom-modal-title">
+                    ${escapeHtml(title)}
+                </h2>
+
+
+                <p class="custom-modal-message">
+                    ${escapeHtml(messageText)}
+                </p>
+
+
+                <div class="custom-modal-buttons">
+
+                    <button
+                        type="button"
+                        class="custom-modal-confirm-button"
+                        id="customModalConfirmButton">
+
+                        キャンセルする
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="custom-modal-cancel-button"
+                        id="customModalCancelButton">
+
+                        キャンセルしない
+
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+
+        document.body.appendChild(overlay);
+
+        document.body.style.overflow = "hidden";
+
+
+        const confirmButton =
+            document.getElementById(
+                "customModalConfirmButton"
+            );
+
+        const cancelButton =
+            document.getElementById(
+                "customModalCancelButton"
+            );
+
+
+        /*
+         * キャンセルする
+         */
+        confirmButton.addEventListener(
+            "click",
+            async function () {
+
+                confirmButton.disabled = true;
+                cancelButton.disabled = true;
+
+                closeModal();
+
+                if (typeof onConfirm === "function") {
+                    await onConfirm();
+                }
             }
+        );
+
+
+        /*
+         * キャンセルしない
+         */
+        cancelButton.addEventListener(
+            "click",
+            function () {
+                closeModal();
+            }
+        );
+
+
+        /*
+         * モーダル外クリック
+         */
+        overlay.addEventListener(
+            "click",
+            function (event) {
+
+                if (event.target === overlay) {
+                    closeModal();
+                }
+            }
+        );
+
+
+        /*
+         * ESCキー
+         */
+        function handleEscape(event) {
+
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        }
+
+
+        document.addEventListener(
+            "keydown",
+            handleEscape
+        );
+
+
+        /*
+         * モーダルを閉じる
+         */
+        function closeModal() {
+
+            document.removeEventListener(
+                "keydown",
+                handleEscape
+            );
+
+            overlay.remove();
 
             document.body.style.overflow = "";
         }
@@ -295,14 +371,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
 
-            const formData = new FormData();
+            const formData =
+                new FormData();
 
-            formData.append("requestId", requestId);
+            formData.append(
+                "requestId",
+                requestId
+            );
 
-            const response = await fetch("share-request-cancel", {
-                method: "POST",
-                body: formData
-            });
+
+            const response =
+                await fetch(
+                    "share-request-cancel",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
 
 
             /*
@@ -315,7 +400,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     "ログインしてからもう一度操作してください。",
                     "ログイン画面へ",
                     function () {
-                        window.location.href = "login.html";
+                        window.location.href =
+                            "login.html";
                     }
                 );
 
@@ -334,6 +420,26 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
+            const result =
+                await response.json();
+
+
+            /*
+             * キャンセル失敗
+             */
+            if (!result.success) {
+
+                showMessageModal(
+                    "キャンセルできませんでした",
+                    result.message ||
+                    "申込みのキャンセルに失敗しました。",
+                    "OK"
+                );
+
+                return;
+            }
+
+
             /*
              * キャンセル成功
              */
@@ -342,17 +448,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 "ペットシェアの申込みをキャンセルしました。",
                 "OK",
                 function () {
-                    loadRequests();
+                    loadShareRequests();
                 }
             );
 
+
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "キャンセル処理エラー:",
+                error
+            );
+
 
             showMessageModal(
                 "エラー",
-                "申込みのキャンセルに失敗しました。もう一度お試しください。",
+                "システムエラーが発生しました。",
                 "OK"
             );
         }
@@ -364,22 +475,26 @@ document.addEventListener("DOMContentLoaded", function () {
      * 申込み一覧取得
      * =====================================================
      */
-    async function loadRequests() {
+    async function loadShareRequests() {
 
         try {
 
             if (requestList) {
+
                 requestList.innerHTML = `
-                    <div class="loading-message">
-                        読み込み中...
-                    </div>
+
+                    <p class="loading-message">
+                        申込み状況を読み込んでいます……
+                    </p>
+
                 `;
             }
 
+
             const response =
-                await fetch("share-request-my-list", {
-                    method: "GET"
-                });
+                await fetch(
+                    "share-request-my-list"
+                );
 
 
             /*
@@ -391,12 +506,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     requestList.innerHTML = "";
                 }
 
+
                 showMessageModal(
                     "ログインが必要です",
                     "ログインしてから申込み状況を確認してください。",
                     "ログイン画面へ",
                     function () {
-                        window.location.href = "login.html";
+                        window.location.href =
+                            "login.html";
                     }
                 );
 
@@ -405,30 +522,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /*
-             * その他のエラー
+             * 通信エラー
              */
             if (!response.ok) {
+
                 throw new Error(
-                    "申込み一覧の取得に失敗しました。"
+                    "データの取得に失敗しました。"
                 );
             }
 
 
-            const data = await response.json();
+            const requests =
+                await response.json();
 
-            renderRequests(data);
+
+            displayRequests(requests);
+
 
         } catch (error) {
 
             console.error(error);
 
+
             if (requestList) {
 
                 requestList.innerHTML = `
-                    <div class="error-message">
+
+                    <p class="empty-message">
                         申込み状況の取得に失敗しました。
-                    </div>
+                    </p>
+
                 `;
+            }
+
+
+            if (message) {
+
+                message.textContent =
+                    "申込み状況の取得に失敗しました。";
+
+                message.className =
+                    "message message-error";
+
+                message.style.display =
+                    "block";
             }
         }
     }
@@ -439,207 +576,454 @@ document.addEventListener("DOMContentLoaded", function () {
      * 申込み一覧表示
      * =====================================================
      */
-    function renderRequests(requests) {
+    function displayRequests(requests) {
 
         if (!requestList) {
             return;
         }
 
-        requestList.innerHTML = "";
-
 
         /*
          * 申込みがない場合
          */
-        if (!requests || requests.length === 0) {
+        if (!requests ||
+            requests.length === 0) {
 
             requestList.innerHTML = `
-                <div class="empty-message">
-                    現在、ペットシェアの申込みはありません。
-                </div>
+
+                <p class="empty-message">
+                    ペットシェアの申込みはありません。
+                </p>
+
             `;
 
             return;
         }
 
 
+        requestList.innerHTML = "";
+
+
         /*
-         * 申込みを1件ずつ表示
+         * 1件ずつ表示
          */
         requests.forEach(function (request) {
 
-            const card = document.createElement("div");
-
-            card.className = "request-card";
-
-
             /*
+             * =============================================
              * ステータス
+             * =============================================
              */
             let statusText = "";
             let statusClass = "";
 
+
             switch (request.status) {
 
                 case "pending":
-                    statusText = "承認待ち";
-                    statusClass = "pending";
+
+                    statusText =
+                        "承認待ち";
+
+                    statusClass =
+                        "status-pending";
+
                     break;
+
 
                 case "approved":
-                    statusText = "承認済み";
-                    statusClass = "approved";
+
+                    statusText =
+                        "承認済み";
+
+                    statusClass =
+                        "status-approved";
+
                     break;
+
 
                 case "rejected":
-                    statusText = "拒否済み";
-                    statusClass = "rejected";
+
+                    statusText =
+                        "拒否済み";
+
+                    statusClass =
+                        "status-rejected";
+
                     break;
+
 
                 case "cancelled":
-                    statusText = "キャンセル済み";
-                    statusClass = "cancelled";
+
+                    statusText =
+                        "キャンセル済み";
+
+                    statusClass =
+                        "status-cancelled";
+
                     break;
 
+
                 default:
-                    statusText = request.status || "";
-                    statusClass = "";
+
+                    statusText =
+                        request.status || "";
+
+                    statusClass =
+                        "";
             }
 
 
             /*
+             * =============================================
              * ペット画像
+             * =============================================
              */
-            let petImage = "";
+            let petImageHtml = "";
 
-            if (request.petImage) {
 
-                petImage = `
-                    <img
-                        src="${escapeHtml(request.petImage)}"
-                        alt="${escapeHtml(request.petName || "ペット")}"
-                        class="request-pet-image">
+            if (
+                request.petImage &&
+                String(request.petImage).trim() !== ""
+            ) {
+
+                let imageSrc =
+                    request.petImage;
+
+
+                /*
+                 * Base64だけの場合
+                 */
+                if (
+                    !String(imageSrc)
+                        .startsWith("data:image/")
+                ) {
+
+                    imageSrc =
+                        "data:image/jpeg;base64,"
+                        + imageSrc;
+                }
+
+
+                petImageHtml = `
+
+                    <div class="pet-image-box">
+
+                        <img
+                            src="${escapeHtml(imageSrc)}"
+                            alt="${escapeHtml(
+                                request.petName ||
+                                "ペット"
+                            )}"
+                            class="pet-request-image">
+
+                    </div>
+
                 `;
 
             } else {
 
-                petImage = `
-                    <div class="request-pet-image no-image">
+                petImageHtml = `
+
+                    <div
+                        class="pet-image-box pet-image-default">
+
                         🐾
+
                     </div>
+
                 `;
             }
 
 
             /*
-             * ペット情報
+             * =============================================
+             * ペット名
+             * =============================================
              */
             const petName =
-                escapeHtml(request.petName || "名前なし");
-
-            const ownerName =
-                escapeHtml(request.ownerName || "不明");
-
-            const startTime =
-                escapeHtml(request.startTime || "");
-
-            const endTime =
-                escapeHtml(request.endTime || "");
+                request.petName &&
+                String(request.petName).trim() !== ""
+                    ? request.petName
+                    : "名前未登録";
 
 
             /*
-             * カードHTML
+             * =============================================
+             * 飼い主
+             * =============================================
+             *
+             * Java側から ownerName が返ってくる
+             * 場合に表示
              */
+            const ownerName =
+                request.ownerName &&
+                String(request.ownerName).trim() !== ""
+                    ? request.ownerName
+                    : "飼い主情報なし";
+
+
+            /*
+             * =============================================
+             * 利用開始日時
+             * =============================================
+             */
+            const startDatetime =
+                formatDateTime(
+                    request.startDatetime
+                );
+
+
+            /*
+             * =============================================
+             * 利用終了日時
+             * =============================================
+             */
+            const endDatetime =
+                formatDateTime(
+                    request.endDatetime
+                );
+
+
+            /*
+             * =============================================
+             * 利用時間
+             * =============================================
+             */
+            const usageHours =
+                formatUsageHours(
+                    request.usageHours
+                );
+
+
+            /*
+             * =============================================
+             * 申込み日時
+             * =============================================
+             */
+            const createdAt =
+                formatDateTime(
+                    request.createdAt
+                );
+
+
+            /*
+             * =============================================
+             * カード作成
+             * =============================================
+             */
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "request-card";
+
+
             card.innerHTML = `
 
-                <div class="request-card-main">
+                <!-- ==============================
+                     ペット情報
+                =============================== -->
 
-                    <div class="request-pet">
+                <div class="request-header">
 
-                        ${petImage}
+                    <div class="request-pet-info">
 
-                        <div class="request-pet-info">
+                        ${petImageHtml}
 
-                            <h3 class="request-pet-name">
-                                ${petName}
-                            </h3>
 
-                            <p class="request-owner">
-                                飼い主：${ownerName}
-                            </p>
+                        <h2 class="request-pet-name">
 
-                        </div>
+                            ${escapeHtml(
+                                petName
+                            )}
+
+                        </h2>
 
                     </div>
 
 
-                    <div class="request-status ${statusClass}">
-                        ${statusText}
+                    <span
+                        class="request-status ${statusClass}">
+
+                        ${escapeHtml(
+                            statusText
+                        )}
+
+                    </span>
+
+                </div>
+
+
+                <!-- ==============================
+                     申込み情報
+                =============================== -->
+
+                <div class="request-info">
+
+
+                    <!-- 飼い主 -->
+
+                    <div class="request-row">
+
+                        <span class="request-label">
+                            飼い主
+                        </span>
+
+                        <span class="request-value">
+
+                            ${escapeHtml(
+                                ownerName
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- 利用開始日時 -->
+
+                    <div class="request-row">
+
+                        <span class="request-label">
+                            利用開始日時
+                        </span>
+
+                        <span class="request-value">
+
+                            ${escapeHtml(
+                                startDatetime
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- 利用終了日時 -->
+
+                    <div class="request-row">
+
+                        <span class="request-label">
+                            利用終了日時
+                        </span>
+
+                        <span class="request-value">
+
+                            ${escapeHtml(
+                                endDatetime
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- 利用時間 -->
+
+                    <div class="request-row">
+
+                        <span class="request-label">
+                            利用時間
+                        </span>
+
+                        <span class="request-value">
+
+                            ${escapeHtml(
+                                usageHours
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- 申込み日時 -->
+
+                    <div class="request-row">
+
+                        <span class="request-label">
+                            申込み日時
+                        </span>
+
+                        <span class="request-value">
+
+                            ${escapeHtml(
+                                createdAt
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- ステータス -->
+
+                    <div class="request-row">
+
+                        <span class="request-label">
+                            ステータス
+                        </span>
+
+                        <span class="request-value">
+
+                            <span
+                                class="request-status ${statusClass}">
+
+                                ${escapeHtml(
+                                    statusText
+                                )}
+
+                            </span>
+
+                        </span>
+
                     </div>
 
                 </div>
 
-
-                <div class="request-detail">
-
-                    ${
-                        startTime
-                            ? `
-                                <div class="request-info-row">
-                                    <span class="label">
-                                        利用開始
-                                    </span>
-
-                                    <span class="value">
-                                        ${startTime}
-                                    </span>
-                                </div>
-                              `
-                            : ""
-                    }
-
-
-                    ${
-                        endTime
-                            ? `
-                                <div class="request-info-row">
-                                    <span class="label">
-                                        利用終了
-                                    </span>
-
-                                    <span class="value">
-                                        ${endTime}
-                                    </span>
-                                </div>
-                              `
-                            : ""
-                    }
-
-                </div>
             `;
 
 
             /*
-             * =================================================
-             * 承認待ちの場合のみキャンセルボタンを表示
-             * =================================================
+             * =============================================
+             * 承認待ちの場合だけ
+             * キャンセルボタンを表示
+             * =============================================
              */
-            if (request.status === "pending") {
+            if (
+                request.status === "pending"
+            ) {
+
+                const buttons =
+                    document.createElement(
+                        "div"
+                    );
+
+                buttons.className =
+                    "request-buttons";
+
 
                 const cancelButton =
-                    document.createElement("button");
+                    document.createElement(
+                        "button"
+                    );
 
-                cancelButton.type = "button";
+
+                cancelButton.type =
+                    "button";
+
 
                 cancelButton.className =
                     "cancel-button";
+
 
                 cancelButton.textContent =
                     "申込みをキャンセル";
 
 
                 /*
-                 * キャンセルボタンをクリック
+                 * キャンセルボタン
                  */
                 cancelButton.addEventListener(
                     "click",
@@ -648,7 +1032,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         showConfirmModal(
                             "申込みをキャンセルしますか？",
                             "このペットシェア申込みをキャンセルします。",
-                            "キャンセルする",
                             async function () {
 
                                 await cancelRequest(
@@ -662,11 +1045,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-                card.appendChild(cancelButton);
+                buttons.appendChild(
+                    cancelButton
+                );
+
+
+                card.appendChild(
+                    buttons
+                );
             }
 
 
-            requestList.appendChild(card);
+            requestList.appendChild(
+                card
+            );
         });
     }
 
@@ -676,6 +1068,6 @@ document.addEventListener("DOMContentLoaded", function () {
      * 初期処理
      * =====================================================
      */
-    loadRequests();
+    loadShareRequests();
 
 });
