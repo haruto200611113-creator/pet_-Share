@@ -12,7 +12,7 @@
     position: fixed;
 
     top: 18px;
-    left: 18px;
+    right: 18px;
 
     width: 44px;
     height: 44px;
@@ -230,7 +230,7 @@
     display: flex;
     align-items: center;
 
-    text-align: left;
+    text-align: right;
 
     cursor: pointer;
 
@@ -299,7 +299,7 @@ body.menu-open .side-menu {
 
     .menu-button {
         top: 14px;
-        left: 14px;
+        right: 14px;
 
         width: 42px;
         height: 42px;
