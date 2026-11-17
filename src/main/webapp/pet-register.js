@@ -1,393 +1,600 @@
-document.addEventListener("DOMContentLoaded", function () {
+// ========================================
+// ペットシェアリクエスト
+// ========================================
 
-    const backButton =
-        document.getElementById("backButton");
+document.addEventListener("DOMContentLoaded", () => {
 
-    const cancelButton =
-        document.getElementById("cancelButton");
-
-    const registerButton =
-        document.getElementById("registerButton");
-
-    const imageInput =
-        document.getElementById("petImage");
-
-    const imagePreview =
-        document.getElementById("petImagePreview");
-
-    const imageDefault =
-        document.getElementById("petImageDefault");
-
-
-    /* =========================
-       戻る
-    ========================= */
-
-    backButton.addEventListener("click", function () {
-        window.location.href = "home.html";
-    });
-
-
-    /* =========================
-       キャンセル
-    ========================= */
-
-    cancelButton.addEventListener("click", function () {
-        window.location.href = "home.html";
-    });
-
-
-    /* =========================
-       画像プレビュー
-    ========================= */
-
-    imageInput.addEventListener("change", function () {
-
-        const file = this.files[0];
-
-        if (!file) {
-
-            imagePreview.src = "";
-            imagePreview.style.display = "none";
-
-            imageDefault.style.display = "inline";
-
-            return;
-        }
-
-
-        if (!file.type.startsWith("image/")) {
-
-            alert("画像ファイルを選択してください。");
-
-            this.value = "";
-
-            imagePreview.src = "";
-            imagePreview.style.display = "none";
-
-            imageDefault.style.display = "inline";
-
-            return;
-        }
-
-
-        const reader = new FileReader();
-
-        reader.onload = function (event) {
-
-            imagePreview.src =
-                event.target.result;
-
-            imagePreview.style.display =
-                "block";
-
-            imageDefault.style.display =
-                "none";
-        };
-
-        reader.readAsDataURL(file);
-    });
-
-
-    /* =========================
-       ペット登録
-    ========================= */
-
-    registerButton.addEventListener(
-        "click",
-        async function () {
-
-            /*
-             * 必須項目確認
-             */
-
-            const petName =
-                document.getElementById("petName").value.trim();
-
-            const petType =
-                document.getElementById("petType").value;
-
-
-            if (petName === "") {
-
-                alert("ペットの名前を入力してください。");
-
-                document.getElementById("petName").focus();
-
-                return;
-            }
-
-
-            if (petType === "") {
-
-                alert("ペットの種類を選択してください。");
-
-                document.getElementById("petType").focus();
-
-                return;
-            }
-
-
-            /*
-             * FormData作成
-             */
-
-            const formData =
-                new FormData();
-
-
-            formData.append(
-                "petName",
-                petName
-            );
-
-            formData.append(
-                "petType",
-                petType
-            );
-
-            formData.append(
-                "breed",
-                document.getElementById("breed").value
-            );
-
-            formData.append(
-                "gender",
-                document.getElementById("gender").value
-            );
-
-            formData.append(
-                "birthDate",
-                document.getElementById("birthDate").value
-            );
-
-            formData.append(
-                "weight",
-                document.getElementById("weight").value
-            );
-
-            formData.append(
-                "personality",
-                document.getElementById("personality").value
-            );
-
-            formData.append(
-                "features",
-                document.getElementById("features").value
-            );
-
-            formData.append(
-                "likes",
-                document.getElementById("likes").value
-            );
-
-            formData.append(
-                "dislikes",
-                document.getElementById("dislikes").value
-            );
-
-            formData.append(
-                "otherAnimals",
-                document.getElementById("otherAnimals").value
-            );
-
-            formData.append(
-                "childrenCompatibility",
-                document.getElementById("childrenCompatibility").value
-            );
-
-            formData.append(
-                "foodInfo",
-                document.getElementById("foodInfo").value
-            );
-
-            formData.append(
-                "walkInfo",
-                document.getElementById("walkInfo").value
-            );
-
-            formData.append(
-                "toiletInfo",
-                document.getElementById("toiletInfo").value
-            );
-
-            formData.append(
-                "aloneTime",
-                document.getElementById("aloneTime").value
-            );
-
-            formData.append(
-                "careInfo",
-                document.getElementById("careInfo").value
-            );
-
-            formData.append(
-                "vaccination",
-                document.getElementById("vaccination").value
-            );
-
-            formData.append(
-                "neutering",
-                document.getElementById("neutering").value
-            );
-
-            formData.append(
-                "medicalHistory",
-                document.getElementById("medicalHistory").value
-            );
-
-            formData.append(
-                "allergies",
-                document.getElementById("allergies").value
-            );
-
-            formData.append(
-                "medication",
-                document.getElementById("medication").value
-            );
-
-            formData.append(
-                "precautions",
-                document.getElementById("precautions").value
-            );
-
-            formData.append(
-                "sharePrice",
-                document.getElementById("sharePrice").value
-            );
-
-            formData.append(
-                "shareStartDate",
-                document.getElementById("shareStartDate").value
-            );
-
-            formData.append(
-                "shareEndDate",
-                document.getElementById("shareEndDate").value
-            );
-
-            formData.append(
-                "shareConditions",
-                document.getElementById("shareConditions").value
-            );
-
-
-            /*
-             * 画像
-             */
-
-            if (imageInput.files.length > 0) {
-
-                formData.append(
-                    "petImage",
-                    imageInput.files[0]
-                );
-            }
-
-
-            /*
-             * ボタンを一時的に無効化
-             */
-
-            registerButton.disabled = true;
-
-            registerButton.textContent =
-                "登録中...";
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        "pet-register",
-                        {
-                            method: "POST",
-                            body: formData
-                        }
-                    );
-
-
-                if (response.redirected) {
-
-    window.location.href = response.url;
-
-    return;
-}
-
-
-/*
- * Servletからリダイレクトされなかった場合
- */
-
-if (response.ok) {
-
-    alert("ペットを登録しました。");
-
-    window.location.href = "home.html";
-
-} else {
-
-    alert("ペットの登録に失敗しました。");
-
-    registerButton.disabled = false;
-
-    registerButton.textContent = "ペットを登録する";
-}
-
-            } catch (error) {
-
-                console.error(error);
-
-                alert(
-                    "通信エラーが発生しました。"
-                );
-
-                registerButton.disabled =
-                    false;
-
-                registerButton.textContent =
-                    "ペットを登録する";
-            }
-
-        }
-    );
-
-
-    /* =========================
-       登録成功メッセージ
-    ========================= */
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    if (params.get("success") === "true") {
-
-        alert(
-            "ペットを登録しました。"
-        );
-
-        window.history.replaceState(
-            {},
-            document.title,
-            "pet-register.html"
-        );
-    }
-
-
-    if (params.get("error") === "true") {
-
-        alert(
-            "ペットの登録に失敗しました。"
-        );
-
-        window.history.replaceState(
-            {},
-            document.title,
-            "pet-register.html"
-        );
-    }
+    loadShareRequests();
 
 });
+
+
+// ========================================
+// リクエスト一覧取得
+// ========================================
+
+async function loadShareRequests() {
+
+    const requestList =
+        document.getElementById("requestList");
+
+    try {
+
+        const response =
+            await fetch("share-request-list");
+
+        // --------------------------------
+        // ログイン切れ
+        // --------------------------------
+
+        if (response.status === 401) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        // --------------------------------
+        // HTTPエラー
+        // --------------------------------
+
+        if (!response.ok) {
+
+            throw new Error(
+                "リクエスト一覧の取得に失敗しました。"
+            );
+
+        }
+
+
+        // --------------------------------
+        // JSON取得
+        // --------------------------------
+
+        const requests =
+            await response.json();
+
+
+        // --------------------------------
+        // 表示
+        // --------------------------------
+
+        displayRequests(requests);
+
+    } catch (error) {
+
+        console.error(error);
+
+        requestList.innerHTML = `
+            <p class="empty-message">
+                リクエストの取得に失敗しました。
+            </p>
+        `;
+
+    }
+
+}
+
+
+// ========================================
+// リクエスト一覧表示
+// ========================================
+
+function displayRequests(requests) {
+
+    const requestList =
+        document.getElementById("requestList");
+
+
+    // ------------------------------------
+    // リクエストなし
+    // ------------------------------------
+
+    if (!requests ||
+        requests.length === 0) {
+
+        requestList.innerHTML = `
+            <p class="empty-message">
+                現在、ペットシェアリクエストはありません。
+            </p>
+        `;
+
+        return;
+
+    }
+
+
+    // ------------------------------------
+    // 一覧をクリア
+    // ------------------------------------
+
+    requestList.innerHTML = "";
+
+
+    // ------------------------------------
+    // カード作成
+    // ------------------------------------
+
+    requests.forEach(request => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "request-card";
+
+
+        // --------------------------------
+        // ステータス
+        // --------------------------------
+
+        let statusText = "";
+        let statusClass = "";
+
+        switch (request.status) {
+
+            case "pending":
+
+                statusText =
+                    "承認待ち";
+
+                statusClass =
+                    "status-pending";
+
+                break;
+
+
+            case "approved":
+
+                statusText =
+                    "承認済み";
+
+                statusClass =
+                    "status-approved";
+
+                break;
+
+
+            case "rejected":
+
+                statusText =
+                    "拒否済み";
+
+                statusClass =
+                    "status-rejected";
+
+                break;
+
+
+            default:
+
+                statusText =
+                    request.status;
+
+                statusClass = "";
+
+        }
+
+
+        // --------------------------------
+        // 利用時間
+        // --------------------------------
+
+        const usageHours =
+            formatUsageHours(
+                request.usageHours
+            );
+
+
+        // --------------------------------
+        // カードHTML
+        // --------------------------------
+
+        card.innerHTML = `
+
+            <div class="request-pet-name">
+                ${escapeHtml(request.petName)}
+            </div>
+
+
+            <div class="request-info">
+
+                <div class="request-row">
+
+                    <span class="request-label">
+                        申込者
+                    </span>
+
+                    <span class="request-value">
+                        ${escapeHtml(request.borrowerName)}
+                    </span>
+
+                </div>
+
+
+                <div class="request-row">
+
+                    <span class="request-label">
+                        利用開始
+                    </span>
+
+                    <span class="request-value">
+                        ${escapeHtml(request.startDatetime)}
+                    </span>
+
+                </div>
+
+
+                <div class="request-row">
+
+                    <span class="request-label">
+                        利用終了
+                    </span>
+
+                    <span class="request-value">
+                        ${escapeHtml(request.endDatetime)}
+                    </span>
+
+                </div>
+
+
+                <div class="request-row">
+
+                    <span class="request-label">
+                        利用時間
+                    </span>
+
+                    <span class="request-value">
+                        ${usageHours}
+                    </span>
+
+                </div>
+
+
+                <div class="request-row">
+
+                    <span class="request-label">
+                        状態
+                    </span>
+
+                    <span class="request-value">
+
+                        <span class="request-status ${statusClass}">
+                            ${statusText}
+                        </span>
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            ${
+                request.status === "pending"
+
+                ? createActionButtons(
+                    request.requestId
+                )
+
+                : createProcessedMessage(
+                    statusText
+                )
+            }
+
+        `;
+
+
+        requestList.appendChild(card);
+
+    });
+
+}
+
+
+// ========================================
+// 承認・拒否ボタン
+// ========================================
+
+function createActionButtons(requestId) {
+
+    return `
+
+        <div class="request-buttons">
+
+            <button
+                type="button"
+                class="approve-button"
+                onclick="updateRequestStatus(
+                    ${requestId},
+                    'approved'
+                )">
+
+                承認
+
+            </button>
+
+
+            <button
+                type="button"
+                class="reject-button"
+                onclick="updateRequestStatus(
+                    ${requestId},
+                    'rejected'
+                )">
+
+                拒否
+
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+// ========================================
+// 処理済みメッセージ
+// ========================================
+
+function createProcessedMessage(statusText) {
+
+    return `
+
+        <p class="processed-message">
+            このリクエストは「${escapeHtml(statusText)}」です。
+        </p>
+
+    `;
+
+}
+
+
+// ========================================
+// 承認・拒否処理
+// ========================================
+
+async function updateRequestStatus(
+    requestId,
+    status
+) {
+
+    // ------------------------------------
+    // 確認メッセージ
+    // ------------------------------------
+
+    let confirmMessage = "";
+
+    if (status === "approved") {
+
+        confirmMessage =
+            "このシェア申込みを承認しますか？";
+
+    } else {
+
+        confirmMessage =
+            "このシェア申込みを拒否しますか？";
+
+    }
+
+
+    // ------------------------------------
+    // キャンセル
+    // ------------------------------------
+
+    if (!confirm(confirmMessage)) {
+
+        return;
+
+    }
+
+
+    try {
+
+        // --------------------------------
+        // POSTデータ
+        // --------------------------------
+
+        const formData =
+            new URLSearchParams();
+
+        formData.append(
+            "requestId",
+            requestId
+        );
+
+        formData.append(
+            "status",
+            status
+        );
+
+
+        // --------------------------------
+        // サーバーへ送信
+        // --------------------------------
+
+        const response =
+            await fetch(
+                "share-request-status",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                        formData.toString()
+                }
+            );
+
+
+        // --------------------------------
+        // ログイン切れ
+        // --------------------------------
+
+        if (response.status === 401) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        // --------------------------------
+        // JSON取得
+        // --------------------------------
+
+        const result =
+            await response.json();
+
+
+        // --------------------------------
+        // 成功
+        // --------------------------------
+
+        if (result.success) {
+
+            showMessage(
+                result.message,
+                "success"
+            );
+
+            // 最新状態を再取得
+            await loadShareRequests();
+
+        } else {
+
+            showMessage(
+                result.message,
+                "error"
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "処理中にエラーが発生しました。",
+            "error"
+        );
+
+    }
+
+}
+
+
+// ========================================
+// メッセージ表示
+// ========================================
+
+function showMessage(
+    message,
+    type
+) {
+
+    const messageElement =
+        document.getElementById("message");
+
+
+    messageElement.textContent =
+        message;
+
+
+    messageElement.className =
+        "message";
+
+
+    if (type === "success") {
+
+        messageElement.classList.add(
+            "message-success"
+        );
+
+    } else {
+
+        messageElement.classList.add(
+            "message-error"
+        );
+
+    }
+
+
+    messageElement.style.display =
+        "block";
+
+
+    // ------------------------------------
+    // 3秒後に非表示
+    // ------------------------------------
+
+    setTimeout(() => {
+
+        messageElement.style.display =
+            "none";
+
+    }, 3000);
+
+}
+
+
+// ========================================
+// 利用時間表示
+// ========================================
+
+function formatUsageHours(hours) {
+
+    const number =
+        Number(hours);
+
+
+    if (Number.isInteger(number)) {
+
+        return `${number}時間`;
+
+    }
+
+
+    return `${number.toFixed(2)}時間`;
+
+}
+
+
+// ========================================
+// HTMLエスケープ
+// ========================================
+
+function escapeHtml(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}

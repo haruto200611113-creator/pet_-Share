@@ -280,6 +280,7 @@ public class ShareRequestDAO {
                 INNER JOIN pets p
                     ON sr.pet_id = p.pet_id
                 WHERE p.account_id = ?
+                AND sr.status <> 'rejected'
                 ORDER BY sr.created_at DESC
                 """;
 
