@@ -1,34 +1,31 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
     loadShareRequests();
 });
 
 
-// ========================================
-// 申込み一覧取得
-// ========================================
-
+/**
+ * 自分が申し込んだペットシェアを取得
+ */
 async function loadShareRequests() {
 
-    const requestList =
-        document.getElementById("requestList");
+    const requestList = document.getElementById("requestList");
+    const message = document.getElementById("message");
 
     try {
 
-        const response =
-            await fetch("share-request-my-list");
+        const response = await fetch("share-request-my-list");
 
-        // ログインしていない
+        // ログインしていない場合
         if (response.status === 401) {
             window.location.href = "login.html";
             return;
         }
 
         if (!response.ok) {
-            throw new Error("データ取得に失敗しました。");
+            throw new Error("データの取得に失敗しました。");
         }
 
-        const requests =
-            await response.json();
+        const requests = await response.json();
 
         displayRequests(requests);
 
@@ -41,24 +38,30 @@ async function loadShareRequests() {
                 申込み状況の取得に失敗しました。
             </p>
         `;
+
+        if (message) {
+            showMessage(
+                "申込み状況の取得に失敗しました。",
+                "error"
+            );
+        }
     }
 }
 
 
-// ========================================
-// 申込み一覧表示
-// ========================================
-
+/**
+ * 申込み一覧を表示
+ */
 function displayRequests(requests) {
 
-    const requestList =
-        document.getElementById("requestList");
+    const requestList = document.getElementById("requestList");
 
+    // 申込みがない場合
     if (!requests || requests.length === 0) {
 
         requestList.innerHTML = `
             <p class="empty-message">
-                現在、ペットシェアの申込みはありません。
+                ペットシェアの申込みはありません。
             </p>
         `;
 
@@ -67,58 +70,168 @@ function displayRequests(requests) {
 
     requestList.innerHTML = "";
 
-    requests.forEach(request => {
+    requests.forEach(function (request) {
 
-        const card =
-            document.createElement("div");
+        let statusText = "";
+        let statusClass = "";
+
+        /*
+         * ステータス表示
+         */
+        switch (request.status) {
+
+            case "pending":
+                statusText = "承認待ち";
+                statusClass = "status-pending";
+                break;
+
+            case "approved":
+                statusText = "承認済み";
+                statusClass = "status-approved";
+                break;
+
+            case "rejected":
+                statusText = "拒否済み";
+                statusClass = "status-rejected";
+                break;
+
+            default:
+                statusText = request.status;
+                statusClass = "";
+                break;
+        }
+
+
+        /*
+         * ペット画像
+         */
+        let petImageHtml = "";
+
+        if (
+            request.petImage &&
+            request.petImage.trim() !== ""
+        ) {
+
+            let imageSrc = request.petImage;
+
+            /*
+             * DBにBase64だけ保存されている場合
+             * data:image/jpeg;base64, を付ける
+             */
+            if (!imageSrc.startsWith("data:image/")) {
+                imageSrc =
+                    "data:image/jpeg;base64," + imageSrc;
+            }
+
+            petImageHtml = `
+                <div class="pet-image-box">
+                    <img
+                        src="${escapeHtml(imageSrc)}"
+                        alt="${escapeHtml(request.petName || "ペット")}"
+                        class="pet-request-image"
+                    >
+                </div>
+            `;
+
+        } else {
+
+            /*
+             * 画像が登録されていない場合
+             */
+            petImageHtml = `
+                <div class="pet-image-box pet-image-default">
+                    🐾
+                </div>
+            `;
+        }
+
+
+        /*
+         * ペット名
+         */
+        const petName =
+            request.petName &&
+            request.petName.trim() !== ""
+                ? request.petName
+                : "名前未登録";
+
+
+        /*
+         * 申込みカード
+         */
+        const card = document.createElement("div");
 
         card.className = "request-card";
 
-        const statusInfo =
-            getStatusInfo(request.status);
 
+        /*
+         * ここが今回変更した部分
+         *
+         * 「ペットID：○○」
+         * ↓
+         * 「ペット画像＋ペット名」
+         *
+         * その他の情報は今まで通り
+         */
         card.innerHTML = `
+
             <div class="request-header">
 
-                <h2 class="request-pet-name">
-                    🐾 ペットID：${escapeHtml(
-                        String(request.petId)
-                    )}
-                </h2>
+                <div class="request-pet-info">
 
-                <span class="request-status ${statusInfo.className}">
-                    ${statusInfo.text}
+                    ${petImageHtml}
+
+                    <h2 class="request-pet-name">
+                        ${escapeHtml(petName)}
+                    </h2>
+
+                </div>
+
+                <span class="request-status ${statusClass}">
+                    ${escapeHtml(statusText)}
                 </span>
 
             </div>
 
+
             <div class="request-info">
 
                 <div class="request-row">
+
                     <span class="request-label">
-                        利用開始
+                        利用開始日時
                     </span>
 
                     <span class="request-value">
-                        ${formatDateTime(
-                            request.startDatetime
+                        ${escapeHtml(
+                            formatDateTime(
+                                request.startDatetime
+                            )
                         )}
                     </span>
+
                 </div>
 
+
                 <div class="request-row">
+
                     <span class="request-label">
-                        利用終了
+                        利用終了日時
                     </span>
 
                     <span class="request-value">
-                        ${formatDateTime(
-                            request.endDatetime
+                        ${escapeHtml(
+                            formatDateTime(
+                                request.endDatetime
+                            )
                         )}
                     </span>
+
                 </div>
 
+
                 <div class="request-row">
+
                     <span class="request-label">
                         利用時間
                     </span>
@@ -128,134 +241,94 @@ function displayRequests(requests) {
                             request.usageHours
                         )}
                     </span>
+
                 </div>
 
+
                 <div class="request-row">
+
                     <span class="request-label">
                         申込み日時
                     </span>
 
                     <span class="request-value">
-                        ${formatDateTime(
-                            request.createdAt
+                        ${escapeHtml(
+                            formatDateTime(
+                                request.createdAt
+                            )
                         )}
                     </span>
+
                 </div>
 
+
                 <div class="request-row">
+
                     <span class="request-label">
-                        申込み状況
+                        ステータス
                     </span>
 
-                    <span class="request-value ${statusInfo.className}">
-                        ${statusInfo.text}
+                    <span class="request-value">
+
+                        <span class="request-status ${statusClass}">
+                            ${escapeHtml(statusText)}
+                        </span>
+
                     </span>
+
                 </div>
 
             </div>
+
         `;
+
 
         requestList.appendChild(card);
     });
 }
 
 
-// ========================================
-// ステータス表示
-// ========================================
+/**
+ * 日時を見やすい形式に変換
+ */
+function formatDateTime(dateTime) {
 
-function getStatusInfo(status) {
-
-    switch (status) {
-
-        case "pending":
-            return {
-                text: "承認待ち",
-                className: "status-pending"
-            };
-
-        case "approved":
-            return {
-                text: "承認済み",
-                className: "status-approved"
-            };
-
-        case "rejected":
-            return {
-                text: "拒否済み",
-                className: "status-rejected"
-            };
-
-        default:
-            return {
-                text: "不明",
-                className: ""
-            };
-    }
-}
-
-
-// ========================================
-// 日時表示
-// ========================================
-
-function formatDateTime(datetime) {
-
-    if (!datetime) {
+    if (!dateTime) {
         return "";
     }
 
-    const date =
-        new Date(datetime.replace(" ", "T"));
-
-    if (isNaN(date.getTime())) {
-        return escapeHtml(datetime);
-    }
-
-    const year =
-        date.getFullYear();
-
-    const month =
-        String(date.getMonth() + 1)
-            .padStart(2, "0");
-
-    const day =
-        String(date.getDate())
-            .padStart(2, "0");
-
-    const hour =
-        String(date.getHours())
-            .padStart(2, "0");
-
-    const minute =
-        String(date.getMinutes())
-            .padStart(2, "0");
-
-    return `${year}/${month}/${day} ${hour}:${minute}`;
+    /*
+     * Timestampの形式
+     * 2026-11-17 14:30:00
+     */
+    return dateTime
+        .replace("T", " ")
+        .substring(0, 16);
 }
 
 
-// ========================================
-// 利用時間表示
-// ========================================
-
+/**
+ * 利用時間を表示
+ */
 function formatUsageHours(hours) {
 
-    const value =
-        Number(hours);
+    const value = Number(hours);
 
-    if (Number.isInteger(value)) {
+    if (Number.isNaN(value)) {
+        return "";
+    }
+
+    if (value % 1 === 0) {
         return `${value}時間`;
     }
 
-    return `${value}時間`;
+    return `${value.toFixed(2)}時間`;
 }
 
 
-// ========================================
-// HTMLエスケープ
-// ========================================
-
+/**
+ * HTMLエスケープ
+ */
 function escapeHtml(value) {
 
     if (value === null || value === undefined) {
@@ -268,4 +341,27 @@ function escapeHtml(value) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+
+/**
+ * メッセージ表示
+ */
+function showMessage(text, type) {
+
+    const message = document.getElementById("message");
+
+    if (!message) {
+        return;
+    }
+
+    message.textContent = text;
+
+    message.className =
+        "message " +
+        (type === "error"
+            ? "message-error"
+            : "message-success");
+
+    message.style.display = "block";
 }

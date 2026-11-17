@@ -1,6 +1,7 @@
 package com.petshare;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 public class ShareRequestMyListServlet extends HttpServlet {
 
     private final ShareRequestDAO shareRequestDAO = new ShareRequestDAO();
+    private final PetDAO petDAO = new PetDAO();
 
     @Override
     protected void doGet(
@@ -21,33 +23,37 @@ public class ShareRequestMyListServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=UTF-8");
 
         HttpSession session = request.getSession(false);
 
         // ログイン確認
-        if (session == null
-                || session.getAttribute("loginUser") == null) {
+        if (!AccessControl.isLoggedIn(session)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
 
-            response.setStatus(
-                    HttpServletResponse.SC_UNAUTHORIZED);
+        // ログイン中のアカウントID取得
+        Object accountIdObj = session.getAttribute("accountId");
 
-            response.getWriter().write(
-                    "{\"error\":\"not_logged_in\"}");
+        if (accountIdObj == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
 
+        int borrowerId;
+
+        try {
+            borrowerId = Integer.parseInt(accountIdObj.toString());
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
         try {
 
-            // ログイン中のアカウントID取得
-            int accountId = Integer.parseInt(
-                    session.getAttribute("accountId").toString());
-
-            // 自分が申し込んだリクエストを取得
-            List<ShareRequest> requests = shareRequestDAO.findRequestsForBorrower(
-                    accountId);
+            // 自分が申し込んだシェアリクエストを取得
+            List<ShareRequest> requests = shareRequestDAO.findRequestsForBorrower(borrowerId);
 
             StringBuilder json = new StringBuilder();
 
@@ -55,7 +61,20 @@ public class ShareRequestMyListServlet extends HttpServlet {
 
             for (int i = 0; i < requests.size(); i++) {
 
-                ShareRequest r = requests.get(i);
+                ShareRequest requestData = requests.get(i);
+
+                /*
+                 * この申込みのペット情報を取得
+                 */
+                Pet pet = petDAO.findById(requestData.getPetId());
+
+                String petName = "";
+                String petImage = "";
+
+                if (pet != null) {
+                    petName = pet.getPetName();
+                    petImage = pet.getPetImage();
+                }
 
                 if (i > 0) {
                     json.append(",");
@@ -63,40 +82,65 @@ public class ShareRequestMyListServlet extends HttpServlet {
 
                 json.append("{");
 
+                // 申込みID
                 json.append("\"requestId\":")
-                        .append(r.getRequestId())
+                        .append(requestData.getRequestId())
                         .append(",");
 
+                // ペットID
                 json.append("\"petId\":")
-                        .append(r.getPetId())
+                        .append(requestData.getPetId())
                         .append(",");
 
+                // ペット名
+                json.append("\"petName\":\"")
+                        .append(escapeJson(petName))
+                        .append("\",");
+
+                // ペット画像
+                json.append("\"petImage\":\"")
+                        .append(escapeJson(petImage))
+                        .append("\",");
+
+                // 借りる人のID
                 json.append("\"borrowerId\":")
-                        .append(r.getBorrowerId())
+                        .append(requestData.getBorrowerId())
                         .append(",");
 
+                // 利用開始日時
                 json.append("\"startDatetime\":\"")
-                        .append(r.getStartDatetime())
+                        .append(escapeJson(
+                                String.valueOf(
+                                        requestData.getStartDatetime())))
                         .append("\",");
 
+                // 利用終了日時
                 json.append("\"endDatetime\":\"")
-                        .append(r.getEndDatetime())
+                        .append(escapeJson(
+                                String.valueOf(
+                                        requestData.getEndDatetime())))
                         .append("\",");
 
+                // 利用時間
                 json.append("\"usageHours\":")
-                        .append(r.getUsageHours())
+                        .append(requestData.getUsageHours())
                         .append(",");
 
+                // シェア料金
                 json.append("\"sharePrice\":")
-                        .append(r.getSharePrice())
+                        .append(requestData.getSharePrice())
                         .append(",");
 
+                // ステータス
                 json.append("\"status\":\"")
-                        .append(escapeJson(r.getStatus()))
+                        .append(escapeJson(requestData.getStatus()))
                         .append("\",");
 
+                // 申込み日時
                 json.append("\"createdAt\":\"")
-                        .append(r.getCreatedAt())
+                        .append(escapeJson(
+                                String.valueOf(
+                                        requestData.getCreatedAt())))
                         .append("\"");
 
                 json.append("}");
@@ -104,8 +148,9 @@ public class ShareRequestMyListServlet extends HttpServlet {
 
             json.append("]");
 
-            response.getWriter().write(
-                    json.toString());
+            PrintWriter out = response.getWriter();
+            out.print(json.toString());
+            out.flush();
 
         } catch (Exception e) {
 
@@ -114,12 +159,18 @@ public class ShareRequestMyListServlet extends HttpServlet {
             response.setStatus(
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
-            response.getWriter().write(
+            PrintWriter out = response.getWriter();
+
+            out.print(
                     "{\"error\":\"system_error\"}");
+
+            out.flush();
         }
     }
 
-    // JSON文字列用のエスケープ
+    /**
+     * JSON用エスケープ処理
+     */
     private String escapeJson(String value) {
 
         if (value == null) {
@@ -128,6 +179,9 @@ public class ShareRequestMyListServlet extends HttpServlet {
 
         return value
                 .replace("\\", "\\\\")
-                .replace("\"", "\\\"");
+                .replace("\"", "\\\"")
+                .replace("\r", "\\r")
+                .replace("\n", "\\n")
+                .replace("\t", "\\t");
     }
 }

@@ -1,150 +1,89 @@
-body {
-    background: #f7f3ef;
-    color: #4b3b33;
-}
+/* ========================================
+   ペット情報
+======================================== */
 
-.request-container {
-    width: 90%;
-    max-width: 650px;
-    margin: 40px auto;
-}
-
-.request-title {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.request-description {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #77665d;
-}
-
-.request-list {
+.request-pet-info {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.request-card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 22px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-}
-
-.request-header {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 18px;
+    gap: 12px;
+
+    min-width: 0;
 }
+
+
+/* ========================================
+   ペット画像の角丸長方形
+======================================== */
+
+.pet-image-box {
+    width: 90px;
+    height: 70px;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+
+    background: #f1e9e3;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ========================================
+   ペット画像
+======================================== */
+
+.pet-request-image {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+
+/* ========================================
+   画像がない場合
+======================================== */
+
+.pet-image-default {
+    font-size: 28px;
+}
+
+
+/* ========================================
+   ペット名
+======================================== */
 
 .request-pet-name {
     margin: 0;
+
     font-size: 20px;
-}
-
-.request-status {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 13px;
     font-weight: bold;
-    white-space: nowrap;
-}
 
-.status-pending {
-    background: #fff0d8;
-    color: #c47a22;
-}
-
-.status-approved {
-    background: #e5f5e9;
-    color: #36804d;
-}
-
-.status-rejected {
-    background: #f8e4e1;
-    color: #b94b3d;
-}
-
-.request-info {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.request-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee5df;
-}
-
-.request-label {
-    color: #88776e;
-    font-size: 14px;
-}
-
-.request-value {
-    text-align: right;
-    font-weight: 500;
-}
-
-.empty-message,
-.loading-message {
-    text-align: center;
-    padding: 40px 20px;
-    color: #88776e;
-}
-
-.back-button {
-    display: block;
-    width: fit-content;
-    margin: 30px auto 0;
-    padding: 12px 24px;
-    background: #eee5df;
     color: #4b3b33;
-    text-decoration: none;
-    border-radius: 10px;
-    transition: 0.2s;
 }
 
-.back-button:hover {
-    opacity: 0.8;
-}
 
-.message {
-    padding: 12px 15px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-}
+/* ========================================
+   スマートフォン
+======================================== */
 
 @media (max-width: 600px) {
 
-    .request-container {
-        width: 94%;
-        margin: 25px auto;
+    .pet-image-box {
+        width: 75px;
+        height: 60px;
+
+        border-radius: 10px;
     }
 
-    .request-card {
-        padding: 18px;
-    }
-
-    .request-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .request-row {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .request-value {
-        text-align: left;
+    .request-pet-name {
+        font-size: 18px;
     }
 }
