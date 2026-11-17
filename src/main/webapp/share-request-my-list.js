@@ -625,8 +625,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     statusText =
                         "承認待ち";
 
+                    /*
+                     * CSSの .request-status.pending
+                     * に合わせる
+                     */
                     statusClass =
-                        "status-pending";
+                        "pending";
 
                     break;
 
@@ -636,8 +640,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     statusText =
                         "承認済み";
 
+                    /*
+                     * CSSの .request-status.approved
+                     * に合わせる
+                     */
                     statusClass =
-                        "status-approved";
+                        "approved";
 
                     break;
 
@@ -647,8 +655,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     statusText =
                         "拒否済み";
 
+                    /*
+                     * CSSの .request-status.rejected
+                     * に合わせる
+                     */
                     statusClass =
-                        "status-rejected";
+                        "rejected";
 
                     break;
 
@@ -658,8 +670,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     statusText =
                         "キャンセル済み";
 
+                    /*
+                     * CSSの .request-status.cancelled
+                     * に合わせる
+                     */
                     statusClass =
-                        "status-cancelled";
+                        "cancelled";
 
                     break;
 
@@ -999,6 +1015,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.createElement(
                         "div"
                     );
+
 
                 buttons.className =
                     "request-buttons";
