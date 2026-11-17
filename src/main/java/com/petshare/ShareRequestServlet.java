@@ -99,9 +99,11 @@ public class ShareRequestServlet extends HttpServlet {
             // ==========================================
             String petIdParam = request.getParameter("petId");
 
-            String startDatetimeParam = request.getParameter("startDatetime");
+            String startDatetimeParam = request.getParameter(
+                    "startDatetime");
 
-            String endDatetimeParam = request.getParameter("endDatetime");
+            String endDatetimeParam = request.getParameter(
+                    "endDatetime");
 
             System.out.println(
                     "petId = " + petIdParam);
@@ -415,10 +417,10 @@ public class ShareRequestServlet extends HttpServlet {
             // ==========================================
             // ⑰ 重複申込みチェック
             // ==========================================
-            //
+
             // ShareRequestDAO は Timestamp を受け取るため、
             // LocalDateTime → Timestamp に変換して渡す
-            //
+
             Timestamp startTimestamp = Timestamp.valueOf(
                     startDatetime);
 
@@ -526,11 +528,13 @@ public class ShareRequestServlet extends HttpServlet {
                 System.out.println(
                         "!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
+                // ------------------------------------------
+                // 申込み成功
+                // → ホーム画面へ移動
+                // ------------------------------------------
                 response.sendRedirect(
                         request.getContextPath()
-                                + "/borrow-request.html?petId="
-                                + petId
-                                + "&success=true");
+                                + "/home.html");
 
             } else {
 
@@ -543,6 +547,10 @@ public class ShareRequestServlet extends HttpServlet {
                 System.out.println(
                         "!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
+                // ------------------------------------------
+                // 申込み失敗
+                // → 申込み画面へ戻る
+                // ------------------------------------------
                 response.sendRedirect(
                         request.getContextPath()
                                 + "/borrow-request.html?petId="
@@ -563,6 +571,10 @@ public class ShareRequestServlet extends HttpServlet {
 
             e.printStackTrace();
 
+            // ------------------------------------------
+            // システムエラー
+            // → 申込み画面へ戻る
+            // ------------------------------------------
             response.sendRedirect(
                     request.getContextPath()
                             + "/borrow-request.html?petId="
