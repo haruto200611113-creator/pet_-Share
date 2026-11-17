@@ -7,11 +7,17 @@
 
     <title>ペットシェアアプリ｜ホーム</title>
 
+    <!-- ホーム画面CSS -->
     <link rel="stylesheet" href="home.css">
+
+    <!-- ログアウト確認CSS -->
     <link rel="stylesheet" href="logout-confirm.css">
 
     <!-- 共通下部ナビゲーション -->
     <link rel="stylesheet" href="bottom-nav.css">
+
+    <!-- 共通ハンバーガーメニュー -->
+    <link rel="stylesheet" href="common-menu.css">
 </head>
 
 <body>
@@ -30,32 +36,32 @@
                     ペットシェアアプリ
                 </h1>
 
+                <!-- ハンバーガーメニューボタン -->
                 <button
                     type="button"
                     id="menuButton"
                     class="menu-button"
-                    aria-label="メニューを開く"
-                >
+                    aria-label="メニューを開く">
                     ☰
                 </button>
 
             </div>
 
 
-            <!-- 検索 -->
+            <!-- =========================
+                 検索
+            ========================== -->
 
             <div class="search-area">
 
                 <input
                     type="search"
                     id="searchInput"
-                    placeholder="ペットの名前・種類・地域で検索"
-                >
+                    placeholder="ペットの名前・種類・地域で検索">
 
                 <button
                     type="button"
-                    id="searchButton"
-                >
+                    id="searchButton">
                     検索
                 </button>
 
@@ -70,17 +76,19 @@
          ハンバーガーメニュー
     ========================== -->
 
+    <!-- メニューを開いたときの背景 -->
     <div
         id="menuOverlay"
-        class="menu-overlay"
-    ></div>
+        class="menu-overlay">
+    </div>
 
 
+    <!-- サイドメニュー -->
     <aside
         id="sideMenu"
-        class="side-menu"
-    >
+        class="side-menu">
 
+        <!-- メニューヘッダー -->
         <div class="side-menu-header">
 
             <h2>
@@ -91,13 +99,16 @@
                 type="button"
                 id="closeMenuButton"
                 class="close-menu-button"
-                aria-label="メニューを閉じる"
-            >
+                aria-label="メニューを閉じる">
                 ×
             </button>
 
         </div>
 
+
+        <!-- =========================
+             メニュー内容
+        ========================== -->
 
         <div class="menu-content">
 
@@ -112,10 +123,11 @@
                 </h3>
 
 
+                <!-- マイページ -->
                 <a
                     href="mypage.jsp"
-                    class="menu-item"
-                >
+                    class="menu-item">
+
                     <span class="menu-icon">
                         👤
                     </span>
@@ -123,13 +135,15 @@
                     <span>
                         マイページ
                     </span>
+
                 </a>
 
 
+                <!-- プロフィール編集 -->
                 <a
                     href="profile-edit.html"
-                    class="menu-item"
-                >
+                    class="menu-item">
+
                     <span class="menu-icon">
                         ✏️
                     </span>
@@ -137,13 +151,15 @@
                     <span>
                         プロフィール編集
                     </span>
+
                 </a>
 
 
+                <!-- 自分の投稿 -->
                 <a
                     href="my-posts.html"
-                    class="menu-item"
-                >
+                    class="menu-item">
+
                     <span class="menu-icon">
                         📋
                     </span>
@@ -151,13 +167,15 @@
                     <span>
                         自分の投稿
                     </span>
+
                 </a>
 
 
+                <!-- いいねしたペット -->
                 <a
                     href="likes.html"
-                    class="menu-item"
-                >
+                    class="menu-item">
+
                     <span class="menu-icon">
                         ❤️
                     </span>
@@ -165,6 +183,7 @@
                     <span>
                         いいねしたペット
                     </span>
+
                 </a>
 
             </div>
@@ -181,10 +200,11 @@
                 </h3>
 
 
+                <!-- シェア履歴 -->
                 <a
                     href="share-history.html"
-                    class="menu-item"
-                >
+                    class="menu-item">
+
                     <span class="menu-icon">
                         🐾
                     </span>
@@ -192,13 +212,15 @@
                     <span>
                         シェア履歴
                     </span>
+
                 </a>
 
 
+                <!-- 申し込み状況 -->
                 <a
                     href="application-status.html"
-                    class="menu-item"
-                >
+                    class="menu-item">
+
                     <span class="menu-icon">
                         📅
                     </span>
@@ -206,13 +228,15 @@
                     <span>
                         申し込み状況
                     </span>
+
                 </a>
 
 
+                <!-- チャット -->
                 <a
                     href="chat.html"
-                    class="menu-item"
-                >
+                    class="menu-item">
+
                     <span class="menu-icon">
                         💬
                     </span>
@@ -220,6 +244,7 @@
                     <span>
                         チャット
                     </span>
+
                 </a>
 
             </div>
@@ -236,10 +261,11 @@
                 </h3>
 
 
+                <!-- よくある質問 -->
                 <a
                     href="faq.html"
-                    class="menu-item"
-                >
+                    class="menu-item">
+
                     <span class="menu-icon">
                         ❓
                     </span>
@@ -247,14 +273,16 @@
                     <span>
                         よくある質問
                     </span>
+
                 </a>
 
 
+                <!-- 利用規約 -->
                 <a
                     href="terms.html"
                     class="menu-item"
-                    id="termsLink"
-                >
+                    id="termsLink">
+
                     <span class="menu-icon">
                         📖
                     </span>
@@ -262,13 +290,15 @@
                     <span>
                         利用規約
                     </span>
+
                 </a>
 
 
+                <!-- プライバシーポリシー -->
                 <a
                     href="privacy.html"
-                    class="menu-item"
-                >
+                    class="menu-item">
+
                     <span class="menu-icon">
                         🔒
                     </span>
@@ -276,13 +306,15 @@
                     <span>
                         プライバシーポリシー
                     </span>
+
                 </a>
 
 
+                <!-- お問い合わせ -->
                 <a
                     href="contact.html"
-                    class="menu-item"
-                >
+                    class="menu-item">
+
                     <span class="menu-icon">
                         📩
                     </span>
@@ -290,6 +322,7 @@
                     <span>
                         お問い合わせ
                     </span>
+
                 </a>
 
             </div>
@@ -306,10 +339,11 @@
                 </h3>
 
 
+                <!-- 設定 -->
                 <a
                     href="settings.html"
-                    class="menu-item"
-                >
+                    class="menu-item">
+
                     <span class="menu-icon">
                         ⚙️
                     </span>
@@ -317,14 +351,16 @@
                     <span>
                         設定
                     </span>
+
                 </a>
 
 
+                <!-- ログアウト -->
                 <button
                     type="button"
                     id="logoutButton"
-                    class="menu-item menu-button-item"
-                >
+                    class="menu-item menu-button-item">
+
                     <span class="menu-icon">
                         🚪
                     </span>
@@ -332,6 +368,7 @@
                     <span>
                         ログアウト
                     </span>
+
                 </button>
 
             </div>
@@ -347,45 +384,49 @@
 
     <main class="main">
 
-        <!-- 条件検索 -->
+        <!-- =========================
+             条件検索
+        ========================== -->
 
         <section class="search-condition">
 
             <div class="condition-buttons">
 
+                <!-- 条件検索 -->
                 <button
                     type="button"
-                    id="conditionButton"
-                >
+                    id="conditionButton">
                     条件検索
                 </button>
 
 
+                <!-- 絞り込み -->
                 <button
                     type="button"
-                    id="filterButton"
-                >
+                    id="filterButton">
                     絞り込み
                 </button>
 
 
+                <!-- 並び替え -->
                 <button
                     type="button"
-                    id="sortButton"
-                >
+                    id="sortButton">
                     並び替え
                 </button>
 
             </div>
 
 
-            <!-- 条件設定 -->
+            <!-- =========================
+                 条件設定
+            ========================== -->
 
             <div
                 id="conditionArea"
-                class="condition-area"
-            >
+                class="condition-area">
 
+                <!-- 種類 -->
                 <div class="condition-item">
 
                     <label for="typeFilter">
@@ -415,6 +456,7 @@
                 </div>
 
 
+                <!-- 地域 -->
                 <div class="condition-item">
 
                     <label for="areaFilter">
@@ -456,6 +498,7 @@
                 </div>
 
 
+                <!-- 並び順 -->
                 <div class="condition-item">
 
                     <label for="sortSelect">
@@ -481,11 +524,11 @@
                 </div>
 
 
+                <!-- 条件適用 -->
                 <button
                     type="button"
                     id="applyButton"
-                    class="apply-button"
-                >
+                    class="apply-button">
                     条件を適用
                 </button>
 
@@ -513,10 +556,10 @@
             </div>
 
 
+            <!-- ペット一覧 -->
             <div
                 id="petList"
-                class="pet-list"
-            >
+                class="pet-list">
             </div>
 
         </section>
@@ -531,9 +574,10 @@
     <button
         type="button"
         id="postButton"
-        class="post-button"
-    >
+        class="post-button">
+
         ＋ ペットを投稿
+
     </button>
 
 
@@ -543,16 +587,15 @@
 
     <div
         id="postModal"
-        class="modal"
-    >
+        class="modal">
 
         <div class="modal-content">
 
+            <!-- 閉じる -->
             <button
                 type="button"
                 id="closeModal"
-                class="close-button"
-            >
+                class="close-button">
                 ×
             </button>
 
@@ -562,8 +605,10 @@
             </h2>
 
 
+            <!-- 投稿フォーム -->
             <form id="postForm">
 
+                <!-- ペット画像 -->
                 <div class="form-group">
 
                     <label for="petImage">
@@ -574,19 +619,19 @@
                         type="file"
                         id="petImage"
                         accept="image/*"
-                        required
-                    >
+                        required>
 
 
+                    <!-- 画像プレビュー -->
                     <img
                         id="imagePreview"
                         class="image-preview"
-                        alt="画像プレビュー"
-                    >
+                        alt="画像プレビュー">
 
                 </div>
 
 
+                <!-- ペットの名前 -->
                 <div class="form-group">
 
                     <label for="petName">
@@ -598,12 +643,12 @@
                         id="petName"
                         placeholder="例：ポチ"
                         maxlength="50"
-                        required
-                    >
+                        required>
 
                 </div>
 
 
+                <!-- 種類 -->
                 <div class="form-group">
 
                     <label for="petType">
@@ -612,8 +657,7 @@
 
                     <select
                         id="petType"
-                        required
-                    >
+                        required>
 
                         <option value="">
                             選択してください
@@ -636,6 +680,7 @@
                 </div>
 
 
+                <!-- 年齢 -->
                 <div class="form-group">
 
                     <label for="petAge">
@@ -648,12 +693,12 @@
                         min="0"
                         max="100"
                         placeholder="例：3"
-                        required
-                    >
+                        required>
 
                 </div>
 
 
+                <!-- 地域 -->
                 <div class="form-group">
 
                     <label for="petArea">
@@ -662,8 +707,7 @@
 
                     <select
                         id="petArea"
-                        required
-                    >
+                        required>
 
                         <option value="">
                             選択してください
@@ -698,10 +742,10 @@
                 </div>
 
 
+                <!-- 投稿 -->
                 <button
                     type="submit"
-                    class="submit-button"
-                >
+                    class="submit-button">
                     投稿する
                 </button>
 
@@ -719,8 +763,7 @@
     <div
         id="logoutModal"
         class="logout-modal-overlay"
-        style="display: none;"
-    >
+        style="display: none;">
 
         <div class="logout-modal">
 
@@ -732,23 +775,19 @@
             <div class="logout-modal-buttons">
 
                 <!-- 左：はい -->
-
                 <button
                     type="button"
                     id="logoutYesButton"
-                    class="logout-modal-button logout-yes"
-                >
+                    class="logout-modal-button logout-yes">
                     はい
                 </button>
 
 
                 <!-- 右：いいえ -->
-
                 <button
                     type="button"
                     id="logoutNoButton"
-                    class="logout-modal-button logout-no"
-                >
+                    class="logout-modal-button logout-no">
                     いいえ
                 </button>
 
@@ -771,6 +810,9 @@
 
     <!-- 共通下部ナビゲーション -->
     <script src="bottom-nav.js"></script>
+
+    <!-- 共通ハンバーガーメニュー -->
+    <script src="common-menu.js"></script>
 
 </body>
 
