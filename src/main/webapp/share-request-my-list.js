@@ -64,6 +64,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
      * =====================================================
+     * シェア料金を表示
+     * =====================================================
+     */
+    function formatSharePrice(price) {
+
+        const value = Number(price);
+
+        if (Number.isNaN(value)) {
+            return "";
+        }
+
+        return `${value.toLocaleString("ja-JP")}円`;
+    }
+
+
+    /*
+     * =====================================================
      * メッセージモーダル
      * =====================================================
      */
@@ -814,6 +831,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
             /*
              * =============================================
+             * シェア料金
+             * =============================================
+             *
+             * DBに保存されている share_price を
+             * そのまま表示する
+             */
+            const sharePrice =
+                formatSharePrice(
+                    request.sharePrice
+                );
+
+
+            /*
+             * =============================================
              * 申込み日時
              * =============================================
              */
@@ -954,6 +985,25 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
 
 
+                    <!-- シェア料金 -->
+
+                    <div class="request-row">
+
+                        <span class="request-label">
+                            シェア料金
+                        </span>
+
+                        <span class="request-value">
+
+                            ${escapeHtml(
+                                sharePrice
+                            )}
+
+                        </span>
+
+                    </div>
+
+
                     <!-- 申込み日時 -->
 
                     <div class="request-row">
@@ -997,8 +1047,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
 
                 </div>
-
-            `;
+`;
 
 
             /*
