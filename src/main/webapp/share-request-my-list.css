@@ -139,10 +139,6 @@ body {
    ペット画像
 ===================================== */
 
-/* =====================================
-   ペット画像
-===================================== */
-
 .pet-image-box {
     width: 70px;
     height: 70px;
@@ -306,7 +302,7 @@ body {
 
     flex-direction: column;
 
-    gap: 10px;
+    gap: 8px;
 
     margin-top: 18px;
 
@@ -321,11 +317,23 @@ body {
 ===================================== */
 
 .request-info-row {
-    display: flex;
+    display: grid;
 
-    align-items: flex-start;
+    grid-template-columns: 110px minmax(0, 1fr);
 
-    gap: 10px;
+    align-items: stretch;
+
+    gap: 0;
+
+    min-height: 40px;
+
+    border: 1px solid #eee7e2;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    background: #ffffff;
 
     font-size: 13px;
 
@@ -338,13 +346,21 @@ body {
 ===================================== */
 
 .request-info-row .label {
-    width: 75px;
+    width: auto;
 
-    flex-shrink: 0;
+    display: flex;
 
-    color: #999;
+    align-items: center;
+
+    padding: 9px 10px;
+
+    background: #f7f3ef;
+
+    color: #8f8179;
 
     font-weight: 600;
+
+    border-right: 1px solid #eee7e2;
 }
 
 
@@ -353,7 +369,15 @@ body {
 ===================================== */
 
 .request-info-row .value {
-    flex: 1;
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 9px 12px;
+
+    background: #ffffff;
 
     color: #4b3b33;
 
@@ -832,10 +856,10 @@ body {
 
 
     .pet-image-box {
-    width: 60px;
-    height: 60px;
-    flex-basis: 60px;
-}
+        width: 60px;
+        height: 60px;
+        flex-basis: 60px;
+    }
 
 
     .request-pet-name {
@@ -853,12 +877,21 @@ body {
 
 
     .request-info-row {
+        grid-template-columns: 90px minmax(0, 1fr);
+
         font-size: 12px;
     }
 
 
     .request-info-row .label {
-        width: 70px;
+        width: auto;
+
+        padding: 8px 9px;
+    }
+
+
+    .request-info-row .value {
+        padding: 8px 10px;
     }
 
 
