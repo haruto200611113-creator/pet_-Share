@@ -1,6 +1,6 @@
 /* =====================================
    Pet Share
-   ペットシェアリクエスト
+   ペットシェア申込み状況
 ===================================== */
 
 * {
@@ -109,7 +109,7 @@ body {
    カード上部
 ===================================== */
 
-.request-card-main {
+.request-header {
     display: flex;
 
     align-items: center;
@@ -117,6 +117,8 @@ body {
     justify-content: space-between;
 
     gap: 15px;
+
+    min-width: 0;
 }
 
 
@@ -124,14 +126,16 @@ body {
    ペット情報
 ===================================== */
 
-.request-pet {
+.request-pet-info {
     display: flex;
 
     align-items: center;
 
-    gap: 14px;
+    gap: 12px;
 
     min-width: 0;
+
+    flex: 1;
 }
 
 
@@ -141,6 +145,7 @@ body {
 
 .pet-image-box {
     width: 70px;
+
     height: 70px;
 
     flex: 0 0 70px;
@@ -152,12 +157,20 @@ body {
     background: #f7f3ef;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 }
 
+
+/* =====================================
+   ペット画像本体
+===================================== */
+
 .pet-request-image {
     width: 100%;
+
     height: 100%;
 
     display: block;
@@ -172,25 +185,10 @@ body {
    画像なし
 ===================================== */
 
-.pet-image-box.no-image {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
+.pet-image-default {
     color: #c5aaa0;
 
     font-size: 28px;
-}
-
-
-/* =====================================
-   ペット情報
-===================================== */
-
-.request-pet-info {
-    min-width: 0;
 }
 
 
@@ -199,7 +197,7 @@ body {
 ===================================== */
 
 .request-pet-name {
-    margin: 0 0 5px;
+    margin: 0;
 
     color: #4b3b33;
 
@@ -210,21 +208,6 @@ body {
     line-height: 1.4;
 
     word-break: break-word;
-}
-
-
-/* =====================================
-   飼い主名
-===================================== */
-
-.request-owner {
-    margin: 0;
-
-    color: #999;
-
-    font-size: 12px;
-
-    line-height: 1.5;
 }
 
 
@@ -249,44 +232,48 @@ body {
 }
 
 
-/* -------------------------------------
+/* =====================================
    承認待ち
-------------------------------------- */
+===================================== */
 
-.request-status.pending {
+.request-status.pending,
+.request-status.status-pending {
     background: #fff3e8;
 
     color: #d9824b;
 }
 
 
-/* -------------------------------------
+/* =====================================
    承認済み
-------------------------------------- */
+===================================== */
 
-.request-status.approved {
+.request-status.approved,
+.request-status.status-approved {
     background: #eaf6ee;
 
     color: #4d8b62;
 }
 
 
-/* -------------------------------------
+/* =====================================
    拒否済み
-------------------------------------- */
+===================================== */
 
-.request-status.rejected {
+.request-status.rejected,
+.request-status.status-rejected {
     background: #f8eeee;
 
     color: #b86b6b;
 }
 
 
-/* -------------------------------------
+/* =====================================
    キャンセル済み
-------------------------------------- */
+===================================== */
 
-.request-status.cancelled {
+.request-status.cancelled,
+.request-status.status-cancelled {
     background: #eeeeee;
 
     color: #888888;
@@ -297,7 +284,7 @@ body {
    詳細情報
 ===================================== */
 
-.request-detail {
+.request-info {
     display: flex;
 
     flex-direction: column;
@@ -316,14 +303,12 @@ body {
    情報1行
 ===================================== */
 
-.request-info-row {
+.request-row {
     display: grid;
 
     grid-template-columns: 110px minmax(0, 1fr);
 
     align-items: stretch;
-
-    gap: 0;
 
     min-height: 40px;
 
@@ -334,10 +319,6 @@ body {
     overflow: hidden;
 
     background: #ffffff;
-
-    font-size: 13px;
-
-    line-height: 1.5;
 }
 
 
@@ -345,9 +326,7 @@ body {
    ラベル
 ===================================== */
 
-.request-info-row .label {
-    width: auto;
-
+.request-label {
     display: flex;
 
     align-items: center;
@@ -358,9 +337,15 @@ body {
 
     color: #8f8179;
 
+    font-size: 13px;
+
     font-weight: 600;
 
+    line-height: 1.4;
+
     border-right: 1px solid #eee7e2;
+
+    word-break: break-word;
 }
 
 
@@ -368,12 +353,12 @@ body {
    値
 ===================================== */
 
-.request-info-row .value {
-    min-width: 0;
-
+.request-value {
     display: flex;
 
     align-items: center;
+
+    min-width: 0;
 
     padding: 9px 12px;
 
@@ -381,7 +366,24 @@ body {
 
     color: #4b3b33;
 
+    font-size: 13px;
+
+    line-height: 1.5;
+
     word-break: break-word;
+}
+
+
+/* =====================================
+   ステータス欄のステータス
+===================================== */
+
+.request-value .request-status {
+    margin: 0;
+
+    padding: 5px 11px;
+
+    font-size: 11px;
 }
 
 
@@ -389,14 +391,17 @@ body {
    キャンセルボタン
 ===================================== */
 
+.request-buttons {
+    margin-top: 18px;
+}
+
+
 .cancel-button {
     display: block;
 
     width: 100%;
 
     height: 44px;
-
-    margin-top: 18px;
 
     padding: 0 15px;
 
@@ -582,15 +587,19 @@ body {
 ===================================== */
 
 
-/*
- * 背景
- */
+/* =====================================
+   モーダル背景
+===================================== */
+
 .custom-modal-overlay {
     position: fixed;
 
     top: 0;
+
     right: 0;
+
     bottom: 0;
+
     left: 0;
 
     z-index: 9999;
@@ -603,17 +612,17 @@ body {
 
     padding: 20px;
 
-    background:
-        rgba(75, 59, 51, 0.45);
+    background: rgba(75, 59, 51, 0.45);
 
     animation:
         modalOverlayFadeIn 0.15s ease;
 }
 
 
-/*
- * モーダル本体
- */
+/* =====================================
+   モーダル本体
+===================================== */
+
 .custom-modal-content {
     width: 100%;
 
@@ -635,9 +644,10 @@ body {
 }
 
 
-/*
- * モーダルアイコン
- */
+/* =====================================
+   モーダルアイコン
+===================================== */
+
 .custom-modal-icon {
     display: flex;
 
@@ -663,9 +673,10 @@ body {
 }
 
 
-/*
- * モーダルタイトル
- */
+/* =====================================
+   モーダルタイトル
+===================================== */
+
 .custom-modal-title {
     margin: 0 0 12px;
 
@@ -679,9 +690,10 @@ body {
 }
 
 
-/*
- * モーダル本文
- */
+/* =====================================
+   モーダル本文
+===================================== */
+
 .custom-modal-message {
     margin: 0;
 
@@ -693,9 +705,10 @@ body {
 }
 
 
-/*
- * ボタンエリア
- */
+/* =====================================
+   モーダルボタンエリア
+===================================== */
+
 .custom-modal-buttons {
     display: flex;
 
@@ -705,9 +718,10 @@ body {
 }
 
 
-/*
- * モーダル共通ボタン
- */
+/* =====================================
+   モーダル共通ボタン
+===================================== */
+
 .custom-modal-buttons button {
     flex: 1;
 
@@ -735,27 +749,28 @@ body {
 }
 
 
-/*
- * ボタンホバー
- */
+/* =====================================
+   ボタンホバー
+===================================== */
+
 .custom-modal-buttons button:hover {
     opacity: 0.85;
 }
 
 
-/*
- * ボタンクリック
- */
+/* =====================================
+   ボタンクリック
+===================================== */
+
 .custom-modal-buttons button:active {
     transform: scale(0.97);
 }
 
 
-/*
- * キャンセルする
- *
- * 左側
- */
+/* =====================================
+   キャンセルする
+===================================== */
+
 .custom-modal-confirm-button {
     background: #eb9a6d;
 
@@ -763,11 +778,10 @@ body {
 }
 
 
-/*
- * キャンセルしない
- *
- * 右側
- */
+/* =====================================
+   キャンセルしない
+===================================== */
+
 .custom-modal-cancel-button {
     background: #eee5df;
 
@@ -775,9 +789,10 @@ body {
 }
 
 
-/*
- * 無効状態
- */
+/* =====================================
+   無効状態
+===================================== */
+
 .custom-modal-buttons button:disabled {
     opacity: 0.5;
 
@@ -850,22 +865,42 @@ body {
     }
 
 
-    .request-card-main {
+    /* ---------------------------------
+       カード上部
+    --------------------------------- */
+
+    .request-header {
         align-items: flex-start;
+
+        gap: 10px;
     }
 
+
+    /* ---------------------------------
+       ペット画像
+    --------------------------------- */
 
     .pet-image-box {
         width: 60px;
+
         height: 60px;
+
         flex-basis: 60px;
     }
 
+
+    /* ---------------------------------
+       ペット名
+    --------------------------------- */
 
     .request-pet-name {
         font-size: 16px;
     }
 
+
+    /* ---------------------------------
+       ステータス
+    --------------------------------- */
 
     .request-status {
         padding:
@@ -876,24 +911,61 @@ body {
     }
 
 
-    .request-info-row {
-        grid-template-columns: 90px minmax(0, 1fr);
+    /* ---------------------------------
+       情報
+    --------------------------------- */
+
+    .request-info {
+        gap: 7px;
+
+        margin-top: 16px;
+
+        padding-top: 16px;
+    }
+
+
+    /* ---------------------------------
+       情報1行
+    --------------------------------- */
+
+    .request-row {
+        grid-template-columns:
+            90px
+            minmax(0, 1fr);
+
+        min-height: 38px;
+    }
+
+
+    /* ---------------------------------
+       ラベル
+    --------------------------------- */
+
+    .request-label {
+        padding:
+            8px
+            9px;
 
         font-size: 12px;
     }
 
 
-    .request-info-row .label {
-        width: auto;
+    /* ---------------------------------
+       値
+    --------------------------------- */
 
-        padding: 8px 9px;
+    .request-value {
+        padding:
+            8px
+            10px;
+
+        font-size: 12px;
     }
 
 
-    .request-info-row .value {
-        padding: 8px 10px;
-    }
-
+    /* ---------------------------------
+       キャンセルボタン
+    --------------------------------- */
 
     .cancel-button {
         height: 43px;
@@ -902,14 +974,19 @@ body {
     }
 
 
+    /* ---------------------------------
+       戻るボタン
+    --------------------------------- */
+
     .back-button {
         max-width: 100%;
     }
 
 
-    /*
-     * モーダル
-     */
+    /* =================================
+       モーダル
+    ================================= */
+
     .custom-modal-overlay {
         padding: 15px;
     }
