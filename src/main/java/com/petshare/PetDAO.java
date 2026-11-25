@@ -91,6 +91,8 @@ public class PetDAO {
         private Connection getConnection()
                         throws SQLException {
 
+                long startTime = System.currentTimeMillis();
+
                 if (!isDbConfigAvailable()) {
 
                         throw new SQLException(
@@ -109,12 +111,35 @@ public class PetDAO {
                                         e);
                 }
 
-                return DriverManager.getConnection(
+                long driverTime = System.currentTimeMillis();
+
+                Connection connection = DriverManager.getConnection(
                                 URL,
                                 USER,
                                 PASSWORD);
-        }
 
+                long connectionTime = System.currentTimeMillis();
+
+                System.out.println("=================================");
+                System.out.println(
+                                "JDBCドライバー準備時間: "
+                                                + (driverTime - startTime)
+                                                + " ms");
+
+                System.out.println(
+                                "Aiven DB接続時間: "
+                                                + (connectionTime - driverTime)
+                                                + " ms");
+
+                System.out.println(
+                                "DB接続合計時間: "
+                                                + (connectionTime - startTime)
+                                                + " ms");
+
+                System.out.println("=================================");
+
+                return connection;
+        }
         // =====================================
         // ペット登録
         // =====================================
