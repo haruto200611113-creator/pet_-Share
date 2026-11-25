@@ -10,13 +10,15 @@ document.addEventListener(
 
 
         /* =================================================
-           すでにメニューが存在する場合は何もしない
+           すでにメニューが存在する場合
         ================================================= */
 
         if (
             document.querySelector(".side-menu")
         ) {
             initializeMenu();
+
+            positionMenuButton();
 
             return;
         }
@@ -231,6 +233,13 @@ document.addEventListener(
 
 
         /* =================================================
+           メニューボタンをページタイトルへ移動
+        ================================================= */
+
+        positionMenuButton();
+
+
+        /* =================================================
            イベント設定
         ================================================= */
 
@@ -238,6 +247,56 @@ document.addEventListener(
 
     }
 );
+
+
+/* =====================================================
+   ハンバーガーボタンをページタイトルの右側へ配置
+===================================================== */
+
+function positionMenuButton() {
+
+    const menuButton =
+        document.getElementById(
+            "menuButton"
+        );
+
+    if (!menuButton) {
+        return;
+    }
+
+
+    /*
+     * ページ内の最初のh1を取得
+     */
+    const pageTitle =
+        document.querySelector(
+            "h1"
+        );
+
+
+    /*
+     * h1が存在する場合
+     */
+    if (pageTitle) {
+
+        /*
+         * h1を基準位置にする
+         */
+        pageTitle.style.position =
+            "relative";
+
+
+        /*
+         * ハンバーガーボタンを
+         * h1の中へ移動
+         */
+        pageTitle.appendChild(
+            menuButton
+        );
+
+    }
+
+}
 
 
 /* =====================================================
@@ -437,13 +496,12 @@ function initializeMenu() {
 
 
                     if (!result) {
-
                         return;
-
                     }
 
 
                     sessionStorage.clear();
+
 
                     window.location.href =
                         "login.html";
