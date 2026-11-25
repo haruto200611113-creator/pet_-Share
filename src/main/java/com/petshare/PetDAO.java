@@ -1,7 +1,6 @@
 package com.petshare;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +10,9 @@ import java.util.Base64;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 public class PetDAO {
 
@@ -85,6 +87,90 @@ public class PetDAO {
         }
 
         // =====================================
+        // HikariCP 接続プール
+        // =====================================
+
+        private static final HikariDataSource DATA_SOURCE = createDataSource();
+
+        // =====================================
+        // HikariCP データソース作成
+        // =====================================
+
+        private static HikariDataSource createDataSource() {
+
+                if (USER == null
+                                || USER.isBlank()
+                                || PASSWORD == null
+                                || PASSWORD.isBlank()) {
+
+                        throw new ExceptionInInitializerError(
+                                        "Aivenの接続情報が設定されていません。");
+                }
+
+                try {
+
+                        // MySQL JDBCドライバーを1回だけ読み込む
+                        Class.forName(
+                                        "com.mysql.cj.jdbc.Driver");
+
+                } catch (ClassNotFoundException e) {
+
+                        throw new ExceptionInInitializerError(
+                                        "MySQL JDBCドライバーの読み込みに失敗しました。");
+                }
+
+                HikariConfig config = new HikariConfig();
+
+                // -------------------------------------
+                // Aiven MySQL接続設定
+                // -------------------------------------
+
+                config.setJdbcUrl(URL);
+                config.setUsername(USER);
+                config.setPassword(PASSWORD);
+
+                // -------------------------------------
+                // 接続プール設定
+                // -------------------------------------
+
+                // 最大接続数
+                config.setMaximumPoolSize(5);
+
+                // 最低限維持するアイドル接続数
+                config.setMinimumIdle(1);
+
+                // アイドル接続を維持する時間
+                config.setIdleTimeout(600000);
+
+                // 接続取得待ち時間
+                config.setConnectionTimeout(10000);
+
+                // 接続の有効性確認時間
+                config.setValidationTimeout(5000);
+
+                // 接続プール名
+                config.setPoolName(
+                                "PetShare-HikariPool");
+
+                System.out.println(
+                                "=================================");
+
+                System.out.println(
+                                "HikariCP接続プールを初期化しました");
+
+                System.out.println(
+                                "最大接続数: 5");
+
+                System.out.println(
+                                "最低アイドル接続数: 1");
+
+                System.out.println(
+                                "=================================");
+
+                return new HikariDataSource(config);
+        }
+
+        // =====================================
         // データベース接続
         // =====================================
 
@@ -93,53 +179,19 @@ public class PetDAO {
 
                 long startTime = System.currentTimeMillis();
 
-                if (!isDbConfigAvailable()) {
-
-                        throw new SQLException(
-                                        "Aivenの接続情報が設定されていません。");
-                }
-
-                try {
-
-                        Class.forName(
-                                        "com.mysql.cj.jdbc.Driver");
-
-                } catch (ClassNotFoundException e) {
-
-                        throw new SQLException(
-                                        "MySQL JDBCドライバーの読み込みに失敗しました。",
-                                        e);
-                }
-
-                long driverTime = System.currentTimeMillis();
-
-                Connection connection = DriverManager.getConnection(
-                                URL,
-                                USER,
-                                PASSWORD);
+                // 接続プールから接続を取得
+                Connection connection = DATA_SOURCE.getConnection();
 
                 long connectionTime = System.currentTimeMillis();
 
-                System.out.println("=================================");
                 System.out.println(
-                                "JDBCドライバー準備時間: "
-                                                + (driverTime - startTime)
-                                                + " ms");
-
-                System.out.println(
-                                "Aiven DB接続時間: "
-                                                + (connectionTime - driverTime)
-                                                + " ms");
-
-                System.out.println(
-                                "DB接続合計時間: "
+                                "DB接続取得時間: "
                                                 + (connectionTime - startTime)
                                                 + " ms");
 
-                System.out.println("=================================");
-
                 return connection;
         }
+
         // =====================================
         // ペット登録
         // =====================================
@@ -183,77 +235,193 @@ public class PetDAO {
 
                 try (
                                 Connection conn = getConnection();
+
                                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
                         int i = 1;
 
-                        pstmt.setInt(i++, pet.getAccountId());
+                        pstmt.setInt(
+                                        i++,
+                                        pet.getAccountId());
 
-                        pstmt.setString(i++, pet.getPetName());
-                        pstmt.setString(i++, pet.getPetImage());
-                        pstmt.setString(i++, pet.getPetType());
-                        pstmt.setString(i++, pet.getBreed());
-                        pstmt.setString(i++, pet.getGender());
+                        pstmt.setString(
+                                        i++,
+                                        pet.getPetName());
 
-                        pstmt.setDate(i++, pet.getBirthDate());
+                        pstmt.setString(
+                                        i++,
+                                        pet.getPetImage());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getPetType());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getBreed());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getGender());
+
+                        pstmt.setDate(
+                                        i++,
+                                        pet.getBirthDate());
 
                         if (pet.getWeight() != null) {
-                                pstmt.setDouble(i++, pet.getWeight());
+
+                                pstmt.setDouble(
+                                                i++,
+                                                pet.getWeight());
+
                         } else {
-                                pstmt.setNull(i++, java.sql.Types.DECIMAL);
+
+                                pstmt.setNull(
+                                                i++,
+                                                java.sql.Types.DECIMAL);
                         }
 
-                        pstmt.setString(i++, pet.getPersonality());
-                        pstmt.setString(i++, pet.getFeatures());
-                        pstmt.setString(i++, pet.getLikes());
-                        pstmt.setString(i++, pet.getDislikes());
+                        pstmt.setString(
+                                        i++,
+                                        pet.getPersonality());
 
-                        pstmt.setString(i++, pet.getOtherAnimals());
-                        pstmt.setString(i++, pet.getChildrenCompatibility());
+                        pstmt.setString(
+                                        i++,
+                                        pet.getFeatures());
 
-                        pstmt.setString(i++, pet.getFoodInfo());
-                        pstmt.setString(i++, pet.getWalkInfo());
-                        pstmt.setString(i++, pet.getToiletInfo());
-                        pstmt.setString(i++, pet.getAloneTime());
-                        pstmt.setString(i++, pet.getCareInfo());
+                        pstmt.setString(
+                                        i++,
+                                        pet.getLikes());
 
-                        pstmt.setString(i++, pet.getVaccination());
-                        pstmt.setString(i++, pet.getNeutering());
-                        pstmt.setString(i++, pet.getMedicalHistory());
-                        pstmt.setString(i++, pet.getAllergies());
-                        pstmt.setString(i++, pet.getMedication());
-                        pstmt.setString(i++, pet.getPrecautions());
+                        pstmt.setString(
+                                        i++,
+                                        pet.getDislikes());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getOtherAnimals());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getChildrenCompatibility());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getFoodInfo());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getWalkInfo());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getToiletInfo());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getAloneTime());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getCareInfo());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getVaccination());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getNeutering());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getMedicalHistory());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getAllergies());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getMedication());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getPrecautions());
 
                         if (pet.getSharePrice() != null) {
-                                pstmt.setInt(i++, pet.getSharePrice());
+
+                                pstmt.setInt(
+                                                i++,
+                                                pet.getSharePrice());
+
                         } else {
-                                pstmt.setNull(i++, java.sql.Types.INTEGER);
+
+                                pstmt.setNull(
+                                                i++,
+                                                java.sql.Types.INTEGER);
                         }
 
-                        pstmt.setDate(i++, pet.getShareStartDate());
-                        pstmt.setDate(i++, pet.getShareEndDate());
+                        pstmt.setDate(
+                                        i++,
+                                        pet.getShareStartDate());
 
-                        pstmt.setString(i++, pet.getShareConditions());
+                        pstmt.setDate(
+                                        i++,
+                                        pet.getShareEndDate());
+
+                        pstmt.setString(
+                                        i++,
+                                        pet.getShareConditions());
 
                         int result = pstmt.executeUpdate();
 
-                        System.out.println("=================================");
-                        System.out.println("ペット登録結果: " + result);
-                        System.out.println("account_id: " + pet.getAccountId());
-                        System.out.println("pet_name: " + pet.getPetName());
-                        System.out.println("pet_type: " + pet.getPetType());
-                        System.out.println("=================================");
+                        System.out.println(
+                                        "=================================");
+
+                        System.out.println(
+                                        "ペット登録結果: "
+                                                        + result);
+
+                        System.out.println(
+                                        "account_id: "
+                                                        + pet.getAccountId());
+
+                        System.out.println(
+                                        "pet_name: "
+                                                        + pet.getPetName());
+
+                        System.out.println(
+                                        "pet_type: "
+                                                        + pet.getPetType());
+
+                        System.out.println(
+                                        "=================================");
 
                         return result > 0;
 
                 } catch (SQLException e) {
 
-                        System.out.println("=================================");
-                        System.out.println("ペット登録でSQLエラーが発生しました");
-                        System.out.println("エラー内容: " + e.getMessage());
-                        System.out.println("SQLState: " + e.getSQLState());
-                        System.out.println("ErrorCode: " + e.getErrorCode());
-                        System.out.println("=================================");
+                        System.out.println(
+                                        "=================================");
+
+                        System.out.println(
+                                        "ペット登録でSQLエラーが発生しました");
+
+                        System.out.println(
+                                        "エラー内容: "
+                                                        + e.getMessage());
+
+                        System.out.println(
+                                        "SQLState: "
+                                                        + e.getSQLState());
+
+                        System.out.println(
+                                        "ErrorCode: "
+                                                        + e.getErrorCode());
+
+                        System.out.println(
+                                        "=================================");
 
                         e.printStackTrace();
 
@@ -269,9 +437,9 @@ public class PetDAO {
 
                 List<Pet> pets = new ArrayList<>();
 
-                // ペット一覧画面で必要な情報だけ取得する
-                // 自分のペットは取得しない
-                // シェア中のペットだけ取得する
+                // 一覧画面で必要な情報だけ取得
+                // シェア中
+                // 自分以外
                 String sql = """
                                 SELECT
                                         pet_id,
@@ -288,43 +456,56 @@ public class PetDAO {
                                 ORDER BY created_at DESC
                                 """;
 
+                long startTime = System.currentTimeMillis();
+
                 try (
                                 Connection conn = getConnection();
+
                                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
                         // ログイン中のアカウントID
-                        ps.setInt(1, loginAccountId);
+                        ps.setInt(
+                                        1,
+                                        loginAccountId);
 
-                        try (ResultSet rs = ps.executeQuery()) {
+                        try (
+                                        ResultSet rs = ps.executeQuery()) {
 
                                 while (rs.next()) {
 
                                         Pet pet = new Pet();
 
-                                        // 一覧画面で使用する項目だけ取得
                                         pet.setPetId(
-                                                        rs.getInt("pet_id"));
+                                                        rs.getInt(
+                                                                        "pet_id"));
 
                                         pet.setAccountId(
-                                                        rs.getInt("account_id"));
+                                                        rs.getInt(
+                                                                        "account_id"));
 
                                         pet.setPetName(
-                                                        rs.getString("pet_name"));
+                                                        rs.getString(
+                                                                        "pet_name"));
 
                                         pet.setPetImage(
-                                                        rs.getString("pet_image"));
+                                                        rs.getString(
+                                                                        "pet_image"));
 
                                         pet.setPetType(
-                                                        rs.getString("pet_type"));
+                                                        rs.getString(
+                                                                        "pet_type"));
 
                                         pet.setBirthDate(
-                                                        rs.getDate("birth_date"));
+                                                        rs.getDate(
+                                                                        "birth_date"));
 
                                         pet.setIsShared(
-                                                        rs.getBoolean("is_shared"));
+                                                        rs.getBoolean(
+                                                                        "is_shared"));
 
                                         pet.setCreatedAt(
-                                                        rs.getTimestamp("created_at"));
+                                                        rs.getTimestamp(
+                                                                        "created_at"));
 
                                         pets.add(pet);
                                 }
@@ -338,8 +519,27 @@ public class PetDAO {
                         e.printStackTrace();
                 }
 
+                long endTime = System.currentTimeMillis();
+
+                System.out.println(
+                                "=================================");
+
+                System.out.println(
+                                "ペット一覧DB取得時間: "
+                                                + (endTime - startTime)
+                                                + " ms");
+
+                System.out.println(
+                                "取得件数: "
+                                                + pets.size()
+                                                + " 件");
+
+                System.out.println(
+                                "=================================");
+
                 return pets;
         }
+
         // =====================================
         // ペットIDから取得
         // =====================================
@@ -354,99 +554,135 @@ public class PetDAO {
 
                 try (
                                 Connection conn = getConnection();
+
                                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-                        ps.setInt(1, petId);
+                        ps.setInt(
+                                        1,
+                                        petId);
 
-                        try (ResultSet rs = ps.executeQuery()) {
+                        try (
+                                        ResultSet rs = ps.executeQuery()) {
 
                                 if (rs.next()) {
 
                                         Pet pet = new Pet();
 
                                         pet.setPetId(
-                                                        rs.getInt("pet_id"));
+                                                        rs.getInt(
+                                                                        "pet_id"));
 
                                         pet.setAccountId(
-                                                        rs.getInt("account_id"));
+                                                        rs.getInt(
+                                                                        "account_id"));
 
                                         pet.setPetName(
-                                                        rs.getString("pet_name"));
+                                                        rs.getString(
+                                                                        "pet_name"));
 
                                         pet.setPetImage(
-                                                        rs.getString("pet_image"));
+                                                        rs.getString(
+                                                                        "pet_image"));
 
                                         pet.setPetType(
-                                                        rs.getString("pet_type"));
+                                                        rs.getString(
+                                                                        "pet_type"));
 
                                         pet.setBreed(
-                                                        rs.getString("breed"));
+                                                        rs.getString(
+                                                                        "breed"));
 
                                         pet.setGender(
-                                                        rs.getString("gender"));
+                                                        rs.getString(
+                                                                        "gender"));
 
                                         pet.setBirthDate(
-                                                        rs.getDate("birth_date"));
+                                                        rs.getDate(
+                                                                        "birth_date"));
 
                                         pet.setWeight(
-                                                        rs.getDouble("weight"));
+                                                        rs.getDouble(
+                                                                        "weight"));
 
                                         pet.setPersonality(
-                                                        rs.getString("personality"));
+                                                        rs.getString(
+                                                                        "personality"));
 
                                         pet.setFeatures(
-                                                        rs.getString("features"));
+                                                        rs.getString(
+                                                                        "features"));
 
                                         pet.setLikes(
-                                                        rs.getString("likes"));
+                                                        rs.getString(
+                                                                        "likes"));
 
                                         pet.setDislikes(
-                                                        rs.getString("dislikes"));
+                                                        rs.getString(
+                                                                        "dislikes"));
 
                                         pet.setOtherAnimals(
-                                                        rs.getString("other_animals"));
+                                                        rs.getString(
+                                                                        "other_animals"));
 
                                         pet.setChildrenCompatibility(
                                                         rs.getString(
                                                                         "children_compatibility"));
 
                                         pet.setFoodInfo(
-                                                        rs.getString("food_info"));
+                                                        rs.getString(
+                                                                        "food_info"));
 
                                         pet.setWalkInfo(
-                                                        rs.getString("walk_info"));
+                                                        rs.getString(
+                                                                        "walk_info"));
 
                                         pet.setToiletInfo(
-                                                        rs.getString("toilet_info"));
+                                                        rs.getString(
+                                                                        "toilet_info"));
 
                                         pet.setAloneTime(
-                                                        rs.getString("alone_time"));
+                                                        rs.getString(
+                                                                        "alone_time"));
 
                                         pet.setCareInfo(
-                                                        rs.getString("care_info"));
+                                                        rs.getString(
+                                                                        "care_info"));
 
                                         pet.setVaccination(
-                                                        rs.getString("vaccination"));
+                                                        rs.getString(
+                                                                        "vaccination"));
 
                                         pet.setNeutering(
-                                                        rs.getString("neutering"));
+                                                        rs.getString(
+                                                                        "neutering"));
 
                                         pet.setMedicalHistory(
-                                                        rs.getString("medical_history"));
+                                                        rs.getString(
+                                                                        "medical_history"));
 
                                         pet.setAllergies(
-                                                        rs.getString("allergies"));
+                                                        rs.getString(
+                                                                        "allergies"));
 
                                         pet.setMedication(
-                                                        rs.getString("medication"));
+                                                        rs.getString(
+                                                                        "medication"));
 
-                                        pet.setPrecautions(rs.getString("precautions"));
+                                        pet.setPrecautions(
+                                                        rs.getString(
+                                                                        "precautions"));
 
-                                        pet.setIsShared(rs.getBoolean("is_shared"));
+                                        pet.setIsShared(
+                                                        rs.getBoolean(
+                                                                        "is_shared"));
 
-                                        pet.setSharePrice(rs.getInt("share_price"));
+                                        pet.setSharePrice(
+                                                        rs.getInt(
+                                                                        "share_price"));
+
                                         pet.setShareStartDate(
-                                                        rs.getDate("share_start_date"));
+                                                        rs.getDate(
+                                                                        "share_start_date"));
 
                                         pet.setShareEndDate(
                                                         rs.getDate(
@@ -478,6 +714,7 @@ public class PetDAO {
 
                 return null;
         }
+
         // =====================================
         // シェア状態更新
         // =====================================
@@ -494,10 +731,16 @@ public class PetDAO {
 
                 try (
                                 Connection conn = getConnection();
+
                                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-                        ps.setBoolean(1, isShared);
-                        ps.setInt(2, petId);
+                        ps.setBoolean(
+                                        1,
+                                        isShared);
+
+                        ps.setInt(
+                                        2,
+                                        petId);
 
                         return ps.executeUpdate() == 1;
 
@@ -516,7 +759,8 @@ public class PetDAO {
         // アカウントIDからペット一覧を取得
         // =====================================
 
-        public List<Pet> findByAccountId(int accountId) {
+        public List<Pet> findByAccountId(
+                        int accountId) {
 
                 String sql = """
                                 SELECT *
@@ -529,91 +773,151 @@ public class PetDAO {
 
                 try (
                                 Connection conn = getConnection();
+
                                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-                        ps.setInt(1, accountId);
+                        ps.setInt(
+                                        1,
+                                        accountId);
 
-                        try (ResultSet rs = ps.executeQuery()) {
+                        try (
+                                        ResultSet rs = ps.executeQuery()) {
 
                                 while (rs.next()) {
 
                                         Pet pet = new Pet();
 
-                                        pet.setPetId(rs.getInt("pet_id"));
-                                        pet.setAccountId(rs.getInt("account_id"));
-                                        pet.setPetName(rs.getString("pet_name"));
-                                        pet.setPetImage(rs.getString("pet_image"));
-                                        pet.setPetType(rs.getString("pet_type"));
-                                        pet.setBreed(rs.getString("breed"));
-                                        pet.setGender(rs.getString("gender"));
+                                        pet.setPetId(
+                                                        rs.getInt(
+                                                                        "pet_id"));
 
-                                        pet.setBirthDate(rs.getDate("birth_date"));
-                                        pet.setWeight(rs.getDouble("weight"));
+                                        pet.setAccountId(
+                                                        rs.getInt(
+                                                                        "account_id"));
 
-                                        pet.setPersonality(rs.getString("personality"));
-                                        pet.setFeatures(rs.getString("features"));
-                                        pet.setLikes(rs.getString("likes"));
-                                        pet.setDislikes(rs.getString("dislikes"));
+                                        pet.setPetName(
+                                                        rs.getString(
+                                                                        "pet_name"));
+
+                                        pet.setPetImage(
+                                                        rs.getString(
+                                                                        "pet_image"));
+
+                                        pet.setPetType(
+                                                        rs.getString(
+                                                                        "pet_type"));
+
+                                        pet.setBreed(
+                                                        rs.getString(
+                                                                        "breed"));
+
+                                        pet.setGender(
+                                                        rs.getString(
+                                                                        "gender"));
+
+                                        pet.setBirthDate(
+                                                        rs.getDate(
+                                                                        "birth_date"));
+
+                                        pet.setWeight(
+                                                        rs.getDouble(
+                                                                        "weight"));
+
+                                        pet.setPersonality(
+                                                        rs.getString(
+                                                                        "personality"));
+
+                                        pet.setFeatures(
+                                                        rs.getString(
+                                                                        "features"));
+
+                                        pet.setLikes(
+                                                        rs.getString(
+                                                                        "likes"));
+
+                                        pet.setDislikes(
+                                                        rs.getString(
+                                                                        "dislikes"));
 
                                         pet.setOtherAnimals(
-                                                        rs.getString("other_animals"));
+                                                        rs.getString(
+                                                                        "other_animals"));
 
                                         pet.setChildrenCompatibility(
-                                                        rs.getString("children_compatibility"));
+                                                        rs.getString(
+                                                                        "children_compatibility"));
 
                                         pet.setFoodInfo(
-                                                        rs.getString("food_info"));
+                                                        rs.getString(
+                                                                        "food_info"));
 
                                         pet.setWalkInfo(
-                                                        rs.getString("walk_info"));
+                                                        rs.getString(
+                                                                        "walk_info"));
 
                                         pet.setToiletInfo(
-                                                        rs.getString("toilet_info"));
+                                                        rs.getString(
+                                                                        "toilet_info"));
 
                                         pet.setAloneTime(
-                                                        rs.getString("alone_time"));
+                                                        rs.getString(
+                                                                        "alone_time"));
 
                                         pet.setCareInfo(
-                                                        rs.getString("care_info"));
+                                                        rs.getString(
+                                                                        "care_info"));
 
                                         pet.setVaccination(
-                                                        rs.getString("vaccination"));
+                                                        rs.getString(
+                                                                        "vaccination"));
 
                                         pet.setNeutering(
-                                                        rs.getString("neutering"));
+                                                        rs.getString(
+                                                                        "neutering"));
 
                                         pet.setMedicalHistory(
-                                                        rs.getString("medical_history"));
+                                                        rs.getString(
+                                                                        "medical_history"));
 
                                         pet.setAllergies(
-                                                        rs.getString("allergies"));
+                                                        rs.getString(
+                                                                        "allergies"));
 
                                         pet.setMedication(
-                                                        rs.getString("medication"));
+                                                        rs.getString(
+                                                                        "medication"));
 
                                         pet.setPrecautions(
-                                                        rs.getString("precautions"));
+                                                        rs.getString(
+                                                                        "precautions"));
 
                                         pet.setIsShared(
-                                                        rs.getBoolean("is_shared"));
+                                                        rs.getBoolean(
+                                                                        "is_shared"));
 
                                         pet.setSharePrice(
-                                                        rs.getInt("share_price"));
+                                                        rs.getInt(
+                                                                        "share_price"));
 
                                         pet.setShareStartDate(
-                                                        rs.getDate("share_start_date"));
+                                                        rs.getDate(
+                                                                        "share_start_date"));
 
                                         pet.setShareEndDate(
-                                                        rs.getDate("share_end_date"));
+                                                        rs.getDate(
+                                                                        "share_end_date"));
 
                                         pet.setShareConditions(
-                                                        rs.getString("share_conditions"));
+                                                        rs.getString(
+                                                                        "share_conditions"));
 
                                         pet.setCreatedAt(
-                                                        rs.getTimestamp("created_at"));
+                                                        rs.getTimestamp(
+                                                                        "created_at"));
 
                                         pet.setUpdatedAt(
-                                                        rs.getTimestamp("updated_at"));
+                                                        rs.getTimestamp(
+                                                                        "updated_at"));
 
                                         pets.add(pet);
                                 }
@@ -629,5 +933,4 @@ public class PetDAO {
 
                 return pets;
         }
-
 }
