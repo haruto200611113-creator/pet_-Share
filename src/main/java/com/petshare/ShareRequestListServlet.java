@@ -46,7 +46,8 @@ public class ShareRequestListServlet
             response.setContentType(
                     "application/json; charset=UTF-8");
 
-            response.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding(
+                    "UTF-8");
 
             response.getWriter().write(
                     "{\"error\":\"ログインしてください\"}");
@@ -68,7 +69,8 @@ public class ShareRequestListServlet
             response.setContentType(
                     "application/json; charset=UTF-8");
 
-            response.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding(
+                    "UTF-8");
 
             response.getWriter().write(
                     "{\"error\":\"アカウント情報を取得できません\"}");
@@ -97,14 +99,16 @@ public class ShareRequestListServlet
             // 自分のペットへの申込み取得
             // ========================================
 
-            List<ShareRequest> requests = shareRequestDAO
-                    .findRequestsForOwner(
-                            ownerAccountId);
+            List<ShareRequest> requests = shareRequestDAO.findRequestsForOwner(
+                    ownerAccountId);
 
             out.print("[");
 
-            // 実際に出力した件数
             int outputCount = 0;
+
+            // ========================================
+            // リクエスト処理
+            // ========================================
 
             for (ShareRequest shareRequest : requests) {
 
@@ -113,8 +117,7 @@ public class ShareRequestListServlet
                 // ====================================
 
                 Pet pet = petDAO.findById(
-                        shareRequest
-                                .getPetId());
+                        shareRequest.getPetId());
 
                 if (pet == null) {
                     continue;
@@ -127,8 +130,7 @@ public class ShareRequestListServlet
                 String borrowerName = "名前未設定";
 
                 String[] profile = userDAO.getProfile(
-                        shareRequest
-                                .getBorrowerId());
+                        shareRequest.getBorrowerId());
 
                 if (profile != null
                         && profile.length > 0
@@ -149,91 +151,131 @@ public class ShareRequestListServlet
                 outputCount++;
 
                 // ====================================
-                // JSON
+                // JSON開始
                 // ====================================
 
                 out.print("{");
 
+                // ====================================
+                // requestId
+                // ====================================
+
                 out.print(
                         "\"requestId\":" +
-                                shareRequest
-                                        .getRequestId()
-                                +
-                                ",");
+                                shareRequest.getRequestId()
+                                + ",");
+
+                // ====================================
+                // petId
+                // ====================================
 
                 out.print(
                         "\"petId\":" +
-                                shareRequest
-                                        .getPetId()
-                                +
-                                ",");
+                                shareRequest.getPetId()
+                                + ",");
+
+                // ====================================
+                // petName
+                // ====================================
 
                 out.print(
                         "\"petName\":\"" +
                                 escapeJson(
                                         pet.getPetName())
-                                +
-                                "\",");
+                                + "\",");
+
+                // ====================================
+                // ★ petImage
+                // ====================================
+
+                String petImage = pet.getPetImage();
+
+                if (petImage == null) {
+                    petImage = "";
+                }
+
+                out.print(
+                        "\"petImage\":\"" +
+                                escapeJson(
+                                        petImage)
+                                + "\",");
+
+                // ====================================
+                // borrowerId
+                // ====================================
 
                 out.print(
                         "\"borrowerId\":" +
                                 shareRequest
                                         .getBorrowerId()
-                                +
-                                ",");
+                                + ",");
+
+                // ====================================
+                // borrowerName
+                // ====================================
 
                 out.print(
                         "\"borrowerName\":\"" +
                                 escapeJson(
                                         borrowerName)
-                                +
-                                "\",");
+                                + "\",");
+
+                // ====================================
+                // startDatetime
+                // ====================================
 
                 out.print(
                         "\"startDatetime\":\"" +
                                 formatTimestamp(
                                         shareRequest
                                                 .getStartDatetime())
-                                +
-                                "\",");
+                                + "\",");
+
+                // ====================================
+                // endDatetime
+                // ====================================
 
                 out.print(
                         "\"endDatetime\":\"" +
                                 formatTimestamp(
                                         shareRequest
                                                 .getEndDatetime())
-                                +
-                                "\",");
+                                + "\",");
+
+                // ====================================
+                // usageHours
+                // ====================================
 
                 out.print(
                         "\"usageHours\":" +
                                 shareRequest
                                         .getUsageHours()
-                                +
-                                ",");
+                                + ",");
+
+                // ====================================
+                // status
+                // ====================================
 
                 out.print(
                         "\"status\":\"" +
                                 escapeJson(
                                         shareRequest
                                                 .getStatus())
-                                +
-                                "\",");
+                                + "\",");
+
+                // ====================================
+                // createdAt
+                // ====================================
 
                 out.print(
                         "\"createdAt\":\"" +
                                 formatTimestamp(
                                         shareRequest
                                                 .getCreatedAt())
-                                +
-                                "\"");
+                                + "\"");
 
                 // ====================================
-                // 重要
-                // ====================================
-                // sharePriceはここではJSONに含めない
-                //
-                // → 貸す側には料金を表示しない
+                // JSON終了
                 // ====================================
 
                 out.print("}");
@@ -268,8 +310,7 @@ public class ShareRequestListServlet
         SimpleDateFormat format = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm");
 
-        return format.format(
-                timestamp);
+        return format.format(timestamp);
     }
 
     // ========================================

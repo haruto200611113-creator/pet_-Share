@@ -1,600 +1,200 @@
-// ========================================
-// ペットシェアリクエスト
-// ========================================
-
 document.addEventListener("DOMContentLoaded", () => {
 
-    loadShareRequests();
+    const form = document.getElementById("petRegisterForm");
+    const registerButton = document.getElementById("registerButton");
 
-});
+    const petImageInput = document.getElementById("petImage");
+    const petImagePreview = document.getElementById("petImagePreview");
+    const petImageDefault = document.getElementById("petImageDefault");
 
+    const cancelButton = document.getElementById("cancelButton");
+    const backButton = document.getElementById("backButton");
 
-// ========================================
-// リクエスト一覧取得
-// ========================================
 
-async function loadShareRequests() {
+    /*
+     * ==========================================
+     * ペット画像プレビュー
+     * ==========================================
+     */
+    if (petImageInput) {
 
-    const requestList =
-        document.getElementById("requestList");
+        petImageInput.addEventListener("change", function () {
 
-    try {
+            const file = this.files[0];
 
-        const response =
-            await fetch("share-request-list");
-
-        // --------------------------------
-        // ログイン切れ
-        // --------------------------------
-
-        if (response.status === 401) {
-
-            window.location.href =
-                "login.html";
-
-            return;
-
-        }
-
-
-        // --------------------------------
-        // HTTPエラー
-        // --------------------------------
-
-        if (!response.ok) {
-
-            throw new Error(
-                "リクエスト一覧の取得に失敗しました。"
-            );
-
-        }
-
-
-        // --------------------------------
-        // JSON取得
-        // --------------------------------
-
-        const requests =
-            await response.json();
-
-
-        // --------------------------------
-        // 表示
-        // --------------------------------
-
-        displayRequests(requests);
-
-    } catch (error) {
-
-        console.error(error);
-
-        requestList.innerHTML = `
-            <p class="empty-message">
-                リクエストの取得に失敗しました。
-            </p>
-        `;
-
-    }
-
-}
-
-
-// ========================================
-// リクエスト一覧表示
-// ========================================
-
-function displayRequests(requests) {
-
-    const requestList =
-        document.getElementById("requestList");
-
-
-    // ------------------------------------
-    // リクエストなし
-    // ------------------------------------
-
-    if (!requests ||
-        requests.length === 0) {
-
-        requestList.innerHTML = `
-            <p class="empty-message">
-                現在、ペットシェアリクエストはありません。
-            </p>
-        `;
-
-        return;
-
-    }
-
-
-    // ------------------------------------
-    // 一覧をクリア
-    // ------------------------------------
-
-    requestList.innerHTML = "";
-
-
-    // ------------------------------------
-    // カード作成
-    // ------------------------------------
-
-    requests.forEach(request => {
-
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "request-card";
-
-
-        // --------------------------------
-        // ステータス
-        // --------------------------------
-
-        let statusText = "";
-        let statusClass = "";
-
-        switch (request.status) {
-
-            case "pending":
-
-                statusText =
-                    "承認待ち";
-
-                statusClass =
-                    "status-pending";
-
-                break;
-
-
-            case "approved":
-
-                statusText =
-                    "承認済み";
-
-                statusClass =
-                    "status-approved";
-
-                break;
-
-
-            case "rejected":
-
-                statusText =
-                    "拒否済み";
-
-                statusClass =
-                    "status-rejected";
-
-                break;
-
-
-            default:
-
-                statusText =
-                    request.status;
-
-                statusClass = "";
-
-        }
-
-
-        // --------------------------------
-        // 利用時間
-        // --------------------------------
-
-        const usageHours =
-            formatUsageHours(
-                request.usageHours
-            );
-
-
-        // --------------------------------
-        // カードHTML
-        // --------------------------------
-
-        card.innerHTML = `
-
-            <div class="request-pet-name">
-                ${escapeHtml(request.petName)}
-            </div>
-
-
-            <div class="request-info">
-
-                <div class="request-row">
-
-                    <span class="request-label">
-                        申込者
-                    </span>
-
-                    <span class="request-value">
-                        ${escapeHtml(request.borrowerName)}
-                    </span>
-
-                </div>
-
-
-                <div class="request-row">
-
-                    <span class="request-label">
-                        利用開始
-                    </span>
-
-                    <span class="request-value">
-                        ${escapeHtml(request.startDatetime)}
-                    </span>
-
-                </div>
-
-
-                <div class="request-row">
-
-                    <span class="request-label">
-                        利用終了
-                    </span>
-
-                    <span class="request-value">
-                        ${escapeHtml(request.endDatetime)}
-                    </span>
-
-                </div>
-
-
-                <div class="request-row">
-
-                    <span class="request-label">
-                        利用時間
-                    </span>
-
-                    <span class="request-value">
-                        ${usageHours}
-                    </span>
-
-                </div>
-
-
-                <div class="request-row">
-
-                    <span class="request-label">
-                        状態
-                    </span>
-
-                    <span class="request-value">
-
-                        <span class="request-status ${statusClass}">
-                            ${statusText}
-                        </span>
-
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            ${
-                request.status === "pending"
-
-                ? createActionButtons(
-                    request.requestId
-                )
-
-                : createProcessedMessage(
-                    statusText
-                )
+            if (!file) {
+                return;
             }
 
-        `;
+            // 画像ファイルか確認
+            if (!file.type.startsWith("image/")) {
+                alert("画像ファイルを選択してください。");
+                this.value = "";
+                return;
+            }
 
+            // 画像サイズ確認
+            const maxSize = 10 * 1024 * 1024; // 10MB
 
-        requestList.appendChild(card);
+            if (file.size > maxSize) {
+                alert("画像サイズは10MB以下にしてください。");
+                this.value = "";
+                return;
+            }
 
-    });
+            const reader = new FileReader();
 
-}
+            reader.onload = function (event) {
 
-
-// ========================================
-// 承認・拒否ボタン
-// ========================================
-
-function createActionButtons(requestId) {
-
-    return `
-
-        <div class="request-buttons">
-
-            <button
-                type="button"
-                class="approve-button"
-                onclick="updateRequestStatus(
-                    ${requestId},
-                    'approved'
-                )">
-
-                承認
-
-            </button>
-
-
-            <button
-                type="button"
-                class="reject-button"
-                onclick="updateRequestStatus(
-                    ${requestId},
-                    'rejected'
-                )">
-
-                拒否
-
-            </button>
-
-        </div>
-
-    `;
-
-}
-
-
-// ========================================
-// 処理済みメッセージ
-// ========================================
-
-function createProcessedMessage(statusText) {
-
-    return `
-
-        <p class="processed-message">
-            このリクエストは「${escapeHtml(statusText)}」です。
-        </p>
-
-    `;
-
-}
-
-
-// ========================================
-// 承認・拒否処理
-// ========================================
-
-async function updateRequestStatus(
-    requestId,
-    status
-) {
-
-    // ------------------------------------
-    // 確認メッセージ
-    // ------------------------------------
-
-    let confirmMessage = "";
-
-    if (status === "approved") {
-
-        confirmMessage =
-            "このシェア申込みを承認しますか？";
-
-    } else {
-
-        confirmMessage =
-            "このシェア申込みを拒否しますか？";
-
-    }
-
-
-    // ------------------------------------
-    // キャンセル
-    // ------------------------------------
-
-    if (!confirm(confirmMessage)) {
-
-        return;
-
-    }
-
-
-    try {
-
-        // --------------------------------
-        // POSTデータ
-        // --------------------------------
-
-        const formData =
-            new URLSearchParams();
-
-        formData.append(
-            "requestId",
-            requestId
-        );
-
-        formData.append(
-            "status",
-            status
-        );
-
-
-        // --------------------------------
-        // サーバーへ送信
-        // --------------------------------
-
-        const response =
-            await fetch(
-                "share-request-status",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/x-www-form-urlencoded"
-                    },
-
-                    body:
-                        formData.toString()
+                if (petImagePreview) {
+                    petImagePreview.src = event.target.result;
+                    petImagePreview.style.display = "block";
                 }
+
+                if (petImageDefault) {
+                    petImageDefault.style.display = "none";
+                }
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
+
+    /*
+     * ==========================================
+     * 登録処理
+     * ==========================================
+     *
+     * formのsubmitは通常のHTML送信に任せる。
+     * これにより、画像を含めた全項目を
+     * multipart/form-dataでServletへ送信できる。
+     */
+    if (form) {
+
+        form.addEventListener("submit", function (event) {
+
+            /*
+             * ペット名チェック
+             */
+            const petNameInput =
+                document.querySelector('[name="petName"]');
+
+            if (petNameInput &&
+                petNameInput.value.trim() === "") {
+
+                event.preventDefault();
+
+                alert("ペットの名前を入力してください。");
+                petNameInput.focus();
+
+                return;
+            }
+
+
+            /*
+             * ペット種類チェック
+             */
+            const petTypeInput =
+                document.querySelector('[name="petType"]');
+
+            if (petTypeInput &&
+                petTypeInput.value.trim() === "") {
+
+                event.preventDefault();
+
+                alert("ペットの種類を選択してください。");
+                petTypeInput.focus();
+
+                return;
+            }
+
+
+            /*
+             * 最終確認
+             */
+            const result = confirm(
+                "この内容でペットを登録しますか？"
             );
 
+            if (!result) {
+                event.preventDefault();
+                return;
+            }
 
-        // --------------------------------
-        // ログイン切れ
-        // --------------------------------
+            /*
+             * 二重送信防止
+             */
+            if (registerButton) {
+                registerButton.disabled = true;
+                registerButton.textContent = "登録中...";
+            }
 
-        if (response.status === 401) {
+            /*
+             * ここではevent.preventDefault()しない。
+             *
+             * ↓
+             * 通常のform送信
+             *
+             * ↓
+             * /pet-register
+             *
+             * ↓
+             * PetRegisterServlet
+             *
+             * ↓
+             * DBへ登録
+             */
+        });
+    }
 
-            window.location.href =
-                "login.html";
 
-            return;
+    /*
+     * ==========================================
+     * キャンセルボタン
+     * ==========================================
+     */
+    if (cancelButton) {
 
-        }
+        cancelButton.addEventListener("click", () => {
 
-
-        // --------------------------------
-        // JSON取得
-        // --------------------------------
-
-        const result =
-            await response.json();
-
-
-        // --------------------------------
-        // 成功
-        // --------------------------------
-
-        if (result.success) {
-
-            showMessage(
-                result.message,
-                "success"
+            const result = confirm(
+                "ペット登録をキャンセルしますか？"
             );
 
-            // 最新状態を再取得
-            await loadShareRequests();
+            if (result) {
+                history.back();
+            }
+        });
+    }
 
-        } else {
 
-            showMessage(
-                result.message,
-                "error"
-            );
+    /*
+     * ==========================================
+     * 戻るボタン
+     * ==========================================
+     */
+    if (backButton) {
 
-        }
+        backButton.addEventListener("click", () => {
+            history.back();
+        });
+    }
 
-    } catch (error) {
 
-        console.error(error);
+    /*
+     * ==========================================
+     * 登録失敗メッセージ
+     * ==========================================
+     */
+    const params = new URLSearchParams(window.location.search);
 
-        showMessage(
-            "処理中にエラーが発生しました。",
-            "error"
+    if (params.get("error") === "true") {
+
+        alert(
+            "ペットの登録に失敗しました。\n" +
+            "入力内容を確認して、もう一度お試しください。"
         );
-
     }
 
-}
-
-
-// ========================================
-// メッセージ表示
-// ========================================
-
-function showMessage(
-    message,
-    type
-) {
-
-    const messageElement =
-        document.getElementById("message");
-
-
-    messageElement.textContent =
-        message;
-
-
-    messageElement.className =
-        "message";
-
-
-    if (type === "success") {
-
-        messageElement.classList.add(
-            "message-success"
-        );
-
-    } else {
-
-        messageElement.classList.add(
-            "message-error"
-        );
-
-    }
-
-
-    messageElement.style.display =
-        "block";
-
-
-    // ------------------------------------
-    // 3秒後に非表示
-    // ------------------------------------
-
-    setTimeout(() => {
-
-        messageElement.style.display =
-            "none";
-
-    }, 3000);
-
-}
-
-
-// ========================================
-// 利用時間表示
-// ========================================
-
-function formatUsageHours(hours) {
-
-    const number =
-        Number(hours);
-
-
-    if (Number.isInteger(number)) {
-
-        return `${number}時間`;
-
-    }
-
-
-    return `${number.toFixed(2)}時間`;
-
-}
-
-
-// ========================================
-// HTMLエスケープ
-// ========================================
-
-function escapeHtml(value) {
-
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
-        return "";
-
-    }
-
-
-    return String(value)
-
-        .replace(/&/g, "&amp;")
-
-        .replace(/</g, "&lt;")
-
-        .replace(/>/g, "&gt;")
-
-        .replace(/"/g, "&quot;")
-
-        .replace(/'/g, "&#039;");
-
-}
+});

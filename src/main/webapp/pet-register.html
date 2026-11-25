@@ -35,6 +35,11 @@
 
     <main class="main-content">
 
+<form id="petRegisterForm"
+      action="pet-register"
+      method="post"
+      enctype="multipart/form-data">
+
 
         <!-- =========================
              基本情報
@@ -679,28 +684,28 @@
         </section>
 
 
-        <!-- =========================
-             登録ボタン
-        ========================== -->
+       <!-- =========================
+     登録ボタン
+========================= -->
 
-        <div class="button-area">
+<div class="button-area">
 
-            <button
-                type="button"
-                id="registerButton"
-                class="save-button">
-                ペットを登録する
-            </button>
+   <button
+    type="submit"
+    id="registerButton"
+    class="save-button">
+    ペットを登録する
+</button>
 
-            <button
-                type="button"
-                id="cancelButton"
-                class="cancel-button">
-                キャンセル
-            </button>
+    <button
+        type="button"
+        id="cancelButton"
+        class="cancel-button">
+        キャンセル
+    </button>
 
-        </div>
-
+</div>
+</form>
     </main>
 
 

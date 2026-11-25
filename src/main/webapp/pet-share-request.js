@@ -20,8 +20,13 @@ async function loadShareRequests() {
 
     try {
 
+        // --------------------------------
+        // データ取得
+        // --------------------------------
+
         const response =
             await fetch("share-request-list");
+
 
         // --------------------------------
         // ログイン切れ
@@ -33,7 +38,6 @@ async function loadShareRequests() {
                 "login.html";
 
             return;
-
         }
 
 
@@ -104,7 +108,6 @@ function displayRequests(requests) {
         `;
 
         return;
-
     }
 
 
@@ -170,6 +173,17 @@ function displayRequests(requests) {
                 break;
 
 
+            case "cancelled":
+
+                statusText =
+                    "キャンセル済み";
+
+                statusClass =
+                    "status-rejected";
+
+                break;
+
+
             default:
 
                 statusText =
@@ -190,14 +204,79 @@ function displayRequests(requests) {
             );
 
 
+        // ========================================
+        // ★ ペット画像
+        // ========================================
+
+        let petImageHtml = "";
+
+        if (
+            request.petImage &&
+            String(request.petImage).trim() !== ""
+        ) {
+
+            let imageSrc =
+                String(request.petImage);
+
+
+            // --------------------------------
+            // Base64だけの場合
+            // --------------------------------
+
+            if (
+                !imageSrc.startsWith("data:image/")
+            ) {
+
+                imageSrc =
+                    "data:image/jpeg;base64,"
+                    + imageSrc;
+            }
+
+
+            petImageHtml = `
+                <div class="pet-image-box">
+
+                    <img
+                        src="${escapeHtml(imageSrc)}"
+                        alt="${escapeHtml(
+                            request.petName ||
+                            "ペット"
+                        )}"
+                        class="pet-request-image">
+
+                </div>
+            `;
+
+        } else {
+
+            // --------------------------------
+            // 画像がない場合
+            // --------------------------------
+
+            petImageHtml = `
+                <div class="pet-image-box pet-image-default">
+                    🐾
+                </div>
+            `;
+        }
+
+
         // --------------------------------
         // カードHTML
         // --------------------------------
 
         card.innerHTML = `
 
-            <div class="request-pet-name">
-                ${escapeHtml(request.petName)}
+            <div class="request-pet-info">
+
+                ${petImageHtml}
+
+                <h2 class="request-pet-name">
+                    ${escapeHtml(
+                        request.petName
+                    )}
+                </h2>
+
             </div>
 
 
@@ -210,7 +289,9 @@ function displayRequests(requests) {
                     </span>
 
                     <span class="request-value">
-                        ${escapeHtml(request.borrowerName)}
+                        ${escapeHtml(
+                            request.borrowerName
+                        )}
                     </span>
 
                 </div>
@@ -223,7 +304,9 @@ function displayRequests(requests) {
                     </span>
 
                     <span class="request-value">
-                        ${escapeHtml(request.startDatetime)}
+                        ${escapeHtml(
+                            request.startDatetime
+                        )}
                     </span>
 
                 </div>
@@ -236,7 +319,9 @@ function displayRequests(requests) {
                     </span>
 
                     <span class="request-value">
-                        ${escapeHtml(request.endDatetime)}
+                        ${escapeHtml(
+                            request.endDatetime
+                        )}
                     </span>
 
                 </div>
@@ -263,7 +348,8 @@ function displayRequests(requests) {
 
                     <span class="request-value">
 
-                        <span class="request-status ${statusClass}">
+                        <span
+                            class="request-status ${statusClass}">
                             ${statusText}
                         </span>
 
@@ -300,7 +386,9 @@ function displayRequests(requests) {
 // 承認・拒否ボタン
 // ========================================
 
-function createActionButtons(requestId) {
+function createActionButtons(
+    requestId
+) {
 
     return `
 
@@ -342,12 +430,16 @@ function createActionButtons(requestId) {
 // 処理済みメッセージ
 // ========================================
 
-function createProcessedMessage(statusText) {
+function createProcessedMessage(
+    statusText
+) {
 
     return `
 
         <p class="processed-message">
-            このリクエストは「${escapeHtml(statusText)}」です。
+            このリクエストは
+            「${escapeHtml(statusText)}」
+            です。
         </p>
 
     `;
@@ -442,7 +534,6 @@ async function updateRequestStatus(
                     "login.html";
 
                 return;
-
             }
 
 
@@ -478,7 +569,9 @@ async function updateRequestStatus(
                     "success"
                 );
 
+
                 // 最新状態を再取得
+
                 await loadShareRequests();
 
             } else {
@@ -534,7 +627,6 @@ async function updateRequestStatus(
                 "login.html";
 
             return;
-
         }
 
 
@@ -570,7 +662,9 @@ async function updateRequestStatus(
                 "success"
             );
 
+
             // 最新状態を再取得
+
             await loadShareRequests();
 
         } else {
@@ -655,7 +749,9 @@ function showMessage(
 // 利用時間表示
 // ========================================
 
-function formatUsageHours(hours) {
+function formatUsageHours(
+    hours
+) {
 
     const number =
         Number(hours);
@@ -677,7 +773,9 @@ function formatUsageHours(hours) {
 // HTMLエスケープ
 // ========================================
 
-function escapeHtml(value) {
+function escapeHtml(
+    value
+) {
 
     if (
         value === null ||
@@ -691,14 +789,29 @@ function escapeHtml(value) {
 
     return String(value)
 
-        .replace(/&/g, "&amp;")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
 
-        .replace(/</g, "&lt;")
+        .replace(
+            /</g,
+            "&lt;"
+        )
 
-        .replace(/>/g, "&gt;")
+        .replace(
+            />/g,
+            "&gt;"
+        )
 
-        .replace(/"/g, "&quot;")
+        .replace(
+            /"/g,
+            "&quot;"
+        )
 
-        .replace(/'/g, "&#039;");
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }

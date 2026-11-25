@@ -1,6 +1,6 @@
 /* =====================================
    Pet Share
-   ペットシェア申込み状況
+   ペットシェアリクエスト
 ===================================== */
 
 * {
@@ -38,7 +38,7 @@ body {
 
     margin: 0 auto;
 
-    padding: 30px 16px 50px;
+    padding: 30px 16px 40px;
 }
 
 
@@ -55,8 +55,6 @@ body {
 
     font-weight: 700;
 
-    line-height: 1.4;
-
     text-align: center;
 }
 
@@ -66,13 +64,13 @@ body {
 ===================================== */
 
 .request-description {
-    margin: 0 0 28px;
+    margin: 0 0 25px;
 
     color: #999;
 
     font-size: 12px;
 
-    line-height: 1.7;
+    line-height: 1.6;
 
     text-align: center;
 }
@@ -87,7 +85,7 @@ body {
 
     flex-direction: column;
 
-    gap: 18px;
+    gap: 16px;
 }
 
 
@@ -96,42 +94,19 @@ body {
 ===================================== */
 
 .request-card {
-    padding: 24px;
+    padding: 22px;
 
     background: #ffffff;
 
-    border-radius: 18px;
+    border-radius: 16px;
 
     box-shadow:
-        0 3px 14px rgba(0, 0, 0, 0.06);
-
-    border: 1px solid rgba(221, 213, 207, 0.45);
+        0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 
 /* =====================================
-   ヘッダー
-===================================== */
-
-.request-header {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    padding-bottom: 18px;
-
-    margin-bottom: 20px;
-
-    border-bottom: 1px solid #eee8e3;
-}
-
-
-/* =====================================
-   ペット情報
+   ★ ペット情報
 ===================================== */
 
 .request-pet-info {
@@ -139,14 +114,14 @@ body {
 
     align-items: center;
 
-    gap: 13px;
+    gap: 14px;
 
-    min-width: 0;
+    margin-bottom: 18px;
 }
 
 
 /* =====================================
-   ペット画像
+   ★ ペット画像枠
 ===================================== */
 
 .pet-image-box {
@@ -167,10 +142,12 @@ body {
     align-items: center;
 
     justify-content: center;
-
-    border: 2px solid #f1ebe6;
 }
 
+
+/* =====================================
+   ★ ペット画像
+===================================== */
 
 .pet-request-image {
     width: 100%;
@@ -180,19 +157,17 @@ body {
     display: block;
 
     object-fit: cover;
-
-    border-radius: 50%;
 }
 
 
 /* =====================================
-   画像がない場合
+   ★ 画像がない場合
 ===================================== */
 
 .pet-image-default {
-    color: #b99f90;
+    color: #c5aaa0;
 
-    font-size: 25px;
+    font-size: 28px;
 }
 
 
@@ -205,86 +180,11 @@ body {
 
     color: #4b3b33;
 
-    font-size: 18px;
+    font-size: 17px;
 
     font-weight: 700;
 
     line-height: 1.4;
-
-    word-break: break-word;
-}
-
-
-/* =====================================
-   ステータス
-===================================== */
-
-.request-status {
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    min-width: 78px;
-
-    padding: 7px 13px;
-
-    border-radius: 999px;
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    line-height: 1;
-
-    text-align: center;
-
-    white-space: nowrap;
-}
-
-
-/* =====================================
-   承認待ち
-===================================== */
-
-.request-status.pending {
-    background: #fff3e8;
-
-    color: #d9824b;
-}
-
-
-/* =====================================
-   承認済み
-===================================== */
-
-.request-status.approved {
-    background: #eaf6ee;
-
-    color: #4d8b62;
-}
-
-
-/* =====================================
-   拒否済み
-===================================== */
-
-.request-status.rejected {
-    background: #f8eeee;
-
-    color: #b86b6b;
-}
-
-
-/* =====================================
-   キャンセル済み
-===================================== */
-
-.request-status.cancelled {
-    background: #eeeeee;
-
-    color: #888888;
 }
 
 
@@ -297,7 +197,7 @@ body {
 
     flex-direction: column;
 
-    gap: 8px;
+    gap: 11px;
 
     margin-bottom: 20px;
 }
@@ -308,95 +208,91 @@ body {
 ===================================== */
 
 .request-row {
-    display: grid;
-
-    grid-template-columns: 110px minmax(0, 1fr);
-
-    align-items: stretch;
-
-    min-height: 42px;
-
-    border: 1px solid #eee8e3;
-
-    border-radius: 9px;
-
-    overflow: hidden;
-
-    background: #ffffff;
-}
-
-
-/* =====================================
-   項目名
-===================================== */
-
-.request-label {
     display: flex;
 
-    align-items: center;
-
-    padding: 9px 12px;
-
-    background: #f7f3ef;
-
-    color: #8b7770;
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    line-height: 1.4;
-
-    border-right: 1px solid #eee8e3;
-}
-
-
-/* =====================================
-   データ
-===================================== */
-
-.request-value {
-    display: flex;
-
-    align-items: center;
-
-    padding: 9px 13px;
-
-    background: #ffffff;
-
-    color: #4b3b33;
+    align-items: flex-start;
 
     font-size: 13px;
 
-    font-weight: 500;
-
     line-height: 1.5;
+}
+
+
+/* =====================================
+   ラベル
+===================================== */
+
+.request-label {
+    flex: 0 0 85px;
+
+    color: #999;
+
+    font-weight: 600;
+}
+
+
+/* =====================================
+   内容
+===================================== */
+
+.request-value {
+    flex: 1;
+
+    color: #4b3b33;
 
     word-break: break-word;
 }
 
 
 /* =====================================
-   シェア料金
+   ステータス
 ===================================== */
 
-.request-row:nth-child(5) .request-value {
-    color: #b86b4f;
+.request-status {
+    display: inline-block;
 
-    font-size: 14px;
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
 
     font-weight: 700;
+
+    text-align: center;
 }
 
 
-/* =====================================
-   ステータス行
-===================================== */
+/* -------------------------------------
+   承認待ち
+------------------------------------- */
 
-.request-row:last-child .request-value {
-    padding-top: 7px;
+.status-pending {
+    background: #fff3e8;
 
-    padding-bottom: 7px;
+    color: #d9824b;
+}
+
+
+/* -------------------------------------
+   承認済み
+------------------------------------- */
+
+.status-approved {
+    background: #eaf6ee;
+
+    color: #4d8b62;
+}
+
+
+/* -------------------------------------
+   拒否済み
+------------------------------------- */
+
+.status-rejected {
+    background: #f8eeee;
+
+    color: #b86b6b;
 }
 
 
@@ -477,57 +373,6 @@ body {
     background: #eee5df;
 
     color: #6b554b;
-}
-
-
-/* =====================================
-   キャンセルボタン
-===================================== */
-
-.cancel-button {
-    width: 100%;
-
-    height: 45px;
-
-    margin-top: 4px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: #eb9a6d;
-
-    color: #ffffff;
-
-    font-family: inherit;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        opacity 0.15s ease,
-        transform 0.1s ease;
-}
-
-
-/* =====================================
-   キャンセルボタン ホバー
-===================================== */
-
-.cancel-button:hover {
-    opacity: 0.85;
-}
-
-
-/* =====================================
-   キャンセルボタン クリック
-===================================== */
-
-.cancel-button:active {
-    transform: scale(0.98);
 }
 
 
@@ -705,24 +550,16 @@ body {
 
     .request-description {
         font-size: 12px;
-
-        margin-bottom: 22px;
     }
 
 
     .request-card {
         padding: 18px;
-
-        border-radius: 15px;
     }
 
 
-    .request-header {
-        align-items: flex-start;
-
-        padding-bottom: 16px;
-
-        margin-bottom: 17px;
+    .request-pet-info {
+        gap: 12px;
     }
 
 
@@ -740,43 +577,13 @@ body {
     }
 
 
-    .request-status {
-        min-width: 70px;
-
-        padding: 6px 10px;
-
-        font-size: 11px;
-    }
-
-
     .request-row {
-        grid-template-columns: 90px minmax(0, 1fr);
-
-        min-height: 40px;
-    }
-
-
-    .request-label {
-        padding: 8px 9px;
-
-        font-size: 11px;
-    }
-
-
-    .request-value {
-        padding: 8px 10px;
-
         font-size: 12px;
     }
 
 
-    .request-row:nth-child(5) .request-value {
-        font-size: 13px;
-    }
-
-
-    .request-buttons {
-        gap: 8px;
+    .request-label {
+        flex: 0 0 75px;
     }
 
 
@@ -787,14 +594,8 @@ body {
     }
 
 
-    .cancel-button {
-        height: 43px;
-
-        font-size: 12px;
-    }
-
-
     .back-button {
         max-width: 100%;
     }
+
 }
