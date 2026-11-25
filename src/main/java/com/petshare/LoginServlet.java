@@ -19,101 +19,70 @@ public class LoginServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
+        // 文字コード設定
         request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
 
+        // 入力値取得
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // 入力チェック
+        // 未入力チェック
         if (email == null || email.trim().isEmpty()
                 || password == null || password.isEmpty()) {
 
-            response.sendRedirect(
-                    request.getContextPath() + "/login.html?error=empty");
+            response.sendRedirect("login.html?error=empty");
             return;
         }
 
-        try {
+        email = email.trim();
 
+        try {
+            // DAOを1つだけ作成
             UserDAO userDAO = new UserDAO();
 
-            // ① ログイン認証
-            User loginUser = userDAO.login(email.trim(), password);
+            // --------------------------------------------------
+            // ログイン情報＋プロフィール情報を
+            // 1回のDBアクセスで取得
+            // --------------------------------------------------
+            User loginUser = userDAO.login(email, password);
 
-            // 認証失敗
+            // ログイン失敗
             if (loginUser == null) {
-
-                response.sendRedirect(
-                        request.getContextPath() + "/login.html?error=invalid");
+                response.sendRedirect("login.html?error=invalid");
                 return;
             }
 
-            // ② アカウントIDから登録情報を取得
-            User fullUser = userDAO.findById(loginUser.getAccountId());
-
-            // ユーザー情報取得失敗
-            if (fullUser == null) {
-
-                response.sendRedirect(
-                        request.getContextPath() + "/login.html?error=system");
-                return;
-            }
-
-            System.out.println("===== LoginServlet 実行確認 =====");
-            System.out.println("メールアドレス：" + email);
-            System.out.println("ログイン認証成功");
-            System.out.println("移動先：home.html");
-
-            // ③ 古いセッションを破棄
+            // --------------------------------------------------
+            // 既存セッションを破棄
+            // --------------------------------------------------
             HttpSession oldSession = request.getSession(false);
 
             if (oldSession != null) {
                 oldSession.invalidate();
             }
 
-            // ④ 新しいセッションを作成
+            // 新しいセッションを作成
             HttpSession session = request.getSession(true);
 
-            // ⑤ ユーザー情報を保存
-            session.setAttribute("loginUser", fullUser);
+            // セッションにユーザー情報を保存
+            session.setAttribute("loginUser", loginUser);
+            session.setAttribute("accountId", loginUser.getAccountId());
+            session.setAttribute("userRank", loginUser.getUserRank());
 
-            // プロフィール更新などで使用するアカウントIDを保存
-            session.setAttribute("accountId", fullUser.getAccountId());
-
-            // 会員ランクを保存
-            // 1 = 仮会員
-            // 2 = 本会員
-            session.setAttribute("userRank", fullUser.getUserRank());
-
-            System.out.println("===== セッション保存確認 =====");
-            System.out.println("アカウントID：" + fullUser.getAccountId());
-            System.out.println("姓：" + fullUser.getLastName());
-            System.out.println("名：" + fullUser.getFirstName());
-            System.out.println("メールアドレス：" + fullUser.getEmail());
-            System.out.println("============================");
-
-            // セッション有効期限30分
+            // セッション有効時間
             session.setMaxInactiveInterval(30 * 60);
 
-            // ⑥ マイページへ移動
-            response.sendRedirect(
-                    request.getContextPath() + "/home.html");
+            // ホーム画面へ
+            response.sendRedirect("home.html");
 
         } catch (Exception e) {
 
+            // サーバー側ログ
             e.printStackTrace();
 
-            response.sendRedirect(
-                    request.getContextPath() + "/login.html?error=system");
+            // システムエラー
+            response.sendRedirect("login.html?error=system");
         }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-
-        response.sendRedirect(
-                request.getContextPath() + "/login.html");
     }
 }

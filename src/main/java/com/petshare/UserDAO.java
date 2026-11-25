@@ -361,95 +361,155 @@ public class UserDAO {
     // =====================================
     // ログイン認証
     // =====================================
-
     public User login(String email, String password) {
 
-        System.out.println("===== ログイン認証開始 =====");
+        String sql = "SELECT "
+                + "a.account_id, "
+                + "a.account_name, "
+                + "a.email, "
+                + "a.password_hash, "
+                + "a.user_rank, "
+                + "p.last_name, "
+                + "p.first_name, "
+                + "p.birth_year, "
+                + "p.birth_month, "
+                + "p.birth_day, "
+                + "p.gender, "
+                + "p.phone, "
+                + "p.postal_code, "
+                + "p.prefecture, "
+                + "p.city, "
+                + "p.street_address, "
+                + "p.building "
+                + "FROM accounts a "
+                + "LEFT JOIN personal_information p "
+                + "ON a.account_id = p.account_id "
+                + "WHERE a.email = ?";
 
-        // 入力確認
-        if (isEmpty(email) || isEmpty(password)) {
+        try (
+                Connection conn = getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            System.err.println(
-                    "メールアドレスまたはパスワードが空です。");
-
-            return null;
-        }
-
-        // SQL
-        String sql = "SELECT account_id, account_name, email, password_hash, user_rank "
-                + "FROM accounts "
-                + "WHERE email = ?";
-
-        try (Connection con = getConnection();
-
-                PreparedStatement ps = con.prepareStatement(sql)) {
-
-            // メールアドレス設定
-            ps.setString(1, email.trim());
+            // メールアドレス
+            ps.setString(1, email);
 
             try (ResultSet rs = ps.executeQuery()) {
 
-                if (rs.next()) {
-
-                    // DBからハッシュ化されたパスワード取得
-                    String passwordHash = rs.getString("password_hash");
-
-                    // BCryptによる照合
-                    boolean matched = false;
-
-                    if (passwordHash != null) {
-
-                        try {
-
-                            matched = BCrypt.checkpw(
-                                    password,
-                                    passwordHash);
-
-                        } catch (IllegalArgumentException e) {
-
-                            // 不正な形式のハッシュ
-                            matched = false;
-                        }
-                    }
-
-                    if (matched) {
-
-                        User user = new User();
-
-                        user.setAccountId(
-                                rs.getInt("account_id"));
-
-                        user.setAccountName(
-                                rs.getString("account_name"));
-
-                        user.setEmail(
-                                rs.getString("email"));
-
-                        user.setUserRank(
-                                rs.getInt("user_rank"));
-
-                        System.out.println(
-                                "ログイン認証成功");
-
-                        return user;
-                    }
+                // メールアドレスが存在しない
+                if (!rs.next()) {
+                    return null;
                 }
+
+                // DBに保存されているパスワードハッシュ
+                String passwordHash = rs.getString("password_hash");
+
+                // パスワード確認
+                if (passwordHash == null
+                        || !BCrypt.checkpw(password, passwordHash)) {
+                    return null;
+                }
+
+                // =====================================
+                // Userオブジェクト作成
+                // =====================================
+
+                User user = new User();
+
+                // アカウント情報
+                user.setAccountId(
+                        rs.getInt("account_id"));
+
+                user.setAccountName(
+                        rs.getString("account_name"));
+
+                user.setEmail(
+                        rs.getString("email"));
+
+                user.setUserRank(
+                        rs.getInt("user_rank"));
+
+                // =====================================
+                // 氏名
+                // =====================================
+
+                user.setLastName(
+                        rs.getString("last_name"));
+
+                user.setFirstName(
+                        rs.getString("first_name"));
+
+                // =====================================
+                // 生年月日
+                // =====================================
+
+                Integer year = rs.getObject("birth_year", Integer.class);
+
+                Integer month = rs.getObject("birth_month", Integer.class);
+
+                Integer day = rs.getObject("birth_day", Integer.class);
+
+                if (year != null
+                        && month != null
+                        && day != null) {
+
+                    user.setBirthDate(
+                            String.format(
+                                    "%04d-%02d-%02d",
+                                    year,
+                                    month,
+                                    day));
+                }
+
+                // =====================================
+                // その他の個人情報
+                // =====================================
+
+                user.setGender(
+                        rs.getString("gender"));
+
+                user.setPhone(
+                        rs.getString("phone"));
+
+                user.setPostalCode(
+                        rs.getString("postal_code"));
+
+                user.setPrefecture(
+                        rs.getString("prefecture"));
+
+                user.setCity(
+                        rs.getString("city"));
+
+                user.setAddress(
+                        rs.getString("street_address"));
+
+                user.setBuilding(
+                        rs.getString("building"));
+
+                // =====================================
+                // ログイン成功
+                // =====================================
+
+                System.out.println("===== ログイン成功 =====");
+                System.out.println(
+                        "account_id：" + user.getAccountId());
+                System.out.println(
+                        "account_name：" + user.getAccountName());
+                System.out.println(
+                        "user_rank：" + user.getUserRank());
+                System.out.println("========================");
+
+                return user;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
 
             System.err.println(
-                    "ログイン認証に失敗しました。");
+                    "ログイン処理でエラーが発生しました。");
 
             e.printStackTrace();
 
-        } finally {
-
-            System.out.println(
-                    "===== ログイン認証終了 =====");
+            return null;
         }
-
-        return null;
     }
 
     // =====================================
@@ -1353,8 +1413,7 @@ public class UserDAO {
         }
     }
 
-    
-       // =====================================
+    // =====================================
     // 会員ランク変更
     // =====================================
 
@@ -1367,15 +1426,13 @@ public class UserDAO {
             return false;
         }
 
-        String sql =
-                "UPDATE accounts "
+        String sql = "UPDATE accounts "
                 + "SET user_rank = ? "
                 + "WHERE account_id = ?";
 
         try (
                 Connection con = getConnection();
-                PreparedStatement ps =
-                        con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, userRank);
             ps.setInt(2, accountId);
@@ -1400,7 +1457,6 @@ public class UserDAO {
             return false;
         }
     }
-
 
     // =====================================
     // プロフィール取得
