@@ -240,74 +240,69 @@ public class PetDAO {
         // ペット一覧取得
         // =====================================
 
-        public List<Pet> findAll() {
+        public List<Pet> findAll(int loginAccountId) {
 
                 List<Pet> pets = new ArrayList<>();
 
+                // ペット一覧画面で必要な情報だけ取得する
+                // 自分のペットは取得しない
+                // シェア中のペットだけ取得する
                 String sql = """
-                                SELECT *
+                                SELECT
+                                        pet_id,
+                                        account_id,
+                                        pet_name,
+                                        pet_image,
+                                        pet_type,
+                                        birth_date,
+                                        is_shared,
+                                        created_at
                                 FROM pets
+                                WHERE is_shared = TRUE
+                                AND account_id <> ?
                                 ORDER BY created_at DESC
                                 """;
 
                 try (
                                 Connection conn = getConnection();
-                                PreparedStatement ps = conn.prepareStatement(sql);
-                                ResultSet rs = ps.executeQuery()) {
+                                PreparedStatement ps = conn.prepareStatement(sql)) {
 
-                        while (rs.next()) {
+                        // ログイン中のアカウントID
+                        ps.setInt(1, loginAccountId);
 
-                                Pet pet = new Pet();
+                        try (ResultSet rs = ps.executeQuery()) {
 
-                                pet.setPetId(rs.getInt("pet_id"));
-                                pet.setAccountId(rs.getInt("account_id"));
-                                pet.setPetName(rs.getString("pet_name"));
-                                pet.setPetImage(rs.getString("pet_image"));
-                                pet.setPetType(rs.getString("pet_type"));
-                                pet.setBreed(rs.getString("breed"));
-                                pet.setGender(rs.getString("gender"));
-                                pet.setBirthDate(rs.getDate("birth_date"));
-                                pet.setWeight(rs.getDouble("weight"));
-                                pet.setPersonality(rs.getString("personality"));
-                                pet.setFeatures(rs.getString("features"));
-                                pet.setLikes(rs.getString("likes"));
-                                pet.setDislikes(rs.getString("dislikes"));
-                                pet.setOtherAnimals(rs.getString("other_animals"));
-                                pet.setChildrenCompatibility(
-                                                rs.getString("children_compatibility"));
-                                pet.setFoodInfo(rs.getString("food_info"));
-                                pet.setWalkInfo(rs.getString("walk_info"));
-                                pet.setToiletInfo(rs.getString("toilet_info"));
-                                pet.setAloneTime(rs.getString("alone_time"));
-                                pet.setCareInfo(rs.getString("care_info"));
-                                pet.setVaccination(rs.getString("vaccination"));
-                                pet.setNeutering(rs.getString("neutering"));
-                                pet.setMedicalHistory(
-                                                rs.getString("medical_history"));
-                                pet.setAllergies(rs.getString("allergies"));
-                                pet.setMedication(rs.getString("medication"));
-                                pet.setPrecautions(
-                                                rs.getString("precautions"));
+                                while (rs.next()) {
 
-                                pet.setIsShared(
-                                                rs.getBoolean("is_shared"));
+                                        Pet pet = new Pet();
 
-                                pet.setSharePrice(
-                                                rs.getInt("share_price"));
+                                        // 一覧画面で使用する項目だけ取得
+                                        pet.setPetId(
+                                                        rs.getInt("pet_id"));
 
-                                pet.setShareStartDate(
-                                                rs.getDate(
-                                                                "share_start_date"));
-                                pet.setShareEndDate(
-                                                rs.getDate("share_end_date"));
-                                pet.setShareConditions(
-                                                rs.getString("share_conditions"));
-                                pet.setCreatedAt(
-                                                rs.getTimestamp("created_at"));
-                                pet.setUpdatedAt(
-                                                rs.getTimestamp("updated_at"));
+                                        pet.setAccountId(
+                                                        rs.getInt("account_id"));
 
-                                pets.add(pet);
+                                        pet.setPetName(
+                                                        rs.getString("pet_name"));
+
+                                        pet.setPetImage(
+                                                        rs.getString("pet_image"));
+
+                                        pet.setPetType(
+                                                        rs.getString("pet_type"));
+
+                                        pet.setBirthDate(
+                                                        rs.getDate("birth_date"));
+
+                                        pet.setIsShared(
+                                                        rs.getBoolean("is_shared"));
+
+                                        pet.setCreatedAt(
+                                                        rs.getTimestamp("created_at"));
+
+                                        pets.add(pet);
+                                }
                         }
 
                 } catch (SQLException e) {

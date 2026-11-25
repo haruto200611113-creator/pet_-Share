@@ -48,14 +48,8 @@ public class PetListServlet extends HttpServlet {
                         // ログイン中のアカウントIDを取得
                         int loginAccountId = (Integer) session.getAttribute("accountId");
 
-                        // DBからペット一覧を取得
-                        List<Pet> pets = petDAO.findAll();
-
-                        // シェア中 ＋ 自分以外のペットだけに絞り込む
-                        pets = pets.stream()
-                                        .filter(Pet::isShared)
-                                        .filter(pet -> pet.getAccountId() != loginAccountId)
-                                        .toList();
+                        // DBから「シェア中」かつ「自分以外」のペットだけ取得
+                        List<Pet> pets = petDAO.findAll(loginAccountId);
                         response.setContentType(
                                         "application/json; charset=UTF-8");
 
