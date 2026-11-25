@@ -490,6 +490,22 @@ public class PetDAO {
                                         pet.setPetImage(
                                                         rs.getString(
                                                                         "pet_image"));
+                                        String imageData = rs.getString("pet_image");
+
+                                        if (imageData != null) {
+
+                                                System.out.println(
+                                                                "ペット画像データサイズ: "
+                                                                                + imageData.length()
+                                                                                + " 文字");
+
+                                                System.out.println(
+                                                                "ペット画像データ約: "
+                                                                                + (imageData.length() / 1024)
+                                                                                + " KB");
+                                        }
+
+                                        pet.setPetImage(imageData);
 
                                         pet.setPetType(
                                                         rs.getString(
