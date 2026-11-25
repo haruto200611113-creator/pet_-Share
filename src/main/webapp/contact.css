@@ -377,24 +377,51 @@ body {
    スマホ
 ========================= */
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
 
-    .main {
-        width: calc(100% - 20px);
+    .page-title-with-menu {
+        grid-template-columns: 42px minmax(0, 1fr) 42px;
 
-        margin-top: 15px;
+        padding: 0 5px;
+
+        box-sizing: border-box;
     }
 
-    .contact-box {
-        padding: 20px;
+
+    .menu-button {
+        width: 42px;
+
+        height: 42px;
+
+        font-size: 23px;
+
+        position: relative;
+
+        top: 8px;
+
+        right: -8px;
     }
 
-    .contact-box > h2 {
-        font-size: 20px;
+
+    .side-menu {
+        width: 82vw;
     }
 
-    .intro {
-        font-size: 13px;
+
+    .side-menu-header {
+        height: 64px;
     }
 
+
+    .side-menu-title {
+        font-size: 18px;
+    }
+
+
+    .side-menu-list a,
+    .side-menu-list button {
+        min-height: 52px;
+
+        font-size: 14px;
+    }
 }
