@@ -19,7 +19,9 @@
 
     <dependencies>
 
+        <!-- ========================================== -->
         <!-- Servlet -->
+        <!-- ========================================== -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
@@ -27,25 +29,49 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- ========================================== -->
         <!-- MySQL JDBC Driver -->
+        <!-- ========================================== -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>9.5.0</version>
         </dependency>
 
+        <!-- ========================================== -->
         <!-- BCrypt：パスワードのハッシュ化 -->
+        <!-- ========================================== -->
         <dependency>
-             <groupId>org.mindrot</groupId>
+            <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
 
+        <!-- ========================================== -->
+        <!-- HikariCP：DBコネクションプール -->
+        <!-- ========================================== -->
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>7.0.2</version>
         </dependency>
+
+        <!-- ========================================== -->
+        <!-- TwelveMonkeys ImageIO -->
+        <!-- JPEG / PNG等の画像読み込みを補強 -->
+        <!-- ========================================== -->
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-jpeg</artifactId>
+            <version>3.12.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-core</artifactId>
+            <version>3.12.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -54,7 +80,9 @@
 
         <plugins>
 
+            <!-- ========================================== -->
             <!-- Javaコンパイル -->
+            <!-- ========================================== -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -65,7 +93,9 @@
                 </configuration>
             </plugin>
 
+            <!-- ========================================== -->
             <!-- WARファイル作成 -->
+            <!-- ========================================== -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
