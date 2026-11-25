@@ -5,22 +5,62 @@
 
 
 /* =====================================================
+   ページタイトル＋ハンバーガー
+===================================================== */
+
+.page-title-with-menu {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+
+    align-items: center;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   ページタイトル
+===================================================== */
+
+.page-title-with-menu h1 {
+    grid-column: 2;
+
+    grid-row: 1;
+
+    width: 100%;
+
+    margin: 0;
+
+    text-align: center;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
    ハンバーガーボタン
-   ページタイトルの右側に表示
 ===================================================== */
 
 .menu-button {
-    position: absolute;
+    position: relative;
 
-    top: 50%;
-    right: 0;
+    grid-column: 3;
 
-    transform: translateY(-50%);
+    grid-row: 1;
+
+    justify-self: end;
 
     width: 44px;
     height: 44px;
 
     border: none;
+
     border-radius: 12px;
 
     background: rgba(255, 255, 255, 0.95);
@@ -30,7 +70,9 @@
     font-size: 25px;
 
     display: flex;
+
     justify-content: center;
+
     align-items: center;
 
     cursor: pointer;
@@ -47,38 +89,22 @@
 
 
 /* =====================================================
-   ハンバーガーボタン
-   マウスを乗せたとき
+   ハンバーガーボタン：ホバー
 ===================================================== */
 
 .menu-button:hover {
     background: #fffaf7;
 
-    transform:
-        translateY(-50%)
-        scale(1.03);
+    transform: scale(1.03);
 }
 
 
 /* =====================================================
-   ハンバーガーボタン
-   押したとき
+   ハンバーガーボタン：クリック
 ===================================================== */
 
 .menu-button:active {
-    transform:
-        translateY(-50%)
-        scale(0.92);
-}
-
-
-/* =====================================================
-   ページタイトル
-   ハンバーガーを右側に配置するための設定
-===================================================== */
-
-h1 {
-    position: relative;
+    transform: scale(0.92);
 }
 
 
@@ -122,16 +148,17 @@ h1 {
 
 /* =====================================================
    サイドメニュー
-   右側から開く
 ===================================================== */
 
 .side-menu {
     position: fixed;
 
     top: 0;
+
     right: 0;
 
     width: min(320px, 85vw);
+
     height: 100vh;
 
     background: #ffffff;
@@ -151,7 +178,7 @@ h1 {
 
 
 /* =====================================================
-   サイドメニュー：表示
+   サイドメニュー表示
 ===================================================== */
 
 .side-menu.show {
@@ -169,6 +196,7 @@ h1 {
     height: 72px;
 
     display: flex;
+
     align-items: center;
 
     padding: 0 20px;
@@ -202,9 +230,11 @@ h1 {
     position: absolute;
 
     top: 14px;
+
     right: 15px;
 
     width: 42px;
+
     height: 42px;
 
     border: none;
@@ -218,7 +248,9 @@ h1 {
     cursor: pointer;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     border-radius: 10px;
@@ -226,7 +258,7 @@ h1 {
 
 
 /* =====================================================
-   閉じるボタン：マウスを乗せたとき
+   閉じるボタン：ホバー
 ===================================================== */
 
 .close-menu-button:hover {
@@ -237,7 +269,7 @@ h1 {
 
 
 /* =====================================================
-   メニュー項目一覧
+   メニュー一覧
 ===================================================== */
 
 .side-menu-list {
@@ -283,6 +315,7 @@ h1 {
     font-size: 15px;
 
     display: flex;
+
     align-items: center;
 
     text-align: left;
@@ -298,7 +331,7 @@ h1 {
 
 
 /* =====================================================
-   メニュー項目：マウスを乗せたとき
+   メニュー項目：ホバー
 ===================================================== */
 
 .side-menu-list a:hover,
@@ -333,18 +366,10 @@ body.menu-open .bottom-nav {
 }
 
 
-/* =====================================================
-   オーバーレイ
-===================================================== */
-
 body.menu-open .menu-overlay {
     z-index: 2000;
 }
 
-
-/* =====================================================
-   サイドメニュー
-===================================================== */
 
 body.menu-open .side-menu {
     z-index: 2100;
@@ -357,13 +382,21 @@ body.menu-open .side-menu {
 
 @media (max-width: 600px) {
 
+    .page-title-with-menu {
+        grid-template-columns: 42px minmax(0, 1fr) 42px;
+
+        padding: 0 5px;
+
+        box-sizing: border-box;
+    }
+
+
     .menu-button {
         width: 42px;
+
         height: 42px;
 
         font-size: 23px;
-
-        right: 0;
     }
 
 
@@ -397,13 +430,19 @@ body.menu-open .side-menu {
 
 @media (max-width: 400px) {
 
+    .page-title-with-menu {
+        grid-template-columns: 40px minmax(0, 1fr) 40px;
+
+        padding: 0 3px;
+    }
+
+
     .menu-button {
         width: 40px;
+
         height: 40px;
 
         font-size: 22px;
-
-        right: 0;
     }
 
 

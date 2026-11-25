@@ -16,6 +16,7 @@ document.addEventListener(
         if (
             document.querySelector(".side-menu")
         ) {
+
             initializeMenu();
 
             positionMenuButton();
@@ -31,7 +32,8 @@ document.addEventListener(
         const menuButton =
             document.createElement("button");
 
-        menuButton.type = "button";
+        menuButton.type =
+            "button";
 
         menuButton.className =
             "menu-button";
@@ -104,7 +106,6 @@ document.addEventListener(
             <ul class="side-menu-list">
 
                 <li>
-
                     <a href="home.html">
 
                         <span class="side-menu-icon">
@@ -114,12 +115,10 @@ document.addEventListener(
                         ホーム
 
                     </a>
-
                 </li>
 
 
                 <li>
-
                     <a href="mypage.jsp">
 
                         <span class="side-menu-icon">
@@ -129,12 +128,10 @@ document.addEventListener(
                         マイページ
 
                     </a>
-
                 </li>
 
 
                 <li>
-
                     <a href="profile-edit.html">
 
                         <span class="side-menu-icon">
@@ -144,12 +141,10 @@ document.addEventListener(
                         プロフィール編集
 
                     </a>
-
                 </li>
 
 
                 <li>
-
                     <a href="settings.html">
 
                         <span class="side-menu-icon">
@@ -159,12 +154,10 @@ document.addEventListener(
                         設定
 
                     </a>
-
                 </li>
 
 
                 <li>
-
                     <a href="contact.html">
 
                         <span class="side-menu-icon">
@@ -174,12 +167,10 @@ document.addEventListener(
                         お問い合わせ
 
                     </a>
-
                 </li>
 
 
                 <li>
-
                     <a href="faq.html">
 
                         <span class="side-menu-icon">
@@ -189,12 +180,10 @@ document.addEventListener(
                         よくある質問
 
                     </a>
-
                 </li>
 
 
                 <li>
-
                     <button
                         type="button"
                         id="logoutButton"
@@ -207,7 +196,6 @@ document.addEventListener(
                         ログアウト
 
                     </button>
-
                 </li>
 
             </ul>
@@ -233,7 +221,8 @@ document.addEventListener(
 
 
         /* =================================================
-           メニューボタンをページタイトルへ移動
+           ハンバーガーボタンを
+           ページタイトルの横へ配置
         ================================================= */
 
         positionMenuButton();
@@ -250,7 +239,7 @@ document.addEventListener(
 
 
 /* =====================================================
-   ハンバーガーボタンをページタイトルの右側へ配置
+   ページタイトル＋ハンバーガーを作成
 ===================================================== */
 
 function positionMenuButton() {
@@ -260,14 +249,47 @@ function positionMenuButton() {
             "menuButton"
         );
 
+
     if (!menuButton) {
         return;
     }
 
 
-    /*
-     * ページ内の最初のh1を取得
-     */
+    /* ---------------------------------------------
+       すでに配置済みなら何もしない
+    --------------------------------------------- */
+
+    if (
+        document.querySelector(
+            ".page-title-with-menu"
+        )
+    ) {
+
+        const existingWrapper =
+            document.querySelector(
+                ".page-title-with-menu"
+            );
+
+        if (
+            !existingWrapper.contains(
+                menuButton
+            )
+        ) {
+
+            existingWrapper.appendChild(
+                menuButton
+            );
+
+        }
+
+        return;
+    }
+
+
+    /* ---------------------------------------------
+       ページ内の最初のh1を取得
+    --------------------------------------------- */
+
     const pageTitle =
         document.querySelector(
             "h1"
@@ -275,26 +297,60 @@ function positionMenuButton() {
 
 
     /*
-     * h1が存在する場合
+     * h1がないページでは何もしない
      */
-    if (pageTitle) {
-
-        /*
-         * h1を基準位置にする
-         */
-        pageTitle.style.position =
-            "relative";
+    if (!pageTitle) {
+        return;
+    }
 
 
-        /*
-         * ハンバーガーボタンを
-         * h1の中へ移動
-         */
-        pageTitle.appendChild(
-            menuButton
+    /* ---------------------------------------------
+       タイトル用ラッパーを作成
+    --------------------------------------------- */
+
+    const wrapper =
+        document.createElement(
+            "div"
         );
 
-    }
+    wrapper.className =
+        "page-title-with-menu";
+
+
+    /* ---------------------------------------------
+       h1の親要素を取得
+    --------------------------------------------- */
+
+    const parent =
+        pageTitle.parentNode;
+
+
+    /* ---------------------------------------------
+       h1の前にラッパーを配置
+    --------------------------------------------- */
+
+    parent.insertBefore(
+        wrapper,
+        pageTitle
+    );
+
+
+    /* ---------------------------------------------
+       h1をラッパーへ移動
+    --------------------------------------------- */
+
+    wrapper.appendChild(
+        pageTitle
+    );
+
+
+    /* ---------------------------------------------
+       ハンバーガーをラッパーへ移動
+    --------------------------------------------- */
+
+    wrapper.appendChild(
+        menuButton
+    );
 
 }
 
@@ -336,7 +392,9 @@ function initializeMenu() {
         !closeMenuButton ||
         !menuOverlay
     ) {
+
         return;
+
     }
 
 
@@ -348,7 +406,9 @@ function initializeMenu() {
         menuButton.dataset.menuInitialized ===
         "true"
     ) {
+
         return;
+
     }
 
 
@@ -376,6 +436,7 @@ function initializeMenu() {
 
         document.body.style.overflow =
             "hidden";
+
     }
 
 
@@ -399,6 +460,7 @@ function initializeMenu() {
 
         document.body.style.overflow =
             "";
+
     }
 
 
