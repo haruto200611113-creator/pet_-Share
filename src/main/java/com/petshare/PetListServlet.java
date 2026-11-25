@@ -49,7 +49,16 @@ public class PetListServlet extends HttpServlet {
                         int loginAccountId = (Integer) session.getAttribute("accountId");
 
                         // DBから「シェア中」かつ「自分以外」のペットだけ取得
+                        long startTime = System.currentTimeMillis();
+
                         List<Pet> pets = petDAO.findAll(loginAccountId);
+
+                        long dbTime = System.currentTimeMillis() - startTime;
+
+                        System.out.println("=================================");
+                        System.out.println("ペット一覧DB取得時間: " + dbTime + " ms");
+                        System.out.println("取得件数: " + pets.size() + " 件");
+                        System.out.println("=================================");
                         response.setContentType(
                                         "application/json; charset=UTF-8");
 
