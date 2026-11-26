@@ -8,7 +8,15 @@
             https://jakarta.ee/xml/ns/jakartaee/web-app_6_1.xsd"
         version="6.1">
 
+    <!-- ========================================== -->
+    <!-- TwelveMonkeys ImageIO Plugin Listener -->
+    <!-- ========================================== -->
+
     <listener>
+        <display-name>
+            ImageIO service provider loader/unloader
+        </display-name>
+
         <listener-class>
             com.twelvemonkeys.servlet.image.IIOProviderContextListener
         </listener-class>
