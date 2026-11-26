@@ -3,16 +3,14 @@ package com.petshare;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.util.Base64;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -44,12 +42,20 @@ public class PetRegisterServlet extends HttpServlet {
 
         private static final long serialVersionUID = 1L;
 
+        // ==================================================
+        // 画像設定
+        // ==================================================
+
         // 保存する画像の最大サイズ
         private static final int MAX_IMAGE_WIDTH = 1280;
         private static final int MAX_IMAGE_HEIGHT = 1280;
 
         // JPEG品質
         private static final float JPEG_QUALITY = 0.80f;
+
+        // ==================================================
+        // POST
+        // ==================================================
 
         @Override
         protected void doPost(
@@ -62,9 +68,9 @@ public class PetRegisterServlet extends HttpServlet {
                 request.setCharacterEncoding("UTF-8");
                 response.setContentType("text/html; charset=UTF-8");
 
-                // ==========================================
+                // ==================================================
                 // ログイン・本会員チェック
-                // ==========================================
+                // ==================================================
 
                 HttpSession session = request.getSession(false);
 
@@ -72,9 +78,9 @@ public class PetRegisterServlet extends HttpServlet {
                         return;
                 }
 
-                // ==========================================
+                // ==================================================
                 // accountId取得
-                // ==========================================
+                // ==================================================
 
                 Object accountIdObject = session.getAttribute("accountId");
 
@@ -106,17 +112,17 @@ public class PetRegisterServlet extends HttpServlet {
                         return;
                 }
 
-                // ==========================================
+                // ==================================================
                 // Petオブジェクト作成
-                // ==========================================
+                // ==================================================
 
                 Pet pet = new Pet();
 
                 pet.setAccountId(accountId);
 
-                // ==========================================
+                // ==================================================
                 // 基本情報
-                // ==========================================
+                // ==================================================
 
                 pet.setPetName(
                                 getParameter(request, "petName"));
@@ -138,9 +144,9 @@ public class PetRegisterServlet extends HttpServlet {
                                 parseDouble(
                                                 request.getParameter("weight")));
 
-                // ==========================================
+                // ==================================================
                 // 性格・特徴
-                // ==========================================
+                // ==================================================
 
                 pet.setPersonality(
                                 getParameter(request, "personality"));
@@ -154,9 +160,9 @@ public class PetRegisterServlet extends HttpServlet {
                 pet.setDislikes(
                                 getParameter(request, "dislikes"));
 
-                // ==========================================
+                // ==================================================
                 // 相性
-                // ==========================================
+                // ==================================================
 
                 pet.setOtherAnimals(
                                 getParameter(request, "otherAnimals"));
@@ -166,9 +172,9 @@ public class PetRegisterServlet extends HttpServlet {
                                                 request,
                                                 "childrenCompatibility"));
 
-                // ==========================================
+                // ==================================================
                 // 飼育情報
-                // ==========================================
+                // ==================================================
 
                 pet.setFoodInfo(
                                 getParameter(request, "foodInfo"));
@@ -185,9 +191,9 @@ public class PetRegisterServlet extends HttpServlet {
                 pet.setCareInfo(
                                 getParameter(request, "careInfo"));
 
-                // ==========================================
+                // ==================================================
                 // 健康・安全情報
-                // ==========================================
+                // ==================================================
 
                 pet.setVaccination(
                                 getParameter(request, "vaccination"));
@@ -207,9 +213,9 @@ public class PetRegisterServlet extends HttpServlet {
                 pet.setPrecautions(
                                 getParameter(request, "precautions"));
 
-                // ==========================================
+                // ==================================================
                 // シェア情報
-                // ==========================================
+                // ==================================================
 
                 pet.setSharePrice(
                                 parseInteger(
@@ -228,18 +234,26 @@ public class PetRegisterServlet extends HttpServlet {
                                                 request,
                                                 "shareConditions"));
 
-                // ==========================================
+                // ==================================================
                 // ペット画像処理
-                // ==========================================
+                // ==================================================
 
                 try {
 
                         Part imagePart = request.getPart("petImage");
 
+                        // --------------------------------------------------
+                        // 画像あり
+                        // --------------------------------------------------
+
                         if (imagePart != null
                                         && imagePart.getSize() > 0) {
 
                                 String contentType = imagePart.getContentType();
+
+                                String fileName = imagePart.getSubmittedFileName();
+
+                                long fileSize = imagePart.getSize();
 
                                 System.out.println(
                                                 "画像Content-Type = "
@@ -247,16 +261,16 @@ public class PetRegisterServlet extends HttpServlet {
 
                                 System.out.println(
                                                 "画像ファイル名 = "
-                                                                + imagePart.getSubmittedFileName());
+                                                                + fileName);
 
                                 System.out.println(
                                                 "画像ファイルサイズ = "
-                                                                + imagePart.getSize()
+                                                                + fileSize
                                                                 + " bytes");
 
-                                // ----------------------------------
+                                // ==============================================
                                 // 画像ファイルか確認
-                                // ----------------------------------
+                                // ==============================================
 
                                 if (contentType == null
                                                 || !contentType.startsWith("image/")) {
@@ -272,82 +286,78 @@ public class PetRegisterServlet extends HttpServlet {
                                         return;
                                 }
 
-                                // ==========================================
-                                // ImageReaderを使用して画像を読み込む
-                                // ==========================================
+                                // ==============================================
+                                // ImageIOプラグインを再スキャン
+                                // ==============================================
 
-                                BufferedImage originalImage = null;
+                                /*
+                                 * TomcatなどのWebアプリケーション環境では、
+                                 * ImageIOプラグインが自動認識されない場合がある。
+                                 *
+                                 * TwelveMonkeysを含むImageIOプラグインを
+                                 * 明示的に再スキャンする。
+                                 */
+                                ImageIO.scanForPlugins();
 
-                                try (
-                                                InputStream inputStream = imagePart.getInputStream();
+                                System.out.println(
+                                                "ImageIOプラグインのスキャン完了");
 
-                                                ImageInputStream imageInputStream = ImageIO.createImageInputStream(
-                                                                inputStream)) {
+                                // ==============================================
+                                // 画像をbyte[]として読み込む
+                                // ==============================================
 
-                                        if (imageInputStream == null) {
+                                byte[] imageBytes;
 
-                                                throw new IOException(
-                                                                "ImageInputStreamの作成に失敗しました。");
-                                        }
+                                try (InputStream inputStream = imagePart.getInputStream()) {
 
-                                        /*
-                                         * ImageIO.read()を直接使うのではなく、
-                                         * 対応するImageReaderを探して画像を読み込む。
-                                         */
-                                        Iterator<ImageReader> readers = ImageIO.getImageReaders(
-                                                        imageInputStream);
-
-                                        if (!readers.hasNext()) {
-
-                                                throw new IOException(
-                                                                "この画像を読み込めるImageReaderがありません。");
-                                        }
-
-                                        ImageReader reader = readers.next();
-
-                                        System.out.println(
-                                                        "使用するImageReader = "
-                                                                        + reader.getClass().getName());
-
-                                        try {
-
-                                                reader.setInput(
-                                                                imageInputStream);
-
-                                                originalImage = reader.read(0);
-
-                                        } finally {
-
-                                                reader.dispose();
-                                        }
+                                        imageBytes = inputStream.readAllBytes();
                                 }
 
-                                // ==========================================
-                                // 画像読み込み確認
-                                // ==========================================
+                                System.out.println(
+                                                "画像byte[]読み込み成功 = "
+                                                                + imageBytes.length
+                                                                + " bytes");
+
+                                // ==============================================
+                                // byte[]から画像を読み込む
+                                // ==============================================
+
+                                BufferedImage originalImage;
+
+                                try (ByteArrayInputStream imageInputStream = new ByteArrayInputStream(imageBytes)) {
+
+                                        originalImage = ImageIO.read(imageInputStream);
+                                }
+
+                                // ==============================================
+                                // ImageIOで読み込めなかった場合
+                                // ==============================================
 
                                 if (originalImage == null) {
 
-                                        System.out.println(
+                                        System.err.println(
                                                         "=================================");
 
-                                        System.out.println(
+                                        System.err.println(
                                                         "画像の読み込みに失敗しました。");
 
-                                        System.out.println(
+                                        System.err.println(
+                                                        "ImageIO.read() が null を返しました。");
+
+                                        System.err.println(
                                                         "ファイル名 = "
-                                                                        + imagePart.getSubmittedFileName());
+                                                                        + fileName);
 
-                                        System.out.println(
+                                        System.err.println(
                                                         "Content-Type = "
-                                                                        + imagePart.getContentType());
+                                                                        + contentType);
 
-                                        System.out.println(
+                                        System.err.println(
                                                         "ファイルサイズ = "
-                                                                        + imagePart.getSize()
+                                                                        + fileSize
                                                                         + " bytes");
 
-                                        System.out.println(
+                                        System.err.println(
                                                         "=================================");
 
                                         response.sendRedirect(
@@ -358,21 +368,40 @@ public class PetRegisterServlet extends HttpServlet {
                                         return;
                                 }
 
-                                // ----------------------------------
+                                // ==============================================
+                                // 画像読み込み成功
+                                // ==============================================
+
+                                System.out.println(
+                                                "=================================");
+
+                                System.out.println(
+                                                "画像読み込み成功");
+
+                                System.out.println(
+                                                "元画像サイズ = "
+                                                                + originalImage.getWidth()
+                                                                + " × "
+                                                                + originalImage.getHeight());
+
+                                System.out.println(
+                                                "=================================");
+
+                                // ==============================================
                                 // リサイズ
-                                // ----------------------------------
+                                // ==============================================
 
                                 BufferedImage resizedImage = resizeImage(originalImage);
 
-                                // ----------------------------------
+                                // ==============================================
                                 // JPEGへ変換
-                                // ----------------------------------
+                                // ==============================================
 
                                 byte[] jpegBytes = convertToJpeg(resizedImage);
 
-                                // ----------------------------------
+                                // ==============================================
                                 // Base64へ変換
-                                // ----------------------------------
+                                // ==============================================
 
                                 String base64 = Base64.getEncoder()
                                                 .encodeToString(jpegBytes);
@@ -380,7 +409,12 @@ public class PetRegisterServlet extends HttpServlet {
                                 String imageData = "data:image/jpeg;base64,"
                                                 + base64;
 
+                                // Petオブジェクトへセット
                                 pet.setPetImage(imageData);
+
+                                // ==============================================
+                                // 画像処理成功ログ
+                                // ==============================================
 
                                 System.out.println(
                                                 "=================================");
@@ -401,6 +435,11 @@ public class PetRegisterServlet extends HttpServlet {
                                                                 + resizedImage.getHeight());
 
                                 System.out.println(
+                                                "元画像ファイルサイズ: "
+                                                                + imageBytes.length
+                                                                + " bytes");
+
+                                System.out.println(
                                                 "変換後ファイルサイズ: "
                                                                 + jpegBytes.length
                                                                 + " bytes");
@@ -408,9 +447,14 @@ public class PetRegisterServlet extends HttpServlet {
                                 System.out.println(
                                                 "=================================");
 
-                        } else {
+                        }
 
-                                // 画像なし
+                        // --------------------------------------------------
+                        // 画像なし
+                        // --------------------------------------------------
+
+                        else {
+
                                 pet.setPetImage(null);
 
                                 System.out.println(
@@ -418,6 +462,10 @@ public class PetRegisterServlet extends HttpServlet {
                         }
 
                 } catch (Exception e) {
+
+                        // ==============================================
+                        // 画像処理エラー
+                        // ==============================================
 
                         System.err.println(
                                         "=================================");
@@ -442,9 +490,9 @@ public class PetRegisterServlet extends HttpServlet {
                         return;
                 }
 
-                // ==========================================
+                // ==================================================
                 // 登録前ログ
-                // ==========================================
+                // ==================================================
 
                 System.out.println(
                                 "=================================");
@@ -481,17 +529,17 @@ public class PetRegisterServlet extends HttpServlet {
                 System.out.println(
                                 "=================================");
 
-                // ==========================================
+                // ==================================================
                 // DBへ登録
-                // ==========================================
+                // ==================================================
 
                 PetDAO dao = new PetDAO();
 
                 boolean result = dao.insertPet(pet);
 
-                // ==========================================
+                // ==================================================
                 // 登録結果
-                // ==========================================
+                // ==================================================
 
                 System.out.println(
                                 "===== ペット登録結果 =====");
@@ -500,9 +548,9 @@ public class PetRegisterServlet extends HttpServlet {
                                 "result = "
                                                 + result);
 
-                // ==========================================
+                // ==================================================
                 // 登録成功
-                // ==========================================
+                // ==================================================
 
                 if (result) {
 
@@ -513,7 +561,13 @@ public class PetRegisterServlet extends HttpServlet {
                                         request.getContextPath()
                                                         + "/home.html?petRegistered=true");
 
-                } else {
+                }
+
+                // ==================================================
+                // 登録失敗
+                // ==================================================
+
+                else {
 
                         System.out.println(
                                         "ペット登録失敗");
@@ -532,8 +586,7 @@ public class PetRegisterServlet extends HttpServlet {
                         HttpServletRequest request,
                         String parameterName) {
 
-                String value = request.getParameter(
-                                parameterName);
+                String value = request.getParameter(parameterName);
 
                 if (value == null) {
                         return null;
@@ -643,12 +696,19 @@ public class PetRegisterServlet extends HttpServlet {
 
                 int originalHeight = originalImage.getHeight();
 
+                // ----------------------------------------------
                 // すでに小さい場合はそのまま
+                // ----------------------------------------------
+
                 if (originalWidth <= MAX_IMAGE_WIDTH
                                 && originalHeight <= MAX_IMAGE_HEIGHT) {
 
                         return originalImage;
                 }
+
+                // ----------------------------------------------
+                // 縦横比を維持して縮小
+                // ----------------------------------------------
 
                 double widthRatio = (double) MAX_IMAGE_WIDTH
                                 / originalWidth;
@@ -660,11 +720,19 @@ public class PetRegisterServlet extends HttpServlet {
                                 widthRatio,
                                 heightRatio);
 
-                int newWidth = (int) Math.round(
-                                originalWidth * ratio);
+                int newWidth = Math.max(
+                                1,
+                                (int) Math.round(
+                                                originalWidth * ratio));
 
-                int newHeight = (int) Math.round(
-                                originalHeight * ratio);
+                int newHeight = Math.max(
+                                1,
+                                (int) Math.round(
+                                                originalHeight * ratio));
+
+                // ----------------------------------------------
+                // RGB画像を作成
+                // ----------------------------------------------
 
                 BufferedImage resizedImage = new BufferedImage(
                                 newWidth,
