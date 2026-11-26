@@ -303,6 +303,35 @@ public class PetRegisterServlet extends HttpServlet {
                                                 "ImageIOプラグインのスキャン完了");
 
                                 // ==============================================
+                                // JPEG ImageReader確認
+                                // ==============================================
+
+                                System.out.println(
+                                                "===== JPEG ImageReader確認 =====");
+
+                                java.util.Iterator<javax.imageio.ImageReader> jpegReaders = ImageIO
+                                                .getImageReadersByFormatName("JPEG");
+
+                                int readerCount = 0;
+
+                                while (jpegReaders.hasNext()) {
+
+                                        javax.imageio.ImageReader reader = jpegReaders.next();
+
+                                        readerCount++;
+
+                                        System.out.println(
+                                                        "JPEG Reader = "
+                                                                        + reader.getClass().getName());
+                                }
+
+                                System.out.println(
+                                                "JPEG Reader数 = "
+                                                                + readerCount);
+
+                                System.out.println(
+                                                "================================");
+                                // ==============================================
                                 // 画像をbyte[]として読み込む
                                 // ==============================================
 
