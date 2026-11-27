@@ -1,1139 +1,1009 @@
-document.addEventListener("DOMContentLoaded", function () {
-
-    const requestList = document.getElementById("requestList");
-    const message = document.getElementById("message");
+"use strict";
 
 
-    /*
-     * =====================================================
-     * HTMLエスケープ
-     * =====================================================
-     */
-    function escapeHtml(value) {
+/* ========================================
+   ページ読み込み
+======================================== */
 
-        if (value === null || value === undefined) {
-            return "";
-        }
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-        return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+        loadShareRequests();
+
     }
+);
 
 
-    /*
-     * =====================================================
-     * 日時を見やすく表示
-     * =====================================================
-     */
-    function formatDateTime(dateTime) {
 
-        if (!dateTime) {
-            return "";
-        }
+/* ========================================
+   申し込み一覧取得
+======================================== */
 
-        return String(dateTime)
-            .replace("T", " ")
-            .substring(0, 16);
-    }
+async function loadShareRequests() {
 
+    const loadingMessage =
+        document.getElementById(
+            "loadingMessage"
+        );
 
-    /*
-     * =====================================================
-     * 利用時間を表示
-     * =====================================================
-     */
-    function formatUsageHours(hours) {
+    const requestList =
+        document.getElementById(
+            "requestList"
+        );
 
-        const value = Number(hours);
-
-        if (Number.isNaN(value)) {
-            return "";
-        }
-
-        if (value % 1 === 0) {
-            return `${value}時間`;
-        }
-
-        return `${value.toFixed(2)}時間`;
-    }
-
-
-    /*
-     * =====================================================
-     * シェア料金を表示
-     * =====================================================
-     */
-    function formatSharePrice(price) {
-
-        const value = Number(price);
-
-        if (Number.isNaN(value)) {
-            return "";
-        }
-
-        return `${value.toLocaleString("ja-JP")}円`;
-    }
-
-
-    /*
-     * =====================================================
-     * メッセージモーダル
-     * =====================================================
-     */
-    function showMessageModal(
-        title,
-        messageText,
-        buttonText,
-        onClose
-    ) {
-
-        const existingModal =
-            document.getElementById("customMessageModal");
-
-        if (existingModal) {
-            existingModal.remove();
-        }
-
-
-        const overlay =
-            document.createElement("div");
-
-        overlay.id = "customMessageModal";
-        overlay.className = "custom-modal-overlay";
-
-
-        overlay.innerHTML = `
-
-            <div
-                class="custom-modal-content"
-                role="dialog"
-                aria-modal="true">
-
-                <div class="custom-modal-icon">
-                    ✓
-                </div>
-
-
-                <h2 class="custom-modal-title">
-                    ${escapeHtml(title)}
-                </h2>
-
-
-                <p class="custom-modal-message">
-                    ${escapeHtml(messageText)}
-                </p>
-
-
-                <div class="custom-modal-buttons">
-
-                    <button
-                        type="button"
-                        class="custom-modal-confirm-button"
-                        id="customMessageCloseButton">
-
-                        ${escapeHtml(buttonText)}
-
-                    </button>
-
-                </div>
-
-            </div>
-        `;
-
-
-        document.body.appendChild(overlay);
-
-        document.body.style.overflow = "hidden";
-
-
-        const closeButton =
-            document.getElementById(
-                "customMessageCloseButton"
-            );
-
-
-        function closeMessageModal() {
-
-            document.removeEventListener(
-                "keydown",
-                handleEscape
-            );
-
-            overlay.remove();
-
-            document.body.style.overflow = "";
-
-            if (typeof onClose === "function") {
-                onClose();
-            }
-        }
-
-
-        closeButton.addEventListener(
-            "click",
-            closeMessageModal
+    const emptyMessage =
+        document.getElementById(
+            "emptyMessage"
         );
 
 
-        overlay.addEventListener(
-            "click",
-            function (event) {
-
-                if (event.target === overlay) {
-                    closeMessageModal();
-                }
-            }
-        );
-
-
-        function handleEscape(event) {
-
-            if (event.key === "Escape") {
-                closeMessageModal();
-            }
-        }
-
-
-        document.addEventListener(
-            "keydown",
-            handleEscape
-        );
-    }
-
-
-    /*
-     * =====================================================
-     * 確認モーダル
-     * =====================================================
-     *
-     * [ キャンセルする ] [ キャンセルしない ]
-     * =====================================================
-     */
-    function showConfirmModal(
-        title,
-        messageText,
-        onConfirm
-    ) {
-
-        const existingModal =
-            document.getElementById(
-                "customConfirmModal"
-            );
-
-        if (existingModal) {
-            existingModal.remove();
-        }
-
-
-        const overlay =
-            document.createElement("div");
-
-        overlay.id = "customConfirmModal";
-        overlay.className = "custom-modal-overlay";
-
-
-        overlay.innerHTML = `
-
-            <div
-                class="custom-modal-content"
-                role="dialog"
-                aria-modal="true">
-
-                <div class="custom-modal-icon">
-                    ?
-                </div>
-
-
-                <h2 class="custom-modal-title">
-                    ${escapeHtml(title)}
-                </h2>
-
-
-                <p class="custom-modal-message">
-                    ${escapeHtml(messageText)}
-                </p>
-
-
-                <div class="custom-modal-buttons">
-
-                    <button
-                        type="button"
-                        class="custom-modal-confirm-button"
-                        id="customModalConfirmButton">
-
-                        キャンセルする
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="custom-modal-cancel-button"
-                        id="customModalCancelButton">
-
-                        キャンセルしない
-
-                    </button>
-
-                </div>
-
-            </div>
-        `;
-
-
-        document.body.appendChild(overlay);
-
-        document.body.style.overflow = "hidden";
-
-
-        const confirmButton =
-            document.getElementById(
-                "customModalConfirmButton"
-            );
-
-        const cancelButton =
-            document.getElementById(
-                "customModalCancelButton"
-            );
-
-
-        /*
-         * キャンセルする
-         */
-        confirmButton.addEventListener(
-            "click",
-            async function () {
-
-                confirmButton.disabled = true;
-                cancelButton.disabled = true;
-
-                closeModal();
-
-                if (typeof onConfirm === "function") {
-                    await onConfirm();
-                }
-            }
-        );
-
-
-        /*
-         * キャンセルしない
-         */
-        cancelButton.addEventListener(
-            "click",
-            function () {
-                closeModal();
-            }
-        );
-
-
-        /*
-         * モーダル外クリック
-         */
-        overlay.addEventListener(
-            "click",
-            function (event) {
-
-                if (event.target === overlay) {
-                    closeModal();
-                }
-            }
-        );
-
-
-        /*
-         * ESCキー
-         */
-        function handleEscape(event) {
-
-            if (event.key === "Escape") {
-                closeModal();
-            }
-        }
-
-
-        document.addEventListener(
-            "keydown",
-            handleEscape
-        );
-
-
-        /*
-         * モーダルを閉じる
-         */
-        function closeModal() {
-
-            document.removeEventListener(
-                "keydown",
-                handleEscape
-            );
-
-            overlay.remove();
-
-            document.body.style.overflow = "";
-        }
-    }
-
-
-    /*
-     * =====================================================
-     * キャンセル処理
-     * =====================================================
-     */
-    async function cancelRequest(requestId) {
-
-        try {
-
-            const formData =
-                new FormData();
-
-            formData.append(
-                "requestId",
-                requestId
-            );
-
-
-            const response =
-                await fetch(
-                    "share-request-cancel",
-                    {
-                        method: "POST",
-                        body: formData
+    try {
+
+        const response =
+            await fetch(
+                "share-request-my-list",
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Accept":
+                            "application/json"
                     }
-                );
-
-
-            /*
-             * ログイン切れ
-             */
-            if (response.status === 401) {
-
-                showMessageModal(
-                    "ログインが必要です",
-                    "ログインしてからもう一度操作してください。",
-                    "ログイン画面へ",
-                    function () {
-                        window.location.href =
-                            "login.html";
-                    }
-                );
-
-                return;
-            }
-
-
-            /*
-             * サーバーエラー
-             */
-            if (!response.ok) {
-
-                throw new Error(
-                    "キャンセル処理に失敗しました。"
-                );
-            }
-
-
-            const result =
-                await response.json();
-
-
-            /*
-             * キャンセル失敗
-             */
-            if (!result.success) {
-
-                showMessageModal(
-                    "キャンセルできませんでした",
-                    result.message ||
-                    "申込みのキャンセルに失敗しました。",
-                    "OK"
-                );
-
-                return;
-            }
-
-
-            /*
-             * キャンセル成功
-             */
-            showMessageModal(
-                "キャンセルしました",
-                "ペットシェアの申込みをキャンセルしました。",
-                "OK",
-                function () {
-                    loadShareRequests();
                 }
             );
 
 
-        } catch (error) {
+        /* ==================================
+           ログイン切れ
+        ================================== */
 
-            console.error(
-                "キャンセル処理エラー:",
-                error
-            );
+        if (response.status === 401) {
 
-
-            showMessageModal(
-                "エラー",
-                "システムエラーが発生しました。",
-                "OK"
-            );
-        }
-    }
-
-
-    /*
-     * =====================================================
-     * 申込み一覧取得
-     * =====================================================
-     */
-    async function loadShareRequests() {
-
-        try {
-
-            if (requestList) {
-
-                requestList.innerHTML = `
-
-                    <p class="loading-message">
-                        申込み状況を読み込んでいます……
-                    </p>
-
-                `;
-            }
-
-
-            const response =
-                await fetch(
-                    "share-request-my-list"
-                );
-
-
-            /*
-             * ログインしていない
-             */
-            if (response.status === 401) {
-
-                if (requestList) {
-                    requestList.innerHTML = "";
-                }
-
-
-                showMessageModal(
-                    "ログインが必要です",
-                    "ログインしてから申込み状況を確認してください。",
-                    "ログイン画面へ",
-                    function () {
-                        window.location.href =
-                            "login.html";
-                    }
-                );
-
-                return;
-            }
-
-
-            /*
-             * 通信エラー
-             */
-            if (!response.ok) {
-
-                throw new Error(
-                    "データの取得に失敗しました。"
-                );
-            }
-
-
-            const requests =
-                await response.json();
-
-
-            displayRequests(requests);
-
-
-        } catch (error) {
-
-            console.error(error);
-
-
-            if (requestList) {
-
-                requestList.innerHTML = `
-
-                    <p class="empty-message">
-                        申込み状況の取得に失敗しました。
-                    </p>
-
-                `;
-            }
-
-
-            if (message) {
-
-                message.textContent =
-                    "申込み状況の取得に失敗しました。";
-
-                message.className =
-                    "message message-error";
-
-                message.style.display =
-                    "block";
-            }
-        }
-    }
-
-
-    /*
-     * =====================================================
-     * 申込み一覧表示
-     * =====================================================
-     */
-    function displayRequests(requests) {
-
-        if (!requestList) {
-            return;
-        }
-
-
-        /*
-         * 申込みがない場合
-         */
-        if (!requests ||
-            requests.length === 0) {
-
-            requestList.innerHTML = `
-
-                <p class="empty-message">
-                    ペットシェアの申込みはありません。
-                </p>
-
-            `;
+            window.location.href =
+                "login.html";
 
             return;
+
         }
 
 
-        requestList.innerHTML = "";
+        /* ==================================
+           HTTPエラー
+        ================================== */
+
+        if (!response.ok) {
+
+            throw new Error(
+                "申し込み情報の取得に失敗しました。"
+            );
+
+        }
 
 
-        /*
-         * 1件ずつ表示
-         */
-        requests.forEach(function (request) {
+        /* ==================================
+           JSON取得
+        ================================== */
 
-            /*
-             * =============================================
-             * ステータス
-             * =============================================
-             */
-            let statusText = "";
-            let statusClass = "";
+        const requests =
+            await response.json();
 
 
-            switch (request.status) {
-
-                case "pending":
-
-                    statusText =
-                        "承認待ち";
-
-                    /*
-                     * CSSの .request-status.pending
-                     * に合わせる
-                     */
-                    statusClass =
-                        "pending";
-
-                    break;
+        loadingMessage.style.display =
+            "none";
 
 
-                case "approved":
-
-                    statusText =
-                        "承認済み";
-
-                    /*
-                     * CSSの .request-status.approved
-                     * に合わせる
-                     */
-                    statusClass =
-                        "approved";
-
-                    break;
+        requestList.innerHTML =
+            "";
 
 
-                case "rejected":
+        /* ==================================
+           申し込みなし
+        ================================== */
 
-                    statusText =
-                        "拒否済み";
+        if (
+            !Array.isArray(requests)
+            ||
+            requests.length === 0
+        ) {
 
-                    /*
-                     * CSSの .request-status.rejected
-                     * に合わせる
-                     */
-                    statusClass =
-                        "rejected";
+            emptyMessage.style.display =
+                "block";
 
-                    break;
+            return;
 
-
-                case "cancelled":
-
-                    statusText =
-                        "キャンセル済み";
-
-                    /*
-                     * CSSの .request-status.cancelled
-                     * に合わせる
-                     */
-                    statusClass =
-                        "cancelled";
-
-                    break;
+        }
 
 
-                default:
+        emptyMessage.style.display =
+            "none";
 
-                    statusText =
-                        request.status || "";
 
-                    statusClass =
-                        "";
+        /* ==================================
+           カード生成
+        ================================== */
+
+        requests.forEach(
+            function (request) {
+
+                const card =
+                    createRequestCard(
+                        request
+                    );
+
+                requestList.appendChild(
+                    card
+                );
+
             }
+        );
 
 
-            /*
-             * =============================================
-             * ペット画像
-             * =============================================
-             */
-            let petImageHtml = "";
+    } catch (error) {
+
+        console.error(
+            "申し込み一覧取得エラー:",
+            error
+        );
 
 
-            if (
-                request.petImage &&
-                String(request.petImage).trim() !== ""
-            ) {
-
-                let imageSrc =
-                    request.petImage;
+        loadingMessage.style.display =
+            "none";
 
 
-                /*
-                 * Base64だけの場合
-                 */
-                if (
-                    !String(imageSrc)
-                        .startsWith("data:image/")
-                ) {
+        showMessage(
+            "申し込み情報を取得できませんでした。",
+            "error"
+        );
 
-                    imageSrc =
-                        "data:image/jpeg;base64,"
-                        + imageSrc;
-                }
+    }
+
+}
 
 
-                petImageHtml = `
 
-                    <div class="pet-image-box">
+/* ========================================
+   申し込みカード作成
+======================================== */
 
-                        <img
-                            src="${escapeHtml(imageSrc)}"
-                            alt="${escapeHtml(
-                                request.petName ||
-                                "ペット"
-                            )}"
-                            class="pet-request-image">
+function createRequestCard(request) {
 
-                    </div>
+    const card =
+        document.createElement(
+            "div"
+        );
 
-                `;
-
-            } else {
-
-                petImageHtml = `
-
-                    <div
-                        class="pet-image-box pet-image-default">
-
-                        🐾
-
-                    </div>
-
-                `;
-            }
+    card.className =
+        "request-card";
 
 
-            /*
-             * =============================================
-             * ペット名
-             * =============================================
-             */
-            const petName =
-                request.petName &&
-                String(request.petName).trim() !== ""
-                    ? request.petName
-                    : "名前未登録";
+    /* ==================================
+       ステータス
+    ================================== */
+
+    const status =
+        request.status || "";
 
 
-            /*
-             * =============================================
-             * 飼い主
-             * =============================================
-             *
-             * Java側から ownerName が返ってくる
-             * 場合に表示
-             */
-            const ownerName =
-                request.ownerName &&
-                String(request.ownerName).trim() !== ""
-                    ? request.ownerName
-                    : "飼い主情報なし";
+    let statusText =
+        "不明";
 
 
-            /*
-             * =============================================
-             * 利用開始日時
-             * =============================================
-             */
-            const startDatetime =
-                formatDateTime(
-                    request.startDatetime
-                );
+    let statusClass =
+        "status-unknown";
 
 
-            /*
-             * =============================================
-             * 利用終了日時
-             * =============================================
-             */
-            const endDatetime =
-                formatDateTime(
-                    request.endDatetime
-                );
+    if (status === "pending") {
+
+        statusText =
+            "申込み中";
+
+        statusClass =
+            "status-pending";
+
+    } else if (status === "approved") {
+
+        statusText =
+            "承認済み";
+
+        statusClass =
+            "status-approved";
+
+    } else if (status === "rejected") {
+
+        statusText =
+            "拒否";
+
+        statusClass =
+            "status-rejected";
+
+    } else if (status === "cancelled") {
+
+        statusText =
+            "キャンセル済み";
+
+        statusClass =
+            "status-cancelled";
+
+    }
 
 
-            /*
-             * =============================================
-             * 利用時間
-             * =============================================
-             */
-            const usageHours =
-                formatUsageHours(
-                    request.usageHours
-                );
+    /* ==================================
+       ペット画像
+    ================================== */
+
+    let petImageHtml =
+        "";
 
 
-            /*
-             * =============================================
-             * シェア料金
-             * =============================================
-             *
-             * DBに保存されている share_price を
-             * そのまま表示する
-             */
-            const sharePrice =
-                formatSharePrice(
-                    request.sharePrice
-                );
+    if (
+        request.petImage
+        &&
+        request.petImage.trim() !== ""
+    ) {
+
+        petImageHtml = `
+
+            <img
+                src="${escapeHtml(request.petImage)}"
+                alt="${escapeHtml(request.petName || "ペット")}"
+                class="pet-image">
+
+        `;
+
+    } else {
+
+        petImageHtml = `
+
+            <div class="pet-image-placeholder">
+                🐾
+            </div>
+
+        `;
+
+    }
 
 
-            /*
-             * =============================================
-             * 申込み日時
-             * =============================================
-             */
-            const createdAt =
-                formatDateTime(
-                    request.createdAt
-                );
+    /* ==================================
+       削除済みペット判定
+    ================================== */
+
+    let deletedPetHtml =
+        "";
 
 
-            /*
-             * =============================================
-             * カード作成
-             * =============================================
-             */
-            const card =
-                document.createElement("div");
+    /*
+     * petId が null の場合
+     * ペット本体が削除されたと判断する。
+     */
 
-            card.className =
-                "request-card";
+    if (
+        request.petId === null
+        ||
+        request.petId === undefined
+        ||
+        Number(request.petId) === 0
+    ) {
 
+        deletedPetHtml = `
 
-            card.innerHTML = `
+            <span class="deleted-pet-label">
+                ※ このペットは削除されています
+            </span>
 
-                <!-- ==============================
-                     ペット情報
-                =============================== -->
+        `;
 
-                <div class="request-header">
-
-                    <div class="request-pet-info">
-
-                        ${petImageHtml}
-
-
-                        <h2 class="request-pet-name">
-
-                            ${escapeHtml(
-                                petName
-                            )}
-
-                        </h2>
-
-                    </div>
+    }
 
 
-                    <span
-                        class="request-status ${statusClass}">
+    /* ==================================
+       カードHTML
+    ================================== */
 
+    card.innerHTML = `
+
+        <div class="request-header">
+
+
+            <div class="pet-info">
+
+                ${petImageHtml}
+
+
+                <div>
+
+                    <h2 class="pet-name">
                         ${escapeHtml(
-                            statusText
+                            request.petName
+                            || "名前なし"
                         )}
+                    </h2>
 
-                    </span>
-
-                </div>
-
-
-                <!-- ==============================
-                     申込み情報
-                =============================== -->
-
-                <div class="request-info">
-
-
-                    <!-- 飼い主 -->
-
-                    <div class="request-row">
-
-                        <span class="request-label">
-                            飼い主
-                        </span>
-
-                        <span class="request-value">
-
-                            ${escapeHtml(
-                                ownerName
-                            )}
-
-                        </span>
-
-                    </div>
-
-
-                    <!-- 利用開始日時 -->
-
-                    <div class="request-row">
-
-                        <span class="request-label">
-                            利用開始日時
-                        </span>
-
-                        <span class="request-value">
-
-                            ${escapeHtml(
-                                startDatetime
-                            )}
-
-                        </span>
-
-                    </div>
-
-
-                    <!-- 利用終了日時 -->
-
-                    <div class="request-row">
-
-                        <span class="request-label">
-                            利用終了日時
-                        </span>
-
-                        <span class="request-value">
-
-                            ${escapeHtml(
-                                endDatetime
-                            )}
-
-                        </span>
-
-                    </div>
-
-
-                    <!-- 利用時間 -->
-
-                    <div class="request-row">
-
-                        <span class="request-label">
-                            利用時間
-                        </span>
-
-                        <span class="request-value">
-
-                            ${escapeHtml(
-                                usageHours
-                            )}
-
-                        </span>
-
-                    </div>
-
-
-                    <!-- シェア料金 -->
-
-                    <div class="request-row">
-
-                        <span class="request-label">
-                            シェア料金
-                        </span>
-
-                        <span class="request-value">
-
-                            ${escapeHtml(
-                                sharePrice
-                            )}
-
-                        </span>
-
-                    </div>
-
-
-                    <!-- 申込み日時 -->
-
-                    <div class="request-row">
-
-                        <span class="request-label">
-                            申込み日時
-                        </span>
-
-                        <span class="request-value">
-
-                            ${escapeHtml(
-                                createdAt
-                            )}
-
-                        </span>
-
-                    </div>
-
-
-                    <!-- ステータス -->
-
-                    <div class="request-row">
-
-                        <span class="request-label">
-                            ステータス
-                        </span>
-
-                        <span class="request-value">
-
-                            <span
-                                class="request-status ${statusClass}">
-
-                                ${escapeHtml(
-                                    statusText
-                                )}
-
-                            </span>
-
-                        </span>
-
-                    </div>
+                    ${deletedPetHtml}
 
                 </div>
-`;
+
+            </div>
 
 
-            /*
-             * =============================================
-             * 承認待ちの場合だけ
-             * キャンセルボタンを表示
-             * =============================================
-             */
-            if (
-                request.status === "pending"
-            ) {
+            <span
+                class="request-status ${statusClass}">
 
-                const buttons =
-                    document.createElement(
-                        "div"
-                    );
+                ${statusText}
+
+            </span>
 
 
-                buttons.className =
-                    "request-buttons";
+        </div>
 
 
-                const cancelButton =
-                    document.createElement(
-                        "button"
-                    );
+
+        <div class="request-details">
 
 
-                cancelButton.type =
-                    "button";
+            <div class="request-row">
+
+                <span class="request-label">
+                    ペットの種類
+                </span>
+
+                <span class="request-value">
+                    ${escapeHtml(
+                        request.petType
+                        || "情報なし"
+                    )}
+                </span>
+
+            </div>
 
 
-                cancelButton.className =
-                    "cancel-button";
+
+            <div class="request-row">
+
+                <span class="request-label">
+                    性別
+                </span>
+
+                <span class="request-value">
+                    ${escapeHtml(
+                        request.petGender
+                        || "情報なし"
+                    )}
+                </span>
+
+            </div>
 
 
-                cancelButton.textContent =
-                    "申込みをキャンセル";
+
+            <div class="request-row">
+
+                <span class="request-label">
+                    飼い主
+                </span>
+
+                <span class="request-value">
+                    ${escapeHtml(
+                        request.ownerName
+                        || "飼い主情報なし"
+                    )}
+                </span>
+
+            </div>
 
 
-                /*
-                 * キャンセルボタン
-                 */
-                cancelButton.addEventListener(
-                    "click",
-                    function () {
 
-                        showConfirmModal(
-                            "申込みをキャンセルしますか？",
-                            "このペットシェア申込みをキャンセルします。",
-                            async function () {
+            <div class="request-row">
 
-                                await cancelRequest(
-                                    request.requestId
-                                );
+                <span class="request-label">
+                    利用開始
+                </span>
 
-                            }
-                        );
+                <span class="request-value">
+                    ${formatDateTime(
+                        request.startDatetime
+                    )}
+                </span>
 
-                    }
-                );
+            </div>
 
 
-                buttons.appendChild(
-                    cancelButton
-                );
+
+            <div class="request-row">
+
+                <span class="request-label">
+                    利用終了
+                </span>
+
+                <span class="request-value">
+                    ${formatDateTime(
+                        request.endDatetime
+                    )}
+                </span>
+
+            </div>
 
 
-                card.appendChild(
-                    buttons
-                );
-            }
+
+            <div class="request-row">
+
+                <span class="request-label">
+                    利用時間
+                </span>
+
+                <span class="request-value">
+                    ${formatUsageHours(
+                        request.usageHours
+                    )}
+                </span>
+
+            </div>
 
 
-            requestList.appendChild(
-                card
-            );
-        });
+
+            <div class="request-row">
+
+                <span class="request-label">
+                    利用料金
+                </span>
+
+                <span class="request-value">
+                    ${formatPrice(
+                        request.sharePrice
+                    )}
+                </span>
+
+            </div>
+
+
+
+            <div class="request-row">
+
+                <span class="request-label">
+                    申込み日時
+                </span>
+
+                <span class="request-value">
+                    ${formatDateTime(
+                        request.createdAt
+                    )}
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        ${
+            status === "pending"
+
+            ? createCancelButton(
+                request.requestId
+            )
+
+            : createProcessedMessage(
+                statusText
+            )
+        }
+
+    `;
+
+
+    return card;
+
+}
+
+
+
+/* ========================================
+   キャンセルボタン
+======================================== */
+
+function createCancelButton(
+    requestId
+) {
+
+    return `
+
+        <div class="request-actions">
+
+            <button
+                type="button"
+                class="cancel-button"
+                onclick="cancelRequest(${requestId})">
+
+                申し込みをキャンセル
+
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+
+/* ========================================
+   処理済みメッセージ
+======================================== */
+
+function createProcessedMessage(
+    statusText
+) {
+
+    return `
+
+        <p class="processed-message">
+
+            この申し込みは
+            「${escapeHtml(statusText)}」
+            です。
+
+        </p>
+
+    `;
+
+}
+
+
+
+/* ========================================
+   申し込みキャンセル
+======================================== */
+
+async function cancelRequest(
+    requestId
+) {
+
+
+    /* ==================================
+       requestId確認
+    ================================== */
+
+    if (
+        requestId === null
+        ||
+        requestId === undefined
+        ||
+        requestId === ""
+    ) {
+
+        showMessage(
+            "申込みIDが取得できませんでした。",
+            "error"
+        );
+
+        return;
+
     }
 
 
-    /*
-     * =====================================================
-     * 初期処理
-     * =====================================================
-     */
-    loadShareRequests();
+    /* ==================================
+       確認
+    ================================== */
 
-});
+    const confirmed =
+        window.confirm(
+            "この申し込みをキャンセルしますか？"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    try {
+
+        /* ==============================
+           POSTデータ
+        ============================== */
+
+        const formData =
+            new URLSearchParams();
+
+
+        formData.append(
+            "requestId",
+            String(requestId)
+        );
+
+
+        /* ==============================
+           Servletへ送信
+        ============================== */
+
+        const response =
+            await fetch(
+                "share-request-cancel",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/x-www-form-urlencoded; charset=UTF-8",
+
+                        "Accept":
+                            "application/json"
+                    },
+
+                    body:
+                        formData.toString()
+                }
+            );
+
+
+        /* ==================================
+           ログイン切れ
+        ================================== */
+
+        if (
+            response.status === 401
+        ) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        /* ==================================
+           JSON取得
+        ================================== */
+
+        let result;
+
+
+        try {
+
+            result =
+                await response.json();
+
+        } catch (jsonError) {
+
+            throw new Error(
+                "サーバーから正しい応答がありませんでした。"
+            );
+
+        }
+
+
+        /* ==================================
+           キャンセル成功
+        ================================== */
+
+        if (
+            response.ok
+            &&
+            result.success
+        ) {
+
+            showMessage(
+                result.message
+                ||
+                "申し込みをキャンセルしました。",
+                "success"
+            );
+
+
+            /*
+             * DBの状態を再取得
+             */
+            await loadShareRequests();
+
+
+            return;
+
+        }
+
+
+        /* ==================================
+           キャンセル失敗
+        ================================== */
+
+        showMessage(
+            result.message
+            ||
+            "申し込みをキャンセルできませんでした。",
+            "error"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "申し込みキャンセルエラー:",
+            error
+        );
+
+
+        showMessage(
+            "申し込みのキャンセル中にエラーが発生しました。",
+            "error"
+        );
+
+    }
+
+}
+
+
+
+/* ========================================
+   メッセージ表示
+======================================== */
+
+function showMessage(
+    message,
+    type
+) {
+
+    const messageArea =
+        document.getElementById(
+            "messageArea"
+        );
+
+
+    if (!messageArea) {
+
+        return;
+
+    }
+
+
+    messageArea.textContent =
+        message;
+
+
+    messageArea.className =
+        "message-area " + type;
+
+
+    messageArea.style.display =
+        "block";
+
+
+    setTimeout(
+        function () {
+
+            messageArea.style.display =
+                "none";
+
+        },
+        3000
+    );
+
+}
+
+
+
+/* ========================================
+   日時整形
+======================================== */
+
+function formatDateTime(
+    value
+) {
+
+    if (
+        value === null
+        ||
+        value === undefined
+        ||
+        value === ""
+        ||
+        value === "null"
+    ) {
+
+        return "情報なし";
+
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        /*
+         * Java Timestamp形式
+         * "2026-11-27 13:00:00"
+         * にも対応
+         */
+
+        const normalized =
+            String(value)
+                .replace(" ", "T");
+
+
+        const retryDate =
+            new Date(normalized);
+
+
+        if (
+            !Number.isNaN(
+                retryDate.getTime()
+            )
+        ) {
+
+            return formatDateObject(
+                retryDate
+            );
+
+        }
+
+
+        return escapeHtml(
+            String(value)
+        );
+
+    }
+
+
+    return formatDateObject(
+        date
+    );
+
+}
+
+
+
+/* ========================================
+   Date → 表示文字列
+======================================== */
+
+function formatDateObject(
+    date
+) {
+
+    const year =
+        date.getFullYear();
+
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const hour =
+        String(
+            date.getHours()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const minute =
+        String(
+            date.getMinutes()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return `${year}/${month}/${day} ${hour}:${minute}`;
+
+}
+
+
+
+/* ========================================
+   利用時間整形
+======================================== */
+
+function formatUsageHours(
+    value
+) {
+
+    const hours =
+        Number(value);
+
+
+    if (
+        Number.isNaN(hours)
+    ) {
+
+        return "情報なし";
+
+    }
+
+
+    return `${hours.toFixed(2)}時間`;
+
+}
+
+
+
+/* ========================================
+   料金整形
+======================================== */
+
+function formatPrice(
+    value
+) {
+
+    const price =
+        Number(value);
+
+
+    if (
+        Number.isNaN(price)
+    ) {
+
+        return "情報なし";
+
+    }
+
+
+    return `${price.toLocaleString()}円`;
+
+}
+
+
+
+/* ========================================
+   HTMLエスケープ
+======================================== */
+
+function escapeHtml(
+    value
+) {
+
+    if (
+        value === null
+        ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
