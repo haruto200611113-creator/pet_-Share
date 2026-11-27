@@ -84,13 +84,20 @@
     <p class="description">
         シェアするペットを選択してください
     </p>
+
+
+    <!-- ペット追加 -->
+
     <div class="add-pet-area">
 
-    <a href="pet-register.html" class="add-pet-button">
-        ＋ ペットを追加する
-    </a>
+        <a
+            href="pet-register.html"
+            class="add-pet-button"
+        >
+            ＋ ペットを追加する
+        </a>
 
-</div>
+    </div>
 
 
     <!-- ========================================
@@ -162,7 +169,6 @@
                 </div>
 
 
-
                 <!-- ペット情報 -->
 
                 <div class="pet-info">
@@ -192,7 +198,6 @@
                     <% } %>
 
 
-
                     <!-- ==================================
                          シェア中の場合
                     =================================== -->
@@ -211,25 +216,28 @@
                         -->
 
                         <form
-    action="pet-share-stop"
-    method="post"
-    class="stop-share-form"
-    id="stop-share-form-<%= pet.getPetId() %>"
->
-    <input
-        type="hidden"
-        name="petId"
-        value="<%= pet.getPetId() %>"
-    >
+                            action="pet-share-stop"
+                            method="post"
+                            class="stop-share-form"
+                            id="stop-share-form-<%= pet.getPetId() %>"
+                        >
 
-    <button
-        type="button"
-        class="stop-share-button"
-        onclick="openShareStopModal(this)"
-    >
-        シェアをやめる
-    </button>
-</form>
+                            <input
+                                type="hidden"
+                                name="petId"
+                                value="<%= pet.getPetId() %>"
+                            >
+
+                            <button
+                                type="button"
+                                class="stop-share-button"
+                                onclick="openShareStopModal(this)"
+                            >
+                                シェアをやめる
+                            </button>
+
+                        </form>
+
 
                     <% } else { %>
 
@@ -247,6 +255,33 @@
 
 
                     <% } %>
+
+
+                    <!-- ==================================
+                         ペット削除
+                    =================================== -->
+
+                    <form
+                        action="pet-delete"
+                        method="post"
+                        class="delete-pet-form"
+                        onsubmit="return openDeleteConfirm(this);"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="petId"
+                            value="<%= pet.getPetId() %>"
+                        >
+
+                        <button
+                            type="submit"
+                            class="delete-pet-button"
+                        >
+                            ペットを削除
+                        </button>
+
+                    </form>
 
 
                 </div>
@@ -327,6 +362,222 @@
     </div>
 
 </div>
+
+
+
+<!-- ========================================
+     ペット削除確認モーダル
+========================================= -->
+
+<div
+    id="pet-delete-confirm-modal"
+    class="confirm-overlay"
+    style="display: none;"
+>
+
+    <div
+        class="confirm-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="pet-delete-confirm-title"
+    >
+
+        <div class="confirm-icon">
+            🗑️
+        </div>
+
+        <h2 id="pet-delete-confirm-title">
+            ペットを削除しますか？
+        </h2>
+
+        <p>
+            このペットの登録情報を<br>
+            削除してもよろしいですか？
+        </p>
+
+        <div class="confirm-buttons">
+
+            <button
+                type="button"
+                id="pet-delete-cancel-button"
+                class="cancel-button"
+            >
+                キャンセル
+            </button>
+
+            <button
+                type="button"
+                id="pet-delete-confirm-button"
+                class="confirm-button delete-confirm-button"
+            >
+                ペットを削除
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ========================================
+     ペット削除用JavaScript
+========================================= -->
+
+<script>
+
+    let deleteTargetForm = null;
+
+
+    function openDeleteConfirm(form) {
+
+        deleteTargetForm = form;
+
+        const modal =
+                document.getElementById(
+                        "pet-delete-confirm-modal");
+
+        modal.style.display = "flex";
+
+        return false;
+    }
+
+
+    document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+        const modal =
+                document.getElementById(
+                        "pet-delete-confirm-modal");
+
+        const cancelButton =
+                document.getElementById(
+                        "pet-delete-cancel-button");
+
+        const confirmButton =
+                document.getElementById(
+                        "pet-delete-confirm-button");
+
+
+        // =====================================
+        // キャンセル
+        // =====================================
+
+        cancelButton.addEventListener(
+                "click",
+                function () {
+
+            modal.style.display = "none";
+
+            deleteTargetForm = null;
+        });
+
+
+        // =====================================
+        // 削除実行
+        // =====================================
+
+        confirmButton.addEventListener(
+                "click",
+                function () {
+
+            if (deleteTargetForm !== null) {
+
+                modal.style.display = "none";
+
+                deleteTargetForm.submit();
+            }
+        });
+
+
+        // =====================================
+        // モーダル外側クリック
+        // =====================================
+
+        modal.addEventListener(
+                "click",
+                function (event) {
+
+            if (event.target === modal) {
+
+                modal.style.display = "none";
+
+                deleteTargetForm = null;
+            }
+        });
+
+    });
+
+</script>
+
+
+
+<!-- ========================================
+     ペット削除ボタン用CSS
+========================================= -->
+
+<style>
+
+    .delete-pet-form {
+        margin-top: 12px;
+    }
+
+
+    .delete-pet-button {
+
+        width: 100%;
+
+        padding: 10px 16px;
+
+        border: 1px solid #d9534f;
+
+        border-radius: 8px;
+
+        background: #fff;
+
+        color: #d9534f;
+
+        font-size: 14px;
+
+        font-weight: bold;
+
+        cursor: pointer;
+
+        transition:
+            background 0.2s,
+            color 0.2s,
+            transform 0.1s;
+    }
+
+
+    .delete-pet-button:hover {
+
+        background: #d9534f;
+
+        color: #fff;
+    }
+
+
+    .delete-pet-button:active {
+
+        transform: scale(0.98);
+    }
+
+
+    .delete-confirm-button {
+
+        background: #d9534f !important;
+    }
+
+
+    .delete-confirm-button:hover {
+
+        background: #c9302c !important;
+    }
+
+</style>
 
 
 

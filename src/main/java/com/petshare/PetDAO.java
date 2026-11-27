@@ -1165,4 +1165,64 @@ public class PetDAO {
 
                 return pets;
         }
+
+        // =====================================
+        // ペット削除
+        // =====================================
+
+        public boolean deletePet(
+                        int petId,
+                        int accountId) {
+
+                String sql = """
+                                DELETE FROM pets
+                                WHERE pet_id = ?
+                                AND account_id = ?
+                                """;
+
+                try (
+                                Connection conn = getConnection();
+
+                                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                        ps.setInt(
+                                        1,
+                                        petId);
+
+                        ps.setInt(
+                                        2,
+                                        accountId);
+
+                        int result = ps.executeUpdate();
+
+                        System.out.println(
+                                        "=================================");
+
+                        System.out.println(
+                                        "ペット削除結果: "
+                                                        + result);
+
+                        System.out.println(
+                                        "pet_id: "
+                                                        + petId);
+
+                        System.out.println(
+                                        "account_id: "
+                                                        + accountId);
+
+                        System.out.println(
+                                        "=================================");
+
+                        return result == 1;
+
+                } catch (SQLException e) {
+
+                        System.err.println(
+                                        "ペット削除中にSQLエラーが発生しました。");
+
+                        e.printStackTrace();
+
+                        return false;
+                }
+        }
 }
