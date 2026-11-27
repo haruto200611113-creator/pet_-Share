@@ -580,13 +580,11 @@ async function cancelRequest(
 
 
     /* ==================================
-       確認
+       確認モーダル
     ================================== */
 
     const confirmed =
-        window.confirm(
-            "この申し込みをキャンセルしますか？"
-        );
+        await showCancelConfirmModal();
 
 
     if (!confirmed) {
@@ -728,6 +726,222 @@ async function cancelRequest(
         );
 
     }
+
+}
+
+
+
+/* ========================================
+   キャンセル確認モーダル
+======================================== */
+
+function showCancelConfirmModal() {
+
+    return new Promise(
+        function (resolve) {
+
+            /* ==============================
+               オーバーレイ
+            ============================== */
+
+            const overlay =
+                document.createElement(
+                    "div"
+                );
+
+            overlay.className =
+                "share-confirm-overlay";
+
+
+            /* ==============================
+               モーダル本体
+            ============================== */
+
+            const modal =
+                document.createElement(
+                    "div"
+                );
+
+            modal.className =
+                "share-confirm-modal";
+
+
+            /* ==============================
+               タイトル
+            ============================== */
+
+            const title =
+                document.createElement(
+                    "h2"
+                );
+
+            title.className =
+                "share-confirm-title";
+
+            title.textContent =
+                "申し込みのキャンセル";
+
+
+            /* ==============================
+               メッセージ
+            ============================== */
+
+            const message =
+                document.createElement(
+                    "p"
+                );
+
+            message.className =
+                "share-confirm-message";
+
+            message.textContent =
+                "この申し込みをキャンセルしますか？";
+
+
+            /* ==============================
+               ボタンエリア
+            ============================== */
+
+            const buttonArea =
+                document.createElement(
+                    "div"
+                );
+
+            buttonArea.className =
+                "share-confirm-buttons";
+
+
+            /* ==============================
+               いいえ
+            ============================== */
+
+            const noButton =
+                document.createElement(
+                    "button"
+                );
+
+            noButton.type =
+                "button";
+
+            noButton.className =
+                "share-confirm-cancel";
+
+            noButton.textContent =
+                "いいえ";
+
+
+            /* ==============================
+               はい
+            ============================== */
+
+            const yesButton =
+                document.createElement(
+                    "button"
+                );
+
+            yesButton.type =
+                "button";
+
+            yesButton.className =
+                "share-confirm-ok";
+
+            yesButton.textContent =
+                "はい";
+
+
+            /* ==============================
+               ボタン追加
+            ============================== */
+
+            buttonArea.appendChild(
+                noButton
+            );
+
+            buttonArea.appendChild(
+                yesButton
+            );
+
+
+            /* ==============================
+               モーダル構築
+            ============================== */
+
+            modal.appendChild(
+                title
+            );
+
+            modal.appendChild(
+                message
+            );
+
+            modal.appendChild(
+                buttonArea
+            );
+
+            overlay.appendChild(
+                modal
+            );
+
+            document.body.appendChild(
+                overlay
+            );
+
+
+            /* ==============================
+               いいえ
+            ============================== */
+
+            noButton.addEventListener(
+                "click",
+                function () {
+
+                    overlay.remove();
+
+                    resolve(false);
+
+                }
+            );
+
+
+            /* ==============================
+               はい
+            ============================== */
+
+            yesButton.addEventListener(
+                "click",
+                function () {
+
+                    overlay.remove();
+
+                    resolve(true);
+
+                }
+            );
+
+
+            /* ==============================
+               背景クリック
+            ============================== */
+
+            overlay.addEventListener(
+                "click",
+                function (event) {
+
+                    if (
+                        event.target === overlay
+                    ) {
+
+                        overlay.remove();
+
+                        resolve(false);
+
+                    }
+
+                }
+            );
+
+        }
+    );
 
 }
 

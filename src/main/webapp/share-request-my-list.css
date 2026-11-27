@@ -499,6 +499,152 @@ body {
 
 
 /* ========================================
+   キャンセル確認モーダル
+======================================== */
+
+.share-confirm-overlay {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        rgba(0, 0, 0, 0.45);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 99999;
+}
+
+
+.share-confirm-modal {
+    width: min(90%, 460px);
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 32px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.25);
+
+    text-align: center;
+
+    animation:
+        shareConfirmFadeIn
+        0.2s ease;
+}
+
+
+.share-confirm-title {
+    margin: 0 0 18px;
+
+    color: #4b3b33;
+
+    font-size: 24px;
+
+    font-weight: 700;
+}
+
+
+.share-confirm-message {
+    margin: 0 0 26px;
+
+    color: #555555;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+}
+
+
+.share-confirm-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    margin-top: 24px;
+}
+
+
+.share-confirm-buttons button {
+    min-width: 110px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 12px 24px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.1s ease;
+}
+
+
+.share-confirm-buttons button:hover {
+    opacity: 0.85;
+}
+
+
+.share-confirm-buttons button:active {
+    transform: scale(0.97);
+}
+
+
+.share-confirm-ok {
+    background: #d88b5b;
+
+    color: #ffffff;
+}
+
+
+.share-confirm-cancel {
+    background: #eeeeee;
+
+    color: #555555;
+}
+
+
+@keyframes shareConfirmFadeIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+
+/* ========================================
    レスポンシブ
 ======================================== */
 
@@ -558,6 +704,23 @@ body {
 
     .cancel-button {
         width: 100%;
+    }
+
+
+    .share-confirm-modal {
+        width: 92%;
+
+        padding: 25px 20px;
+    }
+
+
+    .share-confirm-buttons {
+        gap: 10px;
+    }
+
+
+    .share-confirm-buttons button {
+        flex: 1;
     }
 
 }
