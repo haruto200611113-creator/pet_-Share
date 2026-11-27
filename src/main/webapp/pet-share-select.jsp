@@ -84,7 +84,13 @@
     <p class="description">
         シェアするペットを選択してください
     </p>
+    <div class="add-pet-area">
 
+    <a href="pet-register.html" class="add-pet-button">
+        ＋ ペットを追加する
+    </a>
+
+</div>
 
 
     <!-- ========================================

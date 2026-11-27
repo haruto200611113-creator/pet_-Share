@@ -119,8 +119,8 @@ h1 {
         0 4px 15px rgba(0, 0, 0, 0.08);
 
     transition:
-    background 0.2s ease,
-    transform 0.1s ease;
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .pet-card:hover {
@@ -597,4 +597,50 @@ h1 {
         gap: 8px;
     }
 
+}
+/* ========================================
+   ペット追加ボタン
+======================================== */
+
+.add-pet-area {
+    width: 100%;
+    max-width: 1035px;
+    margin: 0 auto 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.add-pet-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 220px;
+    padding: 13px 24px;
+
+    background: #ffffff;
+    color: #6f9275;
+
+    border: 2px solid #6f9275;
+    border-radius: 10px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    text-decoration: none;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.add-pet-button:hover {
+    background: #6f9275;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.add-pet-button:active {
+    transform: translateY(0);
 }
