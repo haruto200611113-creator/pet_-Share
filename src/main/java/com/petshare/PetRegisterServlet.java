@@ -269,21 +269,6 @@ public class PetRegisterServlet extends HttpServlet {
                 // シェア情報
                 // ==================================================
 
-                pet.setSharePrice(
-                                parseInteger(
-                                                request.getParameter(
-                                                                "sharePrice")));
-
-                pet.setShareStartDate(
-                                parseDate(
-                                                request.getParameter(
-                                                                "shareStartDate")));
-
-                pet.setShareEndDate(
-                                parseDate(
-                                                request.getParameter(
-                                                                "shareEndDate")));
-
                 pet.setShareConditions(
                                 getParameter(
                                                 request,
@@ -654,32 +639,32 @@ public class PetRegisterServlet extends HttpServlet {
         // Integer変換
         // ==================================================
 
-        private Integer parseInteger(
-                        String value) {
+        // private Integer parseInteger(
+        //                 String value) {
 
-                if (value == null
-                                || value.trim().isEmpty()) {
+        //         if (value == null
+        //                         || value.trim().isEmpty()) {
 
-                        return null;
+        //                 return null;
 
-                }
+        //         }
 
-                try {
+        //         try {
 
-                        return Integer.valueOf(
-                                        value.trim());
+        //                 return Integer.valueOf(
+        //                                 value.trim());
 
-                } catch (NumberFormatException e) {
+        //         } catch (NumberFormatException e) {
 
-                        System.err.println(
-                                        "整数変換に失敗しました: "
-                                                        + value);
+        //                 System.err.println(
+        //                                 "整数変換に失敗しました: "
+        //                                                 + value);
 
-                        return null;
+        //                 return null;
 
-                }
+        //         }
 
-        }
+        // }
 
         // ==================================================
         // 画像リサイズ
