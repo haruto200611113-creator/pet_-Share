@@ -18,6 +18,7 @@ public class PetShareServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private final PetDAO petDAO = new PetDAO();
+
     private final PetShareDAO petShareDAO = new PetShareDAO();
 
     @Override
@@ -34,7 +35,10 @@ public class PetShareServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        if (!AccessControl.requireFullMember(session, response)) {
+        if (!AccessControl.requireFullMember(
+                session,
+                response)) {
+
             return;
         }
 
@@ -44,24 +48,32 @@ public class PetShareServlet extends HttpServlet {
             // ② ログインユーザー取得
             // =====================================
 
-            Object accountIdObj = session.getAttribute("accountId");
+            Object accountIdObj = session.getAttribute(
+                    "accountId");
 
             if (accountIdObj == null) {
-                response.sendRedirect("login.html");
+
+                response.sendRedirect(
+                        "login.html");
+
                 return;
             }
 
-            int loginAccountId = Integer.parseInt(accountIdObj.toString());
+            int loginAccountId = Integer.parseInt(
+                    accountIdObj.toString());
 
             // =====================================
             // ③ フォームから値を取得
             // =====================================
 
-            String petIdStr = request.getParameter("petId");
+            String petIdStr = request.getParameter(
+                    "petId");
 
-            String startStr = request.getParameter("availableStart");
+            String startStr = request.getParameter(
+                    "availableStart");
 
-            String endStr = request.getParameter("availableEnd");
+            String endStr = request.getParameter(
+                    "availableEnd");
 
             if (petIdStr == null
                     || startStr == null
@@ -76,13 +88,15 @@ public class PetShareServlet extends HttpServlet {
                 return;
             }
 
-            int petId = Integer.parseInt(petIdStr);
+            int petId = Integer.parseInt(
+                    petIdStr);
 
             // =====================================
             // ④ ペット取得
             // =====================================
 
-            Pet pet = petDAO.findById(petId);
+            Pet pet = petDAO.findById(
+                    petId);
 
             if (pet == null) {
 
@@ -166,7 +180,46 @@ public class PetShareServlet extends HttpServlet {
 
             PetShare share = new PetShare();
 
-            share.setPetId(petId);
+            // -----------------------------
+            // ペットID
+            // -----------------------------
+
+            share.setPetId(
+                    petId);
+
+            // -----------------------------
+            // シェア時点のペット情報
+            // -----------------------------
+
+            share.setPetName(
+                    pet.getPetName());
+
+            share.setPetImage(
+                    pet.getPetImage());
+
+            share.setPetType(
+                    pet.getPetType());
+
+            share.setPetGender(
+                    pet.getGender());
+
+            // -----------------------------
+            // 飼い主ID
+            // -----------------------------
+
+            share.setOwnerId(
+                    pet.getAccountId());
+
+            // -----------------------------
+            // シェア料金
+            // -----------------------------
+
+            share.setSharePrice(
+                    pet.getSharePrice());
+
+            // -----------------------------
+            // シェア期間
+            // -----------------------------
 
             share.setAvailableStart(
                     startTimestamp);
@@ -174,13 +227,19 @@ public class PetShareServlet extends HttpServlet {
             share.setAvailableEnd(
                     endTimestamp);
 
-            share.setActive(true);
+            // -----------------------------
+            // 有効状態
+            // -----------------------------
+
+            share.setActive(
+                    true);
 
             // =====================================
             // ⑪ pet_shares に登録
             // =====================================
 
-            boolean shareInserted = petShareDAO.insert(share);
+            boolean shareInserted = petShareDAO.insert(
+                    share);
 
             if (!shareInserted) {
 

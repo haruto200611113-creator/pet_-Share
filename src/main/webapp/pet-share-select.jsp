@@ -387,7 +387,7 @@
         </div>
 
         <h2 id="pet-delete-confirm-title">
-            ペットを削除しますか？
+            ペット情報を削除しますか？
         </h2>
 
         <p>

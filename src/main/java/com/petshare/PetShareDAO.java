@@ -54,7 +54,9 @@ public class PetShareDAO {
 
             Path path = Path.of("/tmp/aiven-truststore-render.p12");
 
-            Files.write(path, trustStoreBytes);
+            Files.write(
+                    path,
+                    trustStoreBytes);
 
             return path.toAbsolutePath().toString();
 
@@ -101,31 +103,119 @@ public class PetShareDAO {
                 INSERT INTO pet_shares
                 (
                     pet_id,
+                    pet_name,
+                    pet_image,
+                    pet_type,
+                    pet_gender,
+                    owner_id,
+                    share_price,
                     available_start,
                     available_end,
                     is_active
                 )
-                VALUES (?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (
                 Connection conn = getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
+            // -----------------------------
+            // ペットID
+            // -----------------------------
+
             ps.setInt(
                     1,
                     share.getPetId());
 
-            ps.setTimestamp(
+            // -----------------------------
+            // ペット名
+            // -----------------------------
+
+            ps.setString(
                     2,
+                    share.getPetName());
+
+            // -----------------------------
+            // ペット画像
+            // -----------------------------
+
+            ps.setString(
+                    3,
+                    share.getPetImage());
+
+            // -----------------------------
+            // ペット種類
+            // -----------------------------
+
+            ps.setString(
+                    4,
+                    share.getPetType());
+
+            // -----------------------------
+            // 性別
+            // -----------------------------
+
+            ps.setString(
+                    5,
+                    share.getPetGender());
+
+            // -----------------------------
+            // 飼い主ID
+            // -----------------------------
+
+            if (share.getOwnerId() == null) {
+
+                ps.setNull(
+                        6,
+                        java.sql.Types.INTEGER);
+
+            } else {
+
+                ps.setInt(
+                        6,
+                        share.getOwnerId());
+            }
+
+            // -----------------------------
+            // シェア料金
+            // -----------------------------
+
+            if (share.getSharePrice() == null) {
+
+                ps.setNull(
+                        7,
+                        java.sql.Types.INTEGER);
+
+            } else {
+
+                ps.setInt(
+                        7,
+                        share.getSharePrice());
+            }
+
+            // -----------------------------
+            // シェア開始日時
+            // -----------------------------
+
+            ps.setTimestamp(
+                    8,
                     share.getAvailableStart());
 
+            // -----------------------------
+            // シェア終了日時
+            // -----------------------------
+
             ps.setTimestamp(
-                    3,
+                    9,
                     share.getAvailableEnd());
 
+            // -----------------------------
+            // 有効状態
+            // -----------------------------
+
             ps.setBoolean(
-                    4,
+                    10,
                     share.isActive());
 
             return ps.executeUpdate() == 1;
@@ -158,7 +248,9 @@ public class PetShareDAO {
                 Connection conn = getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, petId);
+            ps.setInt(
+                    1,
+                    petId);
 
             try (
                     ResultSet rs = ps.executeQuery()) {
@@ -167,13 +259,65 @@ public class PetShareDAO {
 
                     PetShare share = new PetShare();
 
+                    // -----------------------------
+                    // シェアID
+                    // -----------------------------
+
                     share.setShareId(
                             rs.getInt(
                                     "share_id"));
 
+                    // -----------------------------
+                    // ペットID
+                    // -----------------------------
+
                     share.setPetId(
                             rs.getInt(
                                     "pet_id"));
+
+                    // -----------------------------
+                    // ペット情報
+                    // -----------------------------
+
+                    share.setPetName(
+                            rs.getString(
+                                    "pet_name"));
+
+                    share.setPetImage(
+                            rs.getString(
+                                    "pet_image"));
+
+                    share.setPetType(
+                            rs.getString(
+                                    "pet_type"));
+
+                    share.setPetGender(
+                            rs.getString(
+                                    "pet_gender"));
+
+                    // -----------------------------
+                    // 飼い主ID
+                    // -----------------------------
+
+                    Integer ownerId = (Integer) rs.getObject(
+                            "owner_id");
+
+                    share.setOwnerId(
+                            ownerId);
+
+                    // -----------------------------
+                    // シェア料金
+                    // -----------------------------
+
+                    Integer sharePrice = (Integer) rs.getObject(
+                            "share_price");
+
+                    share.setSharePrice(
+                            sharePrice);
+
+                    // -----------------------------
+                    // シェア期間
+                    // -----------------------------
 
                     share.setAvailableStart(
                             rs.getTimestamp(
@@ -183,9 +327,17 @@ public class PetShareDAO {
                             rs.getTimestamp(
                                     "available_end"));
 
+                    // -----------------------------
+                    // 有効状態
+                    // -----------------------------
+
                     share.setActive(
                             rs.getBoolean(
                                     "is_active"));
+
+                    // -----------------------------
+                    // 管理情報
+                    // -----------------------------
 
                     share.setCreatedAt(
                             rs.getTimestamp(
@@ -206,6 +358,7 @@ public class PetShareDAO {
 
         return null;
     }
+
     // ========================================
     // シェアを停止する
     // ========================================
@@ -223,7 +376,9 @@ public class PetShareDAO {
                 Connection conn = getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, petId);
+            ps.setInt(
+                    1,
+                    petId);
 
             return ps.executeUpdate() > 0;
 
