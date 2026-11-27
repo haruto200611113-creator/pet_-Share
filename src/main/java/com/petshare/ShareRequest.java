@@ -6,6 +6,17 @@ public class ShareRequest {
 
     private int requestId;
     private int petId;
+
+    // ========================================
+    // シェア申込み時点のペット情報
+    // ========================================
+
+    private String petName;
+    private String petImage;
+    private String petType;
+    private String petGender;
+    private Integer ownerId;
+
     private int borrowerId;
 
     private Timestamp startDatetime;
@@ -20,6 +31,10 @@ public class ShareRequest {
     public ShareRequest() {
     }
 
+    // ========================================
+    // requestId
+    // ========================================
+
     public int getRequestId() {
         return requestId;
     }
@@ -27,6 +42,10 @@ public class ShareRequest {
     public void setRequestId(int requestId) {
         this.requestId = requestId;
     }
+
+    // ========================================
+    // petId
+    // ========================================
 
     public int getPetId() {
         return petId;
@@ -36,6 +55,70 @@ public class ShareRequest {
         this.petId = petId;
     }
 
+    // ========================================
+    // petName
+    // ========================================
+
+    public String getPetName() {
+        return petName;
+    }
+
+    public void setPetName(String petName) {
+        this.petName = petName;
+    }
+
+    // ========================================
+    // petImage
+    // ========================================
+
+    public String getPetImage() {
+        return petImage;
+    }
+
+    public void setPetImage(String petImage) {
+        this.petImage = petImage;
+    }
+
+    // ========================================
+    // petType
+    // ========================================
+
+    public String getPetType() {
+        return petType;
+    }
+
+    public void setPetType(String petType) {
+        this.petType = petType;
+    }
+
+    // ========================================
+    // petGender
+    // ========================================
+
+    public String getPetGender() {
+        return petGender;
+    }
+
+    public void setPetGender(String petGender) {
+        this.petGender = petGender;
+    }
+
+    // ========================================
+    // ownerId
+    // ========================================
+
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    // ========================================
+    // borrowerId
+    // ========================================
+
     public int getBorrowerId() {
         return borrowerId;
     }
@@ -43,6 +126,10 @@ public class ShareRequest {
     public void setBorrowerId(int borrowerId) {
         this.borrowerId = borrowerId;
     }
+
+    // ========================================
+    // startDatetime
+    // ========================================
 
     public Timestamp getStartDatetime() {
         return startDatetime;
@@ -52,6 +139,10 @@ public class ShareRequest {
         this.startDatetime = startDatetime;
     }
 
+    // ========================================
+    // endDatetime
+    // ========================================
+
     public Timestamp getEndDatetime() {
         return endDatetime;
     }
@@ -59,6 +150,10 @@ public class ShareRequest {
     public void setEndDatetime(Timestamp endDatetime) {
         this.endDatetime = endDatetime;
     }
+
+    // ========================================
+    // usageHours
+    // ========================================
 
     public double getUsageHours() {
         return usageHours;
@@ -68,6 +163,10 @@ public class ShareRequest {
         this.usageHours = usageHours;
     }
 
+    // ========================================
+    // sharePrice
+    // ========================================
+
     public int getSharePrice() {
         return sharePrice;
     }
@@ -76,6 +175,10 @@ public class ShareRequest {
         this.sharePrice = sharePrice;
     }
 
+    // ========================================
+    // status
+    // ========================================
+
     public String getStatus() {
         return status;
     }
@@ -83,6 +186,10 @@ public class ShareRequest {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    // ========================================
+    // createdAt
+    // ========================================
 
     public Timestamp getCreatedAt() {
         return createdAt;

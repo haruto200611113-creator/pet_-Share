@@ -116,13 +116,6 @@
                 登録されているペットがありません。
             </p>
 
-            <a
-                href="pet-register.html"
-                class="register-button"
-            >
-                ペットを登録する
-            </a>
-
         </div>
 
 
@@ -286,10 +279,12 @@
 
                 </div>
 
+
             </div>
 
 
             <% } %>
+
 
         </div>
 
@@ -298,7 +293,6 @@
 
 
 </div>
-
 
 
 <!-- ========================================
@@ -359,10 +353,10 @@
 
         </div>
 
+
     </div>
 
 </div>
-
 
 
 <!-- ========================================
@@ -386,16 +380,20 @@
             🗑️
         </div>
 
+
         <h2 id="pet-delete-confirm-title">
             ペット情報を削除しますか？
         </h2>
+
 
         <p>
             このペットの登録情報を<br>
             削除してもよろしいですか？
         </p>
 
+
         <div class="confirm-buttons">
+
 
             <button
                 type="button"
@@ -405,6 +403,7 @@
                 キャンセル
             </button>
 
+
             <button
                 type="button"
                 id="pet-delete-confirm-button"
@@ -413,12 +412,13 @@
                 ペットを削除
             </button>
 
+
         </div>
+
 
     </div>
 
 </div>
-
 
 
 <!-- ========================================
@@ -435,8 +435,8 @@
         deleteTargetForm = form;
 
         const modal =
-                document.getElementById(
-                        "pet-delete-confirm-modal");
+            document.getElementById(
+                "pet-delete-confirm-modal");
 
         modal.style.display = "flex";
 
@@ -445,73 +445,77 @@
 
 
     document.addEventListener(
-            "DOMContentLoaded",
-            function () {
+        "DOMContentLoaded",
+        function () {
 
-        const modal =
+            const modal =
                 document.getElementById(
-                        "pet-delete-confirm-modal");
+                    "pet-delete-confirm-modal");
 
-        const cancelButton =
+            const cancelButton =
                 document.getElementById(
-                        "pet-delete-cancel-button");
+                    "pet-delete-cancel-button");
 
-        const confirmButton =
+            const confirmButton =
                 document.getElementById(
-                        "pet-delete-confirm-button");
+                    "pet-delete-confirm-button");
 
 
-        // =====================================
-        // キャンセル
-        // =====================================
+            // =====================================
+            // キャンセル
+            // =====================================
 
-        cancelButton.addEventListener(
+            cancelButton.addEventListener(
                 "click",
                 function () {
 
-            modal.style.display = "none";
+                    modal.style.display = "none";
 
-            deleteTargetForm = null;
-        });
+                    deleteTargetForm = null;
+
+                });
 
 
-        // =====================================
-        // 削除実行
-        // =====================================
+            // =====================================
+            // 削除実行
+            // =====================================
 
-        confirmButton.addEventListener(
+            confirmButton.addEventListener(
                 "click",
                 function () {
 
-            if (deleteTargetForm !== null) {
+                    if (deleteTargetForm !== null) {
 
-                modal.style.display = "none";
+                        modal.style.display = "none";
 
-                deleteTargetForm.submit();
-            }
-        });
+                        deleteTargetForm.submit();
+
+                    }
+
+                });
 
 
-        // =====================================
-        // モーダル外側クリック
-        // =====================================
+            // =====================================
+            // モーダル外側クリック
+            // =====================================
 
-        modal.addEventListener(
+            modal.addEventListener(
                 "click",
                 function (event) {
 
-            if (event.target === modal) {
+                    if (event.target === modal) {
 
-                modal.style.display = "none";
+                        modal.style.display = "none";
 
-                deleteTargetForm = null;
-            }
+                        deleteTargetForm = null;
+
+                    }
+
+                });
+
         });
 
-    });
-
 </script>
-
 
 
 <!-- ========================================
@@ -549,6 +553,7 @@
             background 0.2s,
             color 0.2s,
             transform 0.1s;
+
     }
 
 
@@ -557,28 +562,31 @@
         background: #d9534f;
 
         color: #fff;
+
     }
 
 
     .delete-pet-button:active {
 
         transform: scale(0.98);
+
     }
 
 
     .delete-confirm-button {
 
         background: #d9534f !important;
+
     }
 
 
     .delete-confirm-button:hover {
 
         background: #c9302c !important;
+
     }
 
 </style>
-
 
 
 <!-- 外部JavaScript -->

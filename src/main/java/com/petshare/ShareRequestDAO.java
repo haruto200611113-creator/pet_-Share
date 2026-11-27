@@ -18,11 +18,13 @@ public class ShareRequestDAO {
     // Aiven MySQL 接続
     // ========================================
 
-    private Connection getConnection() throws SQLException {
+    private Connection getConnection()
+            throws SQLException {
 
         try {
 
-            String truststoreBase64 = System.getenv("AIVEN_TRUSTSTORE_BASE64");
+            String truststoreBase64 = System.getenv(
+                    "AIVEN_TRUSTSTORE_BASE64");
 
             if (truststoreBase64 == null
                     || truststoreBase64.isBlank()) {
@@ -40,35 +42,44 @@ public class ShareRequestDAO {
                 byte[] decoded = Base64.getDecoder().decode(
                         truststoreBase64);
 
-                try (FileOutputStream fos = new FileOutputStream(truststoreFile)) {
+                try (
+                        FileOutputStream fos = new FileOutputStream(
+                                truststoreFile)) {
 
                     fos.write(decoded);
                 }
             }
 
-            String host = System.getenv("AIVEN_DB_HOST");
+            String host = System.getenv(
+                    "AIVEN_DB_HOST");
 
-            String port = System.getenv("AIVEN_DB_PORT");
+            String port = System.getenv(
+                    "AIVEN_DB_PORT");
 
-            String database = System.getenv("AIVEN_DB_NAME");
+            String database = System.getenv(
+                    "AIVEN_DB_NAME");
 
-            String user = System.getenv("AIVEN_DB_USER");
+            String user = System.getenv(
+                    "AIVEN_DB_USER");
 
-            String password = System.getenv("AIVEN_DB_PASSWORD");
+            String password = System.getenv(
+                    "AIVEN_DB_PASSWORD");
 
             String truststorePassword = System.getenv(
                     "AIVEN_TRUSTSTORE_PASSWORD");
 
-            String url = "jdbc:mysql://" +
-                    host + ":" +
-                    port + "/" +
-                    database +
-                    "?sslMode=VERIFY_CA" +
-                    "&trustCertificateKeyStoreUrl=file:" +
-                    truststorePath +
-                    "&trustCertificateKeyStoreType=PKCS12" +
-                    "&trustCertificateKeyStorePassword=" +
-                    truststorePassword;
+            String url = "jdbc:mysql://"
+                    + host
+                    + ":"
+                    + port
+                    + "/"
+                    + database
+                    + "?sslMode=VERIFY_CA"
+                    + "&trustCertificateKeyStoreUrl=file:"
+                    + truststorePath
+                    + "&trustCertificateKeyStoreType=PKCS12"
+                    + "&trustCertificateKeyStorePassword="
+                    + truststorePassword;
 
             return DriverManager.getConnection(
                     url,
@@ -94,6 +105,11 @@ public class ShareRequestDAO {
                 INSERT INTO share_requests
                 (
                     pet_id,
+                    pet_name,
+                    pet_image,
+                    pet_type,
+                    pet_gender,
+                    owner_id,
                     borrower_id,
                     start_datetime,
                     end_datetime,
@@ -101,7 +117,7 @@ public class ShareRequestDAO {
                     share_price,
                     status
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (
@@ -109,32 +125,109 @@ public class ShareRequestDAO {
 
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
+            // -----------------------------
+            // ペットID
+            // -----------------------------
+
             ps.setInt(
                     1,
                     request.getPetId());
 
-            ps.setInt(
-                    2,
-                    request.getBorrowerId());
-
-            ps.setTimestamp(
-                    3,
-                    request.getStartDatetime());
-
-            ps.setTimestamp(
-                    4,
-                    request.getEndDatetime());
-
-            ps.setDouble(
-                    5,
-                    request.getUsageHours());
-
-            ps.setInt(
-                    6,
-                    request.getSharePrice());
+            // -----------------------------
+            // ペット名
+            // -----------------------------
 
             ps.setString(
+                    2,
+                    request.getPetName());
+
+            // -----------------------------
+            // ペット画像
+            // -----------------------------
+
+            ps.setString(
+                    3,
+                    request.getPetImage());
+
+            // -----------------------------
+            // ペット種類
+            // -----------------------------
+
+            ps.setString(
+                    4,
+                    request.getPetType());
+
+            // -----------------------------
+            // ペット性別
+            // -----------------------------
+
+            ps.setString(
+                    5,
+                    request.getPetGender());
+
+            // -----------------------------
+            // 飼い主ID
+            // -----------------------------
+
+            if (request.getOwnerId() == null) {
+
+                ps.setNull(
+                        6,
+                        java.sql.Types.INTEGER);
+
+            } else {
+
+                ps.setInt(
+                        6,
+                        request.getOwnerId());
+            }
+
+            // -----------------------------
+            // 借りる人ID
+            // -----------------------------
+
+            ps.setInt(
                     7,
+                    request.getBorrowerId());
+
+            // -----------------------------
+            // 利用開始日時
+            // -----------------------------
+
+            ps.setTimestamp(
+                    8,
+                    request.getStartDatetime());
+
+            // -----------------------------
+            // 利用終了日時
+            // -----------------------------
+
+            ps.setTimestamp(
+                    9,
+                    request.getEndDatetime());
+
+            // -----------------------------
+            // 利用時間
+            // -----------------------------
+
+            ps.setDouble(
+                    10,
+                    request.getUsageHours());
+
+            // -----------------------------
+            // シェア料金
+            // -----------------------------
+
+            ps.setInt(
+                    11,
+                    request.getSharePrice());
+
+            // -----------------------------
+            // ステータス
+            // -----------------------------
+
+            ps.setString(
+                    12,
                     request.getStatus());
 
             return ps.executeUpdate() == 1;
@@ -161,6 +254,11 @@ public class ShareRequestDAO {
                 SELECT
                     request_id,
                     pet_id,
+                    pet_name,
+                    pet_image,
+                    pet_type,
+                    pet_gender,
+                    owner_id,
                     borrower_id,
                     start_datetime,
                     end_datetime,
@@ -186,7 +284,8 @@ public class ShareRequestDAO {
 
                 if (rs.next()) {
 
-                    return createShareRequest(rs);
+                    return createShareRequest(
+                            rs);
                 }
             }
 
@@ -265,10 +364,23 @@ public class ShareRequestDAO {
 
         List<ShareRequest> list = new ArrayList<>();
 
+        /*
+         * petsとのJOINは行わない。
+         *
+         * ペット削除後も、
+         * share_requestsに保存された
+         * owner_idを使って履歴を取得する。
+         */
+
         String sql = """
                 SELECT
                     sr.request_id,
                     sr.pet_id,
+                    sr.pet_name,
+                    sr.pet_image,
+                    sr.pet_type,
+                    sr.pet_gender,
+                    sr.owner_id,
                     sr.borrower_id,
                     sr.start_datetime,
                     sr.end_datetime,
@@ -277,9 +389,7 @@ public class ShareRequestDAO {
                     sr.status,
                     sr.created_at
                 FROM share_requests sr
-                INNER JOIN pets p
-                    ON sr.pet_id = p.pet_id
-                WHERE p.account_id = ?
+                WHERE sr.owner_id = ?
                 AND sr.status <> 'rejected'
                 ORDER BY sr.created_at DESC
                 """;
@@ -299,7 +409,8 @@ public class ShareRequestDAO {
                 while (rs.next()) {
 
                     list.add(
-                            createShareRequest(rs));
+                            createShareRequest(
+                                    rs));
                 }
             }
 
@@ -313,6 +424,7 @@ public class ShareRequestDAO {
 
         return list;
     }
+
     // ========================================
     // 借りる側のリクエスト一覧取得
     // ========================================
@@ -322,10 +434,21 @@ public class ShareRequestDAO {
 
         List<ShareRequest> list = new ArrayList<>();
 
+        /*
+         * ここでもpetsとのJOINは行わない。
+         *
+         * ペット削除後も履歴を表示する。
+         */
+
         String sql = """
                 SELECT
                     sr.request_id,
                     sr.pet_id,
+                    sr.pet_name,
+                    sr.pet_image,
+                    sr.pet_type,
+                    sr.pet_gender,
+                    sr.owner_id,
                     sr.borrower_id,
                     sr.start_datetime,
                     sr.end_datetime,
@@ -334,14 +457,13 @@ public class ShareRequestDAO {
                     sr.status,
                     sr.created_at
                 FROM share_requests sr
-                INNER JOIN pets p
-                    ON sr.pet_id = p.pet_id
                 WHERE sr.borrower_id = ?
                 ORDER BY sr.created_at DESC
                 """;
 
         try (
                 Connection conn = getConnection();
+
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(
@@ -354,7 +476,8 @@ public class ShareRequestDAO {
                 while (rs.next()) {
 
                     list.add(
-                            createShareRequest(rs));
+                            createShareRequest(
+                                    rs));
                 }
             }
 
@@ -378,11 +501,9 @@ public class ShareRequestDAO {
 
         String sql = """
                 SELECT
-                    p.account_id
-                FROM share_requests sr
-                INNER JOIN pets p
-                    ON sr.pet_id = p.pet_id
-                WHERE sr.request_id = ?
+                    owner_id
+                FROM share_requests
+                WHERE request_id = ?
                 """;
 
         try (
@@ -399,8 +520,14 @@ public class ShareRequestDAO {
 
                 if (rs.next()) {
 
-                    return rs.getInt(
-                            "account_id");
+                    Object ownerId = rs.getObject(
+                            "owner_id");
+
+                    if (ownerId != null) {
+
+                        return ((Number) ownerId)
+                                .intValue();
+                    }
                 }
             }
 
@@ -424,21 +551,25 @@ public class ShareRequestDAO {
             int ownerAccountId,
             String status) {
 
-        // 承認・拒否以外は更新不可
         if (!"approved".equals(status)
                 && !"rejected".equals(status)) {
 
             return false;
         }
 
+        /*
+         * petsとのJOINは行わない。
+         *
+         * owner_idは申込み時点で保存されているため、
+         * ペット削除後でも承認・拒否が可能。
+         */
+
         String sql = """
-                UPDATE share_requests sr
-                INNER JOIN pets p
-                    ON sr.pet_id = p.pet_id
-                SET sr.status = ?
-                WHERE sr.request_id = ?
-                  AND p.account_id = ?
-                  AND sr.status = 'pending'
+                UPDATE share_requests
+                SET status = ?
+                WHERE request_id = ?
+                  AND owner_id = ?
+                  AND status = 'pending'
                 """;
 
         try (
@@ -489,6 +620,7 @@ public class ShareRequestDAO {
 
         try (
                 Connection conn = getConnection();
+
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(
@@ -511,6 +643,7 @@ public class ShareRequestDAO {
             return false;
         }
     }
+
     // ========================================
     // ResultSet → ShareRequest
     // ========================================
@@ -528,6 +661,37 @@ public class ShareRequestDAO {
         request.setPetId(
                 rs.getInt(
                         "pet_id"));
+
+        request.setPetName(
+                rs.getString(
+                        "pet_name"));
+
+        request.setPetImage(
+                rs.getString(
+                        "pet_image"));
+
+        request.setPetType(
+                rs.getString(
+                        "pet_type"));
+
+        request.setPetGender(
+                rs.getString(
+                        "pet_gender"));
+
+        Object ownerId = rs.getObject(
+                "owner_id");
+
+        if (ownerId != null) {
+
+            request.setOwnerId(
+                    ((Number) ownerId)
+                            .intValue());
+
+        } else {
+
+            request.setOwnerId(
+                    null);
+        }
 
         request.setBorrowerId(
                 rs.getInt(

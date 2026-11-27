@@ -21,8 +21,6 @@ public class ShareRequestListServlet
 
     private final ShareRequestDAO shareRequestDAO = new ShareRequestDAO();
 
-    private final PetDAO petDAO = new PetDAO();
-
     private final UserDAO userDAO = new UserDAO();
 
     @Override
@@ -38,7 +36,8 @@ public class ShareRequestListServlet
         HttpSession session = request.getSession(false);
 
         if (session == null
-                || session.getAttribute("loginUser") == null) {
+                || session.getAttribute(
+                        "loginUser") == null) {
 
             response.setStatus(
                     HttpServletResponse.SC_UNAUTHORIZED);
@@ -59,7 +58,8 @@ public class ShareRequestListServlet
         // account_id取得
         // ========================================
 
-        Object accountIdObject = session.getAttribute("accountId");
+        Object accountIdObject = session.getAttribute(
+                "accountId");
 
         if (accountIdObject == null) {
 
@@ -99,29 +99,15 @@ public class ShareRequestListServlet
             // 自分のペットへの申込み取得
             // ========================================
 
-            List<ShareRequest> requests = shareRequestDAO.findRequestsForOwner(
-                    ownerAccountId);
+            List<ShareRequest> requests = shareRequestDAO
+                    .findRequestsForOwner(
+                            ownerAccountId);
 
             out.print("[");
 
             int outputCount = 0;
 
-            // ========================================
-            // リクエスト処理
-            // ========================================
-
             for (ShareRequest shareRequest : requests) {
-
-                // ====================================
-                // ペット取得
-                // ====================================
-
-                Pet pet = petDAO.findById(
-                        shareRequest.getPetId());
-
-                if (pet == null) {
-                    continue;
-                }
 
                 // ====================================
                 // 申込者名取得
@@ -130,7 +116,8 @@ public class ShareRequestListServlet
                 String borrowerName = "名前未設定";
 
                 String[] profile = userDAO.getProfile(
-                        shareRequest.getBorrowerId());
+                        shareRequest
+                                .getBorrowerId());
 
                 if (profile != null
                         && profile.length > 0
@@ -145,138 +132,133 @@ public class ShareRequestListServlet
                 // ====================================
 
                 if (outputCount > 0) {
+
                     out.print(",");
                 }
 
                 outputCount++;
 
                 // ====================================
-                // JSON開始
+                // JSON
                 // ====================================
 
                 out.print("{");
 
-                // ====================================
-                // requestId
-                // ====================================
+                // -------------------------------
+                // 申込みID
+                // -------------------------------
 
                 out.print(
-                        "\"requestId\":" +
-                                shareRequest.getRequestId()
+                        "\"requestId\":"
+                                + shareRequest
+                                        .getRequestId()
                                 + ",");
 
-                // ====================================
-                // petId
-                // ====================================
+                // -------------------------------
+                // ペットID
+                // -------------------------------
 
                 out.print(
-                        "\"petId\":" +
-                                shareRequest.getPetId()
+                        "\"petId\":"
+                                + shareRequest
+                                        .getPetId()
                                 + ",");
 
-                // ====================================
-                // petName
-                // ====================================
+                // -------------------------------
+                // ★ シェア申込み時点のペット名
+                // -------------------------------
 
                 out.print(
-                        "\"petName\":\"" +
-                                escapeJson(
-                                        pet.getPetName())
+                        "\"petName\":\""
+                                + escapeJson(
+                                        shareRequest
+                                                .getPetName())
                                 + "\",");
 
-                // ====================================
-                // ★ petImage
-                // ====================================
-
-                String petImage = pet.getPetImage();
-
-                if (petImage == null) {
-                    petImage = "";
-                }
+                // -------------------------------
+                // ★ ペット画像
+                // -------------------------------
 
                 out.print(
-                        "\"petImage\":\"" +
-                                escapeJson(
-                                        petImage)
+                        "\"petImage\":\""
+                                + escapeJson(
+                                        shareRequest
+                                                .getPetImage())
                                 + "\",");
 
-                // ====================================
-                // borrowerId
-                // ====================================
+                // -------------------------------
+                // 借りる人ID
+                // -------------------------------
 
                 out.print(
-                        "\"borrowerId\":" +
-                                shareRequest
+                        "\"borrowerId\":"
+                                + shareRequest
                                         .getBorrowerId()
                                 + ",");
 
-                // ====================================
-                // borrowerName
-                // ====================================
+                // -------------------------------
+                // 借りる人名
+                // -------------------------------
 
                 out.print(
-                        "\"borrowerName\":\"" +
-                                escapeJson(
+                        "\"borrowerName\":\""
+                                + escapeJson(
                                         borrowerName)
                                 + "\",");
 
-                // ====================================
-                // startDatetime
-                // ====================================
+                // -------------------------------
+                // 利用開始日時
+                // -------------------------------
 
                 out.print(
-                        "\"startDatetime\":\"" +
-                                formatTimestamp(
+                        "\"startDatetime\":\""
+                                + formatTimestamp(
                                         shareRequest
                                                 .getStartDatetime())
                                 + "\",");
 
-                // ====================================
-                // endDatetime
-                // ====================================
+                // -------------------------------
+                // 利用終了日時
+                // -------------------------------
 
                 out.print(
-                        "\"endDatetime\":\"" +
-                                formatTimestamp(
+                        "\"endDatetime\":\""
+                                + formatTimestamp(
                                         shareRequest
                                                 .getEndDatetime())
                                 + "\",");
 
-                // ====================================
-                // usageHours
-                // ====================================
+                // -------------------------------
+                // 利用時間
+                // -------------------------------
 
                 out.print(
-                        "\"usageHours\":" +
-                                shareRequest
+                        "\"usageHours\":"
+                                + shareRequest
                                         .getUsageHours()
                                 + ",");
 
-                // ====================================
-                // status
-                // ====================================
+                // -------------------------------
+                // ステータス
+                // -------------------------------
 
                 out.print(
-                        "\"status\":\"" +
-                                escapeJson(
+                        "\"status\":\""
+                                + escapeJson(
                                         shareRequest
                                                 .getStatus())
                                 + "\",");
 
-                // ====================================
-                // createdAt
-                // ====================================
+                // -------------------------------
+                // 申込み日時
+                // -------------------------------
 
                 out.print(
-                        "\"createdAt\":\"" +
-                                formatTimestamp(
+                        "\"createdAt\":\""
+                                + formatTimestamp(
                                         shareRequest
                                                 .getCreatedAt())
                                 + "\"");
-
-                // ====================================
-                // JSON終了
-                // ====================================
 
                 out.print("}");
             }
@@ -304,13 +286,15 @@ public class ShareRequestListServlet
             Timestamp timestamp) {
 
         if (timestamp == null) {
+
             return "";
         }
 
         SimpleDateFormat format = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm");
 
-        return format.format(timestamp);
+        return format.format(
+                timestamp);
     }
 
     // ========================================
@@ -321,14 +305,25 @@ public class ShareRequestListServlet
             String value) {
 
         if (value == null) {
+
             return "";
         }
 
         return value
-                .replace("\\", "\\\\")
-                .replace("\"", "\\\"")
-                .replace("\r", "\\r")
-                .replace("\n", "\\n")
-                .replace("\t", "\\t");
+                .replace(
+                        "\\",
+                        "\\\\")
+                .replace(
+                        "\"",
+                        "\\\"")
+                .replace(
+                        "\r",
+                        "\\r")
+                .replace(
+                        "\n",
+                        "\\n")
+                .replace(
+                        "\t",
+                        "\\t");
     }
 }
